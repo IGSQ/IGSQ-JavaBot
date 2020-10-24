@@ -40,6 +40,6 @@ public class Shutdown_Command {
 	private void shutdown() 
 	{
 		Common.sendEmbed(Common_Command.SHUTDOWN_MESSAGES[random.nextInt(Common_Command.SHUTDOWN_MESSAGES.length)], channel,Color.GRAY);
-		//Common.jda.shutdown();
+		Common.jda.shutdown();
 	}
 }

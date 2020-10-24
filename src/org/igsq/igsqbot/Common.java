@@ -21,8 +21,7 @@ public class Common {
 			"Hello! This is the part where I kill you.",
 			"I've been really busy being dead. You know, after you MURDERED ME.",
 			"Am. Not. Dead! I'm not dead!",
-			"I lie when I'm nervous.",
-			""};
+			"I lie when I'm nervous."};
 	
 	public static JDABuilder jdaBuilder;
 	public static JDA jda;

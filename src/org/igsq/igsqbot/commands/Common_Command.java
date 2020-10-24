@@ -19,7 +19,7 @@ public class Common_Command
 			"Good news! I can use this equipment to shut down the neurotoxin system. It is, however, password protected. AH! Alarm bells! No. Don't worry. Not a problem for me.",
 			"All reactor core safeguards are now non-functional. Please prepare for reactor core meltdown.",
 			"Undelete, undelete! Where's the undelete button?",
-			"Now than, let's see what we got here. Ah! 'Reactor Core Emergency Heat Venting Protocols.' That's the problem right there, isn't it? 'Emergency'. You don't want to see 'emergency' flashing at you. Never good that, is it? Right. DELETE.",
+			"Now then, let's see what we got here. Ah! 'Reactor Core Emergency Heat Venting Protocols.' That's the problem right there, isn't it? 'Emergency'. You don't want to see 'emergency' flashing at you. Never good that, is it? Right. DELETE.",
 			"In order to ensure that sufficient power remains for core testing protocols, all safety devices have been disabled.",
 			"Okay, listen, we should get our stories straight, alright? If anyone asks -- and no one's gonna ask, don't worry -- but if anyone asks, tell them as far as you know, the last time you checked, everyone looked pretty much alive. Alright? Not dead.",
 			"Well. I suppose we could just sit in this room and glare at each other until somebody drops dead, but I have a better idea."};

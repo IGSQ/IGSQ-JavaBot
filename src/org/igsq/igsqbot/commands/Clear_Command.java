@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
-import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;

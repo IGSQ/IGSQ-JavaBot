@@ -36,6 +36,10 @@
     <name>jcenter-bintray</name>
     <url>https://jcenter.bintray.com</url>
 </repository>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
 </repositories>
      <dependencies>
 		<dependency>
@@ -43,5 +47,10 @@
 		    <artifactId>JDA</artifactId>
 		    <version>4.2.0_210</version>
 		</dependency>
+		<dependency>
+    <groupId>me.carleslc.Simple-YAML</groupId>
+    <artifactId>Simple-Yaml</artifactId>
+    <version>1.7.1</version>
+</dependency>
     </dependencies>
 </project>
