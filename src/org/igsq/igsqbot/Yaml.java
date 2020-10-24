@@ -218,7 +218,7 @@ public class Yaml
         addFieldDefault("MYSQL.username","config","username");
         addFieldDefault("MYSQL.password","config","password");
         addFieldDefault("MYSQL.database","config","jdbc:mysql://localhost:3306/database?useSSL=false");
-        addFieldDefault("Bot.token","config","token");
+        addFieldDefault("BOT.token","config","token");
         for(FileConfiguration configuration : configurations) configuration.options().copyDefaults(true);
     }
 
