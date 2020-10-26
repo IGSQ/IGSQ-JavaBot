@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -64,42 +65,16 @@ public class Clear_Command
 			return;
 		}
 		
-		else if(amount > 15)
+		else if(amount > 50)
 		{
-			Common.sendEmbed("You tried to delete too many messages (Limit: 15)", channel);
+			Common.sendEmbed("You tried to delete too many messages (Limit: 50)", channel);
 			return;
 		}
 		else
 		{
-			channel.getHistory().retrievePast(Integer.parseInt(args[0])).queue
-			(
-			messages ->
-				{
-					Common.sendTimedEmbed("Deleting " + amount + " messages", channel, 10);
-					for(Message selectedMessage : messages)
-					{
-						try
-						{
-							scheduler.schedule(new Runnable()
-							{
-
-								@Override
-								public void run() 
-								{
-									selectedMessage.delete().queue();
-								} 	
-								
-					    	}, 3,TimeUnit.SECONDS);
-								     
-						}
-						catch(Exception exception)
-						{
-							continue;
-						}
-						
-					}
-				}
-			);
+			List<Message> messages = channel.getHistory().retrievePast(Integer.parseInt(args[0])).complete();
+			channel.deleteMessages(messages).complete();
+			Common.sendTimedEmbed("Deleted " + args[0] + " messages", channel, 5);
 		}
 	}
 }
