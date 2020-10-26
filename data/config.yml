@@ -1,0 +1,6 @@
+MYSQL:
+  username: username
+  password: password
+  database: jdbc:mysql://localhost:3306/database?useSSL=false
+BOT:
+  token: NzY5MzY0MDgyMjkzNDczMzEw.X5N8Iw.IiCQsMkHBFPTHbR3-jVTBmTtFpo

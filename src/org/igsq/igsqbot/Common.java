@@ -132,6 +132,151 @@ public class Common {
     {
     	return sendEmbed(fields,channel,title,footer,thumbnailUrl,Color.BLACK);
     }
+    
+    public static boolean sendTimedEmbed(String messageText,TextChannel channel,int time) 
+    {
+    	return sendTimedEmbed(messageText,channel,Color.BLACK,time);
+    }
+    public static boolean sendTimedEmbed(String messageText,TextChannel channel,String title,String footer, int time) 
+    {
+    	return sendTimedEmbed(messageText,channel,title,footer,Color.BLACK, time);
+    }
+    public static boolean sendTimedEmbed(Field[] fields,TextChannel channel,String title,String footer, int time) 
+    {
+    	return sendTimedEmbed(fields,channel,title,footer,Color.BLACK, time);
+    }
+    public static boolean sendTimedEmbed(Field[] fields,TextChannel channel,String title,String footer,String thumbnailUrl, int time) 
+    {
+    	return sendTimedEmbed(fields,channel,title,footer,Color.BLACK,thumbnailUrl, time);
+    }
+    public static boolean sendTimedEmbed(String messageText,TextChannel channel,Color color,int time) 
+    {
+    	if(channel == null) return false;
+    	if(messageText == null || messageText.equalsIgnoreCase("")) return false;
+    	if(messageText.length() > CHARACTER_LIMIT) return false;
+    	
+    	Member me = channel.getGuild().getSelfMember();
+    	if(me.hasPermission(Permission.MESSAGE_WRITE)) 
+    	{
+	    	EmbedBuilder embedBuilder = new EmbedBuilder();
+	        embedBuilder.setDescription(messageText);
+	        embedBuilder.setColor(color);
+	        channel.sendMessage(embedBuilder.build()).queue(
+	        		message -> 
+	        		{
+	        			try 
+	        			{
+	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
+	        			}
+	        			catch (Exception exception)
+	        			{
+	        				
+	        			}
+	        		}
+	        		
+	        		);
+	        return true;
+    	}
+    	return false;
+    }
+    public static boolean sendTimedEmbed(String messageText,TextChannel channel,String title,String footer,Color color,int time) 
+    {
+    	if(channel == null) return false;
+    	if(messageText == null || messageText.equalsIgnoreCase("")) return false;
+    	if(messageText.length() > CHARACTER_LIMIT) return false;
+    	
+    	Member me = channel.getGuild().getSelfMember();
+    	if(me.hasPermission(Permission.MESSAGE_WRITE)) 
+    	{
+	    	EmbedBuilder embedBuilder = new EmbedBuilder();
+	    	embedBuilder.setTitle(title);
+	        embedBuilder.setColor(color);
+	        embedBuilder.setFooter(footer);
+	        channel.sendMessage(embedBuilder.build()).queue(
+	        		message -> 
+	        		{
+	        			try 
+	        			{
+	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
+	        			}
+	        			catch (Exception exception)
+	        			{
+	        				
+	        			}
+	        		}
+	        		
+	        		);
+	        return true;
+    	}
+    	return false;
+    }
+    public static boolean sendTimedEmbed(Field[] fields,TextChannel channel,String title,String footer,Color color, int time) 
+    {
+    	if(channel == null) return false;
+//    	if(messageText == null || messageText.equalsIgnoreCase("")) return false;
+//    	if(messageText.length() > CHARACTER_LIMIT) return false;
+    	
+    	Member me = channel.getGuild().getSelfMember();
+    	if(me.hasPermission(Permission.MESSAGE_WRITE)) 
+    	{
+	    	EmbedBuilder embedBuilder = new EmbedBuilder();
+	    	embedBuilder.setTitle(title);
+	    	for(Field field : fields) embedBuilder.addField(field);
+	        embedBuilder.setColor(color);
+	        embedBuilder.setFooter(footer);
+	        channel.sendMessage(embedBuilder.build()).queue();
+	        channel.sendMessage(embedBuilder.build()).queue(
+	        		message -> 
+	        		{
+	        			try 
+	        			{
+	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
+	        			}
+	        			catch (Exception exception)
+	        			{
+	        				
+	        			}
+	        		}
+	        		
+	        		);
+	        return true;
+    	}
+    	return false;
+    }
+    public static boolean sendTimedEmbed(Field[] fields,TextChannel channel,String title,String footer,Color color, String thumbnailUrl,int time) 
+    {
+    	if(channel == null) return false;
+//    	if(messageText == null || messageText.equalsIgnoreCase("")) return false;
+//    	if(messageText.length() > CHARACTER_LIMIT) return false;
+    	
+    	Member me = channel.getGuild().getSelfMember();
+    	if(me.hasPermission(Permission.MESSAGE_WRITE)) 
+    	{
+	    	EmbedBuilder embedBuilder = new EmbedBuilder();
+	    	embedBuilder.setTitle(title);
+	    	for(Field field : fields) embedBuilder.addField(field);
+	        embedBuilder.setColor(color);
+	        embedBuilder.setFooter(footer);
+	        embedBuilder.setThumbnail(thumbnailUrl);
+	        channel.sendMessage(embedBuilder.build()).queue(
+	        		message -> 
+	        		{
+	        			try 
+	        			{
+	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
+	        			}
+	        			catch (Exception exception)
+	        			{
+	        				
+	        			}
+	        		}
+	        		
+	        		);
+	        return true;
+    	}
+    	return false;
+    }
+    
     public static boolean sendEmbed(String messageText,TextChannel channel,Color color) 
     {
     	if(channel == null) return false;

@@ -32,6 +32,7 @@ public class Bot
     	}, 1, 30,TimeUnit.SECONDS);
 		
 		new Database();
+		
 		try 
 		{
 			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));

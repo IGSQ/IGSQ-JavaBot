@@ -3,7 +3,6 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.Common;
@@ -25,6 +24,7 @@ public class Clear_Command
 	private Member me;
 	private String[] args;
 	private int amount;
+	final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
 	public Clear_Command(MessageReceivedEvent event, String[] args)
 	{
@@ -75,24 +75,22 @@ public class Clear_Command
 			(
 			messages ->
 				{
-					Common.sendEmbed("Deleting " + amount + " messages", channel);
+					Common.sendTimedEmbed("Deleting " + amount + " messages", channel, 10);
 					for(Message selectedMessage : messages)
 					{
 						try
 						{
-							final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-						    final Runnable deleteMessage = new Runnable() 
-						    {
-							    public void run() 
-							    { 
-							    	  selectedMessage.delete().queue();
-							    }
-						       
-						    };
-						     
-						    final ScheduledFuture<?> deleteHandle = scheduler.schedule(deleteMessage, 10, TimeUnit.SECONDS);
-							deleteHandle.cancel(true);
-									     
+							scheduler.schedule(new Runnable()
+							{
+
+								@Override
+								public void run() 
+								{
+									selectedMessage.delete().queue();
+								} 	
+								
+					    	}, 3,TimeUnit.SECONDS);
+								     
 						}
 						catch(Exception exception)
 						{
