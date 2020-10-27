@@ -19,10 +19,10 @@ public class Main_Command extends ListenerAdapter
     {
     	if(!event.getAuthor().isBot() && event.getMessage().getContentRaw().startsWith(Common.BOT_PREFIX))
     	{
-    		event.getChannel().sendTyping().queue();
     		String command = event.getMessage().getContentRaw().toLowerCase().split(" ")[0];
     		String[] args = event.getMessage().getContentRaw().toLowerCase().split(" ");
     		String[] slashArgs = Common.removeBeforeCharacter(event.getMessage().getContentRaw(), ' ').split("/");
+    		
     		args = Common.depend(args, 0);
     		command = command.substring(1);
     		

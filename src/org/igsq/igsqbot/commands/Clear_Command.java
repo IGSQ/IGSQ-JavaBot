@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.Common;
 
@@ -53,28 +52,43 @@ public class Clear_Command
 			amount = Integer.parseInt(args[0]);
 		}
 		
-		catch(Exception e)
+		catch(Exception exception)
 		{
-			Common.sendEmbed("Enter a number as the amount.", channel);
+			Common.sendTimedEmbed("Enter a number as the amount.", channel, Color.RED, 10);
 			return;
 		}
 		
-		if(amount == 0)
+		if(Cooldown_Command.CLEAR_COOLDOWN != 0)
 		{
-			Common.sendEmbed("You must enter the amount of messages to clear!", channel);
+			Common.sendTimedEmbed("This command is on cooldown.", channel, Color.RED, 10);
 			return;
 		}
-		
+		else if(amount == 0)
+		{
+			Common.sendTimedEmbed("You must enter the amount of messages to clear!", channel, Color.RED, 10);
+			return;
+		}
+		else if(amount < 2)
+		{
+			Common.sendTimedEmbed("You tried to delete too little messages (Minimum: 2)", channel, Color.RED, 10);
+			return;
+		}
 		else if(amount > 50)
 		{
-			Common.sendEmbed("You tried to delete too many messages (Limit: 50)", channel);
+			Common.sendTimedEmbed("You tried to delete too many messages (Limit: 50)", channel, Color.RED, 10);
 			return;
 		}
 		else
 		{
-			List<Message> messages = channel.getHistory().retrievePast(Integer.parseInt(args[0])).complete();
-			channel.deleteMessages(messages).complete();
-			Common.sendTimedEmbed("Deleted " + args[0] + " messages", channel, 5);
+			new Thread(() -> 
+	        {
+	        	Cooldown_Command.CLEAR_COOLDOWN = 5;
+                List<Message> messages = channel.getHistory().retrievePast(amount).complete();
+                channel.deleteMessages(messages).complete();
+                Common.sendTimedEmbed("Deleted " + amount + " messages", channel, 5);
+	        }
+	        )
+	        .run();
 		}
 	}
 }

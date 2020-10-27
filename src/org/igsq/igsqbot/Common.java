@@ -164,17 +164,13 @@ public class Common {
 	        channel.sendMessage(embedBuilder.build()).queue(
 	        		message -> 
 	        		{
-	        			try 
-	        			{
-	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
-	        			}
-	        			catch (Exception exception)
-	        			{
-	        				
-	        			}
+	        			message.delete().submitAfter(time, TimeUnit.SECONDS).whenComplete((v, error) -> 
+	        				{
+	        	               if (error != null) {};
+	        				}
+	        			);;
 	        		}
-	        		
-	        		);
+	        	);
 	        return true;
     	}
     	return false;
@@ -195,17 +191,13 @@ public class Common {
 	        channel.sendMessage(embedBuilder.build()).queue(
 	        		message -> 
 	        		{
-	        			try 
-	        			{
-	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
-	        			}
-	        			catch (Exception exception)
-	        			{
-	        				
-	        			}
+	        			message.delete().submitAfter(time, TimeUnit.SECONDS).whenComplete((v, error) -> 
+	        				{
+	        	               if (error != null) {};
+	        				}
+	        			);;
 	        		}
-	        		
-	        		);
+	        	);
 	        return true;
     	}
     	return false;
@@ -224,21 +216,16 @@ public class Common {
 	    	for(Field field : fields) embedBuilder.addField(field);
 	        embedBuilder.setColor(color);
 	        embedBuilder.setFooter(footer);
-	        channel.sendMessage(embedBuilder.build()).queue();
 	        channel.sendMessage(embedBuilder.build()).queue(
 	        		message -> 
 	        		{
-	        			try 
-	        			{
-	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
-	        			}
-	        			catch (Exception exception)
-	        			{
-	        				
-	        			}
+	        			message.delete().submitAfter(time, TimeUnit.SECONDS).whenComplete((v, error) -> 
+	        				{
+	        	               if (error != null) {};
+	        				}
+	        			);;
 	        		}
-	        		
-	        		);
+	        	);
 	        return true;
     	}
     	return false;
@@ -261,17 +248,13 @@ public class Common {
 	        channel.sendMessage(embedBuilder.build()).queue(
 	        		message -> 
 	        		{
-	        			try 
-	        			{
-	        				message.delete().queueAfter(time, TimeUnit.SECONDS);
-	        			}
-	        			catch (Exception exception)
-	        			{
-	        				
-	        			}
+	        			message.delete().submitAfter(time, TimeUnit.SECONDS).whenComplete((v, error) -> 
+	        				{
+	        	               if (error != null) {};
+	        				}
+	        			);;
 	        		}
-	        		
-	        		);
+	        	);
 	        return true;
     	}
     	return false;

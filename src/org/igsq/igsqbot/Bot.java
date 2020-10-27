@@ -32,6 +32,7 @@ public class Bot
     	}, 1, 30,TimeUnit.SECONDS);
 		
 		new Database();
+		new Loops();
 		
 		try 
 		{
