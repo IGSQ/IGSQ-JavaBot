@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.commands.fun;
+package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
 

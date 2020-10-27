@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.commands.moderation;
+package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.commands.Cooldown_Command;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;

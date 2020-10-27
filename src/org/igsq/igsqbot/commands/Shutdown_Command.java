@@ -1,11 +1,10 @@
-package org.igsq.igsqbot.commands.developer;
+package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
 import java.util.Random;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.commands.Common_Command;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
