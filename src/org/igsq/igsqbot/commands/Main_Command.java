@@ -3,6 +3,11 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.commands.developer.Shutdown_Command;
+import org.igsq.igsqbot.commands.fun.Avatar_Command;
+import org.igsq.igsqbot.commands.fun.Poll_Command;
+import org.igsq.igsqbot.commands.moderation.Clear_Command;
+import org.igsq.igsqbot.commands.moderation.Kick_Command;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

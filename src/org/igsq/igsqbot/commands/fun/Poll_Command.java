@@ -1,8 +1,9 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands.fun;
 
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.commands.Common_Command;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;

@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
+import net.dv8tion.jda.api.entities.Guild;
+
 public class Yaml 
 {
     /**
@@ -13,7 +15,7 @@ public class Yaml
      * @apiNote Used in {@link #createFiles()} to instansiate the filesnames.
      * @see java.io.File
      */
-    public static String[] fileNames = {"config","internal"};
+    public static String[] fileNames = {"config","internal","guild"};
     /**
      * files is a {@link java.io.File File} array of all of the files that can be used.
      * @apiNote Used in {@link #loadFile(String)} to get data from file & in {@link #saveFileChanges(String)} to save data to file
@@ -25,9 +27,6 @@ public class Yaml
      * @see java.io.File
      */
     private static FileConfiguration[] configurations;
-    
-    
-    
     
     
     
@@ -218,7 +217,28 @@ public class Yaml
         addFieldDefault("MYSQL.username","config","username");
         addFieldDefault("MYSQL.password","config","password");
         addFieldDefault("MYSQL.database","config","jdbc:mysql://localhost:3306/database?useSSL=false");
+        
         addFieldDefault("BOT.token","config","token");
+        
+        for(Guild selectedGuild : Common.jda.getGuilds())
+        {
+        	addFieldDefault(selectedGuild.getId(),"guild",true);
+        	
+        	addFieldDefault(selectedGuild.getId() + ".basiclogchannel", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".moderatorlogchannel", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".administratorlogchannel", "guild", "none");
+        	
+        	addFieldDefault(selectedGuild.getId() + ".voicelogchannel", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".membercountchannel", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".votingchannel", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".suggestionschannel", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".verificationchannel", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".reportchannel", "guild", "none");
+        	
+        	addFieldDefault(selectedGuild.getId() + ".verifiedrole", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".moderatorrole", "guild", "none");
+        	addFieldDefault(selectedGuild.getId() + ".administratorrole", "guild", "none");
+        }
         for(FileConfiguration configuration : configurations) configuration.options().copyDefaults(true);
     }
 

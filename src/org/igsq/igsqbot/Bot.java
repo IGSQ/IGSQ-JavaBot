@@ -18,7 +18,6 @@ public class Bot
 	{
 		Yaml.createFiles();
 		Yaml.loadFile("@all");
-		Yaml.applyDefault();
 		
 		scheduler.scheduleAtFixedRate(new Runnable()
 		{
@@ -31,9 +30,6 @@ public class Bot
 			} 		
     	}, 1, 30,TimeUnit.SECONDS);
 		
-		new Database();
-		new Loops();
-		
 		try 
 		{
 			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
@@ -45,11 +41,14 @@ public class Bot
 			Common.jda.awaitReady();
 			Common.sendEmbed(Common.STARTUP_MESSAGES[random.nextInt(Common.STARTUP_MESSAGES.length)], Common.jda.getTextChannelById("769356662896984090"),Color.GREEN);
 			
+			Yaml.applyDefault();
+			new Database();
+			new Loops();
+			
 		}
 		catch(Exception exception)
 		{
 			System.err.println("Bot Failed To Start!");
 		}
-		
 	}
 }
