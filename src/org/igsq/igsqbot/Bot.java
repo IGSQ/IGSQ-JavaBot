@@ -43,7 +43,6 @@ public class Bot
 			
 			Yaml.applyDefault();
 			new Database();
-			new Loops();
 			
 		}
 		catch(Exception exception)

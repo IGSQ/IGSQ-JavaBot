@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
-import net.dv8tion.jda.api.entities.Guild;
 
 public class Yaml 
 {
@@ -27,15 +26,13 @@ public class Yaml
      * @see java.io.File
      */
     private static FileConfiguration[] configurations;
-    
-    
-    
     /**
      * Creates all the files if they dont already exist. Creates instance of all files in {@link #fileNames}
      * @apiNote also creates default {@link #configurations}
      * @see java.io.File
      * @see org.bukkit.configuration.file.FileConfiguration
      */
+    
     public static void createFiles() 
     {
 		 try
@@ -220,25 +217,6 @@ public class Yaml
         
         addFieldDefault("BOT.token","config","token");
         
-        for(Guild selectedGuild : Common.jda.getGuilds())
-        {
-        	addFieldDefault(selectedGuild.getId(),"guild",true);
-        	
-        	addFieldDefault(selectedGuild.getId() + ".basiclogchannel", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".moderatorlogchannel", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".administratorlogchannel", "guild", "none");
-        	
-        	addFieldDefault(selectedGuild.getId() + ".voicelogchannel", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".membercountchannel", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".votingchannel", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".suggestionschannel", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".verificationchannel", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".reportchannel", "guild", "none");
-        	
-        	addFieldDefault(selectedGuild.getId() + ".verifiedrole", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".moderatorrole", "guild", "none");
-        	addFieldDefault(selectedGuild.getId() + ".administratorrole", "guild", "none");
-        }
         for(FileConfiguration configuration : configurations) configuration.options().copyDefaults(true);
     }
 

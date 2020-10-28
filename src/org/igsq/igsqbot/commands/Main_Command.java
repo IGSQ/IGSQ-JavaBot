@@ -3,13 +3,16 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Cooldown_Handler;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class Main_Command extends ListenerAdapter
 {
+	private static Cooldown_Handler[] cooldownHandlers = {};
 	public Main_Command()
 	{
 
@@ -25,6 +28,10 @@ public class Main_Command extends ListenerAdapter
     		
     		args = Common.depend(args, 0);
     		command = command.substring(1);
+    		
+    		if(getHandler(event.getGuild()) == null) cooldownHandlers = Common.append(cooldownHandlers, new Cooldown_Handler(event.getGuild()));
+
+    		event.getMessage().delete().queue();
     		
         	switch(command)
         	{
@@ -49,9 +56,20 @@ public class Main_Command extends ListenerAdapter
 	        		break;
 	        		
 	        	default:
-	        		Common.sendEmbed("Command " + command + " not found.", (TextChannel)event.getChannel(),Color.RED);
+	        		Common.sendEmbed("Command " + command + " not found.", (TextChannel) event.getChannel(),Color.RED);
 	        		break;
         	}
         }
+    }
+    
+    public static Cooldown_Handler getHandler(Guild guild)
+    {
+    	for(Cooldown_Handler selectedHandler : cooldownHandlers) if(selectedHandler.getGuild().equals(guild)) return selectedHandler;
+		return null;
+    }
+    
+    public static void removeHandler(Cooldown_Handler handler)
+    {
+    	cooldownHandlers = Common.depend(cooldownHandlers, handler);
     }
 }

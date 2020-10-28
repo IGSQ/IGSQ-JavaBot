@@ -42,6 +42,24 @@ public class Common {
         }
         return arrayDepended;
     }
+	public static String[] depend(String[] array, String value)
+    {
+        String[] arrayDepended = new String[array.length-1];
+        int hitRemove = 0;
+        
+        for (int i = 0;i < array.length;i++)
+        {
+            if(!value.equals(array[i]))
+            {
+                arrayDepended[i-hitRemove] = array[i];
+            }
+            else
+            {
+                hitRemove++;
+            }
+        }
+        return arrayDepended;
+    }
     public static String[] append(String[] array, String value)
     {
     	String[] arrayAppended = new String[array.length+1];
@@ -52,8 +70,34 @@ public class Common {
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
-	
-	
+    public static Cooldown_Handler[] append(Cooldown_Handler[] array, Cooldown_Handler value)
+    {
+    	Cooldown_Handler[] arrayAppended = new Cooldown_Handler[array.length+1];
+    	for (int i = 0;i < array.length;i++)
+    	{
+    		arrayAppended[i] = array[i];
+    	}
+    	arrayAppended[array.length] = value;
+    	return arrayAppended;
+    }
+	public static Cooldown_Handler[] depend(Cooldown_Handler[] array, Cooldown_Handler value)
+    {
+		Cooldown_Handler[] arrayDepended = new Cooldown_Handler[array.length-1];
+        int hitRemove = 0;
+        
+        for (int i = 0;i < array.length;i++)
+        {
+            if(!value.equals(array[i]))
+            {
+                arrayDepended[i-hitRemove] = array[i];
+            }
+            else
+            {
+                hitRemove++;
+            }
+        }
+        return arrayDepended;
+    }
     /**
      * Removes all text before a given character. If the character is not found the whole string is returned.
      * @return <b>String</b>
@@ -111,8 +155,6 @@ public class Common {
     	}
     	return false;
     }
-    
-    
     
     
     
@@ -355,8 +397,6 @@ public class Common {
     	}
     	return false;
     }
-    
-    
     
     public static boolean sendEmbed(Field[] fields,TextChannel channel,String title,String footer,String thumbnailUrl,Color color,String[] reactions) 
     {

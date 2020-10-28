@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Cooldown_Handler;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -24,10 +25,12 @@ public class Clear_Command
 	private Member me;
 	private String[] args;
 	private int amount;
+	private Cooldown_Handler handler;
 	final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
 	public Clear_Command(MessageReceivedEvent event, String[] args)
 	{
+		this.handler = Main_Command.getHandler(event.getGuild());
 		this.author = event.getAuthor();
 		this.channel = event.getTextChannel();
 		this.message = event.getMessage();
@@ -49,7 +52,7 @@ public class Clear_Command
 	{
 		try 
 		{
-			amount = Integer.parseInt(args[0]);
+			amount = Integer.parseInt(args[0]) + 1;
 		}
 		
 		catch(Exception exception)
@@ -57,23 +60,17 @@ public class Clear_Command
 			Common.sendTimedEmbed("Enter a number as the amount.", channel, Color.RED, 10);
 			return;
 		}
-		
-		if(Cooldown_Command.CLEAR_COOLDOWN != 0)
+		if(handler.isCooldownActive("clear"))
 		{
-			Common.sendTimedEmbed("This command is on cooldown.", channel, Color.RED, 10);
+			Common.sendTimedEmbed("This command is on cooldown. (Remaining: " + handler.getCooldown("clear") / 1000 + "s)", channel, Color.RED, 10);
 			return;
 		}
-		else if(amount == 0)
+		else if(amount <= 0)
 		{
-			Common.sendTimedEmbed("You must enter the amount of messages to clear!", channel, Color.RED, 10);
+			Common.sendTimedEmbed("Invalid amount entered.", channel, Color.RED, 10);
 			return;
 		}
-		else if(amount < 2)
-		{
-			Common.sendTimedEmbed("You tried to delete too little messages (Minimum: 2)", channel, Color.RED, 10);
-			return;
-		}
-		else if(amount > 50)
+		else if(amount > 49)
 		{
 			Common.sendTimedEmbed("You tried to delete too many messages (Limit: 50)", channel, Color.RED, 10);
 			return;
@@ -81,11 +78,18 @@ public class Clear_Command
 		else
 		{
 			new Thread(() -> 
-	        {
-	        	Cooldown_Command.CLEAR_COOLDOWN = 5;
+			{
+				handler.createCooldown("clear", 5000);
                 List<Message> messages = channel.getHistory().retrievePast(amount).complete();
-                channel.deleteMessages(messages).complete();
-                Common.sendTimedEmbed("Deleted " + amount + " messages", channel, 5);
+                try 
+                {
+                	channel.deleteMessages(messages).complete();
+                    Common.sendTimedEmbed("Deleted " + (messages.size()) + " messages", channel, 5);
+                }
+                catch (Exception exception)
+                {
+                	Common.sendTimedEmbed("Messages in the channel is less than the amount specified.", channel, Color.RED, 10);
+                }
 	        }
 	        )
 	        .run();
