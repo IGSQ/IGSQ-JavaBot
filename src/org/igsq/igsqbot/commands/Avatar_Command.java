@@ -2,6 +2,7 @@ package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
 
+import org.igsq.igsqbot.Embed;
 import org.igsq.igsqbot.Messaging;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -34,7 +35,7 @@ public class Avatar_Command {
 	private void avatarQuery()
 	{
 		if(message.isFromType(ChannelType.TEXT) && !author.isBot()) avatar();
-		else Messaging.sendEmbed("You cannot Execute this comman﻿d!\nThis may be due to sending it in the wrong channel or not having the required permission.",channel,Color.RED);
+		else new Embed(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	
 	private void avatar() 
@@ -55,7 +56,7 @@ public class Avatar_Command {
 			}
 			else if(message.getMentionedUsers().size() > 3)
 			{
-				Messaging.sendEmbed("Too many users entered! (Limit: 3)",channel,Color.RED);
+				new Embed(channel).text("Too many users entered! (Limit: 3)").color(Color.RED).sendTemporary();
 			}
 			else
 			{

@@ -63,6 +63,15 @@ public class Common {
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
+    public static String[] append(String[] array, String[] array2) 
+    {
+    	String[] appendedArray = array;
+    	for (String string : array2) 
+    	{
+    		appendedArray = append(appendedArray,string);
+    	}
+    	return appendedArray;
+    }
     public static Message[] append(Message[] array, Message value)
     {
     	Message[] arrayAppended = new Message[array.length+1];
@@ -72,34 +81,6 @@ public class Common {
     	}
     	arrayAppended[array.length] = value;
     	return arrayAppended;
-    }
-    public static Cooldown_Handler[] append(Cooldown_Handler[] array, Cooldown_Handler value)
-    {
-    	Cooldown_Handler[] arrayAppended = new Cooldown_Handler[array.length+1];
-    	for (int i = 0;i < array.length;i++)
-    	{
-    		arrayAppended[i] = array[i];
-    	}
-    	arrayAppended[array.length] = value;
-    	return arrayAppended;
-    }
-	public static Cooldown_Handler[] depend(Cooldown_Handler[] array, Cooldown_Handler value)
-    {
-		Cooldown_Handler[] arrayDepended = new Cooldown_Handler[array.length-1];
-        int hitRemove = 0;
-        
-        for (int i = 0;i < array.length;i++)
-        {
-            if(!value.equals(array[i]))
-            {
-                arrayDepended[i-hitRemove] = array[i];
-            }
-            else
-            {
-                hitRemove++;
-            }
-        }
-        return arrayDepended;
     }
     /**
      * Removes all text before a given character. If the character is not found the whole string is returned.
@@ -121,4 +102,8 @@ public class Common {
     	if(targetFound) return rebuiltString;
     	else return string;
     }
+	public static boolean areStringsCloseMatch(String base, String match, int percentage)
+	{
+		return base.compareTo(match) > percentage || base.compareTo(match) == 0;
+	}
 }

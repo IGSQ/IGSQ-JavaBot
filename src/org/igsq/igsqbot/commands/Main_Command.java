@@ -3,13 +3,10 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Cooldown_Handler;
-import org.igsq.igsqbot.Messaging;
-
+import org.igsq.igsqbot.Embed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 public class Main_Command extends ListenerAdapter
 {
@@ -30,9 +27,9 @@ public class Main_Command extends ListenerAdapter
     		args = Common.depend(args, 0);
     		command = command.substring(1);
     		
-    		if(getHandler(event.getGuild()) == null) cooldownHandlers = Common.append(cooldownHandlers, new Cooldown_Handler(event.getGuild()));
+    		if(getHandler(event.getGuild()) == null) cooldownHandlers = Common_Command.append(cooldownHandlers, new Cooldown_Handler(event.getGuild()));
 
-    		event.getMessage().delete().queue();
+    		event.getMessage().delete().complete();
     		
         	switch(command)
         	{
@@ -49,6 +46,7 @@ public class Main_Command extends ListenerAdapter
 	        		break;
 	        		
 	        	case "shutdown":
+	        	case "s":
 	        		new Shutdown_Command(event);
 	        		break;
 	        		
@@ -62,7 +60,7 @@ public class Main_Command extends ListenerAdapter
 	        		break;
 	        		
 	        	default:
-	        		Messaging.sendEmbed("Command " + command + " not found.", (TextChannel) event.getChannel(),Color.RED);
+	        		new Embed(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
 	        		break;
         	}
         }
@@ -76,6 +74,6 @@ public class Main_Command extends ListenerAdapter
     
     public static void removeHandler(Cooldown_Handler handler)
     {
-    	cooldownHandlers = Common.depend(cooldownHandlers, handler);
+    	cooldownHandlers = Common_Command.depend(cooldownHandlers, handler);
     }
 }

@@ -1,11 +1,10 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
-import java.util.List;
 import java.util.Locale;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Messaging;
+import org.igsq.igsqbot.Embed;
 import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -15,7 +14,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
+@SuppressWarnings("unused")
 public class Verify_Command 
 {
 	private Member me;
@@ -43,15 +42,15 @@ public class Verify_Command
 	
 	private void verifyQuery()
 	{
-		if(message.isFromType(ChannelType.TEXT) && !author.isBot()) verify();
-		else Messaging.sendEmbed("You cannot Execute this command!\nThis may be due to being in the wrong channel or not having the required permission.",channel,Color.RED);
+		if(message.isFromType(ChannelType.TEXT) && !author.isBot() && !channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild"))) verify();
+		else new Embed(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	
 	private void verify() 
 	{
 		if(!channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild")))
 		{
-			Messaging.sendTimedEmbed("This is not the setup verification channel.", channel, 10);
+			new Embed(channel).text("This is not the setup verification channel.").color(Color.RED).sendTemporary();
 			return;
 		}
 		
@@ -61,7 +60,7 @@ public class Verify_Command
 		}
 		catch(IndexOutOfBoundsException exception)
 		{
-			Messaging.sendTimedEmbed("Mention someone to verify.", channel, 10);
+			new Embed(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
 			return;
 		}
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
@@ -80,7 +79,7 @@ public class Verify_Command
 						
 						for(String selectedAlias : Common_Command.VERIFICATION_ALIASES)
 						{
-							if(Common_Command.areStringsCloseMatch(wordsInMessage[i], selectedAlias, 70)) 
+							if(Common.areStringsCloseMatch(wordsInMessage[i], selectedAlias, 70)) 
 							{
 								wordToQuery = wordsInMessage[i] + " " + wordsInMessage[i + 1];
 								break;
@@ -89,7 +88,7 @@ public class Verify_Command
 						}
 						if(wordToQuery.isEmpty()) wordToQuery = wordsInMessage[i];
 						
-						if(Common_Command.areStringsCloseMatch(wordToQuery.toLowerCase(), country.toLowerCase(), 70))
+						if(Common.areStringsCloseMatch(wordToQuery.toLowerCase(), country.toLowerCase(), 70))
 						{
 							System.out.println("WORD MATCH: " + wordToQuery + " LOCALE: " + country);
 						}

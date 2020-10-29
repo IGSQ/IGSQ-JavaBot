@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.Random;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Messaging;
+import org.igsq.igsqbot.Embed;
 import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.Permission;
@@ -36,13 +36,16 @@ public class Shutdown_Command {
 	private void shutdownQuery()
 	{
 		if(message.isFromType(ChannelType.TEXT) && !author.isBot() && guildAuthor.hasPermission(Permission.ADMINISTRATOR)) shutdown();
-		else Messaging.sendEmbed("You cannot Execute this command!\nThis may be due to being in the wrong channel or not having the required permission.",channel,Color.RED);
+		else new Embed(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	
 	private void shutdown() 
 	{
-		Messaging.sendEmbed(Common_Command.SHUTDOWN_MESSAGES[random.nextInt(Common_Command.SHUTDOWN_MESSAGES.length)], channel,Color.GRAY);
-		Yaml.saveFileChanges("@all");
+		new Embed(channel).text(Common_Command.SHUTDOWN_MESSAGES[random.nextInt(Common_Command.SHUTDOWN_MESSAGES.length)]).color(Color.GRAY).send();
 		Common.jda.shutdown();
+		Yaml.saveFileChanges("@all");
+		Yaml.disgardAndCloseFile("@all");
+		System.exit(0);
+		
 	}
 }

@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import org.igsq.igsqbot.Cooldown_Handler;
-import org.igsq.igsqbot.Messaging;
-
+import org.igsq.igsqbot.Embed;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
@@ -44,7 +42,7 @@ public class Clear_Command
 	private void clearQuery()
 	{
 		if(!author.isBot() && message.isFromType(ChannelType.TEXT) && guildAuthor.hasPermission(Permission.MESSAGE_MANAGE) && me.hasPermission(Permission.MESSAGE_MANAGE)) clear();
-		else Messaging.sendEmbed("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.",channel,Color.RED);
+		else new Embed(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	
 	}
 
@@ -57,22 +55,22 @@ public class Clear_Command
 		
 		catch(Exception exception)
 		{
-			Messaging.sendTimedEmbed("Enter a number as the amount.", channel, Color.RED, 10);
+			new Embed(channel).text("Enter a number as the amount.").color(Color.RED).sendTemporary();
 			return;
 		}
 		if(handler.isCooldownActive("clear"))
 		{
-			Messaging.sendTimedEmbed("This command is on cooldown. (Remaining: " + handler.getCooldown("clear") / 1000 + "s)", channel, Color.RED, 10);
+			new Embed(channel).text("This command is on cooldown. (Remaining: " + handler.getCooldown("clear") / 1000 + "s)").color(Color.RED).sendTemporary();
 			return;
 		}
 		else if(amount <= 0)
 		{
-			Messaging.sendTimedEmbed("Invalid amount entered.", channel, Color.RED, 10);
+			new Embed(channel).text("Invalid amount entered.").color(Color.RED).sendTemporary();
 			return;
 		}
 		else if(amount > 50)
 		{
-			Messaging.sendTimedEmbed("You tried to delete too many messages (Limit: 50)", channel, Color.RED, 10);
+			new Embed(channel).text("You tried to delete too many messages (Limit: 50)").color(Color.RED).sendTemporary();
 			return;
 		}
 		else
@@ -84,11 +82,11 @@ public class Clear_Command
                 try 
                 {
                 	channel.deleteMessages(messages).complete();
-                	Messaging.sendTimedEmbed("Deleted " + (messages.size()) + " messages", channel, 5);
+                	new Embed(channel).text("Deleted " + (messages.size()) + " messages").color(Color.RED).sendTemporary(5000);
                 }
                 catch (Exception exception)
                 {
-                	Messaging.sendTimedEmbed("Messages in the channel is less than the amount specified.", channel, Color.RED, 10);
+                	new Embed(channel).text("Messages in the channel is less than the amount specified.").color(Color.RED).sendTemporary();
                 }
 	        }
 	        )

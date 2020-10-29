@@ -1,4 +1,4 @@
-package org.igsq.igsqbot;
+package org.igsq.igsqbot.commands;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -6,7 +6,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.igsq.igsqbot.commands.Main_Command;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.Guild;
 

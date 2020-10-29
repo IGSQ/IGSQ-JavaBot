@@ -26,6 +26,7 @@ public class Common_Command
 			"Well. I suppose we could just sit in this room and glare at each other until somebody drops dead, but I have a better idea."};
     public static final String[] VERIFICATION_ALIASES = {"united"};
     
+    @Deprecated
 	public static boolean sendPoll(Field[] fields,TextChannel channel,String title,String footer,String description,String thumbnailUrl,String[] reactions,Color color) 
     {
     	if(channel == null) return false;
@@ -52,9 +53,34 @@ public class Common_Command
     	return false;
     }
 	
-	public static boolean areStringsCloseMatch(String base, String match, int percentage)
+	public static Cooldown_Handler[] append(Cooldown_Handler[] array, Cooldown_Handler value)
 	{
-		return base.compareTo(match) > percentage || base.compareTo(match) == 0;
+		Cooldown_Handler[] arrayAppended = new Cooldown_Handler[array.length+1];
+		for (int i = 0;i < array.length;i++)
+		{
+			arrayAppended[i] = array[i];
+		}
+		arrayAppended[array.length] = value;
+		return arrayAppended;
+	}
+
+	public static Cooldown_Handler[] depend(Cooldown_Handler[] array, Cooldown_Handler value)
+	{
+		Cooldown_Handler[] arrayDepended = new Cooldown_Handler[array.length-1];
+	    int hitRemove = 0;
+	    
+	    for (int i = 0;i < array.length;i++)
+	    {
+	        if(!value.equals(array[i]))
+	        {
+	            arrayDepended[i-hitRemove] = array[i];
+	        }
+	        else
+	        {
+	            hitRemove++;
+	        }
+	    }
+	    return arrayDepended;
 	}
 			
 }
