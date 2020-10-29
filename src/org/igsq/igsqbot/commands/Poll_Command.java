@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Messaging;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,7 +38,7 @@ public class Poll_Command {
 	private void pollQuery()
 	{
 		if(!author.isBot() && message.isFromType(ChannelType.TEXT)) poll();
-		else Common.sendEmbed("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.",channel,Color.RED);
+		else Messaging.sendEmbed("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.",channel,Color.RED);
 	}
 
 	private void poll()
@@ -53,6 +54,6 @@ public class Poll_Command {
 			}
 			Common_Command.sendPoll(new Field[] {new Field("Options:",options,false)}, channel,"Poll:","Poll created by "+ author.getAsTag(),topic,author.getAvatarUrl(),reactions,guildAuthor.getColor());
 		}
-		else Common.sendEmbed("A poll needs at least 2 options!", channel,Color.RED);
+		else Messaging.sendEmbed("A poll needs at least 2 options!", channel,Color.RED);
 	}
 }

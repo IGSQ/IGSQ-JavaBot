@@ -2,7 +2,7 @@ package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
 
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Messaging;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -38,7 +38,7 @@ public class Kick_Command {
 	private void kickQuery()
 	{
 		if(message.isFromType(ChannelType.TEXT) && me.hasPermission(Permission.KICK_MEMBERS) && !author.isBot() && guildAuthor.hasPermission(Permission.KICK_MEMBERS)) kick();
-		else Common.sendEmbed("You cannot Execute this command!\nThis may be due to being in the wrong channel or not having the required permission.",channel,Color.RED);
+		else Messaging.sendEmbed("You cannot Execute this command!\nThis may be due to being in the wrong channel or not having the required permission.",channel,Color.RED);
 	}
 	
 	private void kick() {
@@ -53,8 +53,8 @@ public class Kick_Command {
 				}
 				else result += selectedMember.getAsMention() +" has higher roles. :crown:\n";
 			}
-			Common.sendEmbed(result, channel, Color.CYAN);
+			Messaging.sendEmbed(result, channel, Color.CYAN);
 		}
-		else Common.sendEmbed("Please specify at least 1 user to kick! :warning:", channel,Color.RED);
+		else Messaging.sendEmbed("Please specify at least 1 user to kick! :warning:", channel,Color.RED);
 	}
 }

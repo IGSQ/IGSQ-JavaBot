@@ -14,7 +14,7 @@ public class Cooldown_Handler
 {
 	private final Guild GUILD;
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-	private String[] commands = {};
+	private String[] activeCommands = {};
 	private Cooldown_Handler me = this;
 	
 	ScheduledFuture<?> cooldownTask;
@@ -30,7 +30,7 @@ public class Cooldown_Handler
 		if(getCooldown(command) <= 0)
 		{
 			Yaml.updateField(GUILD.getId() + ".cooldown." + command, "internal", cooldown);
-			commands = Common.append(commands, command);
+			activeCommands = Common.append(activeCommands, command);
 			updateTasks();
 		}
 	}
@@ -53,13 +53,13 @@ public class Cooldown_Handler
 			@Override
 			public void run() 
 			{
-				if(commands.length == 0)
+				if(activeCommands.length == 0)
 				{
 					Main_Command.removeHandler(me);
 					cooldownTask.cancel(false);
 				}
 				
-				for(String selectedCommand : commands)
+				for(String selectedCommand : activeCommands)
 				{
 					if(isCooldownActive(selectedCommand))
 					{
@@ -67,7 +67,7 @@ public class Cooldown_Handler
 					}
 					else
 					{
-						commands = Common.depend(commands, selectedCommand);
+						activeCommands = Common.depend(activeCommands, selectedCommand);
 					}
 				}
 			} 		

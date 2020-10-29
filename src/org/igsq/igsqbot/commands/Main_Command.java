@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Cooldown_Handler;
+import org.igsq.igsqbot.Messaging;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -56,7 +57,7 @@ public class Main_Command extends ListenerAdapter
 	        		break;
 	        		
 	        	default:
-	        		Common.sendEmbed("Command " + command + " not found.", (TextChannel) event.getChannel(),Color.RED);
+	        		Messaging.sendEmbed("Command " + command + " not found.", (TextChannel) event.getChannel(),Color.RED);
 	        		break;
         	}
         }
