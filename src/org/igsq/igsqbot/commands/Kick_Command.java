@@ -2,7 +2,7 @@ package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
 
-import org.igsq.igsqbot.Embed;
+import org.igsq.igsqbot.EmbedGenerator;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
@@ -37,7 +37,7 @@ public class Kick_Command {
 	private void kickQuery()
 	{
 		if(message.isFromType(ChannelType.TEXT) && me.hasPermission(Permission.KICK_MEMBERS) && !author.isBot() && guildAuthor.hasPermission(Permission.KICK_MEMBERS)) kick();
-		else new Embed(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
+		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	
 	private void kick() {
@@ -52,8 +52,8 @@ public class Kick_Command {
 				}
 				else result += selectedMember.getAsMention() +" has higher roles. :crown:\n";
 			}
-			new Embed(channel).text(result).color(Color.CYAN).sendTemporary(5000);
+			new EmbedGenerator(channel).text(result).color(Color.CYAN).sendTemporary(5000);
 		}
-		else new Embed(channel).text("Please specify at least 1 user to kick! :warning:").color(Color.RED).sendTemporary();
+		else new EmbedGenerator(channel).text("Please specify at least 1 user to kick! :warning:").color(Color.RED).sendTemporary();
 	}
 }

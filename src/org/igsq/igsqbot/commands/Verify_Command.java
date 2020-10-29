@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.Locale;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Embed;
+import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -43,14 +43,14 @@ public class Verify_Command
 	private void verifyQuery()
 	{
 		if(message.isFromType(ChannelType.TEXT) && !author.isBot() && !channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild"))) verify();
-		else new Embed(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
+		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	
 	private void verify() 
 	{
 		if(!channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild")))
 		{
-			new Embed(channel).text("This is not the setup verification channel.").color(Color.RED).sendTemporary();
+			new EmbedGenerator(channel).text("This is not the setup verification channel.").color(Color.RED).sendTemporary();
 			return;
 		}
 		
@@ -60,7 +60,7 @@ public class Verify_Command
 		}
 		catch(IndexOutOfBoundsException exception)
 		{
-			new Embed(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
+			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
 			return;
 		}
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 

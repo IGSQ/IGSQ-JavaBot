@@ -3,7 +3,7 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Embed;
+import org.igsq.igsqbot.EmbedGenerator;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.entities.Guild;
@@ -60,7 +60,7 @@ public class Main_Command extends ListenerAdapter
 	        		break;
 	        		
 	        	default:
-	        		new Embed(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
+	        		new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
 	        		break;
         	}
         }

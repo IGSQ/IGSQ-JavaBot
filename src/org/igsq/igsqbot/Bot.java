@@ -38,7 +38,7 @@ public class Bot
 			Common.self = Common.jda.getSelfUser();
 			
 			Common.jda.awaitReady();
-			new Embed(Common.jda.getTextChannelById("769356662896984090")).text(Common.STARTUP_MESSAGES[random.nextInt(Common.STARTUP_MESSAGES.length)]).color(Color.GREEN);
+			new EmbedGenerator(Common.jda.getTextChannelById("769356662896984090")).text(Common.STARTUP_MESSAGES[random.nextInt(Common.STARTUP_MESSAGES.length)]).color(Color.GREEN);
 			
 			Yaml.applyDefault();
 			new Database();
