@@ -2,6 +2,7 @@ package org.igsq.igsqbot;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.SelfUser;
 
 public class Common {
@@ -55,6 +56,16 @@ public class Common {
     public static String[] append(String[] array, String value)
     {
     	String[] arrayAppended = new String[array.length+1];
+    	for (int i = 0;i < array.length;i++)
+    	{
+    		arrayAppended[i] = array[i];
+    	}
+    	arrayAppended[array.length] = value;
+    	return arrayAppended;
+    }
+    public static Message[] append(Message[] array, Message value)
+    {
+    	Message[] arrayAppended = new Message[array.length+1];
     	for (int i = 0;i < array.length;i++)
     	{
     		arrayAppended[i] = array[i];

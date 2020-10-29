@@ -70,7 +70,7 @@ public class Clear_Command
 			Messaging.sendTimedEmbed("Invalid amount entered.", channel, Color.RED, 10);
 			return;
 		}
-		else if(amount > 49)
+		else if(amount > 50)
 		{
 			Messaging.sendTimedEmbed("You tried to delete too many messages (Limit: 50)", channel, Color.RED, 10);
 			return;

@@ -55,6 +55,11 @@ public class Main_Command extends ListenerAdapter
 	        	case "clear":
 	        		new Clear_Command(event, args);
 	        		break;
+	        	
+	        	case "verify":
+	        	case "v":
+	        		new Verify_Command(event);
+	        		break;
 	        		
 	        	default:
 	        		Messaging.sendEmbed("Command " + command + " not found.", (TextChannel) event.getChannel(),Color.RED);

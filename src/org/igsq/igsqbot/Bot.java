@@ -21,7 +21,6 @@ public class Bot
 		
 		scheduler.scheduleAtFixedRate(new Runnable()
 		{
-
 			@Override
 			public void run() 
 			{
