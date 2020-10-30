@@ -10,8 +10,8 @@ Known bugs or issues, these will get patched in the next minor update.
 
 ## Developer Notes
 Additional notes for developers.
-*subdivision*
-- List item
- 
- *another subdivision*
+ *subdivision*
  - List item
+
+  *another subdivision*
+  - List item
