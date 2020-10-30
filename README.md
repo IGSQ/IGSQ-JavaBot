@@ -11,7 +11,7 @@
 ## Developer Notes
 	Additional notes for developers.
 *subdivision*
-	 - List item
+	- List item
  
  *another subdivision*
-	 - List item
+	- List item
