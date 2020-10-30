@@ -1,17 +1,18 @@
 # IGSQBot
  
 ## Todo
-Upcoming features
+**Upcoming features**
  - [ ] List item
 
 ## Known Issues
-Known bugs or issues, these will get patched in the next minor update.
+**Known bugs or issues, these will get patched in the next minor update.**
  - List item
 
 ## Developer Notes
-Additional notes for developers.
- *subdivision*
- - List item
+**Additional notes for developers**
 
-  *another subdivision*
-  - List item
+*subdivision*
+- List item
+
+*another subdivision*
+ - List item
