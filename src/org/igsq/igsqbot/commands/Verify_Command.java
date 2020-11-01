@@ -42,7 +42,7 @@ public class Verify_Command
 	
 	private void verifyQuery()
 	{
-		if(message.isFromType(ChannelType.TEXT) && !author.isBot() && !channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild"))) verify();
+		if(message.isFromType(ChannelType.TEXT) && !author.isBot()) verify();
 		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	
@@ -77,21 +77,10 @@ public class Verify_Command
 						String country = locale.getDisplayCountry();
 						String wordToQuery = "";
 						
-						for(String selectedAlias : Common_Command.VERIFICATION_ALIASES)
-						{
-							if(Common.areStringsCloseMatch(wordsInMessage[i], selectedAlias, 70)) 
-							{
-								wordToQuery = wordsInMessage[i] + " " + wordsInMessage[i + 1];
-								break;
-							}
-								
-						}
 						if(wordToQuery.isEmpty()) wordToQuery = wordsInMessage[i];
 						
-						if(Common.areStringsCloseMatch(wordToQuery.toLowerCase(), country.toLowerCase(), 70))
-						{
-							System.out.println("WORD MATCH: " + wordToQuery + " LOCALE: " + country);
-						}
+						// TODO: add functionality to use more than 1 word in queries: 
+						// countries work as intended
 					}	
 				}
 			}
