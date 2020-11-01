@@ -9,30 +9,24 @@ import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
+
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-@SuppressWarnings("unused")
+
 public class Verify_Command 
 {
-	private Member me;
-	private Member guildAuthor;
 	private TextChannel channel;
 	private User author;
 	private Message message;
 	private Guild guild;
 	
 	private User toVerify;
-	private String[] foundCountries = {};
-	private Message[] messagesFromUser = {};
 
 	public Verify_Command(MessageReceivedEvent event) 
 	{
-		this.me = event.getGuild().getSelfMember();
 		this.author = event.getAuthor();
-		this.guildAuthor = event.getMember();
 		this.channel = event.getTextChannel();
 		this.message = event.getMessage();
 		this.guild = event.getGuild();
@@ -63,6 +57,7 @@ public class Verify_Command
 			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
 			return;
 		}
+		
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
 		{
 			if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(Common.jda.getSelfUser())) 
@@ -84,11 +79,6 @@ public class Verify_Command
 					}	
 				}
 			}
-		}
-	
-		for(String selectedCountry : foundCountries)
-		{
-			channel.sendMessage(selectedCountry);
 		}
 	}		
 }

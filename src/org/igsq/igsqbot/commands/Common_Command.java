@@ -81,5 +81,4 @@ public class Common_Command
 	    }
 	    return arrayDepended;
 	}
-			
 }

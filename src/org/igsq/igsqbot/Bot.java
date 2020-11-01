@@ -2,24 +2,23 @@ package org.igsq.igsqbot;
 
 import java.awt.Color;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.commands.Main_Command;
+import org.igsq.igsqbot.main.MessageDeleteEvent_Main;
+import org.igsq.igsqbot.main.MessageReactionAddEvent_Main;
 
 import net.dv8tion.jda.api.JDABuilder;
 
 public class Bot
 {
-	private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private static Random random = new Random();
 	public static void main(String[] args)
 	{
 		Yaml.createFiles();
 		Yaml.loadFile("@all");
 		
-		scheduler.scheduleAtFixedRate(new Runnable()
+		Common.scheduler.scheduleAtFixedRate(new Runnable()
 		{
 			@Override
 			public void run() 
@@ -32,7 +31,11 @@ public class Bot
 		try 
 		{
 			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
-			Common.jdaBuilder.addEventListeners(new Main_Command());
+			
+			new Main_Command();
+			
+			new MessageReactionAddEvent_Main();
+			new MessageDeleteEvent_Main();
 			
 			Common.jda = Common.jdaBuilder.build();
 			Common.self = Common.jda.getSelfUser();

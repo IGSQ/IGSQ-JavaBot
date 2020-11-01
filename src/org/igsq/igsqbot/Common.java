@@ -1,5 +1,8 @@
 package org.igsq.igsqbot;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,6 +19,7 @@ public class Common {
 	public static JDABuilder jdaBuilder;
 	public static JDA jda;
 	public static SelfUser self;
+	public final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
 	public static String[] depend(String[] array, int location)
     {
@@ -99,8 +103,9 @@ public class Common {
     	if(targetFound) return rebuiltString;
     	else return string;
     }
-	public static boolean areStringsCloseMatch(String base, String match, int percentage)
+    
+	public static String getChannelAsMention(String channelID)
 	{
-		return base.compareTo(match) > percentage || base.compareTo(match) == 0;
+		return "<#" + channelID + ">";
 	}
 }

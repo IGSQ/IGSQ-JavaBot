@@ -1,8 +1,6 @@
 package org.igsq.igsqbot.commands;
 
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +12,6 @@ import net.dv8tion.jda.api.entities.Guild;
 public class Cooldown_Handler
 {
 	private final Guild GUILD;
-	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private String[] activeCommands = {};
 	private Cooldown_Handler me = this;
 	
@@ -49,7 +46,7 @@ public class Cooldown_Handler
 	private void updateTasks()
 	{
 		if(cooldownTask != null) cooldownTask.cancel(false);
-		cooldownTask = scheduler.scheduleAtFixedRate(new Runnable()
+		cooldownTask = Common.scheduler.scheduleAtFixedRate(new Runnable()
     	{
 			@Override
 			public void run() 

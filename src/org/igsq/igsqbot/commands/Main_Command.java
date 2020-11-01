@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
+
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.entities.Guild;
@@ -13,7 +14,7 @@ public class Main_Command extends ListenerAdapter
 	private static Cooldown_Handler[] cooldownHandlers = {};
 	public Main_Command()
 	{
-
+		Common.jdaBuilder.addEventListeners(this);
 	}
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
@@ -57,6 +58,10 @@ public class Main_Command extends ListenerAdapter
 	        	case "verify":
 	        	case "v":
 	        		new Verify_Command(event);
+	        		break;
+	        		
+	        	case "report":
+	        		new Report_Command(event, args);
 	        		break;
 	        		
 	        	default:

@@ -52,13 +52,10 @@ public class Messaging
 	public static EmbedGenerator embed(MessageChannel channel) 
 	{
 		return new EmbedGenerator(channel);
-		
 	}
 	
 	public static MessageGenerator message(MessageChannel channel) 
 	{
 		return new MessageGenerator(channel);
-		
-	}
-		
+	}		
 }

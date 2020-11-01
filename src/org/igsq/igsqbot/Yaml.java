@@ -108,30 +108,7 @@ public class Yaml
     }
     
     //TODO Java Docs
-    public static void updateField(String path,String fileName,String data) 
-    {
-    	for(int i = 0; i < fileNames.length;i++) 
-    	{
-    		if(fileNames[i].equalsIgnoreCase(fileName))
-    		{
-    			configurations[i].set(path, data);
-    			break;
-    		}
-    	}
-    }
-    public static void updateField(String path,String fileName,Boolean data) 
-    {
-    	for(int i = 0; i < fileNames.length;i++) 
-    	{
-    		if(fileNames[i].equalsIgnoreCase(fileName))
-    		{
-    			configurations[i].set(path, data);
-    			break;
-    		}
-    	}
-    }
-    //TODO Java Docs
-    public static void updateField(String path,String fileName,int data) 
+    public static void updateField(String path,String fileName,Object data) 
     {
     	for(int i = 0; i < fileNames.length;i++) 
     	{

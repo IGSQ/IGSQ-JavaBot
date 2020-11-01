@@ -5,7 +5,9 @@ import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -33,12 +35,42 @@ public class EmbedGenerator{
 	private EmbedBuilder embed;
 	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
+	 * {@link #EmbedGenerator(MessageChannel) Without EmbedBuilder} 
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
 	public EmbedGenerator(MessageChannel channel)
 	{
 		this.channel = channel;
 		embed = new EmbedBuilder();
+	}
+	/**
+	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
+	 * Overloads {@link #EmbedGenerator(MessageChannel) With EmbedBuilder}  
+	 * @see org.igsq.igsqbot.EmbedGenerator
+	 */
+	public EmbedGenerator(MessageChannel channel, EmbedBuilder builder)
+	{
+		this.channel = channel;
+		embed = builder;
+	}
+	/**
+	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
+	 * Overloads {@link #EmbedGenerator(MessageChannel) With EmbedBuilder}  
+	 * @see org.igsq.igsqbot.EmbedGenerator
+	 */
+	public EmbedGenerator(MessageChannel channel, MessageEmbed message)
+	{
+		this.channel = channel;
+		embed = new EmbedBuilder();
+		try {embed.setAuthor(message.getAuthor().toString());} catch(Exception exception) {}
+		try {embed.setColor(message.getColor());} catch(Exception exception) {}
+		try {embed.setDescription(message.getDescription());} catch(Exception exception) {}
+		try {embed.setFooter(message.getFooter().getText());} catch(Exception exception) {}
+		try {embed.setImage(message.getImage().toString());} catch(Exception exception) {}
+		try {embed.setThumbnail(message.getThumbnail().toString());} catch(Exception exception) {}
+		try {embed.setTimestamp(message.getTimestamp());} catch(Exception exception) {}
+		try {embed.setTitle(message.getTitle());} catch(Exception exception) {}
+		try {for(Field selectedField : message.getFields()) embed.addField(selectedField);} catch(Exception exception) {}
 	}
 	/**
 	 * Sets the footer of an embed.
@@ -286,7 +318,96 @@ public class EmbedGenerator{
 	{
 		sendTemporary(10000);
 	}
-	
+	/**
+	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}.
+	 * Overloads {@link #replace(Message, int) With delay}
+	 * @return 
+	 * @see net.dv8tion.jda.api.entities.Message#editMessage(Message)
+	 * @see org.igsq.igsqbot.EmbedGenerator
+	 */
+	public void replace(Message activeMessage)
+	{
+		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal")) return;
+		if(embed.isEmpty()) return;
+		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
+		activeMessage.clearReactions().complete();
+        activeMessage.editMessage(embed.build()).queue
+        (
+				message -> 
+				{
+					if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
+				}
+		);
+	}
+	/**
+	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}.
+	 * Overloads {@link #replace(Message, int) With delay}
+	 * @return 
+	 * @see net.dv8tion.jda.api.entities.Message#editMessage(Message)
+	 * @see org.igsq.igsqbot.EmbedGenerator
+	 */
+	public void replace(Message activeMessage, boolean overwritePending)
+	{
+		if(!overwritePending) 
+			{
+				replace(activeMessage);
+				return;
+			}
+		Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
+		if(embed.isEmpty()) return;
+		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
+		activeMessage.clearReactions().complete();
+        activeMessage.editMessage(embed.build()).queue
+        (
+				message -> 
+				{
+					if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
+				}
+		);
+	}
+	/**
+	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}. Reverts to previous embed after set delay.
+	 * Overloads {@link #replace(Message) Without delay}
+	 * @return 
+	 * @see net.dv8tion.jda.api.entities.Message#editMessage(Message)
+	 * @see org.igsq.igsqbot.EmbedGenerator
+	 */
+	public void replace(Message activeMessage, int delay, MessageEmbed oldEmbed)
+	{
+		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal")) return;
+		if(embed.isEmpty()) return;
+		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
+        activeMessage.editMessage(embed.build()).queue
+        (
+				message -> 
+				{
+					if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
+				}
+		);
+        Yaml.updateField(activeMessage.getId() + ".changepending", "internal", true);
+        Common.scheduler.schedule(new Runnable()
+        {
+				@Override
+				public void run() 
+				{
+					if(activeMessage != null && oldEmbed.equals(activeMessage.getEmbeds().get(0)) && Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
+			        {
+			        	activeMessage.editMessage(oldEmbed).complete();
+			        }
+				}
+        }, delay, TimeUnit.MILLISECONDS);
+        Common.scheduler.schedule(new Runnable()
+        {
+				@Override
+				public void run() 
+				{
+					if(activeMessage != null && Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
+			        {    	
+			        	Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
+			        }
+				}
+        }, delay + (delay / 10), TimeUnit.MILLISECONDS);
+	}
 	/**
 	 * Gets the {@link EmbedBuilder EmbedBuilder} the message is being built from.
 	 * @see org.igsq.igsqbot.EmbedGenerator

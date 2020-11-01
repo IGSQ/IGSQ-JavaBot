@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Database 
@@ -14,7 +12,6 @@ public class Database
     static String url;
     static String user;
     static String password;
-    private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	public Database()
 	{
 		url = Yaml.getFieldString("MYSQL.database", "config");
@@ -33,7 +30,7 @@ public class Database
         	Connection connection = DriverManager.getConnection(url, user, password);
             Statement commandAdapter = connection.createStatement();
             ResultSet resultTable = commandAdapter.executeQuery(sql);
-            scheduler.schedule(new Runnable() 
+            Common.scheduler.schedule(new Runnable() 
             {
 				public void run() 
 				{

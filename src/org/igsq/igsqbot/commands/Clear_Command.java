@@ -68,7 +68,7 @@ public class Clear_Command
 			new EmbedGenerator(channel).text("Invalid amount entered.").color(Color.RED).sendTemporary();
 			return;
 		}
-		else if(amount > 50)
+		else if(amount > 51)
 		{
 			new EmbedGenerator(channel).text("You tried to delete too many messages (Limit: 50)").color(Color.RED).sendTemporary();
 			return;
@@ -82,7 +82,7 @@ public class Clear_Command
                 try 
                 {
                 	channel.deleteMessages(messages).complete();
-                	new EmbedGenerator(channel).text("Deleted " + (messages.size()) + " messages").color(Color.RED).sendTemporary(5000);
+                	new EmbedGenerator(channel).text("Deleted " + (messages.size()) + " messages").color(Color.GREEN).sendTemporary(5000);
                 }
                 catch (Exception exception)
                 {
