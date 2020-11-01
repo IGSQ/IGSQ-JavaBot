@@ -99,8 +99,38 @@ public class Common {
     	if(targetFound) return rebuiltString;
     	else return string;
     }
-	public static boolean areStringsCloseMatch(String base, String match, int percentage)
+	public static boolean isOption(String internal, String input,double accuracy)
 	{
-		return base.compareTo(match) > percentage || base.compareTo(match) == 0;
+		internal = internal.toUpperCase().replaceAll("[^A-Z]", "");
+		input = input.toUpperCase().replaceAll("[^A-Z]", "");
+		if(input.equals(internal)) return true; //Perfect Outcome
+		if(!input.startsWith(internal.split("")[0])) return false; //First character does not match it is most likely going to be a false positive so ignore it
+		if (Math.abs(input.length() - internal.length()) > 4) return false; // Word Length Difference is too big.
+		double score = 0;
+		double charScore = 0;
+		char[] internalChar = internal.toCharArray();
+		char[] inputChar = input.toCharArray();
+		for (int i = 1;i < internal.length();i++) 
+		{
+			charScore = 0;
+			for(int j = 1; j < input.length();j++) 
+			{
+				if(internalChar[i] == inputChar[i]) 
+				{
+					charScore = i;
+					break;
+				}
+			}
+			if(charScore == 0) 
+			{
+				charScore = input.length() * 1.5;
+			}
+			if(input.length()/3 < charScore) 
+			{
+				charScore /= 2;
+			}
+			score += charScore;
+		}
+		return score < accuracy;
 	}
 }

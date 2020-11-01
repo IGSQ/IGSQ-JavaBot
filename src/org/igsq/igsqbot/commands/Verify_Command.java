@@ -42,7 +42,7 @@ public class Verify_Command
 	
 	private void verifyQuery()
 	{
-		if(message.isFromType(ChannelType.TEXT) && !author.isBot() && !channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild"))) verify();
+		if(message.isFromType(ChannelType.TEXT) && !author.isBot()) verify();
 		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	
@@ -79,7 +79,7 @@ public class Verify_Command
 						
 						for(String selectedAlias : Common_Command.VERIFICATION_ALIASES)
 						{
-							if(Common.areStringsCloseMatch(wordsInMessage[i], selectedAlias, 70)) 
+							if(Common.isOption(selectedAlias, wordsInMessage[i], 20))
 							{
 								wordToQuery = wordsInMessage[i] + " " + wordsInMessage[i + 1];
 								break;
@@ -88,7 +88,7 @@ public class Verify_Command
 						}
 						if(wordToQuery.isEmpty()) wordToQuery = wordsInMessage[i];
 						
-						if(Common.areStringsCloseMatch(wordToQuery.toLowerCase(), country.toLowerCase(), 70))
+						if(Common.isOption(country.toLowerCase(),wordToQuery.toLowerCase(), 20))
 						{
 							System.out.println("WORD MATCH: " + wordToQuery + " LOCALE: " + country);
 						}
