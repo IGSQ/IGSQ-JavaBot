@@ -24,7 +24,6 @@ public class Common_Command
 			"In order to ensure that sufficient power remains for core testing protocols, all safety devices have been disabled.",
 			"Okay, listen, we should get our stories straight, alright? If anyone asks -- and no one's gonna ask, don't worry -- but if anyone asks, tell them as far as you know, the last time you checked, everyone looked pretty much alive. Alright? Not dead.",
 			"Well. I suppose we could just sit in this room and glare at each other until somebody drops dead, but I have a better idea."};
-    public static final String[] VERIFICATION_ALIASES = {"united"};
     
     @Deprecated
 	public static boolean sendPoll(Field[] fields,TextChannel channel,String title,String footer,String description,String thumbnailUrl,String[] reactions,Color color) 

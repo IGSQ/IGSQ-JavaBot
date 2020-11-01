@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.SelfUser;
 
 public class Common {
-	public static final String BOT_PREFIX = ".";
+	public static final String BOT_PREFIX = "-";
 	public static final String[] STARTUP_MESSAGES = {"Hello and, again, welcome to the Aperture Science Computer-Aided Enrichment Center.",
 			"Hello! This is the part where I kill you.",
 			"I've been really busy being dead. You know, after you MURDERED ME.",
