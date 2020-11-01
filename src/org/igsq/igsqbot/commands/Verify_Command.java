@@ -79,7 +79,7 @@ public class Verify_Command
 						
 						for(String selectedAlias : Common_Command.VERIFICATION_ALIASES)
 						{
-							if(Common.isOption(selectedAlias, wordsInMessage[i], 20))
+							if(Common.isOption(selectedAlias, wordsInMessage[i], 1.5))
 							{
 								wordToQuery = wordsInMessage[i] + " " + wordsInMessage[i + 1];
 								break;
@@ -88,7 +88,7 @@ public class Verify_Command
 						}
 						if(wordToQuery.isEmpty()) wordToQuery = wordsInMessage[i];
 						
-						if(Common.isOption(country.toLowerCase(),wordToQuery.toLowerCase(), 20))
+						if(Common.isOption(country.toLowerCase(),wordToQuery.toLowerCase(), 1.5))
 						{
 							System.out.println("WORD MATCH: " + wordToQuery + " LOCALE: " + country);
 						}

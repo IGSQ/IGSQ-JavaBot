@@ -58,6 +58,10 @@ public class Main_Command extends ListenerAdapter
 	        	case "v":
 	        		new Verify_Command(event);
 	        		break;
+	        	case "match":
+	        	case "m":
+	        		new Match_Command(event,slashArgs);
+	        		break;
 	        		
 	        	default:
 	        		new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();

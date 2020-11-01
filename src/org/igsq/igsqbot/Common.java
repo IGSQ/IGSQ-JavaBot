@@ -1,5 +1,7 @@
 package org.igsq.igsqbot;
 
+import java.awt.Color;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -101,36 +103,40 @@ public class Common {
     }
 	public static boolean isOption(String internal, String input,double accuracy)
 	{
+		if(internal == null || input == null || internal.length() == 0 || input.length() == 0) return false;
 		internal = internal.toUpperCase().replaceAll("[^A-Z]", "");
 		input = input.toUpperCase().replaceAll("[^A-Z]", "");
 		if(input.equals(internal)) return true; //Perfect Outcome
 		if(!input.startsWith(internal.split("")[0])) return false; //First character does not match it is most likely going to be a false positive so ignore it
-		if (Math.abs(input.length() - internal.length()) > 4) return false; // Word Length Difference is too big.
+		if (Math.abs(input.length() - internal.length()) > 3) return false; // Word Length Difference is too big.
 		double score = 0;
-		double charScore = 0;
 		char[] internalChar = internal.toCharArray();
+		int previousError = Integer.MIN_VALUE;
 		char[] inputChar = input.toCharArray();
 		for (int i = 1;i < internal.length();i++) 
 		{
-			charScore = 0;
-			for(int j = 1; j < input.length();j++) 
+			int charScore = Integer.MAX_VALUE;
+			boolean found = false;
+			for(int j = 0; j < input.length();j++) 
 			{
-				if(internalChar[i] == inputChar[i]) 
+				if(internalChar[i] == inputChar[j] && charScore > Math.abs(j-i)) 
 				{
-					charScore = i;
-					break;
+					charScore = j-i;
+					found = true;
 				}
 			}
-			if(charScore == 0) 
+			if(!found) 
 			{
-				charScore = input.length() * 1.5;
+				score += internal.length()-(i+2)/internal.length();
+				previousError = 1;
 			}
-			if(input.length()/3 < charScore) 
+			else if(previousError != charScore)
 			{
-				charScore /= 2;
+				previousError = charScore;
+				score += Math.abs((double)charScore)/internal.length();
 			}
-			score += charScore;
 		}
+		Messaging.embed(Common.jda.getTextChannelById("769356663181934605")).text("Result: "+ score  +" : "+ accuracy).color(Color.YELLOW).sendTemporary();
 		return score < accuracy;
 	}
 }
