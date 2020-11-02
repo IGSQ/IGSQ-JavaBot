@@ -2,8 +2,6 @@ package org.igsq.igsqbot;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.awt.Color;
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,12 +14,15 @@ public class Common {
 			"I've been really busy being dead. You know, after you MURDERED ME.",
 			"Am. Not. Dead! I'm not dead!",
 			"I lie when I'm nervous."};
+	public static final String[] COUNTRY_PREFIXES = {"united"};
+	public static final String[] GAME_PREFIXES = {"rocket", "rainbow", "league", "csgo", "among"};
+	public static final String[] GAMES = {"Rocket League", "Rainbow Six Siege", "Rainbow Six", "League Of Legends", "CS:GO", "Among Us"};
 	
 	public static JDABuilder jdaBuilder;
 	public static JDA jda;
 	public static SelfUser self;
 	public final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-	
+
 	public static String[] depend(String[] array, int location)
     {
         String[] arrayDepended = new String[array.length-1];
@@ -108,6 +109,7 @@ public class Common {
 	public static String getChannelAsMention(String channelID)
 	{
 		return "<#" + channelID + ">";
+	}
 
 	public static boolean isOption(String internal, String input,double accuracy)
 	{
@@ -144,7 +146,6 @@ public class Common {
 				score += Math.abs((double)charScore)/internal.length();
 			}
 		}
-		Messaging.embed(Common.jda.getTextChannelById("769356663181934605")).text("Result: "+ score  +" : "+ accuracy).color(Color.YELLOW).sendTemporary();
 		return score < accuracy;
 	}
 }

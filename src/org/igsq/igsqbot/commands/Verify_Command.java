@@ -21,8 +21,9 @@ public class Verify_Command
 	private User author;
 	private Message message;
 	private Guild guild;
-	
 	private User toVerify;
+	private String countryString = "";
+	private String gameString = "";
 
 	public Verify_Command(MessageReceivedEvent event) 
 	{
@@ -72,25 +73,70 @@ public class Verify_Command
 						String country = locale.getDisplayCountry();
 						String wordToQuery = "";
 						
-						for(String selectedAlias : Common_Command.VERIFICATION_ALIASES)
+						for(String selectedPrefix : Common.COUNTRY_PREFIXES)
 						{
-							if(Common.isOption(selectedAlias, wordsInMessage[i], 1.5))
+							if(Common.isOption(wordsInMessage[i].toLowerCase(),selectedPrefix.toLowerCase(), 30))
 							{
-								wordToQuery = wordsInMessage[i] + " " + wordsInMessage[i + 1];
+								try 
+								{
+									wordToQuery = wordsInMessage[i] + " " + wordsInMessage[i+1];
+								}
+								catch(Exception exception)
+								{
+									wordToQuery = wordsInMessage[i];
+								}
 								break;
 							}
-								
 						}
 						if(wordToQuery.isEmpty()) wordToQuery = wordsInMessage[i];
 						
-						if(Common.isOption(country.toLowerCase(),wordToQuery.toLowerCase(), 1.5))
+						if(Common.isOption(country.toLowerCase(),wordToQuery.toLowerCase(), 5))
 						{
-							System.out.println("WORD MATCH: " + wordToQuery + " LOCALE: " + country);
+							countryString += country + "\n";
 						}
-					}	
+					}
+					for(String selectedGame : Common.GAMES)
+					{
+						String wordToQuery = "";
+						
+						for(String selectedGamePrefix: Common.GAME_PREFIXES)
+						{
+							if(Common.isOption(selectedGamePrefix.toLowerCase(),wordsInMessage[i].toLowerCase(), 10))
+							{
+								try 
+								{
+									wordToQuery  = wordsInMessage[i] + " " + wordsInMessage[i+1] + " " + wordsInMessage[i+2];
+								}
+								catch(Exception exception)
+								{
+									try
+									{
+										wordToQuery  = wordsInMessage[i] + " " + wordsInMessage[i+1];
+									}
+									catch(Exception exception2)
+									{
+										wordToQuery = wordsInMessage[i];
+									}
+									
+								}
+								break;
+							}
+						}	
+						if(wordToQuery.isEmpty())
+						{
+							wordToQuery = wordsInMessage[i];
+						}
+						if(Common.isOption(selectedGame.toLowerCase(),wordToQuery.toLowerCase(), 5))
+						{
+							gameString += selectedGame + "\n";
+						}
+					}
 				}
 			}
 		}
+		if(countryString.isEmpty()) countryString = "No countries found";
+		if(gameString.isEmpty()) gameString = "No games found.";
+		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Countries:", countryString).element("Games:", gameString).sendTemporary();;
 	}		
 }
 

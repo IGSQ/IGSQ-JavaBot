@@ -59,10 +59,10 @@ public class Main_Command extends ListenerAdapter
 	        	case "v":
 	        		new Verify_Command(event);
 	        		break;
-	        	case "match":
-	        	case "m":
-	        		new Match_Command(event,slashArgs);
-	        		break;
+//	        	case "match":
+//	        	case "m":
+//	        		new Match_Command(event,slashArgs);
+//	        		break;
 	        		
 	        	case "report":
 	        		new Report_Command(event, args);
