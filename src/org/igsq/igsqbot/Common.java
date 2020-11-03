@@ -2,6 +2,9 @@ package org.igsq.igsqbot;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+
+import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -23,6 +26,7 @@ public class Common {
 	public static JDA jda;
 	public static SelfUser self;
 	public final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	public static MessageReceivedEvent_Main messageReceiver;
 
 	public static String[] depend(String[] array, int location)
     {

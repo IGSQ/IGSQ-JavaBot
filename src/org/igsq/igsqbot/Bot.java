@@ -33,7 +33,7 @@ public class Bot
 			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
 			
 			new Main_Command();
-			
+		
 			new MessageReactionAddEvent_Main();
 			new MessageDeleteEvent_Main();
 			
