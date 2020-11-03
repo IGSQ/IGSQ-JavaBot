@@ -14,9 +14,10 @@ public class Common {
 			"I've been really busy being dead. You know, after you MURDERED ME.",
 			"Am. Not. Dead! I'm not dead!",
 			"I lie when I'm nervous."};
-	public static final String[] COUNTRY_PREFIXES = {"united"};
-	public static final String[] GAME_PREFIXES = {"rocket", "rainbow", "league", "csgo", "among"};
-	public static final String[] GAMES = {"Rocket League", "Rainbow Six Siege", "Rainbow Six", "League Of Legends", "CS:GO", "Among Us"};
+	public static final String[] PREFIXES = {"united", "saudi", "rocket", "rainbow", "league"};
+	public static final String[] GAMES = {"Rocket League", "Rainbow Six Siege", "League of Legends", "Among Us", "CS:GO"};
+	
+	public static final String[] QUESTION_REACTIONS = {"U+2705","U+274E"};
 	
 	public static JDABuilder jdaBuilder;
 	public static JDA jda;

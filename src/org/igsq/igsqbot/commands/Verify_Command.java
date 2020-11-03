@@ -58,85 +58,79 @@ public class Verify_Command
 			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
 			return;
 		}
-		
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
 		{
 			if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(Common.jda.getSelfUser())) 
 			{
-				String[] wordsInMessage = selectedMessage.getContentRaw().split(" ");
+				String[] words = selectedMessage.getContentRaw().split(" ");
+				String queryString = "";
 				
-				for(int i = 0; i < wordsInMessage.length; i++)
+				for(int i = 0; i < words.length; i++)
 				{
-					for(String selectedLocaleCode : Locale.getISOCountries())
+					queryString = words[i];
+					for(String selectedPrefix : Common.PREFIXES)
 					{
-						Locale locale = new Locale("en", selectedLocaleCode);
-						String country = locale.getDisplayCountry();
-						String wordToQuery = "";
-						
-						for(String selectedPrefix : Common.COUNTRY_PREFIXES)
+						if(Common.isOption(selectedPrefix, words[i], 30))
 						{
-							if(Common.isOption(wordsInMessage[i].toLowerCase(),selectedPrefix.toLowerCase(), 30))
-							{
-								try 
-								{
-									wordToQuery = wordsInMessage[i] + " " + wordsInMessage[i+1];
-								}
-								catch(Exception exception)
-								{
-									wordToQuery = wordsInMessage[i];
-								}
-								break;
-							}
-						}
-						if(wordToQuery.isEmpty()) wordToQuery = wordsInMessage[i];
-						
-						if(Common.isOption(country.toLowerCase(),wordToQuery.toLowerCase(), 5))
-						{
-							countryString += country + "\n";
+							try {queryString = words[i] + " " + words[i+1]; i++;} catch(Exception exception) {}
+							break;
 						}
 					}
-					for(String selectedGame : Common.GAMES)
-					{
-						String wordToQuery = "";
-						
-						for(String selectedGamePrefix: Common.GAME_PREFIXES)
-						{
-							if(Common.isOption(selectedGamePrefix.toLowerCase(),wordsInMessage[i].toLowerCase(), 10))
-							{
-								try 
-								{
-									wordToQuery  = wordsInMessage[i] + " " + wordsInMessage[i+1] + " " + wordsInMessage[i+2];
-								}
-								catch(Exception exception)
-								{
-									try
-									{
-										wordToQuery  = wordsInMessage[i] + " " + wordsInMessage[i+1];
-									}
-									catch(Exception exception2)
-									{
-										wordToQuery = wordsInMessage[i];
-									}
-									
-								}
-								break;
-							}
-						}	
-						if(wordToQuery.isEmpty())
-						{
-							wordToQuery = wordsInMessage[i];
-						}
-						if(Common.isOption(selectedGame.toLowerCase(),wordToQuery.toLowerCase(), 5))
-						{
-							gameString += selectedGame + "\n";
-						}
-					}
+					performQuery(queryString, toVerify.getId());
 				}
 			}
 		}
+
 		if(countryString.isEmpty()) countryString = "No countries found";
 		if(gameString.isEmpty()) gameString = "No games found.";
-		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Countries:", countryString).element("Games:", gameString).sendTemporary();;
-	}		
+		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Countries:", countryString).element("Games:", gameString).reaction(Common.QUESTION_REACTIONS).footer("This verification was intitiated by " + author.getAsTag()).sendTemporary();;
+		Yaml.updateField(toVerify.getId() + ".verification", "internal", null);
+	}
+	
+	private void performQuery(String query, String id)
+	{
+		if(Yaml.getFieldString(id + ".verification." + query, "internal") == null || Yaml.getFieldString(id + ".verification." + query, "internal").isEmpty()) // Only continue if the field is empty.
+		{
+			if(Yaml.getFieldString("countries." + query, "lookup") == null)
+			{
+				for(String selectedLocaleCode : Locale.getISOCountries())
+				{
+					Locale locale = new Locale("en", selectedLocaleCode);
+					String selectedCountry = locale.getDisplayCountry();
+					
+					if(Common.isOption(selectedCountry, query, 10))
+					{;
+						Yaml.updateField(id + ".verification." + query, "internal", "checked");
+						Yaml.updateField("countries." + query, "lookup", selectedCountry);
+						countryString += selectedCountry + "\n";
+						return;
+					}
+				}
+			}
+			else
+			{
+				countryString += Yaml.getFieldString("countries." + query, "lookup") + "\n";
+			}
+			
+			if(Yaml.getFieldString("games." + query, "lookup") == null)
+			{
+				for(String selectedGame : Common.GAMES)
+				{
+					if(Common.isOption(selectedGame, query, 10))
+					{
+						Yaml.updateField(id + ".verification." + query, "internal", "checked");
+						Yaml.updateField("games." + query, "lookup", selectedGame);
+						gameString += selectedGame + "\n";
+						return;
+					}
+				}	
+			}
+			else
+			{
+				gameString += Yaml.getFieldString("games." + query, "lookup") + "\n";
+			}
+			Yaml.updateField(id + ".verification" + query, "internal", "checked");
+		}
+	}
 }
 
