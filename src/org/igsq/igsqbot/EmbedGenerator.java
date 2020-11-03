@@ -3,6 +3,10 @@ package org.igsq.igsqbot;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
+import org.igsq.igsqbot.commands.Main_Command;
+
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
@@ -10,6 +14,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 /**
  * Creates Embeds using JDA's {@link EmbedBuilder} api, with increased functionality.
@@ -317,6 +322,16 @@ public class EmbedGenerator{
 	public void sendTemporary() 
 	{
 		sendTemporary(10000);
+	}
+	/**
+	 * Tries to code, but cant code. Deletes my will to live after idk how long try and find that yourself.
+	 * @see my ass for this shit idc
+	 */
+	public void sendQuestion(User answerer)
+	{
+		send();
+		EventWaiter waiter = new EventWaiter();
+		waiter.waitForEvent(Common.messageReceiver, event -> event.getAuthor().equals(answerer) && event.getChannel().equals(channel), new EmbedGenerator(channel).text("Hello world!").send());
 	}
 	/**
 	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}.
