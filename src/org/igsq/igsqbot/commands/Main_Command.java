@@ -30,7 +30,6 @@ public class Main_Command extends ListenerAdapter
     		args = Common.depend(args, 0);
     		mentionDescriptiveArgs = Common.depend(mentionDescriptiveArgs, 0);
     		command = command.substring(1);
-    		System.out.println(command);
     		String id = null;
     		if(event.getChannelType().equals(ChannelType.TEXT)) 
     		{	
@@ -44,47 +43,39 @@ public class Main_Command extends ListenerAdapter
         	switch(command)
         	{
 	        	case "poll":
-	        	case "p":
 	        		new Poll_Command(event, slashArgs);
 	        		break;
 	        		
 	        	case "kick":
-	        	case "k":
 	        	case "boot":
 	        		new Kick_Command(event);
 	        		break;
 	        		
 	        	case "avatar":
-	        	case "a":
 	        		new Avatar_Command(event);
 	        		break;
 	        		
 	        	case "shutdown":
-	        	case "s":
 	        		new Shutdown_Command(event);
 	        		break;
 	        		
 	        	case "clear":
-	        	case "c":
 	        		new Clear_Command(event, args);
 	        		break;
 	        	
 	        	case "verify":
-	        	case "v":
+	        	case "accept":
 	        		new Verify_Command(event);
 	        		break;
 	        	case "match":
-	        	case "m":
 	        		new Match_Command(event,slashArgs);
 	        		break;
-	        	case "q":
 	        	case "question":
 	        	case "query":
 	        		new Question_Command(event,mentionDescriptiveArgs);
 	        		break;
 	        		
 	        	case "report":
-	        	case "r":
 	        		new Report_Command(event, mentionDescriptiveArgs);
 	        		break;	
 	        	default:
