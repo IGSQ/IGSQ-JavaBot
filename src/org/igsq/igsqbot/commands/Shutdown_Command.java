@@ -7,35 +7,26 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Shutdown_Command {
 
-	private Member guildAuthor;
-	private TextChannel channel;
+	private MessageChannel channel;
 	private User author;
-	private Message message;
 	private Random random = new Random();
 
 	public Shutdown_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
-		this.guildAuthor = event.getMember();
-		this.channel = event.getTextChannel();
-		this.message = event.getMessage();
-		
+		this.channel = event.getChannel();
 		shutdownQuery();
 	}
 	
 	private void shutdownQuery()
 	{
-		if(message.isFromType(ChannelType.TEXT) && !author.isBot() && guildAuthor.hasPermission(Permission.ADMINISTRATOR)) shutdown();
+		if(!author.isBot()) shutdown();
 		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 	

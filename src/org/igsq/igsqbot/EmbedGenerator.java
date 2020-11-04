@@ -3,8 +3,6 @@ package org.igsq.igsqbot;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
-import org.igsq.igsqbot.commands.Main_Command;
-
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -15,6 +13,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
  * Creates Embeds using JDA's {@link EmbedBuilder} api, with increased functionality.
@@ -29,6 +28,8 @@ import net.dv8tion.jda.api.entities.User;
  * @see #thumbnail(String)
  * @see #send()
  * @see #sendTemporary(int)
+ * @see #replace(Message)
+ * @see #sendQuestion(User)
  * @see #getBuilder()
  * @see #getChannel()
  * @see #getReactions()
@@ -38,6 +39,7 @@ public class EmbedGenerator{
 	private String[] reactions = {};
 	private MessageChannel channel;
 	private EmbedBuilder embed;
+	private Message message = null;
 	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
 	 * {@link #EmbedGenerator(MessageChannel) Without EmbedBuilder} 
@@ -270,21 +272,18 @@ public class EmbedGenerator{
 	}
 	
 	/**
-	 * Sends the message to the channel designated in the {@link #Embed(MessageChannel) constructor}.
+	 * Sends the message to the channel designated in the {@link #Embed(MessageChannel) constructor}. 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageEmbed)
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
-	public void send()
+	public Message send()
 	{
-		if(embed.isEmpty()) return;
-		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-        channel.sendMessage(embed.build()).queue
-        (
-				message -> 
-				{
-					if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
-				}
-		);
+		if(embed.isEmpty()) return null;
+		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return null;
+		
+		message = channel.sendMessage(embed.build()).complete();
+		if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
+		return message;
 	}
 	/**
 	 * Sends the message to the channel designated in the {@link #Embed(MessageChannel) constructor}. Deletes the message after delay time has passed. Uses {@link TimeUnit#MILLISECONDS}.
@@ -293,45 +292,64 @@ public class EmbedGenerator{
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
-	public void sendTemporary(int delay) 
+	public Message sendTemporary(int delay) 
 	{
-		if(embed.isEmpty()) return;
-		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-		if(delay < 0) return;
-		if(delay == 0) 
-		{
-			send();
-			return;
-		}
+		if(embed.isEmpty()) return null;
+		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return null;
+		if(delay < 0) return null;
+		if(delay == 0) return send();
 		channel.sendMessage(embed.build()).queue
 		(
     		message -> 
     		{
-    			if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
+    			if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
     			message.delete().submitAfter(delay, TimeUnit.MILLISECONDS);
+    			this.message = message;
     		}
         );
+		return message;
 	}
 	/**
 	 * Sends the message to the channel designated in the {@link #Embed(MessageChannel) constructor}. Deletes the message after 10 seconds has passed.
 	 * Overloads {@link #sendTemporary(int) non default times}.
+	 * @return 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageEmbed)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
-	public void sendTemporary() 
+	public Message sendTemporary() 
 	{
-		sendTemporary(10000);
+		return sendTemporary(10000);
 	}
 	/**
-	 * Tries to code, but cant code. Deletes my will to live after idk how long try and find that yourself.
-	 * @see my ass for this shit idc
+	 * 
+	 * 
 	 */
 	public void sendQuestion(User answerer)
 	{
 		send();
-		EventWaiter waiter = new EventWaiter();
-		waiter.waitForEvent(Common.messageReceiver, event -> event.getAuthor().equals(answerer) && event.getChannel().equals(channel), new EmbedGenerator(channel).text("Hello world!").send());
+		EventWaiter waiter = new EventWaiter(Common.scheduler,true);
+		Common.jda.addEventListener(waiter);
+		waiter.waitForEvent(MessageReceivedEvent.class, event -> event.getAuthor().equals(answerer) && event.getChannel().equals(channel),event -> new EmbedGenerator(channel).text(event.getMessage().getContentRaw()).send());
+	}
+	/**
+	 * 
+	 * 
+	 */
+	public void sendQuestion(User answerer,int timeout)
+	{
+		Message message = send();
+		EventWaiter waiter = new EventWaiter(Common.scheduler,true);
+		Common.jda.addEventListener(waiter);
+		waiter.waitForEvent(MessageReceivedEvent.class, event -> event.getAuthor().equals(answerer) && event.getChannel().equals(channel),event -> new EmbedGenerator(channel).text(event.getMessage().getContentRaw()).send(),timeout,TimeUnit.MILLISECONDS, new Runnable() 
+		{
+			@Override
+			public void run() 
+			{
+				System.out.println("hi");
+				new EmbedGenerator(channel,embed).color(Color.RED).text("Question for " + answerer.getAsTag() + " expired.").replace(message);
+			}
+		});
 	}
 	/**
 	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}.

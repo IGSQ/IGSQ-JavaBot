@@ -24,14 +24,21 @@ public class Kick_Command {
 
 	public Kick_Command(MessageReceivedEvent event) 
 	{
-		this.me = event.getGuild().getSelfMember();
 		this.author = event.getAuthor();
-		this.guildAuthor = event.getMember();
-		this.channel = event.getTextChannel();
 		this.message = event.getMessage();
-		this.guild = event.getGuild();
+		if(event.getChannelType().equals(ChannelType.TEXT)) 
+		{
+			this.channel = event.getTextChannel();
+			this.guildAuthor = event.getMember();
+			this.me = event.getGuild().getSelfMember();
+			this.guild = event.getGuild();
+			kickQuery();
+		}
+		else
+		{
+			new EmbedGenerator(event.getChannel()).text("This Command Can Only be done in a guild.").color(Color.RED).sendTemporary();
+		}
 		
-		kickQuery();
 	}
 	
 	private void kickQuery()

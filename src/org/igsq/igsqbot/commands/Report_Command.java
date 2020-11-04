@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -19,24 +20,29 @@ public class Report_Command
 	private String[] args;
 	private Message message;
 	private User author;
-	private MessageChannel channel;
+	private TextChannel channel;
 	private MessageChannel reportChannel;
 	private Guild guild;
 	private String messageLog= "";
-	private String reportDescription = "";
-	private Member reportedMember;
-	private Member member;
+	private User reportedUser = null;
+	private Member reportedMember = null;
 	
 	public Report_Command(MessageReceivedEvent event, String[] args)
 	{
 		this.args = args;
 		this.message = event.getMessage();
 		this.author = event.getAuthor();
-		this.channel = event.getChannel();
-		this.guild = event.getGuild();
-		this.member = event.getMember();
+		if(event.getChannelType().equals(ChannelType.TEXT)) 
+		{
+			this.channel = event.getTextChannel();
+			this.guild = event.getGuild();
+			reportQuery();
+		}
+		else
+		{
+			new EmbedGenerator(event.getChannel()).text("This Command Can Only be done in a guild.").color(Color.RED).sendTemporary();
+		}
 		
-		reportQuery();
 	}
 	
 	private void reportQuery()
@@ -47,52 +53,29 @@ public class Report_Command
 	
 	private void report()
 	{
-		if(!message.getMentionedRoles().isEmpty() || message.getMentionedUsers().size() > 1)
+		reportedUser = Common.getUserFromMention(args[0]);
+		if(reportedUser != null) 
 		{
-			new EmbedGenerator(channel).text("You cannot report multiple people.").color(Color.RED).sendTemporary();
-		}
-		else if(message.getMentionedMembers().isEmpty())
-		{
-			new EmbedGenerator(channel).text("You must enter someone to report!").color(Color.RED).sendTemporary();
-		}
-		else if(message.getMentionedUsers().get(0).isBot())
-		{
-			new EmbedGenerator(channel).text("You may not report bots.").color(Color.RED).sendTemporary();
-		}
-		else
-		{
-			reportedMember = message.getMentionedMembers().get(0);
-			if(reportedMember.isOwner())
-			{
-				new EmbedGenerator(channel).text("You may not report the owner.").color(Color.RED).sendTemporary();
-			}
-			else if(args.length < 2)
-			{
-				new EmbedGenerator(channel).text("You must enter a report topic.").color(Color.RED).sendTemporary();
-			}
-			else if(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild") == null || Yaml.getFieldString(guild.getId() + ".reportchannel", "guild").isEmpty())
-			{
-				new EmbedGenerator(channel).text("There is no report channel setup.").color(Color.RED).sendTemporary(); // This should log to admins
-			}
-			else if(reportedMember.equals(member))
-			{
-				new EmbedGenerator(channel).text("You may not report yourself.").color(Color.RED).sendTemporary();
-			}
+			reportedMember = Common.getMemberFromUser(reportedUser, guild);
+			if(reportedUser.equals(author)) new EmbedGenerator(channel).text("You cant't report yourself!").color(Color.RED).sendTemporary();
+			else if(args.length <= 1) new EmbedGenerator(channel).text("Please mention a person & write a report.").color(Color.RED).sendTemporary();
+			else if(reportedUser.isBot()) new EmbedGenerator(channel).text("You may not report bots.").color(Color.RED).sendTemporary();
+			else if(reportedMember.isOwner()) new EmbedGenerator(channel).text("You may not report the owner.").color(Color.RED).sendTemporary();
+			else if(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild") == null || Yaml.getFieldString(guild.getId() + ".reportchannel", "guild").isEmpty()) new EmbedGenerator(channel).text("There is no report channel setup.").color(Color.RED).sendTemporary(); // This should log to admins
 			else
 			{
 				reportChannel = Common.jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
-				for(int i = 1; i < args.length; i++) reportDescription += args[i] + " ";
 				
 				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete()) if(selectedMessage.getAuthor().getId().equals(reportedMember.getId())) messageLog += reportedMember.getAsMention() + " | " + selectedMessage.getContentRaw() + "\n";
 				if(messageLog.isEmpty()) messageLog = "No recent messages found for this user.";
 				EmbedGenerator embed = new EmbedGenerator(reportChannel)
 				.title("New report by: " + author.getAsTag())
 				.element("Reporting user:", reportedMember.getAsMention())
-				.element("Description:", reportDescription)
+				.element("Description:", args[1])
 				.element("Channel:", Common.getChannelAsMention(channel.getId()))
 				.element("Message Log:", messageLog)
 				.color(reportedMember.getColor())
-				.footer("This report is unhandled and can only be dealt by members higher than "+ guild.retrieveMember(author).complete().getRoles().get(0).getName());
+				.footer("This report is unhandled and can only be dealt by members higher than "+ Common.getMemberFromUser(author, guild).getRoles().get(0).getName());
 				
 				reportChannel.sendMessage(embed.getBuilder().build()).queue
 				(
@@ -105,7 +88,8 @@ public class Report_Command
 						}
 				);
 				
-			}	
+			}
 		}
+		else new EmbedGenerator(channel).text("Could not find the reported User " + args[0] + ".").color(Color.RED).sendTemporary();
 	}	
 }

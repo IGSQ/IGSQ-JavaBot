@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.MentionType;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -22,7 +23,8 @@ public class MessageGenerator
 {
 	private String[] reactions = {};
 	private MessageChannel channel;
-	private MessageBuilder message;
+	private MessageBuilder messageB;
+	private Message message = null;
 	/**
 	 * Constructor for Message, requires a location for the message to be created in ({@link MessageChannel})
 	 * @see org.igsq.igsqbot.MessageGenerator
@@ -30,8 +32,8 @@ public class MessageGenerator
 	public MessageGenerator(MessageChannel channel)
 	{
 		this.channel = channel;
-		message = new MessageBuilder();
-		message.allowMentions(MentionType.USER);
+		messageB = new MessageBuilder();
+		messageB.allowMentions(MentionType.USER);
 	}
 	/**
 	 * Adds a reaction to the message which is done after the message has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Messaging#REACTION_LIMIT} reactions exist they will be ignored.
@@ -85,7 +87,7 @@ public class MessageGenerator
 	 */
 	public MessageBuilder getBuilder() 
 	{
-		return message;
+		return messageB;
 	}
 	/**
 	 * Sets the text of the message.
@@ -94,7 +96,7 @@ public class MessageGenerator
 	 */
 	public MessageGenerator text(String text) 
 	{
-		message.setContent(text);
+		messageB.setContent(text);
 		return this;
 	}
 	
@@ -103,53 +105,55 @@ public class MessageGenerator
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(net.dv8tion.jda.api.entities.Message)
 	 * @see org.igsq.igsqbot.MessageGenerator
 	 */
-	public void send()
+	public Message send()
 	{
-		if(message.isEmpty()) return;
-		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-        channel.sendMessage(message.build()).queue
+		if(messageB.isEmpty()) return null;
+		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return null;
+        channel.sendMessage(messageB.build()).queue
         (
 				message -> 
 				{
 					if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
+					this.message = message;
 				}
 		);
+        return message;
 	}
 	/**
 	 * Sends the message to the channel designated in the {@link #Message(MessageChannel) constructor}. Deletes the message after delay time has passed. Uses {@link TimeUnit#MILLISECONDS}.
 	 * Overloads {@link #sendTemporary() default 10s}.
+	 * @return 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageGenerator)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
 	 * @see org.igsq.igsqbot.MessageGenerator
 	 */
-	public void sendTemporary(int delay) 
+	public Message sendTemporary(int delay) 
 	{
-		if(message.isEmpty()) return;
-		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-		if(delay < 0) return;
-		if(delay == 0) 
-		{
-			send();
-			return;
-		}
-		channel.sendMessage(message.build()).queue
+		if(messageB.isEmpty()) return null;
+		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return null;
+		if(delay < 0) return null;
+		if(delay == 0) return send();
+		channel.sendMessage(messageB.build()).queue
 		(
     		message -> 
     		{
     			if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
     			message.delete().submitAfter(delay, TimeUnit.MILLISECONDS);
+    			this.message = message;
     		}
         );
+		return message;
 	}
 	/**
 	 * Sends the message to the channel designated in the {@link #Message(MessageChannel) constructor}. Deletes the message after 10 seconds has passed.
 	 * Overloads {@link #sendTemporary(int) non default times}.
+	 * @return 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageGenerator)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
 	 * @see org.igsq.igsqbot.MessageGenerator
 	 */
-	public void sendTemporary() 
+	public Message sendTemporary() 
 	{
-		sendTemporary(10000);
+		return sendTemporary(10000);
 	}
 }

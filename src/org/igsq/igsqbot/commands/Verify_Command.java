@@ -28,11 +28,19 @@ public class Verify_Command
 	public Verify_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
-		this.channel = event.getTextChannel();
 		this.message = event.getMessage();
-		this.guild = event.getGuild();
 		
-		verifyQuery();
+		if(event.getChannelType().equals(ChannelType.TEXT)) 
+		{
+			this.channel = event.getTextChannel();
+			this.guild = event.getGuild();
+			verifyQuery();
+		}
+		else
+		{
+			new EmbedGenerator(event.getChannel()).text("This Command Can Only be done in a guild.").color(Color.RED).sendTemporary();
+		}
+		
 	}
 	
 	private void verifyQuery()

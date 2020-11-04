@@ -1,13 +1,5 @@
 package org.igsq.igsqbot.commands;
 
-import java.awt.Color;
-
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.MessageEmbed.Field;
-
 public class Common_Command 
 {
 	public static final String[] POLL_EMOJIS_UNICODE = {"U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991"};
@@ -25,32 +17,6 @@ public class Common_Command
 			"Okay, listen, we should get our stories straight, alright? If anyone asks -- and no one's gonna ask, don't worry -- but if anyone asks, tell them as far as you know, the last time you checked, everyone looked pretty much alive. Alright? Not dead.",
 			"Well. I suppose we could just sit in this room and glare at each other until somebody drops dead, but I have a better idea."};
     
-    @Deprecated
-	public static boolean sendPoll(Field[] fields,TextChannel channel,String title,String footer,String description,String thumbnailUrl,String[] reactions,Color color) 
-    {
-    	if(channel == null) return false;
-    	
-    	Member me = channel.getGuild().getSelfMember();
-    	if(me.hasPermission(Permission.MESSAGE_WRITE)) 
-    	{
-	    	EmbedBuilder embedBuilder = new EmbedBuilder();
-	    	for(Field field : fields) embedBuilder.addField(field);
-	    	embedBuilder.setDescription(description);
-	        embedBuilder.setColor(color);
-	        embedBuilder.setTitle(title);
-	        embedBuilder.setFooter(footer);
-	        embedBuilder.setThumbnail(thumbnailUrl);
-	        channel.sendMessage(embedBuilder.build()).queue
-	        (
-    				message -> 
-    				{
-    					for(String reaction : reactions) message.addReaction(reaction).queue();
-    				}
-    		);
-	        return true;
-    	}
-    	return false;
-    }
 	
 	public static Cooldown_Handler[] append(Cooldown_Handler[] array, Cooldown_Handler value)
 	{

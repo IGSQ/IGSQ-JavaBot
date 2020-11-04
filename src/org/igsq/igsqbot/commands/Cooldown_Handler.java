@@ -7,27 +7,25 @@ import java.util.concurrent.TimeUnit;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Yaml;
 
-import net.dv8tion.jda.api.entities.Guild;
-
 public class Cooldown_Handler
 {
-	private final Guild GUILD;
+	private final String ID;
 	private String[] activeCommands = {};
 	private Cooldown_Handler me = this;
 	
 	ScheduledFuture<?> cooldownTask;
 	Random random = new Random();
 	
-	public Cooldown_Handler(Guild guild)
+	public Cooldown_Handler(String id)
 	{
-		this.GUILD = guild;
+		this.ID = id;
 	}
 	
 	public void createCooldown(String command, int cooldown)
 	{
-		if(getCooldown(command) <= 0)
+		if(getCooldown(command) <= 0) 
 		{
-			Yaml.updateField(GUILD.getId() + ".cooldown." + command, "internal", cooldown);
+			Yaml.updateField(ID + ".cooldown." + command, "internal", cooldown);
 			activeCommands = Common.append(activeCommands, command);
 			updateTasks();
 		}
@@ -35,12 +33,12 @@ public class Cooldown_Handler
 	
 	public int getCooldown(String command)
 	{
-		return Yaml.getFieldInt(GUILD.getId() + ".cooldown." + command, "internal");
+		return Yaml.getFieldInt(ID + ".cooldown." + command, "internal");
 	}
 	
 	public boolean isCooldownActive(String command)
 	{
-		return Yaml.getFieldInt(GUILD.getId() + ".cooldown." + command, "internal") > 0;
+		return Yaml.getFieldInt(ID + ".cooldown." + command, "internal") > 0;
 	}
 	
 	private void updateTasks()
@@ -61,7 +59,7 @@ public class Cooldown_Handler
 				{
 					if(isCooldownActive(selectedCommand))
 					{
-						Yaml.updateField(GUILD.getId() + ".cooldown." + selectedCommand, "internal", Yaml.getFieldInt(GUILD.getId() + ".cooldown." + selectedCommand, "internal") - 1);
+						Yaml.updateField(ID + ".cooldown." + selectedCommand, "internal", Yaml.getFieldInt(ID + ".cooldown." + selectedCommand, "internal") - 1);
 					}
 					else
 					{
@@ -72,8 +70,8 @@ public class Cooldown_Handler
     	}, 0, 1, TimeUnit.MILLISECONDS);
 	}
 	
-	public Guild getGuild() 
+	public String getId() 
 	{
-		return GUILD;
+		return ID;
 	}
 }

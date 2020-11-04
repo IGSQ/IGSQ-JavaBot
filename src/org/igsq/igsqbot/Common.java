@@ -7,11 +7,14 @@ import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.entities.User;
 
 public class Common {
-	public static final String BOT_PREFIX = "-";
+	public static final String BOT_PREFIX = ".";
 	public static final String[] STARTUP_MESSAGES = {"Hello and, again, welcome to the Aperture Science Computer-Aided Enrichment Center.",
 			"Hello! This is the part where I kill you.",
 			"I've been really busy being dead. You know, after you MURDERED ME.",
@@ -114,6 +117,60 @@ public class Common {
 	public static String getChannelAsMention(String channelID)
 	{
 		return "<#" + channelID + ">";
+	}
+	
+	public static boolean isUserMention(String arg)
+	{
+		try 
+		{
+			return arg.startsWith("<@!") && arg.endsWith(">")/* && arg.substring(3, 21).matches("[0-9]")*/;
+		}
+		catch(Exception exception)
+		{
+			return false;
+		}
+	}
+	public static boolean isUserId(String arg) 
+	{
+		try 
+		{
+			return arg.substring(0, 18)/*.matches("[0-9]")*/ != null;
+		}
+		catch(Exception exception)
+		{
+			return false;
+		}
+	}
+	public static String getUserIdFromMention(String arg)
+	{
+		if(isUserMention(arg)) return arg.substring(3, 21);
+		else return null;
+	}
+	public static Member getMemberFromUser(User user,Guild guild) 
+	{
+		Member member = null;
+		try 
+		{
+			member = guild.retrieveMember(user).complete();
+		}
+		catch(Exception exception) {}
+		return member;
+	}
+	public static User getUserFromMention(String arg)
+	{
+		if(isUserMention(arg)) return getUserById(arg.substring(3, 21));
+		else if(isUserId(arg)) return getUserById(arg);
+		else return null;
+	}
+	public static User getUserById(String id)
+	{
+		User user = null;
+		try 
+		{
+			user = jda.retrieveUserById(id).complete();
+		}
+		catch(Exception exception) {}
+		return user;
 	}
 
 	public static boolean isOption(String internal, String input,double accuracy)
