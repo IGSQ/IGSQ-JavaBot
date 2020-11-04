@@ -30,9 +30,10 @@ public class Main_Command extends ListenerAdapter
     		args = Common.depend(args, 0);
     		mentionDescriptiveArgs = Common.depend(mentionDescriptiveArgs, 0);
     		command = command.substring(1);
+    		System.out.println(command);
     		String id = null;
     		if(event.getChannelType().equals(ChannelType.TEXT)) 
-    		{
+    		{	
         		event.getMessage().delete().queue();
         		id = event.getGuild().getId();
     		}
@@ -85,8 +86,7 @@ public class Main_Command extends ListenerAdapter
 	        	case "report":
 	        	case "r":
 	        		new Report_Command(event, mentionDescriptiveArgs);
-	        		break;
-	        		
+	        		break;	
 	        	default:
 	        		new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
 	        		break;
