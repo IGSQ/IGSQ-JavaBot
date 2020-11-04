@@ -14,7 +14,7 @@ public class Yaml
      * @apiNote Used in {@link #createFiles()} to instansiate the filesnames.
      * @see java.io.File
      */
-    public static String[] fileNames = {"config","internal","guild", "lookup"};
+    public static String[] fileNames = {"config","internal","guild","verification"};
     /**
      * files is a {@link java.io.File File} array of all of the files that can be used.
      * @apiNote Used in {@link #loadFile(String)} to get data from file & in {@link #saveFileChanges(String)} to save data to file

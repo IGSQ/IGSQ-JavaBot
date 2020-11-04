@@ -66,6 +66,7 @@ public class Verify_Command
 			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
 			return;
 		}
+		
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
 		{
 			if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(Common.jda.getSelfUser())) 
@@ -84,7 +85,7 @@ public class Verify_Command
 							break;
 						}
 					}
-					performQuery(queryString, toVerify.getId());
+					performQuery(queryString, guild.getId());
 				}
 			}
 		}
@@ -92,53 +93,65 @@ public class Verify_Command
 		if(countryString.isEmpty()) countryString = "No countries found";
 		if(gameString.isEmpty()) gameString = "No games found.";
 		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Countries:", countryString).element("Games:", gameString).reaction(Common.QUESTION_REACTIONS).footer("This verification was intitiated by " + author.getAsTag()).sendTemporary();;
-		Yaml.updateField(toVerify.getId() + ".verification", "internal", null);
+	}
+	
+	private boolean isCountry(String arg)
+	{
+		for(String selectedLocaleCode : Locale.getISOCountries())
+		{
+			Locale locale = new Locale("en", selectedLocaleCode);
+			String selectedCountry = locale.getDisplayCountry();
+			
+			if(arg.equalsIgnoreCase(selectedCountry)) return true;
+		}
+		return false;
 	}
 	
 	private void performQuery(String query, String id)
 	{
-		if(Yaml.getFieldString(id + ".verification." + query, "internal") == null || Yaml.getFieldString(id + ".verification." + query, "internal").isEmpty()) // Only continue if the field is empty.
+		// Check all known words for the query, only continue if it doesnt exist
+		String currentName;
+		for(int i = 0; i < Yaml.getFieldInt(id + ".references.referencecount", "verification"); i++) 
 		{
-			if(Yaml.getFieldString("countries." + query, "lookup") == null)
+			for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(","))
 			{
-				for(String selectedLocaleCode : Locale.getISOCountries())
+				if(selectedAlias.equalsIgnoreCase(query))
 				{
-					Locale locale = new Locale("en", selectedLocaleCode);
-					String selectedCountry = locale.getDisplayCountry();
+					currentName = Yaml.getFieldString(id + ".references." + i + ".name", "verification");
 					
-					if(Common.isOption(selectedCountry, query, 10))
-					{;
-						Yaml.updateField(id + ".verification." + query, "internal", "checked");
-						Yaml.updateField("countries." + query, "lookup", selectedCountry);
-						countryString += selectedCountry + "\n";
-						return;
-					}
+					if(isCountry(currentName)) countryString += currentName + " (Known)" + "\n"; // this will resolve roles rather than names.
+					else gameString += currentName + " (Known)" + "\n"; // this will resolve roles rather than names.
+					
+					return;
 				}
 			}
-			else
-			{
-				countryString += Yaml.getFieldString("countries." + query, "lookup") + "\n";
-			}
-			
-			if(Yaml.getFieldString("games." + query, "lookup") == null)
-			{
-				for(String selectedGame : Common.GAMES)
-				{
-					if(Common.isOption(selectedGame, query, 10))
-					{
-						Yaml.updateField(id + ".verification." + query, "internal", "checked");
-						Yaml.updateField("games." + query, "lookup", selectedGame);
-						gameString += selectedGame + "\n";
-						return;
-					}
-				}	
-			}
-			else
-			{
-				gameString += Yaml.getFieldString("games." + query, "lookup") + "\n";
-			}
-			Yaml.updateField(id + ".verification" + query, "internal", "checked");
 		}
+
+		// No country was found on file (therefor we must search for it)
+		for(String selectedLocaleCode : Locale.getISOCountries())
+		{
+			Locale locale = new Locale("en", selectedLocaleCode);
+			String selectedCountry = locale.getDisplayCountry();
+			
+			if(Common.isOption(selectedCountry, query, 10))
+			{
+				// If a close match is found, add it to the suggested section.
+				Yaml.updateField(id + "." + query + ".suggested", "verification", query);
+				countryString += selectedCountry + " (Suggested)" +"\n";
+				return;
+			}
+		}
+		
+
+		for(String selectedGame : Common.GAMES)
+		{
+			if(Common.isOption(selectedGame, query, 10))
+			{
+				Yaml.updateField(id + "." + query + ".suggested", "verification", query);
+				gameString += selectedGame + " (Suggested)" + "\n";
+				return;
+			}
+		}	
 	}
 }
 
