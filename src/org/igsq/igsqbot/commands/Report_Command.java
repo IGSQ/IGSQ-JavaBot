@@ -40,7 +40,7 @@ public class Report_Command
 		}
 		else
 		{
-			new EmbedGenerator(event.getChannel()).text("This Command Can Only be done in a guild.").color(Color.RED).sendTemporary();
+			new EmbedGenerator(event.getChannel()).text("This command can only be done in a guild.").color(Color.RED).sendTemporary();
 		}
 		
 	}

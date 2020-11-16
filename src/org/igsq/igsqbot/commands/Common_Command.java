@@ -1,5 +1,8 @@
 package org.igsq.igsqbot.commands;
 
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Yaml;
+
 public class Common_Command 
 {
 	public static final String[] POLL_EMOJIS_UNICODE = {"U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991"};
@@ -46,5 +49,58 @@ public class Common_Command
 	        }
 	    }
 	    return arrayDepended;
+	}
+	
+	public static String[][] retrieveAliases(String id)
+	{
+		int i = 0;
+		String[][] result = new String[0][0];
+		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").equals(""))
+		{
+			if(Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").equals(""))
+			{
+				String[] role = new String[0];
+				role = Common.append(role, Yaml.getFieldString(id + ".references." + i + ".name", "verification"));
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(",")) role = Common.append(role, selectedAlias);
+				result = Common.append(result, role);
+				i++;
+			}
+			else
+			{
+				result = Common.append(result, new String[0]);
+			}
+		}
+		return result;
+	}
+	public static String[] retrieveRoles(String id)
+	{
+		int i = 0;
+		String[] result = new String[0];
+		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").equals(""))
+		{
+			result = Common.append(result, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
+			i++;
+		}
+		return result;
+	}
+	public static String[][] retrievedDeclined(String id)
+	{
+		int i = 0;
+		String[][] result = new String[0][0];
+		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").equals(""))
+		{
+			if(Yaml.getFieldString(id + ".references." + i + ".declined", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".declined", "verification").equals(""))
+			{
+				String[] role = new String[0];
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) role = Common.append(role, selectedAlias);
+				result = Common.append(result, role);
+				i++;
+			}
+			else
+			{
+				result = Common.append(result, new String[0]);
+			}
+		}
+		return result;
 	}
 }

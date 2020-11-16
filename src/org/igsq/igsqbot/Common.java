@@ -20,9 +20,6 @@ public class Common {
 			"I've been really busy being dead. You know, after you MURDERED ME.",
 			"Am. Not. Dead! I'm not dead!",
 			"I lie when I'm nervous."};
-	public static final String[] PREFIXES = {"united", "saudi", "rocket", "rainbow", "league"};
-	public static final String[] GAMES = {"Rocket League", "Rainbow Six Siege", "League of Legends", "Among Us", "CS:GO"};
-	
 	public static final String[] QUESTION_REACTIONS = {"U+2705","U+274E"};
 	
 	public static JDABuilder jdaBuilder;
@@ -93,6 +90,17 @@ public class Common {
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
+    
+	public static String[][] append(String[][] array, String[] value) 
+	{
+    	String[][] arrayAppended = new String[array.length+1][];
+    	for (int i = 0;i < array.length;i++)
+    	{
+    		arrayAppended[i] = array[i];
+    	}
+    	arrayAppended[array.length] = value;
+    	return arrayAppended;
+	}
     /**
      * Removes all text before a given character. If the character is not found the whole string is returned.
      * @return <b>String</b>
@@ -210,4 +218,5 @@ public class Common {
 		}
 		return score < accuracy;
 	}
+
 }

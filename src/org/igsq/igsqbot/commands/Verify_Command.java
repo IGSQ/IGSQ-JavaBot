@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
-import java.util.Locale;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
@@ -22,8 +21,7 @@ public class Verify_Command
 	private Message message;
 	private Guild guild;
 	private User toVerify;
-	private String countryString = "";
-	private String gameString = "";
+	private String roleString = "";
 
 	public Verify_Command(MessageReceivedEvent event) 
 	{
@@ -38,7 +36,7 @@ public class Verify_Command
 		}
 		else
 		{
-			new EmbedGenerator(event.getChannel()).text("This Command Can Only be done in a guild.").color(Color.RED).sendTemporary();
+			new EmbedGenerator(event.getChannel()).text("This command can only be done in a guild.").color(Color.RED).sendTemporary();
 		}
 		
 	}
@@ -51,6 +49,9 @@ public class Verify_Command
 	
 	private void verify() 
 	{
+		String messageContent = "";
+		String[] roles = Common_Command.retrieveRoles(guild.getId());
+		
 		if(!channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild")))
 		{
 			new EmbedGenerator(channel).text("This is not the setup verification channel.").color(Color.RED).sendTemporary();
@@ -61,7 +62,7 @@ public class Verify_Command
 		{
 			toVerify = message.getMentionedUsers().get(0);
 		}
-		catch(IndexOutOfBoundsException exception)
+		catch(Exception exception)
 		{
 			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
 			return;
@@ -71,87 +72,42 @@ public class Verify_Command
 		{
 			if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(Common.jda.getSelfUser())) 
 			{
-				String[] words = selectedMessage.getContentRaw().split(" ");
-				String queryString = "";
-				
-				for(int i = 0; i < words.length; i++)
+				messageContent += " " + selectedMessage.getContentRaw();
+			}
+		}
+		int i = 0;
+		for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
+		{
+			for(String selectedAlias : selectedAliases)
+			{
+				if(messageContent.contains(selectedAlias))
 				{
-					queryString = words[i];
-					for(String selectedPrefix : Common.PREFIXES)
-					{
-						if(Common.isOption(selectedPrefix, words[i], 30))
-						{
-							try {queryString = words[i] + " " + words[i+1]; i++;} catch(Exception exception) {}
-							break;
-						}
-					}
-					performQuery(queryString, guild.getId());
+					roleString += "Detected Alias: " + selectedAlias + " for role <@&" + roles[i] + ">\n";
+					break;
 				}
 			}
-		}
-
-		if(countryString.isEmpty()) countryString = "No countries found";
-		if(gameString.isEmpty()) gameString = "No games found.";
-		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Countries:", countryString).element("Games:", gameString).reaction(Common.QUESTION_REACTIONS).footer("This verification was intitiated by " + author.getAsTag()).sendTemporary();;
-	}
-	
-	private boolean isCountry(String arg)
-	{
-		for(String selectedLocaleCode : Locale.getISOCountries())
-		{
-			Locale locale = new Locale("en", selectedLocaleCode);
-			String selectedCountry = locale.getDisplayCountry();
-			
-			if(arg.equalsIgnoreCase(selectedCountry)) return true;
-		}
-		return false;
-	}
-	
-	private void performQuery(String query, String id)
-	{
-		// Check all known words for the query, only continue if it doesnt exist
-		String currentName;
-		for(int i = 0; i < Yaml.getFieldInt(id + ".references.referencecount", "verification"); i++) 
-		{
-			for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(","))
-			{
-				if(selectedAlias.equalsIgnoreCase(query))
-				{
-					currentName = Yaml.getFieldString(id + ".references." + i + ".name", "verification");
-					
-					if(isCountry(currentName)) countryString += currentName + " (Known)" + "\n"; // this will resolve roles rather than names.
-					else gameString += currentName + " (Known)" + "\n"; // this will resolve roles rather than names.
-					
-					return;
-				}
-			}
-		}
-
-		// No country was found on file (therefor we must search for it)
-		for(String selectedLocaleCode : Locale.getISOCountries())
-		{
-			Locale locale = new Locale("en", selectedLocaleCode);
-			String selectedCountry = locale.getDisplayCountry();
-			
-			if(Common.isOption(selectedCountry, query, 10))
-			{
-				// If a close match is found, add it to the suggested section.
-				Yaml.updateField(id + "." + query + ".suggested", "verification", query);
-				countryString += selectedCountry + " (Suggested)" +"\n";
-				return;
-			}
+			i++;
 		}
 		
-
-		for(String selectedGame : Common.GAMES)
+		i = 0;
+		for(String[] declinedAliases : Common_Command.retrievedDeclined(guild.getId()))
 		{
-			if(Common.isOption(selectedGame, query, 10))
+			for(String declinedAlias : declinedAliases)
 			{
-				Yaml.updateField(id + "." + query + ".suggested", "verification", query);
-				gameString += selectedGame + " (Suggested)" + "\n";
-				return;
+				if(messageContent.contains(declinedAlias))
+				{
+					roleString += "Ignored Alias: " + declinedAlias + " for role <@&" + roles[i] + ">\n";
+					break;
+				}
 			}
-		}	
+			i++;
+		}
+		// performQuery(queryString.toUpperCase().replaceAll("[^A-Z]^ ", ""), guild.getId());
+		
+
+		if(roleString.isEmpty()) roleString = "No roles found";
+		
+		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Roles:", roleString).reaction(Common.QUESTION_REACTIONS).footer("This verification was intitiated by " + author.getAsTag()).sendTemporary();
 	}
 }
 

@@ -16,6 +16,7 @@ public class Main_Command extends ListenerAdapter
 	{
 		Common.jdaBuilder.addEventListeners(this);
 	}
+	
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
@@ -32,6 +33,7 @@ public class Main_Command extends ListenerAdapter
     		mentionDescriptiveArgs = Common.depend(mentionDescriptiveArgs, 0);
     		descriptiveArgs = Common.depend(descriptiveArgs, 0);
     		command = command.substring(1);
+    		
     		String id = null;
     		if(event.getChannelType().equals(ChannelType.TEXT)) 
     		{	
@@ -66,6 +68,7 @@ public class Main_Command extends ListenerAdapter
 	        		break;
 	        	
 	        	case "verify":
+	        	case "v":
 	        	case "accept":
 	        		new Verify_Command(event);
 	        		break;
