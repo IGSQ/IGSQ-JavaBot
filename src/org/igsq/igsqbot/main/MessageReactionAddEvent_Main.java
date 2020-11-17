@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.commands.Common_Command;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -40,7 +41,35 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 					new EmbedGenerator(event.getChannel(), embed).color(Color.YELLOW).footer(event.getUser().getAsTag() + ", you are not higher than " + reportedUser.getRoles().get(0).getName() + ".").replace(message, 5000, embed);
 					event.getReaction().removeReaction(event.retrieveUser().complete()).queue();
 				}
+		
+			}
+			else if(Yaml.getFieldBool(event.getMessageId() + ".help.enabled", "internal"))
+			{
+				event.getReaction().removeReaction(event.retrieveUser().complete()).queue();
+				if(Yaml.getFieldString(event.getMessageId() + ".help.user","internal").equals(event.getUserId()))
+				{
+					int page = Yaml.getFieldInt(event.getMessageId() + ".help.page", "internal");
+					if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+25c0"))
+					{
+						page--;
+						if(page == 0) page = Common_Command.PAGE_TEXT.length;
+						Yaml.updateField(event.getMessageId() + ".help.page", "internal", page);
+					}
+					else if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+25b6")) 
+					{
+						page++;
+						if(page == Common_Command.PAGE_TEXT.length + 1) page = 1;
+						Yaml.updateField(event.getMessageId() + ".help.page", "internal", page);
+					}
+					EmbedGenerator embed = Common_Command.PAGE_TEXT[page-1];
+					embed.setChannel(message.getChannel()).replace(message);
+				}
+			
+
+				
+				
 			}
 		}
     }
 }
+

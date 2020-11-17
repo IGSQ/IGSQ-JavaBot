@@ -1,13 +1,14 @@
 package org.igsq.igsqbot.commands;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 
 public class Common_Command 
 {
 	public static final String[] POLL_EMOJIS_UNICODE = {"U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991"};
 	public static final String[] POLL_EMOJIS = {":pear:", ":watermelon:", ":pineapple:", ":apple:", ":banana:", ":avocado:", ":eggplant:", ":kiwi:", ":grapes:", ":blueberries:", ":cherries:", ":onion:", ":peach:", ":lemon:", ":tangerine:", ":melon:", ":coconut:",":garlic:", ":cucumber:", ":squid:"};
-	
+	public static final EmbedGenerator[] PAGE_TEXT = {new EmbedGenerator().title("__**Help Page 1**__").element("Avatar","Shows the avatar of mentioned user.\n.avatar @[user]", true).element("Poll", "Creates a poll using user input\n.poll [question]/[option1]/[option2]/etc", true).element("Suggest", "Suggest an idea to the community\n.suggest [suggestion]", true), new EmbedGenerator().text("kanker")};
 	public static final String[] SHUTDOWN_MESSAGES = {"Goodbye, Caroline.",
 			"Federal Superfund regulations require us to inform you that you must now leave the theater, as measuring the effects of asbestos-lined promotional clothing is not part of today's presentation. Enjoy your free t-shirt. Goodbye.",
 			"You know what, this plan is so good, I'm going to give you a sporting chance and turn off the neurotoxin. I'm joking. Of course. Goodbye.",

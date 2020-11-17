@@ -85,6 +85,10 @@ public class Main_Command extends ListenerAdapter
 	        	case "suggest":
 	        		new Suggestion_Command(event, descriptiveArgs);
 	        		break;
+	        	case "help":
+	        	case "arynspecial":
+	        		new Help_Command(event);
+	        		break;
 	        	default:
 	        		new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
 	        		break;

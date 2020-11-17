@@ -51,6 +51,14 @@ public class EmbedGenerator{
 		embed = new EmbedBuilder();
 	}
 	/**
+	 * Constructor for Embed, with no channel attached.
+	 * @see org.igsq.igsqbot.EmbedGenerator
+	 */
+	public EmbedGenerator()
+	{
+		embed = new EmbedBuilder();
+	}
+	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
 	 * Overloads {@link #EmbedGenerator(MessageChannel) With EmbedBuilder}  
 	 * @see org.igsq.igsqbot.EmbedGenerator
@@ -363,7 +371,6 @@ public class EmbedGenerator{
 		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal")) return;
 		if(embed.isEmpty()) return;
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-		activeMessage.clearReactions().complete();
         activeMessage.editMessage(embed.build()).queue
         (
 				message -> 
@@ -389,7 +396,6 @@ public class EmbedGenerator{
 		Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
 		if(embed.isEmpty()) return;
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-		activeMessage.clearReactions().complete();
         activeMessage.editMessage(embed.build()).queue
         (
 				message -> 
@@ -467,6 +473,11 @@ public class EmbedGenerator{
 	public MessageChannel getChannel() 
 	{
 		return channel;
+	}
+	public EmbedGenerator setChannel(MessageChannel channel) 
+	{
+		this.channel = channel;
+		return this;
 	}
 	
 }

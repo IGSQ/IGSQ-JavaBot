@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.igsq.igsqbot.commands.Main_Command;
 import org.igsq.igsqbot.main.MessageDeleteEvent_Main;
 import org.igsq.igsqbot.main.MessageReactionAddEvent_Main;
+import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
 
 import net.dv8tion.jda.api.JDABuilder;
 
@@ -36,6 +37,7 @@ public class Bot
 		
 			new MessageReactionAddEvent_Main();
 			new MessageDeleteEvent_Main();
+			new MessageReceivedEvent_Main();
 			
 			Common.jda = Common.jdaBuilder.build();
 			Common.self = Common.jda.getSelfUser();
