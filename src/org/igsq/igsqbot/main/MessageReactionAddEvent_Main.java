@@ -64,10 +64,6 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 					EmbedGenerator embed = Common_Command.PAGE_TEXT[page-1];
 					embed.setChannel(message.getChannel()).replace(message);
 				}
-			
-
-				
-				
 			}
 		}
     }

@@ -56,20 +56,20 @@ public class Common_Command
 	{
 		int i = 0;
 		String[][] result = new String[0][0];
-		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").equals(""))
+		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").isEmpty())
 		{
-			if(Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").equals(""))
+			if(Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").isEmpty())
 			{
 				String[] role = new String[0];
 				role = Common.append(role, Yaml.getFieldString(id + ".references." + i + ".name", "verification"));
 				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(",")) role = Common.append(role, selectedAlias);
 				result = Common.append(result, role);
-				i++;
 			}
 			else
 			{
 				result = Common.append(result, new String[0]);
 			}
+			i++;
 		}
 		return result;
 	}
@@ -77,7 +77,7 @@ public class Common_Command
 	{
 		int i = 0;
 		String[] result = new String[0];
-		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").equals(""))
+		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").isEmpty())
 		{
 			result = Common.append(result, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
 			i++;
@@ -88,19 +88,22 @@ public class Common_Command
 	{
 		int i = 0;
 		String[][] result = new String[0][0];
-		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").equals(""))
+		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").isEmpty())
 		{
-			if(Yaml.getFieldString(id + ".references." + i + ".declined", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".declined", "verification").equals(""))
+			if(Yaml.getFieldString(id + ".references." + i + ".declined", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".declined", "verification").isEmpty())
 			{
 				String[] role = new String[0];
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) role = Common.append(role, selectedAlias);
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) 
+				{
+					role = Common.append(role, selectedAlias);
+				}
 				result = Common.append(result, role);
-				i++;
 			}
 			else
 			{
 				result = Common.append(result, new String[0]);
 			}
+			i++;
 		}
 		return result;
 	}

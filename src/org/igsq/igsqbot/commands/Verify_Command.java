@@ -50,7 +50,8 @@ public class Verify_Command
 	private void verify() 
 	{
 		String messageContent = "";
-		String[] roles = Common_Command.retrieveRoles(guild.getId());
+		String[] retrievedRoles = Common_Command.retrieveRoles(guild.getId());
+		String[] assignedRoles = new String[0];
 		
 		if(!channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild")))
 		{
@@ -80,9 +81,11 @@ public class Verify_Command
 		{
 			for(String selectedAlias : selectedAliases)
 			{
-				if(messageContent.contains(selectedAlias))
+				if(messageContent.indexOf(selectedAlias) >= 0)
 				{
-					roleString += "Detected Alias: " + selectedAlias + " for role <@&" + roles[i] + ">\n";
+					roleString += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[i] + ">\n";
+					assignedRoles = Common.append(assignedRoles, retrievedRoles[i]);
+					//TODO: subtract selectedAlias from messageContent
 					break;
 				}
 			}
@@ -94,19 +97,18 @@ public class Verify_Command
 		{
 			for(String declinedAlias : declinedAliases)
 			{
-				if(messageContent.contains(declinedAlias))
+				for(String selectedRole : assignedRoles)
 				{
-					roleString += "Ignored Alias: " + declinedAlias + " for role <@&" + roles[i] + ">\n";
-					break;
+					if(messageContent.contains(declinedAlias) && !selectedRole.equals(retrievedRoles[i]))
+					{
+						roleString += "Ignored Alias: " + declinedAlias + " for role <@&" + retrievedRoles[i] + ">\n";
+						break;
+					}
 				}
 			}
 			i++;
 		}
-		// performQuery(queryString.toUpperCase().replaceAll("[^A-Z]^ ", ""), guild.getId());
-		
-
 		if(roleString.isEmpty()) roleString = "No roles found";
-		
 		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Roles:", roleString).reaction(Common.QUESTION_REACTIONS).footer("This verification was intitiated by " + author.getAsTag()).sendTemporary();
 	}
 }

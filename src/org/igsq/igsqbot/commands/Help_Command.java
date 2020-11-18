@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class Help_Command {
 	private MessageChannel channel;
 	private User author;
-	private Color color = Color.LIGHT_GRAY;
 
 	public Help_Command(MessageReceivedEvent event) 
 	{
