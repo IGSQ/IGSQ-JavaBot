@@ -84,7 +84,7 @@ public class Report_Command
 							Yaml.updateField(message.getId() + ".report.reporteduser", "internal", reportedMember.getId());
 							Yaml.updateField(message.getId() + ".report.reportinguser", "internal", author.getId());
 							Yaml.updateField(message.getId() + ".report.enabled", "internal", true);
-							message.addReaction("U+2705").queue();
+							for(String reaction : Common.QUESTION_REACTIONS) message.addReaction(reaction).queue();
 						}
 				);
 				

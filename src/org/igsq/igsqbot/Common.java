@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
 
@@ -20,7 +21,7 @@ public class Common {
 			"I've been really busy being dead. You know, after you MURDERED ME.",
 			"Am. Not. Dead! I'm not dead!",
 			"I lie when I'm nervous."};
-	public static final String[] QUESTION_REACTIONS = {"U+2705","U+274E"};
+	public static final String[] QUESTION_REACTIONS = {"U+1F44D","U+1F44E"};
 	
 	public static JDABuilder jdaBuilder;
 	public static JDA jda;
@@ -43,6 +44,21 @@ public class Common {
         }
         return arrayDepended;
     }
+	public static boolean isValueInArray(Object[] array, Object value)
+	{
+		for(Object currentObject : array)
+		{
+			if(currentObject.equals(value))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean isFieldEmpty(String path, String filename)
+	{
+		return Yaml.getFieldString(path, filename) == null || Yaml.getFieldString(path, filename).isEmpty();
+	}
 	public static String[] depend(String[] array, String value)
     {
         String[] arrayDepended = new String[array.length-1];
@@ -180,7 +196,35 @@ public class Common {
 		catch(Exception exception) {}
 		return user;
 	}
-
+	
+	public static Role getRoleFromMention(Guild guild, String arg)
+	{
+		if(isRoleMention(arg)) return guild.getRoleById(arg.substring(3, 21));
+		else if(isRoleId(arg)) return guild.getRoleById(arg);
+		else return null;
+	}
+	public static boolean isRoleId(String arg) 
+	{
+		try 
+		{
+			return arg.substring(0, 18)/*.matches("[0-9]")*/ != null;
+		}
+		catch(Exception exception)
+		{
+			return false;
+		}
+	}
+	public static boolean isRoleMention(String arg)
+	{
+		try 
+		{
+			return arg.startsWith("<@&") && arg.endsWith(">")/* && arg.substring(3, 21).matches("[0-9]")*/;
+		}
+		catch(Exception exception)
+		{
+			return false;
+		}
+	}
 	public static boolean isOption(String internal, String input,double accuracy)
 	{
 		if(internal == null || input == null || internal.length() == 0 || input.length() == 0) return false;
@@ -218,5 +262,13 @@ public class Common {
 		}
 		return score < accuracy;
 	}
-
+	
+	public static String stringDepend(String input, String match)
+	{
+		if(input.indexOf(match) >= 0)
+		{
+			input = input.substring(0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length(), input.length());
+		}
+		return input;
+	}
 }
