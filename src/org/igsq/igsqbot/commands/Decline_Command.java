@@ -90,18 +90,18 @@ public class Decline_Command
 			case "accept":
 			case "yes":
 				Common_Command.insertDecline(guild.getId(), role.getId(), alias);
-				new EmbedGenerator(channel).text("Added alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
+				new EmbedGenerator(channel).text("Added Decline: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				break;
 				
 			case "remove":
 			case "delete":
 				if(Common_Command.removeDecline(guild.getId(), role.getId(), alias))
 				{
-					new EmbedGenerator(channel).text("Removed alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
+					new EmbedGenerator(channel).text("Removed Decline: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				}
 				else
 				{
-					new EmbedGenerator(channel).text("Alias: " + alias + " not found for role: " + role.getAsMention()).sendTemporary();
+					new EmbedGenerator(channel).text("Decline: " + alias + " not found for role: " + role.getAsMention()).sendTemporary();
 				}
 				break;
 		}

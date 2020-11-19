@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -31,11 +32,13 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 		{
 			Message message = event.retrieveMessage().complete();
 			String messageID = event.getMessageId();
+			User user = event.retrieveUser().complete();
+			Member member = event.retrieveMember().complete();
 			Guild guild = event.getGuild();
 			
 			if(Yaml.getFieldBool(messageID + ".report.enabled", "internal"))
 			{
-				Member reportedUser = event.getGuild().retrieveMemberById(Yaml.getFieldString(messageID + ".report.reporteduser", "internal")).complete();
+				Member reportedUser = guild.retrieveMemberById(Yaml.getFieldString(messageID + ".report.reporteduser", "internal")).complete();
 				// Member reportingUser = event.getGuild().getMemberById(Yaml.getFieldInt(messageID + ".report.reportinguser", "internal"));
 				MessageEmbed embed = message.getEmbeds().get(0);
 				if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && event.getMember().canInteract(reportedUser))
@@ -46,10 +49,11 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 				else
 				{
 					new EmbedGenerator(event.getChannel(), embed).color(Color.YELLOW).footer(event.getUser().getAsTag() + ", you are not higher than " + reportedUser.getRoles().get(0).getName() + ".").replace(message, 5000, embed);
-					event.getReaction().removeReaction(event.retrieveUser().complete()).queue();
+					event.getReaction().removeReaction(user).queue();
 				}
 		
 			}
+			
 			else if(Yaml.getFieldBool(messageID + ".help.enabled", "internal"))
 			{
 				event.getReaction().removeReaction(event.retrieveUser().complete()).queue();
@@ -72,13 +76,15 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 					embed.setChannel(message.getChannel()).replace(message);
 				}
 			}
+			
 			else if(Yaml.getFieldBool(messageID + ".verification.enabled", "internal"))
 			{
 				String[] guessedRoles = Yaml.getFieldString(messageID + ".verification.guessedroles", "internal").split(",");
 				String[] guessedAliases = Yaml.getFieldString(messageID + ".verification.guessedaliases", "internal").split(",");
 				String[] confirmedRoles = Yaml.getFieldString(messageID + ".verification.confirmedroles", "internal").split(",");
 	
-				User verifiedMember = Common.jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete();
+				Member verifiedMember = Common.getMemberFromUser(Common.jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
+				// if(!member.canInteract(verifiedMember)) { event.getReaction().removeReaction(user).queue(); return; }
 				
 				if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44d"))
 				{
@@ -101,17 +107,35 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 					
 					for(String selectedRole : confirmedRoles)  if(!selectedRole.isEmpty()) parsedRoles += " <@&" + selectedRole + "> "; 
 					if(parsedRoles.equals("<@&>") || parsedRoles.isEmpty()) parsedRoles = "No roles found.";
+
+					GuildChannel welcomeChannel = Common.jda.getGuildChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
+					new EmbedGenerator((MessageChannel) welcomeChannel).text(verifiedMember.getAsMention() + ", Welcome to the " + guild.getName() + "!").author(verifiedMember.getUser().getAsTag()).thumbnail(verifiedMember.getUser().getEffectiveAvatarUrl()).element("Roles", parsedRoles).send();
 					
-					try
+					for(String selectedRole : Yaml.getFieldString(guild.getId() + ".serverjoinroles", "guild").split(",")) 
 					{
-						GuildChannel welcomeChannel = Common.jda.getGuildChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
-						new EmbedGenerator((MessageChannel) welcomeChannel).text(verifiedMember.getAsMention() + ", Welcome to the " + guild.getName() + "!").author(verifiedMember.getAsTag()).thumbnail(verifiedMember.getAvatarUrl()).element("Roles", parsedRoles).send();
+						try
+						{
+							guild.removeRoleFromMember(verifiedMember, guild.getRoleById(selectedRole)).queue();
+						}
+						catch(Exception exception) { continue; }
 					}
+					for(String selectedRole : confirmedRoles)
+					{
+						try 
+						{ 
+							guild.addRoleToMember(verifiedMember, guild.getRoleById(selectedRole)).queue(); 
+						}
+						catch(Exception exception) { }
+					}
+					try {guild.addRoleToMember(verifiedMember, guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"))).queue(); }
 					catch(Exception exception) { }
+					
 				}
 				message.delete().queue();
 			}
 		}
     }
 }
+  
+
 

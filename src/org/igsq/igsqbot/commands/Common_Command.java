@@ -207,6 +207,40 @@ public class Common_Command
 		}
 		return result;
 	}
+	public static boolean isAliasExists(String guild, String alias)
+	{
+		int i = 0;
+		String[] result = new String[0];
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
+		{
+			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".aliases", "verification").split(","))
+			{
+				if(selectedAlias.equals(alias))
+				{
+					return true;
+				}
+			}
+			i++;
+		}
+		return false;
+	}
+	public static boolean isDeclinedExist(String guild, String alias)
+	{
+		int i = 0;
+		String[] result = new String[0];
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
+		{
+			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".declined", "verification").split(","))
+			{
+				if(selectedAlias.equals(alias))
+				{
+					return true;
+				}
+			}
+			i++;
+		}
+		return false;
+	}
 	public static String[][] retrieveDeclined(String id)
 	{
 		int i = 0;

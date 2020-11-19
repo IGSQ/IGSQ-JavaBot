@@ -9,6 +9,7 @@ import org.igsq.igsqbot.Yaml;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -50,6 +51,7 @@ public class Verify_Command
 	
 	private void verify() 
 	{
+		//TODO: verifier reacting check
 		String messageContent = "";
 		String[] retrievedRoles = Common_Command.retrieveRoles(guild.getId());
 		String[] assignedRoles = new String[0];
@@ -81,6 +83,18 @@ public class Verify_Command
 			new EmbedGenerator(channel).text("You cannot verify the owner.").color(Color.RED).sendTemporary();
 			return;
 		}
+		else
+		{
+			Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
+			if(verifiedRole != null)
+			{
+				if(Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
+				{
+					new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
+					return;
+				}
+			}
+		}
 		
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
 		{
@@ -89,6 +103,7 @@ public class Verify_Command
 				messageContent += " " + selectedMessage.getContentRaw();
 			}
 		}
+		
 		int currentRole = 0;
 		for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
 		{

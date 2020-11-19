@@ -83,18 +83,24 @@ public class Alias_Command
 		try { alias = args[2]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid alias").send(); return; }
 		
-		if(alias.length() > 30) { new EmbedGenerator(channel).text("Your alias is too long.").send(); return; }
-		//TODO: remove special chars
-		//TODO: interaction check
-		//TODO: verifiedrole check
-		//TODO: verifier reacting check
+		if(alias.length() > 30) { new EmbedGenerator(channel).text("Your alias is too long.").sendTemporary(); return; }
+		if(alias.replaceAll("([^0-9a-zA-Z ]+)", "").length() < alias.length()) { new EmbedGenerator(channel).text("You entered an invalid alias").send(); return; }
+		if(alias.isEmpty()) { new EmbedGenerator(channel).text("You entered an invalid alias").sendTemporary(); return; }
+		
 		switch(action.toLowerCase())
 		{
 			case "add":
 			case "accept":
 			case "yes":
-				Common_Command.insertAlias(guild.getId(), role.getId(), alias);
-				new EmbedGenerator(channel).text("Added alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
+				if(!Common_Command.isAliasExists(guild.getId(), alias))
+				{
+					Common_Command.insertAlias(guild.getId(), role.getId(), alias);
+					new EmbedGenerator(channel).text("Added alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
+				}
+				else
+				{
+					new EmbedGenerator(channel).text("Alias: " + alias + " aleady exists.").sendTemporary();
+				}
 				break;
 				
 			case "remove":
@@ -111,3 +117,4 @@ public class Alias_Command
 		}
 	}
 }
+
