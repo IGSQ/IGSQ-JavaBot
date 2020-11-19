@@ -107,7 +107,7 @@ public class Verify_Command
 		}
 		
 		currentRole = 0;
-		for(String[] declinedAliases : Common_Command.retrievedDeclined(guild.getId()))
+		for(String[] declinedAliases : Common_Command.retrieveDeclined(guild.getId()))
 		{
 			for(String declinedAlias : declinedAliases)
 			{
@@ -140,9 +140,9 @@ public class Verify_Command
 							queryString = wordList[i];
 						}
 						
-						if(Common.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !Common.isValueInArray(declinedRoles, retrievedRoles[currentRole]))
+						if(Common.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !Common.isValueInArray(declinedRoles, retrievedRoles[currentRole]) && !Common.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
 						{
-							verificationQueryMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)";
+							verificationQueryMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)\n";
 							guessedRoles += "," + retrievedRoles[currentRole];
 							guessedAliases += "," + queryString;
 							continue;

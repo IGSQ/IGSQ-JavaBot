@@ -47,18 +47,47 @@ public class Alias_Command
 		try { action = args[0]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid action").send(); return; }
 		
+		switch(action.toLowerCase())
+		{
+			case "list":
+			case "show":
+				EmbedGenerator embed = new EmbedGenerator(channel).title("Aliases for " + guild.getName());
+				String description = "";
+				for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
+				{
+					Role role = null;
+					for(int i = 1; i < selectedAliases.length; i++)
+					{
+						role = Common.getRoleFromMention(guild, selectedAliases[0]);
+						if(role != null)
+						{
+							description += role.getAsMention() + " ---> " + selectedAliases[i] + "\n";
+						}	
+					}
+					description += "\n";
+				}
+				if(description.isEmpty()) description = "No roles found.";
+				embed.text(description);
+				embed.send();
+				return;
+		}
 		try{ role = Common.getRoleFromMention(guild, args[1]); }
 		catch(Exception exception) { role = null; }
 		
 		if(role == null)
 		{
-			new EmbedGenerator(channel).text("Mention a role to alias.").color(Color.RED).sendTemporary();
+			new EmbedGenerator(channel).text("Mention a valid role to alias.").color(Color.RED).sendTemporary();
 			return;
 		}
 		
 		try { alias = args[2]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid alias").send(); return; }
 		
+		if(alias.length() > 30) { new EmbedGenerator(channel).text("Your alias is too long.").send(); return; }
+		//TODO: remove special chars
+		//TODO: interaction check
+		//TODO: verifiedrole check
+		//TODO: verifier reacting check
 		switch(action.toLowerCase())
 		{
 			case "add":
@@ -67,10 +96,18 @@ public class Alias_Command
 				Common_Command.insertAlias(guild.getId(), role.getId(), alias);
 				new EmbedGenerator(channel).text("Added alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				break;
-			
-			default:
-				new EmbedGenerator(channel).text("You entered an invalid action").send(); return; 
+				
+			case "remove":
+			case "delete":
+				if(Common_Command.removeAlias(guild.getId(), role.getId(), alias))
+				{
+					new EmbedGenerator(channel).text("Removed alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
+				}
+				else
+				{
+					new EmbedGenerator(channel).text("Alias: " + alias + " not found for role: " + role.getAsMention()).sendTemporary();
+				}
+				break;
 		}
-		
 	}
 }
