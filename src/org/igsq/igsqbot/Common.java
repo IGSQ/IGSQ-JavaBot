@@ -8,6 +8,7 @@ import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
@@ -270,5 +271,10 @@ public class Common {
 			input = input.substring(0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length(), input.length());
 		}
 		return input;
+	}
+	
+	public static GuildChannel fetchLogChannel(String guildID)
+	{
+		return jda.getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
 	}
 }

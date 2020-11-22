@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -84,8 +83,17 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 				String[] confirmedRoles = Yaml.getFieldString(messageID + ".verification.confirmedroles", "internal").split(",");
 	
 				Member verifiedMember = Common.getMemberFromUser(Common.jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
+				Member initiater = Common.getMemberFromUser(Common.jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.verifier", "internal")).complete(), guild);
 				// if(!member.canInteract(verifiedMember)) { event.getReaction().removeReaction(user).queue(); return; }
-				
+				if(!initiater.equals(member)) 
+				{ 
+					try
+					{
+						event.getReaction().removeReaction(user).queue(); 
+					}
+					catch(Exception exception) { }
+					return; 
+				}
 				if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44d"))
 				{
 					for(int i = 0; i < guessedRoles.length; i++)

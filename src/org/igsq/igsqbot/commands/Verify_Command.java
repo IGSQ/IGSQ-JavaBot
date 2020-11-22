@@ -179,6 +179,7 @@ public class Verify_Command
 				Yaml.updateField(message.getId() + ".verification.guessedaliases", "internal", this.guessedAliases);
 				Yaml.updateField(message.getId() + ".verification.confirmedroles", "internal", this.confirmedRoles);
 				Yaml.updateField(message.getId() + ".verification.member", "internal", this.toVerify.getId());
+				Yaml.updateField(message.getId() + ".verification.verifier", "internal", this.author.getId());
 				for(String reaction : Common.QUESTION_REACTIONS) message.addReaction(reaction).queue();
 			}
 		);
