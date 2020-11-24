@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.logging;
 
 import java.awt.Color;
-
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
@@ -22,35 +21,39 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 	@Override
     public void onMessageDelete(MessageDeleteEvent event)
     {
-		if(MessageCache_Logging.isInCache(event.getMessageId()))
+		MessageCache cache = Common_Logging.retrieveCache(event.getGuild().getId());
+		if(cache != null)
 		{
-			Message message = MessageCache_Logging.get(event.getMessageId());
-			GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
-			MessageChannel channel = event.getChannel();
-			String content = message.getContentDisplay();
-			
-			if(message.getAuthor().isBot()) return;
-			if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
-			
-			if(!Common.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+			if(cache.isInCache(event.getMessageId()))
 			{
-				for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
+				Message message = cache.get(event.getMessageId());
+				GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
+				MessageChannel channel = event.getChannel();
+				String content = message.getContentDisplay();
+				
+				if(message.getAuthor().isBot()) return;
+				if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
+				
+				if(!Common.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 				{
-					if(selectedChannel.equals(channel.getId())) 
+					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
 					{
-						return;
+						if(selectedChannel.equals(channel.getId())) 
+						{
+							return;
+						}
 					}
 				}
+				
+				if(logChannel != null)
+				{
+					new EmbedGenerator((MessageChannel) logChannel).title("Message Deleted").text(
+					"**Author**: " + message.getAuthor().getAsMention() +
+					"\n**Sent In**: " + Common.getChannelAsMention(channel.getId()) +
+					"\n\n**Message Content**: " + content).color(Color.PINK).footer("Deleted at: " + Common.getTimestamp()).send();
+				}
+				cache.remove(message);
 			}
-			
-			if(logChannel != null)
-			{
-				new EmbedGenerator((MessageChannel) logChannel).title("Message Deleted").text(
-				"**Author**: " + message.getAuthor().getAsMention() +
-				"\n**Sent In**: " + Common.getChannelAsMention(channel.getId()) +
-				"\n\n**Message Content**: " + content).color(Color.PINK).send();
-			}
-			MessageCache_Logging.remove(message);
 		}
     }
 }

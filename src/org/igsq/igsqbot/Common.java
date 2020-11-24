@@ -1,5 +1,7 @@
 package org.igsq.igsqbot;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -304,6 +306,11 @@ public class Common {
 			input = input.substring(0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length(), input.length());
 		}
 		return input;
+	}
+	
+	public static String getTimestamp()
+	{
+		return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now());
 	}
 	
 	public static GuildChannel fetchLogChannel(String guildID)

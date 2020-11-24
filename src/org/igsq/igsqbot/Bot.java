@@ -3,8 +3,8 @@ package org.igsq.igsqbot;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.commands.Main_Command;
+import org.igsq.igsqbot.logging.Common_Logging;
 import org.igsq.igsqbot.logging.Main_Logging;
-import org.igsq.igsqbot.logging.MessageCache_Logging;
 import org.igsq.igsqbot.main.MessageDeleteEvent_Main;
 import org.igsq.igsqbot.main.MessageReactionAddEvent_Main;
 import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
@@ -35,9 +35,11 @@ public class Bot
 			@Override
 			public void run() 
 			{
-					MessageCache_Logging.clean();
+					System.out.println("Cleaning Message Caches: Starting Now.");
+					Common_Logging.cleanCaches();
+					System.out.println("Cleaning Message Caches: Complete.");
 			} 		
-    	}, 1, 6,TimeUnit.HOURS);
+    	}, 6, 6,TimeUnit.HOURS);
 		
 		try 
 		{
