@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.MessageCache;
 import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
@@ -24,14 +25,14 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 	public void onMessageUpdate(MessageUpdateEvent event)
 	{
 		MessageCache cache;
-		if(!Common_Logging.isCacheExist(event.getGuild().getId()))
+		if(!MessageCache.isCacheExist(event.getGuild().getId()))
 		{
-			Common_Logging.createCache(event.getGuild().getId());
+			MessageCache.setCache(event.getGuild().getId());
 			return;
 		}
 		else
 		{
-			cache = Common_Logging.retrieveCache(event.getGuild().getId());
+			cache = MessageCache.getCache(event.getGuild().getId());
 		}
 		
 		if(cache.isInCache(event.getMessage()))

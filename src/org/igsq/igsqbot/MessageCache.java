@@ -1,13 +1,12 @@
-package org.igsq.igsqbot.logging;
+package org.igsq.igsqbot;
 
 import java.time.OffsetDateTime;
-
-import org.igsq.igsqbot.Common;
 
 import net.dv8tion.jda.api.entities.Message;
 
 public class MessageCache
 {
+	public static MessageCache[] messageCaches = new MessageCache[0];
 	private Message[] messageCache;
 	private String ID;
 	
@@ -17,7 +16,7 @@ public class MessageCache
 		this.messageCache = new Message[0];
 	}
 	
-	public void put(Message message)
+	public void set(Message message)
 	{
 		if(messageCache.length >= 1000) messageCache = Common.depend(messageCache, 0);
 		messageCache = Common.append(messageCache, message);
@@ -88,7 +87,7 @@ public class MessageCache
 			if(selectedMessage.equals(oldMessage))
 			{
 				messageCache = Common.depend(messageCache, selectedMessage);
-				put(newMessage);
+				set(newMessage);
 			}
 		}
 	}
@@ -99,7 +98,7 @@ public class MessageCache
 			if(selectedMessage.getId().equals(oldMessageID))
 			{
 				messageCache = Common.depend(messageCache, selectedMessage);
-				put(newMessage);
+				set(newMessage);
 			}
 		}
 	}
@@ -122,5 +121,62 @@ public class MessageCache
 	public void flush()
 	{
 		messageCache = new Message[0];
+	}
+	
+	
+	
+	public static MessageCache[] append(MessageCache[] array, MessageCache value)
+	{
+		MessageCache[] arrayAppended = new MessageCache[array.length+1];
+		for (int i = 0;i < array.length;i++)
+		{
+			arrayAppended[i] = array[i];
+		}
+		arrayAppended[array.length] = value;
+		return arrayAppended;
+	}
+	
+	public static void cleanCaches()
+	{
+		for(MessageCache selectedCache : messageCaches)
+		{
+			selectedCache.clean();
+		}
+	}
+	
+	public static MessageCache getCache(String ID)
+	{
+		for(MessageCache selectedCache : messageCaches)
+		{
+			if(selectedCache.getID().equals(ID))
+			{
+				return selectedCache;
+			}
+		}
+		return null;
+	}
+	
+	public static boolean isCacheExist(String ID)
+	{
+		for(MessageCache selectedCache : messageCaches)
+		{
+			if(selectedCache.getID().equals(ID))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static void setCache(String ID)
+	{
+		messageCaches = append(messageCaches, new MessageCache(ID));
+	}
+	
+	public static MessageCache setAndReturnCache(String ID)
+	{
+		MessageCache cache = new MessageCache(ID);
+		messageCaches = append(messageCaches, cache);
+		return cache;
 	}
 }
