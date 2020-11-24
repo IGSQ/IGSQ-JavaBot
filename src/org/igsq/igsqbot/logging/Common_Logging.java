@@ -33,7 +33,7 @@ public class Common_Logging
 		return null;
 	}
 	
-	public static boolean isCache(String ID)
+	public static boolean isCacheExist(String ID)
 	{
 		for(MessageCache selectedCache : Main_Logging.messageCaches)
 		{
@@ -43,5 +43,16 @@ public class Common_Logging
 			}
 		}
 		return false;
+	}
+	
+	public static void createCache(String ID)
+	{
+		Main_Logging.messageCaches = Common_Logging.append(Main_Logging.messageCaches, new MessageCache(ID));
+	}
+	public static MessageCache createAndReturnCache(String ID)
+	{
+		MessageCache cache = new MessageCache(ID);
+		Main_Logging.messageCaches = Common_Logging.append(Main_Logging.messageCaches, cache);
+		return cache;
 	}
 }

@@ -10,38 +10,42 @@ import org.igsq.igsqbot.Yaml;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class MessageDeleteEvent_Logging extends ListenerAdapter
+public class MessageUpdateEvent_Logging extends ListenerAdapter
 {
-	public MessageDeleteEvent_Logging()
+	public MessageUpdateEvent_Logging()
 	{
 		Common.jdaBuilder.addEventListeners(this);
 	}
 	
 	@Override
-    public void onMessageDelete(MessageDeleteEvent event)
-    {
+	public void onMessageUpdate(MessageUpdateEvent event)
+	{
 		MessageCache cache;
 		if(!Common_Logging.isCacheExist(event.getGuild().getId()))
 		{
-			cache = Common_Logging.createAndReturnCache(event.getGuild().getId());
+			Common_Logging.createCache(event.getGuild().getId());
+			return;
 		}
 		else
 		{
 			cache = Common_Logging.retrieveCache(event.getGuild().getId());
 		}
 		
-		Message message = cache.get(event.getMessageId());
-		if(cache.isInCache(message))
+		if(cache.isInCache(event.getMessage()))
 		{
+			Message newMessage = event.getMessage();
+			Message oldMessage = cache.get(event.getMessageId());
 			GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
 			MessageChannel channel = event.getChannel();
-			String content = message.getContentDisplay();
+			String newContent = newMessage.getContentDisplay();
+			String oldContent = oldMessage.getContentDisplay();
 			
-			if(message.getAuthor().isBot()) return;
-			if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
+			if(newMessage.getAuthor().isBot()) return;
+			if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
+			if(oldContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 			
 			if(!Common.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 			{
@@ -57,13 +61,14 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 			if(logChannel != null)
 			{
 				new EmbedGenerator((MessageChannel) logChannel).title("Message Deleted").text(
-				"**Author**: " + message.getAuthor().getAsMention() +
+				"**Author**: " + newMessage.getAuthor().getAsMention() +
 				"\n**Sent In**: " + Common.getChannelAsMention(channel.getId()) +
-				"\n**Sent On**: " + message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
-				"\n\n**Message Content**: " + content)
+				"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+				"\n\n**Message Content Before**: " + oldContent +
+				"\n**Message Content After**: " + newContent)
 				.color(Color.PINK).footer("Logged on: " + Common.getTimestamp()).send();
 			}
-			cache.remove(message);
+			cache.update(oldMessage, newMessage);
 		}
-    }
+	}
 }

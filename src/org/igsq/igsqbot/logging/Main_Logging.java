@@ -6,8 +6,8 @@ public class Main_Logging
 	
 	public Main_Logging()
 	{
-		new MessageReceivedEvent_Logging();
 		new MessageDeleteEvent_Logging();
 		new MessageBulkDeleteEvent_Logging();
+		new MessageUpdateEvent_Logging();
 	}
 }

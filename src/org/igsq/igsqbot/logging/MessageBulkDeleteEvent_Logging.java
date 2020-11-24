@@ -1,6 +1,8 @@
 package org.igsq.igsqbot.logging;
 
 import java.awt.Color;
+import java.time.format.DateTimeFormatter;
+
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
@@ -24,7 +26,16 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 		GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
 		MessageChannel channel = event.getChannel();
 		String embedDescription = "";
-		MessageCache cache = Common_Logging.retrieveCache(event.getGuild().getId());
+		MessageCache cache;
+		
+		if(!Common_Logging.isCacheExist(event.getGuild().getId()))
+		{
+			cache = Common_Logging.createAndReturnCache(event.getGuild().getId());
+		}
+		else
+		{
+			cache = Common_Logging.retrieveCache(event.getGuild().getId());
+		}
 		
 		for(String selectedMessageID : event.getMessageIds())
 		{
@@ -47,15 +58,16 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 					}
 				}
 				
-				embedDescription += selectedMessage.getAuthor().getAsMention() + " --> " + content;
+				embedDescription += selectedMessage.getAuthor().getAsMention() + " --> " + content + "\n";
 				cache.remove(selectedMessage);
 			}
 		}
 		if(logChannel != null)
 		{
 			new EmbedGenerator((MessageChannel)logChannel).text(
-			"**Channel**: " + Common.getChannelAsMention(channel.getId()) 
-			+ "**Messages**: " + embedDescription).color(Color.PINK).footer("Deleted at: " + Common.getTimestamp()).send();
+			"**Channel**: " + Common.getChannelAsMention(channel.getId()) +
+			"\n\n**Messages**: " + embedDescription)
+			.color(Color.PINK).footer("Logged on: " + Common.getTimestamp()).send();
 		}
     }
 }

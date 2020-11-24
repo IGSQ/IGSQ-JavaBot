@@ -81,6 +81,28 @@ public class MessageCache
 		return false;
 	}
 	
+	public void update(Message oldMessage, Message newMessage)
+	{
+		for(Message selectedMessage : messageCache)
+		{
+			if(selectedMessage.equals(oldMessage))
+			{
+				messageCache = Common.depend(messageCache, selectedMessage);
+				put(newMessage);
+			}
+		}
+	}
+	public void update(String oldMessageID, Message newMessage)
+	{
+		for(Message selectedMessage : messageCache)
+		{
+			if(selectedMessage.getId().equals(oldMessageID))
+			{
+				messageCache = Common.depend(messageCache, selectedMessage);
+				put(newMessage);
+			}
+		}
+	}
 	public String getID()
 	{
 		return ID;
