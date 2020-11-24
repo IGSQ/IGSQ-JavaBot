@@ -27,7 +27,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 		MessageCache cache;
 		if(!MessageCache.isGuildCached(event.getGuild().getId()))
 		{
-			MessageCache.setCache(event.getGuild().getId());
+			MessageCache.addCache(event.getGuild().getId());
 			return;
 		}
 		else
@@ -61,7 +61,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 			
 			if(logChannel != null)
 			{
-				new EmbedGenerator((MessageChannel) logChannel).title("Message Deleted").text(
+				new EmbedGenerator((MessageChannel) logChannel).title("Message Altered").text(
 				"**Author**: " + newMessage.getAuthor().getAsMention() +
 				"\n**Sent In**: " + Common.getChannelAsMention(channel.getId()) +
 				"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +

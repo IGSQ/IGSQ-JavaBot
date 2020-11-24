@@ -48,6 +48,7 @@ public class Decline_Command
 	
 	private void alias()
 	{
+		args = Common.depend(args, 0);
 		try { action = args[0]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid action").send(); return; }
 		

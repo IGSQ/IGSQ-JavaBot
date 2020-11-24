@@ -18,7 +18,11 @@ public class MessageCache
 	
 	public void set(Message message)
 	{
-		if(messageCache.length >= 1000) messageCache = Common.depend(messageCache, 0);
+		if(messageCache.length >= 1000) 
+		{
+			messageCache = Common.depend(messageCache, 0);
+			clean();
+		}
 		messageCache = Common.append(messageCache, message);
 	}
 	
@@ -123,8 +127,6 @@ public class MessageCache
 		messageCache = new Message[0];
 	}
 	
-	
-	
 	public static MessageCache[] append(MessageCache[] array, MessageCache value)
 	{
 		MessageCache[] arrayAppended = new MessageCache[array.length+1];
@@ -168,12 +170,12 @@ public class MessageCache
 		return false;
 	}
 	
-	public static void setCache(String ID)
+	public static void addCache(String ID)
 	{
 		messageCaches = append(messageCaches, new MessageCache(ID));
 	}
 	
-	public static MessageCache setAndReturnCache(String ID)
+	public static MessageCache addAndReturnCache(String ID)
 	{
 		MessageCache cache = new MessageCache(ID);
 		messageCaches = append(messageCaches, cache);

@@ -58,7 +58,7 @@ public class Report_Command
 		{
 			reportedMember = Common.getMemberFromUser(reportedUser, guild);
 			if(reportedUser.equals(author)) new EmbedGenerator(channel).text("You cant't report yourself!").color(Color.RED).sendTemporary();
-			else if(args.length <= 1) new EmbedGenerator(channel).text("Please mention a person & write a report.").color(Color.RED).sendTemporary();
+			else if(args.length <= 1) new EmbedGenerator(channel).text("Please mention a person & write a report topic.").color(Color.RED).sendTemporary();
 			else if(reportedUser.isBot()) new EmbedGenerator(channel).text("You may not report bots.").color(Color.RED).sendTemporary();
 			else if(reportedMember.isOwner()) new EmbedGenerator(channel).text("You may not report the owner.").color(Color.RED).sendTemporary();
 			else if(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild") == null || Yaml.getFieldString(guild.getId() + ".reportchannel", "guild").isEmpty()) new EmbedGenerator(channel).text("There is no report channel setup.").color(Color.RED).sendTemporary(); // This should log to admins
@@ -84,7 +84,7 @@ public class Report_Command
 							Yaml.updateField(message.getId() + ".report.reporteduser", "internal", reportedMember.getId());
 							Yaml.updateField(message.getId() + ".report.reportinguser", "internal", author.getId());
 							Yaml.updateField(message.getId() + ".report.enabled", "internal", true);
-							for(String reaction : Common.QUESTION_REACTIONS) message.addReaction(reaction).queue();
+							message.addReaction(Common.QUESTION_REACTIONS[0]).queue();
 						}
 				);
 				

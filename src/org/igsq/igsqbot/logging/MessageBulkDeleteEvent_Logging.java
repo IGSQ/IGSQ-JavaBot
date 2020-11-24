@@ -30,7 +30,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
 		
 		if(!MessageCache.isGuildCached(event.getGuild().getId()))
 		{
-			cache = MessageCache.setAndReturnCache(event.getGuild().getId());
+			cache = MessageCache.addAndReturnCache(event.getGuild().getId());
 		}
 		else
 		{
