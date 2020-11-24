@@ -4,6 +4,8 @@ public class Main_Logging
 {
 	public Main_Logging()
 	{
-//TODO: logging
+		new MessageCache_Logging();
+		new MessageDeleteEvent_Logging();
+		new MessageBulkDeleteEvent_Logging();
 	}
 }

@@ -45,6 +45,21 @@ public class Common {
         }
         return arrayDepended;
     }
+	public static Message[] depend(Message[] array, int location)
+    {
+		Message[] arrayDepended = new Message[array.length-1];
+        int hitRemove = 0;
+        for (int i = 0;i < array.length;i++)
+        {
+            if(location != i){
+                arrayDepended[i-hitRemove] = array[i];
+            }
+            else{
+                hitRemove++;
+            }
+        }
+        return arrayDepended;
+    }
 	public static boolean isValueInArray(Object[] array, Object value)
 	{
 		for(Object currentObject : array)
@@ -63,6 +78,24 @@ public class Common {
 	public static String[] depend(String[] array, String value)
     {
         String[] arrayDepended = new String[array.length-1];
+        int hitRemove = 0;
+        
+        for (int i = 0;i < array.length;i++)
+        {
+            if(!value.equals(array[i]))
+            {
+                arrayDepended[i-hitRemove] = array[i];
+            }
+            else
+            {
+                hitRemove++;
+            }
+        }
+        return arrayDepended;
+    }
+	public static Message[] depend(Message[] array, Message value)
+    {
+		Message[] arrayDepended = new Message[array.length-1];
         int hitRemove = 0;
         
         for (int i = 0;i < array.length;i++)

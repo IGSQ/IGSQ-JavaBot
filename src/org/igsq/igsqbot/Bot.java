@@ -1,11 +1,10 @@
 package org.igsq.igsqbot;
 
-import java.awt.Color;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.commands.Main_Command;
 import org.igsq.igsqbot.logging.Main_Logging;
+import org.igsq.igsqbot.logging.MessageCache_Logging;
 import org.igsq.igsqbot.main.MessageDeleteEvent_Main;
 import org.igsq.igsqbot.main.MessageReactionAddEvent_Main;
 import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
@@ -16,7 +15,6 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 public class Bot
 {
-	private static Random random = new Random();
 	public static void main(String[] args)
 	{
 		Yaml.createFiles();
@@ -32,6 +30,15 @@ public class Bot
 			} 		
     	}, 1, 30,TimeUnit.SECONDS);
 		
+		Common.scheduler.scheduleAtFixedRate(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+					MessageCache_Logging.clean();
+			} 		
+    	}, 1, 6,TimeUnit.HOURS);
+		
 		try 
 		{
 			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
@@ -39,6 +46,7 @@ public class Bot
 			Common.jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
 			
 			new Main_Command();
+			new Main_Logging();
 			
 			new MessageReactionAddEvent_Main();
 			new MessageDeleteEvent_Main();
@@ -46,10 +54,8 @@ public class Bot
 			
 			Common.jda = Common.jdaBuilder.build();
 			Common.self = Common.jda.getSelfUser();
-			new Main_Logging();
 			
 			Common.jda.awaitReady();
-			new EmbedGenerator(Common.jda.getTextChannelById("769356663512760348")).text(Common.STARTUP_MESSAGES[random.nextInt(Common.STARTUP_MESSAGES.length)]).color(Color.GREEN).element("subtitle", "description").send();
 			
 			Yaml.applyDefault();
 			new Database();
