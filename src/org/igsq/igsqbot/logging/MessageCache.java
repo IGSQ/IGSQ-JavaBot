@@ -46,7 +46,7 @@ public class MessageCache
 		}
 	}
 	
-	public void remove(Message message)
+	public void remove(Message message) //TODO: make this accept a List / Array
 	{
 		for(Message selectedMessage : messageCache)
 		{
