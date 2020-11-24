@@ -24,14 +24,18 @@ public class Alias_Command
 	private String alias;
 	private Role role;
 
-	public Alias_Command(MessageReceivedEvent event, String[] args) 
+	public Alias_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
 		this.message = event.getMessage();
-		this.args = args;
+		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ", 4);
 		this.guild = event.getGuild();
-		if(!channel.getType().equals(ChannelType.TEXT))  new EmbedGenerator(channel).text("This command can only be done in a guild.").color(Color.RED).sendTemporary();
+		if(!channel.getType().equals(ChannelType.TEXT)) 
+		{
+			new EmbedGenerator(channel).text("This command can only be done in a guild.").color(Color.RED).sendTemporary();
+			return;
+		}
 	
 		aliasQuery();
 	}
@@ -44,8 +48,8 @@ public class Alias_Command
 	
 	private void alias()
 	{
-		try { action = args[0]; }
-		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid action").send(); return; }
+		try{action = args[0];}
+		catch(Exception exception) {new EmbedGenerator(channel).text("You entered an invalid action").send(); return;}
 		
 		switch(action.toLowerCase())
 		{
@@ -67,12 +71,11 @@ public class Alias_Command
 					description += "\n";
 				}
 				if(description.isEmpty()) description = "No roles found.";
-				embed.text(description);
-				embed.send();
+				embed.text(description).send();
 				return;
 		}
-		try{ role = Common.getRoleFromMention(guild, args[1]); }
-		catch(Exception exception) { role = null; }
+		try{role = Common.getRoleFromMention(guild, args[1]);}
+		catch(Exception exception) {role = null;}
 		
 		if(role == null)
 		{
@@ -81,11 +84,11 @@ public class Alias_Command
 		}
 		
 		try { alias = args[2]; }
-		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid alias").send(); return; }
+		catch(Exception exception) {new EmbedGenerator(channel).text("You entered an invalid alias").send(); return;}
 		
 		if(alias.length() > 30) { new EmbedGenerator(channel).text("Your alias is too long.").sendTemporary(); return; }
 		if(alias.replaceAll("([^0-9a-zA-Z ]+)", "").length() < alias.length()) { new EmbedGenerator(channel).text("You entered an invalid alias").send(); return; }
-		if(alias.isEmpty()) { new EmbedGenerator(channel).text("You entered an invalid alias").sendTemporary(); return; }
+		if(alias.isEmpty()) {new EmbedGenerator(channel).text("You entered an invalid alias").sendTemporary(); return;}
 		
 		switch(action.toLowerCase())
 		{

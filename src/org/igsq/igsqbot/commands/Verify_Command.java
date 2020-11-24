@@ -51,17 +51,18 @@ public class Verify_Command
 	
 	private void verify() 
 	{
-		//TODO: verifier reacting check
 		String messageContent = "";
 		String[] retrievedRoles = Common_Command.retrieveRoles(guild.getId());
 		String[] assignedRoles = new String[0];
 		String[] declinedRoles = new String[0];
 		String queryString = "";
-		String verificationQueryMessage = "";
+		String verificationMessage = "";
+		
 		try
 		{
 			toVerify = message.getMentionedUsers().get(0);
 		}
+		
 		catch(Exception exception)
 		{
 			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
@@ -111,7 +112,7 @@ public class Verify_Command
 			{
 				if(messageContent.contains(selectedAlias))
 				{
-					verificationQueryMessage += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[currentRole] + "> (Known)\n";
+					verificationMessage += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[currentRole] + "> (Known)\n";
 					assignedRoles = Common.append(assignedRoles, retrievedRoles[currentRole]);
 					messageContent = Common.stringDepend(messageContent, selectedAlias);
 					confirmedRoles += "," + retrievedRoles[currentRole];
@@ -157,7 +158,7 @@ public class Verify_Command
 						
 						if(Common.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !Common.isValueInArray(declinedRoles, retrievedRoles[currentRole]) && !Common.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
 						{
-							verificationQueryMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)\n";
+							verificationMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)\n";
 							guessedRoles += "," + retrievedRoles[currentRole];
 							guessedAliases += "," + queryString;
 							continue;
@@ -168,8 +169,8 @@ public class Verify_Command
 			}
 		}
 		
-		if(verificationQueryMessage.isEmpty()) verificationQueryMessage = "No roles found";
-		EmbedGenerator embed = new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Roles:", verificationQueryMessage).footer("This verification was intitiated by " + author.getAsTag());
+		if(verificationMessage.isEmpty()) verificationMessage = "No roles found";
+		EmbedGenerator embed = new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Roles:", verificationMessage).footer("This verification was intitiated by " + author.getAsTag());
 		channel.sendMessage(embed.getBuilder().build()).queue
 		(
 			message ->

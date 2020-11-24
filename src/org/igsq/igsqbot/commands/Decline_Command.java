@@ -24,14 +24,18 @@ public class Decline_Command
 	private String alias;
 	private Role role;
 
-	public Decline_Command(MessageReceivedEvent event, String[] args) 
+	public Decline_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
 		this.message = event.getMessage();
-		this.args = args;
+		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ", 4);
 		this.guild = event.getGuild();
-		if(!channel.getType().equals(ChannelType.TEXT))  new EmbedGenerator(channel).text("This command can only be done in a guild.").color(Color.RED).sendTemporary();
+		if(!channel.getType().equals(ChannelType.TEXT)) 
+		{
+			new EmbedGenerator(channel).text("This command can only be done in a guild.").color(Color.RED).sendTemporary();
+			return;
+		}
 	
 		aliasQuery();
 	}
@@ -67,8 +71,7 @@ public class Decline_Command
 					description += "\n";
 				}
 				if(description.isEmpty()) description = "No roles found.";
-				embed.text(description);
-				embed.send();
+				embed.text(description).send();
 				return;
 		}
 		

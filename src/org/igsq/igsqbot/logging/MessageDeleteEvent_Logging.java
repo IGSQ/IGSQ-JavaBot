@@ -25,7 +25,7 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
     public void onMessageDelete(MessageDeleteEvent event)
     {
 		MessageCache cache;
-		if(!MessageCache.isCacheExist(event.getGuild().getId()))
+		if(!MessageCache.isGuildCached(event.getGuild().getId()))
 		{
 			cache = MessageCache.setAndReturnCache(event.getGuild().getId());
 		}

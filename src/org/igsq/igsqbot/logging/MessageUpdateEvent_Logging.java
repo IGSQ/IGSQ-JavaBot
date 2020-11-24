@@ -25,7 +25,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 	public void onMessageUpdate(MessageUpdateEvent event)
 	{
 		MessageCache cache;
-		if(!MessageCache.isCacheExist(event.getGuild().getId()))
+		if(!MessageCache.isGuildCached(event.getGuild().getId()))
 		{
 			MessageCache.setCache(event.getGuild().getId());
 			return;

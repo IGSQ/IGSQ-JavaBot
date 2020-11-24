@@ -156,7 +156,7 @@ public class MessageCache
 		return null;
 	}
 	
-	public static boolean isCacheExist(String ID)
+	public static boolean isGuildCached(String ID)
 	{
 		for(MessageCache selectedCache : messageCaches)
 		{

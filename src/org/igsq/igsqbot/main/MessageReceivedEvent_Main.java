@@ -16,7 +16,7 @@ public class MessageReceivedEvent_Main extends ListenerAdapter
 	@Override
     public void onMessageReceived(MessageReceivedEvent event)
     {	
-		if(!MessageCache.isCacheExist(event.getGuild().getId()))
+		if(!MessageCache.isGuildCached(event.getGuild().getId()))
 		{
 			MessageCache.setAndReturnCache(event.getGuild().getId()).set(event.getMessage());
 		}

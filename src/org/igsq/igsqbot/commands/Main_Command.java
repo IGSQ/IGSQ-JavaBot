@@ -26,14 +26,12 @@ public class Main_Command extends ListenerAdapter
     		String[] args = event.getMessage().getContentRaw().toLowerCase().split(" ");
     		String[] slashArgs = Common.removeBeforeCharacter(event.getMessage().getContentRaw(), ' ').split("/");
     		String[] mentionDescriptiveArgs = event.getMessage().getContentRaw().toLowerCase().split(" ", 3);
-    		String[] mentionDescriptiveWithAdditional = event.getMessage().getContentRaw().toLowerCase().split(" ", 4);
     		String[] descriptiveArgs = event.getMessage().getContentRaw().toLowerCase().split(" ", 2);
     		
     		
     		args = Common.depend(args, 0);
     		mentionDescriptiveArgs = Common.depend(mentionDescriptiveArgs, 0);
     		descriptiveArgs = Common.depend(descriptiveArgs, 0);
-    		mentionDescriptiveWithAdditional = Common.depend(mentionDescriptiveWithAdditional, 0);
     		command = command.substring(1);
     		
     		String id = null;
@@ -96,10 +94,10 @@ public class Main_Command extends ListenerAdapter
 	        		new Help_Command(event);
 	        		break;
 	        	case "alias":
-	        		new Alias_Command(event, mentionDescriptiveWithAdditional);
+	        		new Alias_Command(event);
 	        		break;
 	        	case "decline":
-	        		new Decline_Command(event, mentionDescriptiveWithAdditional);
+	        		new Decline_Command(event);
 	        		break;
 	        	default:
 	        		new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();

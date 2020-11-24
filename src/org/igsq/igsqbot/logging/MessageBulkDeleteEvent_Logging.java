@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.logging;
 
 import java.awt.Color;
-import java.time.format.DateTimeFormatter;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
@@ -29,7 +28,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
 		String embedDescription = "";
 		MessageCache cache;
 		
-		if(!MessageCache.isCacheExist(event.getGuild().getId()))
+		if(!MessageCache.isGuildCached(event.getGuild().getId()))
 		{
 			cache = MessageCache.setAndReturnCache(event.getGuild().getId());
 		}
