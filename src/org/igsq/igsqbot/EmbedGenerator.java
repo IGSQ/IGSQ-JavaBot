@@ -363,7 +363,6 @@ public class EmbedGenerator{
 		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal")) return;
 		if(embed.isEmpty()) return;
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-		activeMessage.clearReactions().complete();
         activeMessage.editMessage(embed.build()).queue
         (
 				message -> 
@@ -389,7 +388,6 @@ public class EmbedGenerator{
 		Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
 		if(embed.isEmpty()) return;
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
-		activeMessage.clearReactions().complete();
         activeMessage.editMessage(embed.build()).queue
         (
 				message -> 
@@ -467,6 +465,11 @@ public class EmbedGenerator{
 	public MessageChannel getChannel() 
 	{
 		return channel;
+	}
+	public EmbedGenerator setChannel(MessageChannel channel) 
+	{
+		this.channel = channel;
+		return this;
 	}
 	
 }
