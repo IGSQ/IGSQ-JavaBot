@@ -97,12 +97,12 @@ public class Main_Command extends ListenerAdapter
 	        	case "help":
 	        		new Help_Command(event);
 	        		break;
-	        	case "alias":
-	        		new Alias_Command(event);
-	        		break;
-	        	case "decline":
-	        		new Decline_Command(event);
-	        		break;
+//	        	case "alias":
+//	        		new Alias_Command(event);
+//	        		break;
+//	        	case "decline":
+//	        		new Decline_Command(event);
+//	        		break;
 	        	default:
 	        		new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
 	        		break;

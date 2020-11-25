@@ -7,6 +7,7 @@ import org.igsq.igsqbot.logging.Main_Logging;
 import org.igsq.igsqbot.main.MessageDeleteEvent_Main;
 import org.igsq.igsqbot.main.MessageReactionAddEvent_Main;
 import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
+import org.igsq.igsqbot.minecraft.Main_Minecraft;
 
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -59,6 +60,8 @@ public class Bot
 			Common.jda.awaitReady();
 			
 			Yaml.applyDefault();
+			
+			new Main_Minecraft();
 			new Database();
 			
 		}

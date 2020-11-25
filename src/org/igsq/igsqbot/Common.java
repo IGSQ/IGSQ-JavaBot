@@ -19,11 +19,6 @@ import net.dv8tion.jda.api.entities.User;
 
 public class Common {
 	public static final String BOT_PREFIX = ".";
-	public static final String[] STARTUP_MESSAGES = {"Hello and, again, welcome to the Aperture Science Computer-Aided Enrichment Center.",
-			"Hello! This is the part where I kill you.",
-			"I've been really busy being dead. You know, after you MURDERED ME.",
-			"Am. Not. Dead! I'm not dead!",
-			"I lie when I'm nervous."};
 	public static final String[] QUESTION_REACTIONS = {"U+1F44D","U+1F44E"};
 	
 	public static JDABuilder jdaBuilder;
@@ -73,10 +68,12 @@ public class Common {
 		}
 		return false;
 	}
+	
 	public static boolean isFieldEmpty(String path, String filename)
 	{
 		return Yaml.getFieldString(path, filename) == null || Yaml.getFieldString(path, filename).isEmpty();
 	}
+	
 	public static String[] depend(String[] array, String value)
     {
         String[] arrayDepended = new String[array.length-1];
@@ -95,6 +92,7 @@ public class Common {
         }
         return arrayDepended;
     }
+	
 	public static Message[] depend(Message[] array, Message value)
     {
 		Message[] arrayDepended = new Message[array.length-1];
@@ -113,6 +111,7 @@ public class Common {
         }
         return arrayDepended;
     }
+	
     public static String[] append(String[] array, String value)
     {
     	String[] arrayAppended = new String[array.length+1];
@@ -123,6 +122,7 @@ public class Common {
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
+    
     public static String[] append(String[] array, String[] array2) 
     {
     	String[] appendedArray = array;
@@ -132,6 +132,7 @@ public class Common {
     	}
     	return appendedArray;
     }
+    
     public static Message[] append(Message[] array, Message value)
     {
     	Message[] arrayAppended = new Message[array.length+1];
@@ -313,7 +314,7 @@ public class Common {
 		return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now());
 	}
 	
-	public static GuildChannel fetchLogChannel(String guildID)
+	public static GuildChannel getLogChannel(String guildID)
 	{
 		return jda.getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
 	}

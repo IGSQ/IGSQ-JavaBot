@@ -39,7 +39,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 		{
 			Message newMessage = event.getMessage();
 			Message oldMessage = cache.get(event.getMessageId());
-			GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
+			GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
 			MessageChannel channel = event.getChannel();
 			String newContent = newMessage.getContentDisplay();
 			String oldContent = oldMessage.getContentDisplay();

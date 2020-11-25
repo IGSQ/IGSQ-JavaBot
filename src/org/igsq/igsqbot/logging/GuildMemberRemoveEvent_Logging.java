@@ -22,7 +22,7 @@ public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event)
 	{
-		GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
+		GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
 		Member member = event.getMember();
 		User user = event.getUser();
 		

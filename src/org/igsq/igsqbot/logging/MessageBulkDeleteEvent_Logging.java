@@ -23,7 +23,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
 	@Override
     public void onMessageBulkDelete(MessageBulkDeleteEvent event)
     {
-		GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
+		GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
 		MessageChannel channel = event.getChannel();
 		String embedDescription = "";
 		MessageCache cache;

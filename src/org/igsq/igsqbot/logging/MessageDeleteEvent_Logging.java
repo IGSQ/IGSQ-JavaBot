@@ -37,7 +37,7 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 		Message message = cache.get(event.getMessageId());
 		if(cache.isInCache(message))
 		{
-			GuildChannel logChannel = Common.fetchLogChannel(event.getGuild().getId());
+			GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
 			MessageChannel channel = event.getChannel();
 			String content = message.getContentDisplay();
 			
