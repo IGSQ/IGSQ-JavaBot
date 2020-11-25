@@ -64,7 +64,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
 		}
 		if(logChannel != null)
 		{
-			new EmbedGenerator((MessageChannel)logChannel).text(
+			new EmbedGenerator((MessageChannel) logChannel).title("Messages Deleted").text(
 			"**Channel**: " + Common.getChannelAsMention(channel.getId()) +
 			"\n\n**Messages**: " + embedDescription)
 			.color(Color.PINK).footer("Logged on: " + Common.getTimestamp()).send();

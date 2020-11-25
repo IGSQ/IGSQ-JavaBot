@@ -1,6 +1,7 @@
 package org.igsq.igsqbot;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import net.dv8tion.jda.api.entities.Message;
 
@@ -26,6 +27,30 @@ public class MessageCache
 		messageCache = Common.append(messageCache, message);
 	}
 	
+	public void set(Message[] messages)
+	{
+		for(Message selectedMessage : messages)
+		{
+			if(messageCache.length >= 1000) 
+			{
+				messageCache = Common.depend(messageCache, 0);
+			}
+			messageCache = Common.append(messageCache, selectedMessage);
+		}
+	}
+	
+	public void set(List<Message> messages)
+	{
+		for(Message selectedMessage : messages)
+		{
+			if(messageCache.length >= 1000) 
+			{
+				messageCache = Common.depend(messageCache, 0);
+			}
+			messageCache = Common.append(messageCache, selectedMessage);
+		}
+	}
+	
 	public Message get(String ID)
 	{
 		for(Message selectedMessage : messageCache)
@@ -49,13 +74,40 @@ public class MessageCache
 		}
 	}
 	
-	public void remove(Message message) //TODO: make this accept a List / Array
+	public void remove(Message message)
 	{
 		for(Message selectedMessage : messageCache)
 		{
 			if(selectedMessage.equals(message))
 			{
 				messageCache = Common.depend(messageCache, selectedMessage);
+			}
+		}
+	}
+	public void remove(Message[] messages)
+	{
+		for(Message selectedCachedMessage : messageCache)
+		{
+			for(Message selectedMessage : messages)
+			{
+				if(selectedCachedMessage.equals(selectedMessage))
+				{
+					messageCache = Common.depend(messageCache, selectedCachedMessage);
+				}
+			}
+		}
+	}
+	
+	public void remove(List<Message> messages)
+	{
+		for(Message selectedCachedMessage : messageCache)
+		{
+			for(Message selectedMessage : messages)
+			{
+				if(selectedCachedMessage.equals(selectedMessage))
+				{
+					messageCache = Common.depend(messageCache, selectedCachedMessage);
+				}
 			}
 		}
 	}
@@ -109,6 +161,11 @@ public class MessageCache
 	public String getID()
 	{
 		return ID;
+	}
+	
+	public Message[] getMessageCache()
+	{
+		return messageCache;
 	}
 	
 	public void clean()

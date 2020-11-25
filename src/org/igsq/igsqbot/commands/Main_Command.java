@@ -15,6 +15,10 @@ public class Main_Command extends ListenerAdapter
 	public Main_Command()
 	{
 		Common.jdaBuilder.addEventListeners(this);
+		
+		new MessageReactionAddEvent_Report();
+		new MessageReactionAddEvent_Help();
+		new MessageReactionAddEvent_Verification();
 	}
 	
     @Override

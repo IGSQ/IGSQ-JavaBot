@@ -17,7 +17,7 @@ public class MessageReceivedEvent_Main extends ListenerAdapter
 	@Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
-		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot() && !event.getMessage().getContentRaw().startsWith("."))
+		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot() && !event.getMessage().getContentRaw().startsWith(Common.BOT_PREFIX))
 		{
 			if(!MessageCache.isGuildCached(event.getGuild().getId()))
 			{
