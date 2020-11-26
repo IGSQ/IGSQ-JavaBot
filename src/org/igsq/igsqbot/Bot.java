@@ -39,7 +39,7 @@ public class Bot
 					MessageCache.cleanCaches();
 					System.out.println("Cleaning Message Caches: Complete.");
 			} 		
-    	}, 6, 6,TimeUnit.HOURS);
+    	}, 0, 6,TimeUnit.HOURS);
 		
 		try 
 		{

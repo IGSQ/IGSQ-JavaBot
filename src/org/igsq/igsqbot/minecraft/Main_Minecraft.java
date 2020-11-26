@@ -8,7 +8,6 @@ public class Main_Minecraft
 {
 	public Main_Minecraft()
 	{
-		Sync_Minecraft.sync();
 		Common.scheduler.scheduleAtFixedRate(new Runnable()
 		{
 			@Override
@@ -16,6 +15,16 @@ public class Main_Minecraft
 			{
 				Sync_Minecraft.sync();
 			} 		
-		}, 1, 1,TimeUnit.HOURS);
+		}, 0, 1,TimeUnit.SECONDS);
+		Common.scheduler.scheduleAtFixedRate(new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				Sync_Minecraft.clean();
+			} 		
+		}, 0, 6,TimeUnit.HOURS);
+		
+		new GuildMemberRemoveEvent_Minecraft();
 	}
 }
