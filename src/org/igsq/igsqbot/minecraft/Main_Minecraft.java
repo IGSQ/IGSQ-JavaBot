@@ -27,5 +27,6 @@ public class Main_Minecraft
 		}, 0, 6,TimeUnit.HOURS);
 		
 		new GuildMemberRemoveEvent_Minecraft();
+		new TwoFA_Minecraft();
 	}
 }

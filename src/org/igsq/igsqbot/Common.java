@@ -56,6 +56,7 @@ public class Common {
     }
 	public static boolean isValueInArray(Object[] array, Object value)
 	{
+		if(array.length == 0) return false;
 		for(Object currentObject : array)
 		{
 			if(currentObject.equals(value))
@@ -112,6 +113,17 @@ public class Common {
     public static String[] append(String[] array, String value)
     {
     	String[] arrayAppended = new String[array.length+1];
+    	for (int i = 0;i < array.length;i++)
+    	{
+    		arrayAppended[i] = array[i];
+    	}
+    	arrayAppended[array.length] = value;
+    	return arrayAppended;
+    }
+    
+    public static int[] append(int[] array, int value)
+    {
+    	int[] arrayAppended = new int[array.length+1];
     	for (int i = 0;i < array.length;i++)
     	{
     		arrayAppended[i] = array[i];
@@ -299,6 +311,7 @@ public class Common {
 	
 	public static String stringDepend(String input, String match)
 	{
+		if(!input.contains(match)) return input;
 		if(input.indexOf(match) >= 0)
 		{
 			input = input.substring(0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length(), input.length());
