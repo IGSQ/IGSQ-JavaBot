@@ -54,7 +54,7 @@ public class Common_Command
 	    return arrayDepended;
 	}
 	
-	public static String[][] retrieveAliases(String id)
+	public static String[][] getAliases(String id)
 	{
 		int i = 0;
 		String[][] result = new String[0][0];
@@ -75,7 +75,7 @@ public class Common_Command
 		}
 		return result;
 	}
-	public static String[] retrieveRoles(String id)
+	public static String[] getRoles(String id)
 	{
 		int i = 0;
 		String[] result = new String[0];
@@ -86,7 +86,7 @@ public class Common_Command
 		}
 		return result;
 	}
-	public static String[][] retrievedDeclined(String id)
+	public static String[][] getDeclined(String id)
 	{
 		int i = 0;
 		String[][] result = new String[0][0];

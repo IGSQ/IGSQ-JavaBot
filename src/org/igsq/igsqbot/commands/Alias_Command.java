@@ -58,7 +58,7 @@ public class Alias_Command
 			case "show":
 				EmbedGenerator embed = new EmbedGenerator(channel).title("Aliases for " + guild.getName());
 				String description = "";
-				for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
+				for(String[] selectedAliases : Common_Command.getAliases(guild.getId()))
 				{
 					Role role = null;
 					for(int i = 1; i < selectedAliases.length; i++)

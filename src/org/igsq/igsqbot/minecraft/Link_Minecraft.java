@@ -167,9 +167,6 @@ public class Link_Minecraft
 		{
 			
 		}
-		
-		Database.UpdateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + user.getId() + "','mwait');");
-		new EmbedGenerator(channel).text("Link added for account: " + mcAccount).sendTemporary(); 
 	}
 	
 	private void addLink()
@@ -194,6 +191,7 @@ public class Link_Minecraft
 				uuid = mc_accounts.getString(1);
 				boolean isWaiting = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'dwait';") > 0;
 				boolean isAlreadyLinked = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + user.getId() +"' AND current_status = 'linked';") > 0;
+				
 				if(isAlreadyLinked)
 				{
 					new EmbedGenerator(channel).text("There is already an account linked to your Discord, please delink first.").sendTemporary(); 

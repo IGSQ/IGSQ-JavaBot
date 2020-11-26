@@ -52,7 +52,7 @@ public class Verify_Command
 	private void verify() 
 	{
 		String messageContent = "";
-		String[] retrievedRoles = Common_Command.retrieveRoles(guild.getId());
+		String[] retrievedRoles = Common_Command.getRoles(guild.getId());
 		String[] assignedRoles = new String[0];
 		String[] declinedRoles = new String[0];
 		String queryString = "";
@@ -106,7 +106,7 @@ public class Verify_Command
 		}
 		
 		int currentRole = 0;
-		for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
+		for(String[] selectedAliases : Common_Command.getAliases(guild.getId()))
 		{
 			for(String selectedAlias : selectedAliases)
 			{
@@ -123,7 +123,7 @@ public class Verify_Command
 		}
 		
 		currentRole = 0;
-		for(String[] declinedAliases : Common_Command.retrieveDeclined(guild.getId()))
+		for(String[] declinedAliases : Common_Command.getDeclined(guild.getId()))
 		{
 			for(String declinedAlias : declinedAliases)
 			{
@@ -140,7 +140,7 @@ public class Verify_Command
 		String[] wordList = messageContent.split(" ");
 		if(assignedRoles.length < 2)
 		{
-			for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
+			for(String[] selectedAliases : Common_Command.getAliases(guild.getId()))
 			{
 				for(String selectedAlias: selectedAliases)
 				{
