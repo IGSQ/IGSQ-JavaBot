@@ -47,7 +47,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 				catch(Exception exception) { }
 				return; 
 			}
-			if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44d"))
+			if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44d")) 
 			{
 				for(int i = 0; i < guessedRoles.length; i++)
 				{

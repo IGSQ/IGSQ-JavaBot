@@ -49,8 +49,15 @@ public class Alias_Command
 	private void alias()
 	{
 		args = Common.depend(args, 0);
-		try{action = args[0];}
-		catch(Exception exception) {new EmbedGenerator(channel).text("You entered an invalid action").send(); return;}
+		try
+		{
+			action = args[0];
+		}
+		catch(Exception exception) 
+		{
+			new EmbedGenerator(channel).text("You entered an invalid action").send(); 
+			return;
+		}
 		
 		switch(action.toLowerCase())
 		{
@@ -75,8 +82,14 @@ public class Alias_Command
 				embed.text(description).send();
 				return;
 		}
-		try{role = Common.getRoleFromMention(guild, args[1]);}
-		catch(Exception exception) {role = null;}
+		try
+		{
+			role = Common.getRoleFromMention(guild, args[1]);
+		}
+		catch(Exception exception) 
+		{
+			role = null;
+		}
 		
 		if(role == null)
 		{
@@ -84,8 +97,15 @@ public class Alias_Command
 			return;
 		}
 		
-		try { alias = args[2]; }
-		catch(Exception exception) {new EmbedGenerator(channel).text("You entered an invalid alias").send(); return;}
+		try
+		{
+			alias = args[2];
+		}
+		catch(Exception exception) 
+		{
+			new EmbedGenerator(channel).text("You entered an invalid alias").send(); 
+			return;
+		}
 		
 		if(alias.length() > 30) { new EmbedGenerator(channel).text("Your alias is too long.").sendTemporary(); return; }
 		if(alias.replaceAll("([^0-9a-zA-Z ]+)", "").length() < alias.length()) { new EmbedGenerator(channel).text("You entered an invalid alias").send(); return; }

@@ -86,13 +86,16 @@ public class Verify_Command
 		}
 		else
 		{
-			Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
-			if(verifiedRole != null)
+			if(!Common.isFieldEmpty(guild.getId() + ".verifiedrole", "guild"))
 			{
-				if(Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
+				Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
+				if(verifiedRole != null)
 				{
-					new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
-					return;
+					if(Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
+					{
+						new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
+						return;
+					}
 				}
 			}
 		}
