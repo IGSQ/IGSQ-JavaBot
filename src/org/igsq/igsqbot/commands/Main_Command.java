@@ -54,12 +54,6 @@ public class Main_Command extends ListenerAdapter
 	        	case "poll":
 	        		new Poll_Command(event, slashArgs);
 	        		break;
-	        		
-	        	case "kick":
-	        	case "boot":
-	        		new Kick_Command(event);
-	        		break;
-	        		
 	        	case "avatar":
 	        		new Avatar_Command(event);
 	        		break;
@@ -71,32 +65,26 @@ public class Main_Command extends ListenerAdapter
 	        	case "clear":
 	        		new Clear_Command(event, args);
 	        		break;
-	        	
 	        	case "verify":
 	        	case "v":
 	        	case "accept":
 	        		new Verify_Command(event);
 	        		break;
-	        		
-	        	case "match":
-	        		new Match_Command(event,slashArgs);
-	        		break;
-	        		
 	        	case "question":
 	        	case "query":
 	        		new Question_Command(event,mentionDescriptiveArgs);
 	        		break;
-	        		
 	        	case "report":
 	        		new Report_Command(event, mentionDescriptiveArgs);
 	        		break;	
-	        		
 	        	case "suggest":
 	        		new Suggestion_Command(event, descriptiveArgs);
 	        		break;
-	        		
 	        	case "help":
 	        		new Help_Command(event);
+	        		break;
+	        	case "modhelp":
+	        		new Modhelp_Command(event);
 	        		break;
 	        	case "link":
 	        	case "minecraft":

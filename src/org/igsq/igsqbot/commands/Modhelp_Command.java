@@ -14,19 +14,19 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class Modhelp_Command {
 	private MessageChannel channel;
 	private User author;
-	private Member guildAuthor;
+	private Member member;
 
 	public Modhelp_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
-		this.guildAuthor = event.getMember();
+		this.member = event.getMember();
 		modHelpQuery();
 	}
 
 	private void modHelpQuery()
 	{
-		if(!author.isBot() && guildAuthor.hasPermission(Permission.MESSAGE_MANAGE)) modhelp();
+		if(!author.isBot() && member.hasPermission(Permission.MESSAGE_MANAGE)) modhelp();
 		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 
