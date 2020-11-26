@@ -32,7 +32,7 @@ public class Modhelp_Command {
 
 	private void modhelp()
 	{
-		EmbedGenerator embed = Common_Command.PAGE_TEXT[0];
+		EmbedGenerator embed = Common_Command.HELP_PAGE_TEXT[0];
 		embed.setChannel(this.channel);
 		channel.sendMessage(embed.getBuilder().build()).queue
 		(

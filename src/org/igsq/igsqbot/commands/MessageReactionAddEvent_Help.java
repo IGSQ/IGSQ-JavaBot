@@ -30,16 +30,16 @@ public class MessageReactionAddEvent_Help extends ListenerAdapter
 				if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+25c0"))
 				{
 					page--;
-					if(page == 0) page = Common_Command.PAGE_TEXT.length;
+					if(page == 0) page = Common_Command.HELP_PAGE_TEXT.length;
 					Yaml.updateField(messageID + ".help.page", "internal", page);
 				}
 				else if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+25b6")) 
 				{
 					page++;
-					if(page == Common_Command.PAGE_TEXT.length + 1) page = 1;
+					if(page == Common_Command.HELP_PAGE_TEXT.length + 1) page = 1;
 					Yaml.updateField(messageID + ".help.page", "internal", page);
 				}
-				EmbedGenerator embed = Common_Command.PAGE_TEXT[page-1];
+				EmbedGenerator embed = Common_Command.HELP_PAGE_TEXT[page-1];
 				embed.setChannel(message.getChannel()).replace(message);
 			}
 		}
