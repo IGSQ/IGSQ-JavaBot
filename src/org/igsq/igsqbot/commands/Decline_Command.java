@@ -58,7 +58,7 @@ public class Decline_Command
 			case "show":
 				EmbedGenerator embed = new EmbedGenerator(channel).title("Declines for " + guild.getName());
 				String description = "";
-				for(String[] selectedAliases : Common_Command.retrieveDeclined(guild.getId()))
+				for(String[] selectedAliases : Common_Command.getDeclined(guild.getId()))
 				{
 					Role role = null;
 					for(int i = 1; i < selectedAliases.length; i++)

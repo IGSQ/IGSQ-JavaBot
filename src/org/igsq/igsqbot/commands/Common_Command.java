@@ -8,9 +8,7 @@ public class Common_Command
 {
 	public static final String[] POLL_EMOJIS_UNICODE = {"U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991"};
 	public static final String[] POLL_EMOJIS = {":pear:", ":watermelon:", ":pineapple:", ":apple:", ":banana:", ":avocado:", ":eggplant:", ":kiwi:", ":grapes:", ":blueberries:", ":cherries:", ":onion:", ":peach:", ":lemon:", ":tangerine:", ":melon:", ":coconut:",":garlic:", ":cucumber:", ":squid:"};
-	public static final EmbedGenerator[] PAGE_TEXT = {new EmbedGenerator(null).title("__**Help Page 1**__").element(".Avatar","Shows the avatar of mentioned user.\n.avatar [user]", true).element(".Poll", "Creates a poll using user input\n.poll [question]/[option1]/[option2]/etc", true).element(".Suggest", "Suggest an idea to the community\n.suggest [suggestion]", true),
-													  new EmbedGenerator(null).title("__**Help Page 2**__").element("BIg noober","big noober very noober", true)};
-	public static final EmbedGenerator[] MODPAGE_TEXT = {new EmbedGenerator(null).title("__**Mod Help Page 1**__").element(".Clear", "Clears messages by specified amount in the current channel.\n .clear [amount]", true).element(".Verify","Verifies specified user with aliases for this server.\n .verify [user]", true).element(".Alias","Adds alias' and declinations for this server, used in Verification.\n ADD SYNTAX HERE")};
+	public static final EmbedGenerator[] PAGE_TEXT = {new EmbedGenerator(null).title("__**Help Page 1**__").element("Avatar","Shows the avatar of mentioned user.\n.avatar @[user]", true).element("Poll", "Creates a poll using user input\n.poll [question]/[option1]/[option2]/etc", true).element("Suggest", "Suggest an idea to the community\n.suggest [suggestion]", true), new EmbedGenerator(null).text("kanker")};
 	public static final String[] SHUTDOWN_MESSAGES = {"Goodbye, Caroline.",
 			"Federal Superfund regulations require us to inform you that you must now leave the theater, as measuring the effects of asbestos-lined promotional clothing is not part of today's presentation. Enjoy your free t-shirt. Goodbye.",
 			"You know what, this plan is so good, I'm going to give you a sporting chance and turn off the neurotoxin. I'm joking. Of course. Goodbye.",
@@ -53,17 +51,16 @@ public class Common_Command
 	    }
 	    return arrayDepended;
 	}
-	
 	public static String[][] getAliases(String id)
 	{
 		int i = 0;
 		String[][] result = new String[0][0];
-		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").isEmpty())
+		while(!Common.isFieldEmpty(id + ".references." + i + ".name", "verification"))
 		{
-			if(Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").isEmpty())
+			if(!Common.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
 			{
 				String[] role = new String[0];
-				role = Common.append(role, Yaml.getFieldString(id + ".references." + i + ".name", "verification"));
+				role = Common.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
 				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(",")) role = Common.append(role, selectedAlias);
 				result = Common.append(result, role);
 			}
@@ -75,30 +72,184 @@ public class Common_Command
 		}
 		return result;
 	}
+	public static void insertAlias(String id, String role, String alias)
+	{
+		int i = 0;
+		while(!Common.isFieldEmpty(id + ".references." + i + ".id", "verification"))
+		{
+			if((Yaml.getFieldString(id + ".references." + i + ".id", "verification").equals(role)))
+			{
+				if(Common.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !Common.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
+				{
+					if(Common.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
+					{
+						Yaml.updateField(id + ".references." + i + ".aliases", "verification", alias);
+						return;
+					}
+					else
+					{
+						Yaml.updateField(id + ".references." + i + ".aliases", "verification", Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") + "," + alias);
+						return;
+					}
+				}
+			}
+			i++;
+		}
+		Yaml.updateField(id + ".references." + i + ".aliases", "verification", alias);
+		Yaml.updateField(id + ".references." + i + ".id", "verification", role);
+		Yaml.updateField(id + ".references." + i + ".name", "verification", alias);
+	}
+	public static int findReferenceForRole(String guild, String role)
+	{
+		int i = 0;
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		{
+			if(Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role))
+			{
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+	public static int findHighestReference(String guild)
+	{
+		int i = -1;
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		{
+			i++;
+		}
+		return i;
+	}
+	public static void insertDecline(String id, String role, String alias)
+	{
+		int i = 0;
+		while(!Common.isFieldEmpty(id + ".references." + i + ".id", "verification"))
+		{
+			if((Yaml.getFieldString(id + ".references." + i + ".id", "verification").equals(role)))
+			{
+				if(Common.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !Common.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
+				{
+					if(Common.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
+					{
+						Yaml.updateField(id + ".references." + i + ".declined", "verification", alias);
+						return;
+					}
+					else
+					{
+						Yaml.updateField(id + ".references." + i + ".declined", "verification", Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") + "," + alias);
+						return;
+					}
+				}
+			}
+			i++;
+		}
+		Yaml.updateField(id + ".references." + i + ".declined", "verification", alias);
+		Yaml.updateField(id + ".references." + i + ".id", "verification", role);
+		Yaml.updateField(id + ".references." + i + ".name", "verification", alias);
+	}
+	public static boolean removeAlias(String guild, String role, String alias)
+	{
+		int i = 0;
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		{
+			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
+			{
+				String[] aliases = Yaml.getFieldString(guild + ".references." + i + ".aliases", "verification").split(",");
+				String dependedAliases = "";
+				for(String selectedAlias : aliases)
+				{
+					if(!selectedAlias.equals(alias))
+					{
+						dependedAliases += "," + selectedAlias;
+					}
+				}
+				
+				Yaml.updateField(guild + ".references." + i + ".aliases", "verification", dependedAliases);
+				return true;
+			}
+			i++;
+		}
+		return false;
+	}
+	public static boolean removeDecline(String guild, String role, String alias)
+	{
+		int i = 0;
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		{
+			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
+			{
+				String[] aliases = Yaml.getFieldString(guild + ".references." + i + ".declined", "verification").split(",");
+				String dependedAliases = "";
+				for(String selectedAlias : aliases)
+				{
+					if(!selectedAlias.equals(alias))
+					{
+						dependedAliases += "," + selectedAlias;
+					}
+				}
+				
+				Yaml.updateField(guild + ".references." + i + ".declined", "verification", dependedAliases);
+				return true;
+			}
+			i++;
+		}
+		return false;
+	}
 	public static String[] getRoles(String id)
 	{
 		int i = 0;
 		String[] result = new String[0];
-		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").isEmpty())
+		while(!Common.isFieldEmpty(id + ".references." + i + ".name", "verification"))
 		{
 			result = Common.append(result, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
 			i++;
 		}
 		return result;
 	}
+	public static boolean isAliasExists(String guild, String alias)
+	{
+		int i = 0;
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
+		{
+			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".aliases", "verification").split(","))
+			{
+				if(selectedAlias.equals(alias))
+				{
+					return true;
+				}
+			}
+			i++;
+		}
+		return false;
+	}
+	public static boolean isDeclinedExist(String guild, String alias)
+	{
+		int i = 0;
+		while(!Common.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
+		{
+			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".declined", "verification").split(","))
+			{
+				if(selectedAlias.equals(alias))
+				{
+					return true;
+				}
+			}
+			i++;
+		}
+		return false;
+	}
 	public static String[][] getDeclined(String id)
 	{
 		int i = 0;
 		String[][] result = new String[0][0];
-		while(Yaml.getFieldString(id + ".references." + i + ".name", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".name", "verification").isEmpty())
+		while(!Common.isFieldEmpty(id + ".references." + i + ".id", "verification"))
 		{
-			if(Yaml.getFieldString(id + ".references." + i + ".declined", "verification") != null && !Yaml.getFieldString(id + ".references." + i + ".declined", "verification").isEmpty())
+			if(!Common.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
 			{
 				String[] role = new String[0];
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) 
-				{
-					role = Common.append(role, selectedAlias);
-				}
+				role = Common.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) role = Common.append(role, selectedAlias);
 				result = Common.append(result, role);
 			}
 			else
