@@ -11,34 +11,45 @@ public class GUIGenerator
 	private MessageChannel channel;
 	private EmbedGenerator embed;
 	private String[] options;
-	private MessageReactionAddEvent event;
+	private boolean confirmationResult;
 	
-	public GUIGenerator(MessageChannel channel, EmbedGenerator embed) 
+	public GUIGenerator(EmbedGenerator embed) 
 	{
-		this.channel = channel;
+		this.channel = embed.getChannel();
 		this.embed = embed;
 	}
+	
 	public boolean confirmation(User user)
 	{
+		embed.reaction(Common.TICK_REACTIONS);
+		embed.send();
 		
-		EventWaiter waiter = new EventWaiter(Common.scheduler,true);
+		EventWaiter waiter = new EventWaiter(Common.scheduler, true);
 		Common.jda.addEventListener(waiter);
-		waiter.waitForEvent(MessageReactionAddEvent.class, event -> event.getUser().equals(user) && !event.getUser().isBot() && event.getChannel().equals(channel) ,event -> this.event = event);
-		if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705"))
-		{
-			return true;
-		}
-		else if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+274E"))
-		{
-			return false;
-		}
-		else 
-		{
-			return confirmation(user);
-		}
+		
+		waiter.waitForEvent(MessageReactionAddEvent.class,
+				event -> event.getUser().equals(user) && !event.getUser().isBot() && event.getChannel().equals(channel),
+				event-> 
+				{
+					if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705"))
+					{
+						this.confirmationResult = true;
+					}
+					else if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+274e"))
+					{
+						this.confirmationResult = false;
+					}
+					else
+					{
+						confirmation(event.getUser());
+					}
+					event.getReaction().removeReaction(event.getUser()).complete();
+				}
+		);
+		return false;
 	}
 	
-	public boolean question(String[] options) 
+	public boolean question() 
 	{
 		return false;
 	}
@@ -47,15 +58,10 @@ public class GUIGenerator
 		return null;
 	}
 	
-	public String userInput(String[] options)
+	public String input(String[] options)
 	{
 		return null;
 	}
-	
-	
-	
-	
-	
 	
 	public String[] getOptions() 
 	{

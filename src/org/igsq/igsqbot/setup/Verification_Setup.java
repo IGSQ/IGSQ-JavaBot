@@ -12,6 +12,5 @@ public class Verification_Setup
 	public Verification_Setup(MessageReceivedEvent event) 
 	{
 		this.event = event;
-		new GUIGenerator(event.getChannel(), new EmbedGenerator(null).title("Are you gay?").text("1. Maybe\n2. Murray"));
 	}
 }

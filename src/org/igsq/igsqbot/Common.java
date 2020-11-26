@@ -17,7 +17,8 @@ import net.dv8tion.jda.api.entities.User;
 
 public class Common {
 	public static final String BOT_PREFIX = ".";
-	public static final String[] QUESTION_REACTIONS = {"U+1F44D","U+1F44E"};
+	public static final String[] THUMB_REACTIONS = {"U+1F44D","U+1F44E"};
+	public static final String[] TICK_REACTIONS = {"U+2705","U+274E"};
 	
 	public static JDABuilder jdaBuilder;
 	public static JDA jda;

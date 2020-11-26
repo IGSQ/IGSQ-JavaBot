@@ -71,9 +71,8 @@ public class Main_Command extends ListenerAdapter
 	        	case "accept":
 	        		new Verify_Command(event);
 	        		break;
-	        	case "question":
-	        	case "query":
-	        		new Question_Command(event,mentionDescriptiveArgs);
+	        	case "test":
+	        		new Test_Command(event,mentionDescriptiveArgs);
 	        		break;
 	        	case "report":
 	        		new Report_Command(event, mentionDescriptiveArgs);
