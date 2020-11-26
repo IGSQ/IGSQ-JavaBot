@@ -62,7 +62,7 @@ public class Database
         }
         catch (SQLException exception) 
         {
-        	
+        	exception.printStackTrace();
         }
     }
 	public static int ScalarCommand(String sql) 
@@ -85,7 +85,7 @@ public class Database
 	public static Boolean testDatabase() 
 	{
         try 
-        {
+        {   
         	Connection connection = DriverManager.getConnection(url, user, password);
             Statement commandAdapter = connection.createStatement();
             commandAdapter.executeUpdate("CREATE TABLE IF NOT EXISTS test_database(number int PRIMARY KEY AUTO_INCREMENT,test VARCHAR(36));");
@@ -93,7 +93,7 @@ public class Database
             connection.close();
             return true;
         }
-        catch (SQLException exception) 
+        catch (Exception exception) 
         {
         	return false;
         }

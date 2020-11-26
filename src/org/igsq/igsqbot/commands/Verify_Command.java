@@ -8,8 +8,8 @@ import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
-
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -21,7 +21,9 @@ public class Verify_Command
 	private Message message;
 	private Guild guild;
 	private User toVerify;
-	private String roleString = "";
+	private String guessedRoles = "";
+	private String guessedAliases = "";
+	private String confirmedRoles = "";
 
 	public Verify_Command(MessageReceivedEvent event) 
 	{
@@ -52,21 +54,47 @@ public class Verify_Command
 		String messageContent = "";
 		String[] retrievedRoles = Common_Command.retrieveRoles(guild.getId());
 		String[] assignedRoles = new String[0];
+		String[] declinedRoles = new String[0];
+		String queryString = "";
+		String verificationMessage = "";
+		
+		try
+		{
+			toVerify = message.getMentionedUsers().get(0);
+		}
+		
+		catch(Exception exception)
+		{
+			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
+			return;
+		}
 		
 		if(!channel.getId().equalsIgnoreCase(Yaml.getFieldString(guild.getId() + ".verificationchannel", "guild")))
 		{
 			new EmbedGenerator(channel).text("This is not the setup verification channel.").color(Color.RED).sendTemporary();
 			return;
 		}
-		
-		try
+		else if(toVerify.isBot())
 		{
-			toVerify = message.getMentionedUsers().get(0);
-		}
-		catch(Exception exception)
-		{
-			new EmbedGenerator(channel).text("Mention someone to verify.").color(Color.RED).sendTemporary();
+			new EmbedGenerator(channel).text("You cannot verify bots.").color(Color.RED).sendTemporary();
 			return;
+		}
+		else if(Common.getMemberFromUser(toVerify, guild).isOwner())
+		{
+			new EmbedGenerator(channel).text("You cannot verify the owner.").color(Color.RED).sendTemporary();
+			return;
+		}
+		else
+		{
+			Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
+			if(verifiedRole != null)
+			{
+				if(Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
+				{
+					new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
+					return;
+				}
+			}
 		}
 		
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
@@ -76,40 +104,86 @@ public class Verify_Command
 				messageContent += " " + selectedMessage.getContentRaw();
 			}
 		}
-		int i = 0;
+		
+		int currentRole = 0;
 		for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
 		{
 			for(String selectedAlias : selectedAliases)
 			{
-				if(messageContent.indexOf(selectedAlias) >= 0)
+				if(messageContent.contains(selectedAlias))
 				{
-					roleString += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[i] + ">\n";
-					assignedRoles = Common.append(assignedRoles, retrievedRoles[i]);
-					//TODO: subtract selectedAlias from messageContent
+					verificationMessage += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[currentRole] + "> (Known)\n";
+					assignedRoles = Common.append(assignedRoles, retrievedRoles[currentRole]);
+					messageContent = Common.stringDepend(messageContent, selectedAlias);
+					confirmedRoles += "," + retrievedRoles[currentRole];
 					break;
 				}
 			}
-			i++;
+			currentRole++;
 		}
 		
-		i = 0;
-		for(String[] declinedAliases : Common_Command.retrievedDeclined(guild.getId()))
+		currentRole = 0;
+		for(String[] declinedAliases : Common_Command.retrieveDeclined(guild.getId()))
 		{
 			for(String declinedAlias : declinedAliases)
 			{
-				for(String selectedRole : assignedRoles)
+				if(messageContent.contains(declinedAlias) && !Common.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
 				{
-					if(messageContent.contains(declinedAlias) && !selectedRole.equals(retrievedRoles[i]))
-					{
-						roleString += "Ignored Alias: " + declinedAlias + " for role <@&" + retrievedRoles[i] + ">\n";
-						break;
-					}
+					declinedRoles = Common.append(declinedRoles, retrievedRoles[currentRole]);
+					break;
 				}
 			}
-			i++;
+			currentRole++;
 		}
-		if(roleString.isEmpty()) roleString = "No roles found";
-		new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Roles:", roleString).reaction(Common.QUESTION_REACTIONS).footer("This verification was intitiated by " + author.getAsTag()).sendTemporary();
+		
+		currentRole = 0;
+		String[] wordList = messageContent.split(" ");
+		if(assignedRoles.length < 2)
+		{
+			for(String[] selectedAliases : Common_Command.retrieveAliases(guild.getId()))
+			{
+				for(String selectedAlias: selectedAliases)
+				{
+					for(int i = 0; i < wordList.length; i++)
+					{
+						queryString = "";
+						try
+						{
+							queryString = wordList[i] + " " + wordList[i + 1];
+						}
+						catch(Exception exception)
+						{
+							queryString = wordList[i];
+						}
+						
+						if(Common.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !Common.isValueInArray(declinedRoles, retrievedRoles[currentRole]) && !Common.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
+						{
+							verificationMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)\n";
+							guessedRoles += "," + retrievedRoles[currentRole];
+							guessedAliases += "," + queryString;
+							continue;
+						}
+					}
+				}
+				currentRole ++;
+			}
+		}
+		
+		if(verificationMessage.isEmpty()) verificationMessage = "No roles found";
+		EmbedGenerator embed = new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Roles:", verificationMessage).footer("This verification was intitiated by " + author.getAsTag());
+		channel.sendMessage(embed.getBuilder().build()).queue
+		(
+			message ->
+			{
+				Yaml.updateField(message.getId() + ".verification.enabled", "internal", true);
+				Yaml.updateField(message.getId() + ".verification.guessedroles", "internal", this.guessedRoles);
+				Yaml.updateField(message.getId() + ".verification.guessedaliases", "internal", this.guessedAliases);
+				Yaml.updateField(message.getId() + ".verification.confirmedroles", "internal", this.confirmedRoles);
+				Yaml.updateField(message.getId() + ".verification.member", "internal", this.toVerify.getId());
+				Yaml.updateField(message.getId() + ".verification.verifier", "internal", this.author.getId());
+				for(String reaction : Common.QUESTION_REACTIONS) message.addReaction(reaction).queue();
+			}
+		);
 	}
 }
 

@@ -14,7 +14,7 @@ public class Yaml
      * @apiNote Used in {@link #createFiles()} to instansiate the filesnames.
      * @see java.io.File
      */
-    public static String[] fileNames = {"config","internal","guild","verification"};
+    public static String[] fileNames = {"config","internal","guild","verification","minecraft"};
     /**
      * files is a {@link java.io.File File} array of all of the files that can be used.
      * @apiNote Used in {@link #loadFile(String)} to get data from file & in {@link #saveFileChanges(String)} to save data to file
@@ -193,6 +193,36 @@ public class Yaml
         addFieldDefault("MYSQL.database","config","jdbc:mysql://localhost:3306/database?useSSL=false");
         
         addFieldDefault("BOT.token","config","token");
+        addFieldDefault("BOT.server","config","");
+        
+        addFieldDefault("ranks.default", "minecraft", "");
+        
+        addFieldDefault("ranks.rising", "minecraft", "");
+        addFieldDefault("ranks.flying", "minecraft", "");
+        addFieldDefault("ranks.soaring", "minecraft", "");
+        
+        addFieldDefault("ranks.epic", "minecraft", "");
+        addFieldDefault("ranks.epic2", "minecraft", "");
+        addFieldDefault("ranks.epic3", "minecraft", "");
+        
+        addFieldDefault("ranks.elite", "minecraft", "");
+        addFieldDefault("ranks.elite2", "minecraft", "");
+        addFieldDefault("ranks.elite3", "minecraft", "");
+        
+        addFieldDefault("ranks.mod", "minecraft", "");
+        addFieldDefault("ranks.mod2", "minecraft", "");
+        addFieldDefault("ranks.mod3", "minecraft", "");
+        
+        addFieldDefault("ranks.council", "minecraft", "");
+        
+        addFieldDefault("ranks.birthday", "minecraft", "");
+        addFieldDefault("ranks.nitroboost", "minecraft", "");
+        addFieldDefault("ranks.founder", "minecraft", "");
+        addFieldDefault("ranks.retired", "minecraft", "");
+        addFieldDefault("ranks.developer", "minecraft", "");
+      
+        
+        
         
         for(FileConfiguration configuration : configurations) configuration.options().copyDefaults(true);
     }

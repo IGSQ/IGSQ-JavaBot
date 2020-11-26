@@ -51,14 +51,6 @@ public class EmbedGenerator{
 		embed = new EmbedBuilder();
 	}
 	/**
-	 * Constructor for Embed, with no channel attached.
-	 * @see org.igsq.igsqbot.EmbedGenerator
-	 */
-	public EmbedGenerator()
-	{
-		embed = new EmbedBuilder();
-	}
-	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
 	 * Overloads {@link #EmbedGenerator(MessageChannel) With EmbedBuilder}  
 	 * @see org.igsq.igsqbot.EmbedGenerator
