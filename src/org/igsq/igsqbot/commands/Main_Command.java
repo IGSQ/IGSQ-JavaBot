@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.minecraft.Link_Minecraft;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -96,6 +97,11 @@ public class Main_Command extends ListenerAdapter
 	        		
 	        	case "help":
 	        		new Help_Command(event);
+	        		break;
+	        	case "link":
+	        	case "minecraft":
+	        	case "mc":
+	        		new Link_Minecraft(event);
 	        		break;
 //	        	case "alias":
 //	        		new Alias_Command(event);

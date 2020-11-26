@@ -15,7 +15,8 @@ public class Main_Minecraft
 			{
 				Sync_Minecraft.sync();
 			} 		
-		}, 0, 1,TimeUnit.SECONDS);
+		}, 0, 1,TimeUnit.MINUTES);
+		
 		Common.scheduler.scheduleAtFixedRate(new Runnable()
 		{
 			@Override
