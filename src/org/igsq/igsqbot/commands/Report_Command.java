@@ -27,9 +27,10 @@ public class Report_Command
 	private User reportedUser = null;
 	private Member reportedMember = null;
 	
-	public Report_Command(MessageReceivedEvent event, String[] args)
+	public Report_Command(MessageReceivedEvent event)
 	{
-		this.args = args;
+		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ", 3);
+		this.args = Common.depend(args, 0);
 		this.message = event.getMessage();
 		this.author = event.getAuthor();
 		if(event.getChannelType().equals(ChannelType.TEXT)) 

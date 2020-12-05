@@ -1,93 +1,101 @@
 package org.igsq.igsqbot;
 
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import org.igsq.igsqbot.util.EventWaiter;
+import org.igsq.igsqbot.util.GUI_State;
 
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
-public class GUIGenerator 
+public class GUIGenerator
 {
-	private MessageChannel channel;
 	private EmbedGenerator embed;
-	private String[] options;
-	private boolean confirmationResult;
-	
+	private Message message = null;
+
 	public GUIGenerator(EmbedGenerator embed) 
 	{
-		this.channel = embed.getChannel();
 		this.embed = embed;
 	}
 	
-	public boolean confirmation(User user)
-	{
-		embed.reaction(Common.TICK_REACTIONS);
-		embed.send();
+	public GUI_State confirmation(User user, long expirationTimeout)
+	{	
+		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
 		
-		EventWaiter waiter = new EventWaiter(Common.scheduler, true);
-		Common.jda.addEventListener(waiter);
+		for(String selectedReaction : Common.TICK_REACTIONS) message.addReaction(selectedReaction).queue();
+
+		MessageReactionAddEvent reactionEvent;
+		EventWaiter waiter = new EventWaiter();
+
+		try
+		{
+			reactionEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(user) && !event.getUser().isBot(), expirationTimeout);
+		} 
+		catch (Exception exception) 
+		{
+			reactionEvent = null;
+		}
 		
-		waiter.waitForEvent(MessageReactionAddEvent.class,
-				event -> event.getUser().equals(user) && !event.getUser().isBot() && event.getChannel().equals(channel),
-				event-> 
+		if(reactionEvent != null)
+		{
+			
+			if(reactionEvent.getReactionEmote().isEmoji())
+			{
+				reactionEvent.getReaction().removeReaction(reactionEvent.getUser()).queue();
+				if(reactionEvent.getReactionEmote().getAsCodepoints().equals("U+2705"))
 				{
-					if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705"))
-					{
-						this.confirmationResult = true;
-					}
-					else if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+274e"))
-					{
-						this.confirmationResult = false;
-					}
-					else
-					{
-						confirmation(event.getUser());
-					}
-					event.getReaction().removeReaction(event.getUser()).complete();
+					return GUI_State.TRUE;
 				}
-		);
-		return false;
+				else if(reactionEvent.getReactionEmote().getAsCodepoints().equals("U+274e"))
+				{
+					return GUI_State.FALSE;
+				}
+				else
+				{
+					return GUI_State.INVALID_EMOJI;
+				}
+			}
+			else
+			{
+				reactionEvent.getReaction().removeReaction(reactionEvent.getUser()).queue();
+				return GUI_State.INVALID_EMOJI;
+			}
+		}
+		else
+		{
+			return GUI_State.TIMEOUT;
+		}
 	}
 	
-	public boolean question() 
-	{
-		return false;
-	}
-	public String list(String[] options)
-	{
-		return null;
+	public String input(User user, long expirationTimeout)
+	{	
+		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
+
+		MessageReceivedEvent messageEvent;
+		EventWaiter waiter = new EventWaiter();
+
+		try
+		{
+			messageEvent = waiter.waitFor(MessageReceivedEvent.class, event -> event.getAuthor().equals(user) && !event.getAuthor().isBot(), expirationTimeout);
+		} 
+		catch (Exception exception) 
+		{
+			messageEvent = null;
+		}
+		
+		if(messageEvent != null)
+		{
+			return messageEvent.getMessage().getContentRaw();
+		}nd 
+		else
+		{
+			return null;
+		}
 	}
 	
-	public String input(String[] options)
+	public Message getMessage()
 	{
-		return null;
-	}
-	
-	public String[] getOptions() 
-	{
-		return options;
-	}
-	public MessageChannel getChannel() 
-	{
-		return channel;
-	}
-	public EmbedGenerator getEmbed() 
-	{
-		return embed;
-	}
-	public GUIGenerator setOptions(String[] options) 
-	{
-		this.options = options;
-		return this;
-	}
-	public GUIGenerator setChannel(MessageChannel channel) 
-	{
-		this.channel = channel;
-		return this;
-	}
-	public GUIGenerator setEmbed(EmbedGenerator embed) 
-	{
-		this.embed = embed;
-		return this;
+		return message;
 	}
 }

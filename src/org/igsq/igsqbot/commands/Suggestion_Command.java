@@ -23,9 +23,10 @@ public class Suggestion_Command
     private MessageChannel suggestionChannel;
     private Guild guild;
 
-    public Suggestion_Command(MessageReceivedEvent event, String[] args)
+    public Suggestion_Command(MessageReceivedEvent event)
     {
-        this.args = args;
+        this.args = event.getMessage().getContentRaw().toLowerCase().split(" ", 2);
+        this.args = Common.depend(args, 0);
         this.message = event.getMessage();
         this.author = event.getAuthor();
         if(event.getChannelType().equals(ChannelType.TEXT)) 

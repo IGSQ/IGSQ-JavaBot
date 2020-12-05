@@ -1,10 +1,11 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
+import java.util.concurrent.TimeUnit;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.GUIGenerator;
+import org.igsq.igsqbot.util.GUI_State;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -14,7 +15,7 @@ public class Test_Command {
 	private MessageChannel channel;
 	private User author;
 
-	public Test_Command(MessageReceivedEvent event,String[] args) 
+	public Test_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
@@ -30,13 +31,18 @@ public class Test_Command {
 	
 	private void test() 
 	{
-		if(new GUIGenerator(new EmbedGenerator(channel).text("This is a test")).confirmation(author))
+		GUIGenerator generator = new GUIGenerator(new EmbedGenerator(channel).text("Are you okay"));
+		String testState = generator.input(author, 10000);
+		
+		if(testState == null)
 		{
-			System.out.println("test returned true");
+			new EmbedGenerator(null).text("Timeout").replace(generator.getMessage());
+			generator.getMessage().delete().queueAfter(5000, TimeUnit.MILLISECONDS);
+			test();
 		}
 		else
 		{
-			System.out.println("test returned false");
+			new EmbedGenerator(null).text(testState).replace(generator.getMessage());
 		}
 	}
 }

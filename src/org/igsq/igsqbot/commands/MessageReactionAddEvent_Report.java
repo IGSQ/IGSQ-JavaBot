@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.util.EventWaiter;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -29,7 +30,7 @@ public class MessageReactionAddEvent_Report extends ListenerAdapter
 		User user = event.retrieveUser().complete();
 		Guild guild = event.getGuild();
 		
-		if(Yaml.getFieldBool(messageID + ".report.enabled", "internal") && !user.isBot())
+		if(Yaml.getFieldBool(messageID + ".report.enabled", "internal") && !user.isBot() && !EventWaiter.waitingOnThis(event))
 		{
 			Member reportedUser = guild.retrieveMemberById(Yaml.getFieldString(messageID + ".report.reporteduser", "internal")).complete();
 			// Member reportingUser = event.getGuild().getMemberById(Yaml.getFieldInt(messageID + ".report.reportinguser", "internal"));

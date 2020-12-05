@@ -2,6 +2,7 @@ package org.igsq.igsqbot;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -24,7 +25,8 @@ public class Common {
 	public static JDA jda;
 	public static SelfUser self;
 	public final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
+	public final static ExecutorService commandExecuter = Executors.newFixedThreadPool(5);
+	
 	public static String[] depend(String[] array, int location)
     {
         String[] arrayDepended = new String[array.length-1];

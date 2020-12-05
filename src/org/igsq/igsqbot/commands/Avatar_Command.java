@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.EmbedGenerator;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;

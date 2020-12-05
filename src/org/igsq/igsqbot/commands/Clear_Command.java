@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
+
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
@@ -26,11 +28,12 @@ public class Clear_Command
 	private Cooldown_Handler handler;
 	final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
-	public Clear_Command(MessageReceivedEvent event, String[] args)
+	public Clear_Command(MessageReceivedEvent event)
 	{
 		this.author = event.getAuthor();
 		this.message = event.getMessage();
-		this.args = args;
+		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ");
+		this.args = Common.depend(args, 0);
 		if(event.getChannelType().equals(ChannelType.TEXT)) 
 		{
 			this.channel = event.getTextChannel();

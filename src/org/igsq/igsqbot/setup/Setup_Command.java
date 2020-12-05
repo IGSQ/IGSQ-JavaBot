@@ -16,14 +16,12 @@ public class Setup_Command
 	private User author;
 	private Member member;
 	private String[] args;
-	private MessageReceivedEvent event;
-	public Setup_Command(MessageReceivedEvent event, String[] args)
+	public Setup_Command(MessageReceivedEvent event)
 	{
-		this.event = event;
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
 		this.member = event.getMember();
-		this.args = args;
+		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ");
 		setupQuery();
 	}
 	
@@ -48,9 +46,9 @@ public class Setup_Command
 		
 		switch(action.toLowerCase()) 
 		{
-			case "verify":
-				new Verification_Setup(event);
-				break;
+//			case "verify":
+//				new Verification_Setup(event);
+//				break;
 			default:
 				new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary(); 
 				return;

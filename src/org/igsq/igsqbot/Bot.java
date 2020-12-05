@@ -53,7 +53,7 @@ public class Bot
 			new MessageReactionAddEvent_Main();
 			new MessageDeleteEvent_Main();
 			new MessageReceivedEvent_Main();
-			
+		
 			Common.jda = Common.jdaBuilder.build();
 			Common.self = Common.jda.getSelfUser();
 			

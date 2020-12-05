@@ -23,6 +23,39 @@ public class Common_Minecraft
 		}
 		return null;
 	}
+	public static String getNameFromUUID(String uuid)
+	{
+		ResultSet mc_accounts = Database.QueryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + uuid + "';");
+		try 
+		{
+			if(mc_accounts.next())
+			{
+				return mc_accounts.getString(1);
+			}
+		} 
+		catch (SQLException exception) 
+		{
+			return null;
+		}
+		return null;
+	}
+	
+	public static String getUUIDFromName(String name)
+	{
+		ResultSet mc_accounts = Database.QueryCommand("SELECT uuid FROM mc_accounts WHERE username = '" + name + "';");
+		try 
+		{
+			if(mc_accounts.next())
+			{
+				return mc_accounts.getString(1);
+			}
+		} 
+		catch (SQLException exception) 
+		{
+			return null;
+		}
+		return null;
+	}
 	
 	public static String getUUIDFromID(String id)
 	{

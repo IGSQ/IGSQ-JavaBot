@@ -21,12 +21,12 @@ public class Poll_Command {
 	private String topic = "";
 	private Color color = Color.LIGHT_GRAY;
 
-	public Poll_Command(MessageReceivedEvent event, String[] args) 
+	public Poll_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
 		if(event.getChannelType().equals(ChannelType.TEXT)) this.color = event.getMember().getColor();
-		this.args = args;
+		this.args = Common.removeBeforeCharacter(event.getMessage().getContentRaw(), ' ').split("/");
 		
 		pollQuery();
 	}

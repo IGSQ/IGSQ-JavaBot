@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.util.EventWaiter;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
@@ -29,7 +30,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 		Member member = event.retrieveMember().complete();
 		Guild guild = event.getGuild();
 		
-		if(Yaml.getFieldBool(messageID + ".verification.enabled", "internal") && !user.isBot())
+		if(Yaml.getFieldBool(messageID + ".verification.enabled", "internal") && !user.isBot() && !EventWaiter.waitingOnThis(event))
 		{
 			String[] guessedRoles = Yaml.getFieldString(messageID + ".verification.guessedroles", "internal").split(",");
 			String[] guessedAliases = Yaml.getFieldString(messageID + ".verification.guessedaliases", "internal").split(",");

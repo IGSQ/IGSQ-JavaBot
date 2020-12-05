@@ -113,7 +113,6 @@ public class Link_Minecraft
 	private void removeLink()
 	{
 		String mcAccount = "";
-		String uuid = "";
 		String id = "";
 		try
 		{
@@ -125,30 +124,26 @@ public class Link_Minecraft
 			return;
 		}
 		
-		ResultSet mc_accounts = Database.QueryCommand("SELECT uuid FROM mc_accounts WHERE username = '" + mcAccount + "';");
 		
 		try 
 		{
-			if(mc_accounts.next())
-			{
-				uuid = mc_accounts.getString(1);
-			}
-			else
+			String uuid = Common_Minecraft.getUUIDFromName(mcAccount);
+			String username = Common_Minecraft.getNameFromUUID(uuid);
+			
+			if(username == null)
 			{
 				new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary();
 				return;
 			}
 			
 			ResultSet linked_accounts = Database.QueryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
-			
-
 			if(linked_accounts.next())
 			{
 				id = linked_accounts.getString(1);
 				if(id.equals(user.getId()))
 				{
 					Database.UpdateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';" );
-					new EmbedGenerator(channel).text("Link removed for account: " + mcAccount).sendTemporary(); 
+					new EmbedGenerator(channel).text("Link removed for account: " + username).sendTemporary(); 
 					return;
 				}
 				else
@@ -172,7 +167,6 @@ public class Link_Minecraft
 	private void addLink()
 	{
 		String mcAccount = "";
-		String uuid = "";
 		try
 		{
 			mcAccount = args[1];
@@ -183,42 +177,44 @@ public class Link_Minecraft
 			return;
 		}
 		
-		ResultSet mc_accounts = Database.QueryCommand("SELECT uuid FROM mc_accounts WHERE username = '" + mcAccount + "';");
-		try 
+		String uuid = Common_Minecraft.getUUIDFromName(mcAccount);
+		String username = Common_Minecraft.getNameFromUUID(uuid);
+		if(uuid != null)
 		{
-			if(mc_accounts.next())
+			boolean isWaiting = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'dwait';") > 0;
+			boolean isAlreadyLinked = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + user.getId() +"' AND current_status = 'linked';") > 0;
+			boolean isUsersAccount = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'linked';") > 0;
+			
+			if(isUsersAccount)
 			{
-				uuid = mc_accounts.getString(1);
-				boolean isWaiting = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'dwait';") > 0;
-				boolean isAlreadyLinked = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + user.getId() +"' AND current_status = 'linked';") > 0;
-				
-				if(isAlreadyLinked)
-				{
-					new EmbedGenerator(channel).text("There is already an account linked to your Discord, please delink first.").sendTemporary(); 
-					return;
-				}
-				if(isWaiting)
-				{
-					Database.UpdateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
-					Database.UpdateCommand("DELETE FROM linked_accounts WHERE id = '" + user.getId() + "' AND current_status = 'dwait';");
-					new EmbedGenerator(channel).text("Link confirmed for account: " + mcAccount).sendTemporary(); 
-				}
-				else
-				{
-					Database.UpdateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + user.getId() + "','mwait');");
-					new EmbedGenerator(channel).text("Link added for account: " + mcAccount).sendTemporary(); 
-				}
+				new EmbedGenerator(channel).text("There is already an account linked to that Minecraft username.").sendTemporary();
+				return;
+			}
+			if(isAlreadyLinked)
+			{
+				new EmbedGenerator(channel).text("There is already an account linked to your Discord, please delink first.").sendTemporary();
+				return;
+			}
+			if(isWaiting)
+			{
+				Database.UpdateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
+				Database.UpdateCommand("DELETE FROM linked_accounts WHERE id = '" + user.getId() + "' AND current_status = 'dwait';");
+				new EmbedGenerator(channel).text("Link confirmed for account: " + username).sendTemporary();
+				return;
 			}
 			else
 			{
-				new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary(); 
+				Database.UpdateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + user.getId() + "','mwait');");
+				new EmbedGenerator(channel).text("Link added for account: " + username).sendTemporary();
 				return;
 			}
-		} 
-		catch (SQLException exception) 
-		{
-			
 		}
-	}
+		else
+		{
+			new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary(); 
+			return;
+		}
+	} 
 }
+
 	
