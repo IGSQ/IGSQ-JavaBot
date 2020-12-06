@@ -6,6 +6,7 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -24,11 +25,13 @@ public class Verify_Command
 	private String guessedRoles = "";
 	private String guessedAliases = "";
 	private String confirmedRoles = "";
+	private JDA jda;
 
 	public Verify_Command(MessageReceivedEvent event) 
 	{
 		this.author = event.getAuthor();
 		this.message = event.getMessage();
+		this.jda = event.getJDA();
 		
 		if(event.getChannelType().equals(ChannelType.TEXT)) 
 		{
@@ -102,7 +105,7 @@ public class Verify_Command
 		
 		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
 		{
-			if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(Common.jda.getSelfUser())) 
+			if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(jda.getSelfUser())) 
 			{
 				messageContent += " " + selectedMessage.getContentRaw();
 			}

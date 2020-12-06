@@ -6,7 +6,6 @@ import org.igsq.igsqbot.util.GUI_State;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 public class GUIGenerator
@@ -87,7 +86,7 @@ public class GUIGenerator
 		if(messageEvent != null)
 		{
 			return messageEvent.getMessage().getContentRaw();
-		}nd 
+		}
 		else
 		{
 			return null;

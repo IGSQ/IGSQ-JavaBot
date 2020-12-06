@@ -15,11 +15,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 {
-	public GuildMemberRemoveEvent_Logging()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{

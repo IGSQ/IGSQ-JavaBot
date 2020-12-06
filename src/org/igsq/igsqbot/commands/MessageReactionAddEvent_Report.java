@@ -2,7 +2,6 @@ package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.EventWaiter;
@@ -17,11 +16,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageReactionAddEvent_Report extends ListenerAdapter 
 {
-	public MessageReactionAddEvent_Report()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {

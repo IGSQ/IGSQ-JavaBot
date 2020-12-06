@@ -15,14 +15,6 @@ import net.dv8tion.jda.api.entities.ChannelType;
 public class Main_Command extends ListenerAdapter
 {
 	private static Cooldown_Handler[] cooldownHandlers = {};
-	public Main_Command()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-		
-		new MessageReactionAddEvent_Report();
-		new MessageReactionAddEvent_Help();
-		new MessageReactionAddEvent_Verification();
-	}
 	
     @Override
     public void onMessageReceived(MessageReceivedEvent event)

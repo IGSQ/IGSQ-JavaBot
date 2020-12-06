@@ -6,6 +6,7 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -22,6 +23,7 @@ public class Suggestion_Command
     private TextChannel channel;
     private MessageChannel suggestionChannel;
     private Guild guild;
+    private JDA jda;
 
     public Suggestion_Command(MessageReceivedEvent event)
     {
@@ -29,6 +31,7 @@ public class Suggestion_Command
         this.args = Common.depend(args, 0);
         this.message = event.getMessage();
         this.author = event.getAuthor();
+        this.jda = event.getJDA();
         if(event.getChannelType().equals(ChannelType.TEXT)) 
         {
             this.channel = event.getTextChannel();
@@ -48,7 +51,7 @@ public class Suggestion_Command
 	}
     private void suggest()
     {
-    	suggestionChannel = Common.jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
+    	suggestionChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
     	new EmbedGenerator(suggestionChannel).title("Suggestion:").text(args[0]).thumbnail(author.getAvatarUrl()).footer("Suggestion by: " + Common.getMemberFromUser(author, guild).getNickname()).send();
     }
 }

@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -84,30 +83,14 @@ public class Clear_Command
 		}
 		else
 		{
-			new Thread(() -> 
-			{
-				handler.createCooldown("clear", 5000);
-                List<Message> messages = channel.getHistory().retrievePast(amount).complete();
-                try 
-                {
-                	if(messages.size() <= 1) 
-                	{
-                		messages.get(0).delete().complete();
-                		new EmbedGenerator(channel).text("Deleted " + (messages.size()) + " message").color(Color.GREEN).sendTemporary(5000);
-                	}
-                	else
-                	{
-                		channel.deleteMessages(messages).complete();
-                		new EmbedGenerator(channel).text("Deleted " + (messages.size()) + " messages").color(Color.GREEN).sendTemporary(5000);
-                	}
-                }
-                catch (Exception exception)
-                {
-                	new EmbedGenerator(channel).text("Messages in the channel is less than the amount specified.").color(Color.RED).sendTemporary();
-                }
-	        }
-	        )
-	        .run();
+			handler.createCooldown("clear", 5000);
+			channel.getHistory().retrievePast(amount).queue(
+					messages -> 
+					{
+						channel.purgeMessages(messages);
+						new EmbedGenerator(channel).text("Deleted " + (messages.size()) + " messages").color(Color.GREEN).sendTemporary(5000);
+					}
+				);
 		}
 	}
 }

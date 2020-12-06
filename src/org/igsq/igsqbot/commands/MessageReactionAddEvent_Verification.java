@@ -5,6 +5,7 @@ import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.EventWaiter;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,11 +17,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageReactionAddEvent_Verification extends ListenerAdapter 
 {
-	public MessageReactionAddEvent_Verification()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
@@ -29,6 +25,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 		User user = event.retrieveUser().complete();
 		Member member = event.retrieveMember().complete();
 		Guild guild = event.getGuild();
+		JDA jda = event.getJDA();
 		
 		if(Yaml.getFieldBool(messageID + ".verification.enabled", "internal") && !user.isBot() && !EventWaiter.waitingOnThis(event))
 		{
@@ -36,8 +33,8 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 			String[] guessedAliases = Yaml.getFieldString(messageID + ".verification.guessedaliases", "internal").split(",");
 			String[] confirmedRoles = Yaml.getFieldString(messageID + ".verification.confirmedroles", "internal").split(",");
 
-			Member verifiedMember = Common.getMemberFromUser(Common.jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
-			Member initiater = Common.getMemberFromUser(Common.jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.verifier", "internal")).complete(), guild);
+			Member verifiedMember = Common.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
+			Member initiater = Common.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.verifier", "internal")).complete(), guild);
 			// if(!member.canInteract(verifiedMember)) { event.getReaction().removeReaction(user).queue(); return; }
 			if(!initiater.equals(member)) 
 			{ 
@@ -70,7 +67,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 				for(String selectedRole : confirmedRoles)  if(!selectedRole.isEmpty()) parsedRoles += " <@&" + selectedRole + "> "; 
 				if(parsedRoles.equals("<@&>") || parsedRoles.isEmpty()) parsedRoles = "No roles found.";
 
-				GuildChannel welcomeChannel = Common.jda.getGuildChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
+				GuildChannel welcomeChannel = jda.getGuildChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
 				new EmbedGenerator((MessageChannel) welcomeChannel).text(verifiedMember.getAsMention() + ", Welcome to the " + guild.getName() + "!").author(verifiedMember.getUser().getAsTag()).thumbnail(verifiedMember.getUser().getEffectiveAvatarUrl()).element("Roles", parsedRoles).send();
 				
 				for(String selectedRole : Yaml.getFieldString(guild.getId() + ".serverjoinroles", "guild").split(",")) 

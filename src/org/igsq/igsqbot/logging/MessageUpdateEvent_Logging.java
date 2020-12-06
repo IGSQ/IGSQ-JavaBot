@@ -17,11 +17,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageUpdateEvent_Logging extends ListenerAdapter
 {
-	public MessageUpdateEvent_Logging()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
 	public void onMessageUpdate(MessageUpdateEvent event)
 	{

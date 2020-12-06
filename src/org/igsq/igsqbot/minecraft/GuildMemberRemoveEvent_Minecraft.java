@@ -3,7 +3,6 @@ package org.igsq.igsqbot.minecraft;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
 
 import net.dv8tion.jda.api.entities.Member;
@@ -11,12 +10,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GuildMemberRemoveEvent_Minecraft extends ListenerAdapter
-{
-	public GuildMemberRemoveEvent_Minecraft()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
+{	
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{

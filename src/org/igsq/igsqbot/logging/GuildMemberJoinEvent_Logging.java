@@ -15,11 +15,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class GuildMemberJoinEvent_Logging extends ListenerAdapter
 {
-	public GuildMemberJoinEvent_Logging()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event)
 	{

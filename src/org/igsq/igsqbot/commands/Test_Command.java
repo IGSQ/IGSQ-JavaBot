@@ -5,8 +5,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.GUIGenerator;
-import org.igsq.igsqbot.util.GUI_State;
-
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

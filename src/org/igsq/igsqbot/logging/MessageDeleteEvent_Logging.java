@@ -16,11 +16,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageDeleteEvent_Logging extends ListenerAdapter
 {
-	public MessageDeleteEvent_Logging()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
     public void onMessageDelete(MessageDeleteEvent event)
     {

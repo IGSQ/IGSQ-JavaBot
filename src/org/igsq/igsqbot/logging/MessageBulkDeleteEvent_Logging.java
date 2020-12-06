@@ -15,11 +15,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: implement .clear to trigger similar functionality to this
 {
-	public MessageBulkDeleteEvent_Logging()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
     public void onMessageBulkDelete(MessageBulkDeleteEvent event)
     {

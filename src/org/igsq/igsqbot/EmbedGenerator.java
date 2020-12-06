@@ -3,8 +3,6 @@ package org.igsq.igsqbot;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,7 +11,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
  * Creates Embeds using JDA's {@link EmbedBuilder} api, with increased functionality.
@@ -320,36 +317,6 @@ public class EmbedGenerator{
 	public Message sendTemporary() 
 	{
 		return sendTemporary(10000);
-	}
-	/**
-	 * 
-	 * 
-	 */
-	public void sendQuestion(User answerer)
-	{
-		send();
-		EventWaiter waiter = new EventWaiter(Common.scheduler,true);
-		Common.jda.addEventListener(waiter);
-		waiter.waitForEvent(MessageReceivedEvent.class, event -> event.getAuthor().equals(answerer) && event.getChannel().equals(channel),event -> new EmbedGenerator(channel).text(event.getMessage().getContentRaw()).send());
-	}
-	/**
-	 * 
-	 * 
-	 */
-	public void sendQuestion(User answerer,int timeout)
-	{
-		Message message = send();
-		EventWaiter waiter = new EventWaiter(Common.scheduler,true);
-		Common.jda.addEventListener(waiter);
-		waiter.waitForEvent(MessageReceivedEvent.class, event -> event.getAuthor().equals(answerer) && event.getChannel().equals(channel),event -> new EmbedGenerator(channel).text(event.getMessage().getContentRaw()).send(),timeout,TimeUnit.MILLISECONDS, new Runnable() 
-		{
-			@Override
-			public void run() 
-			{
-				System.out.println("hi");
-				new EmbedGenerator(channel,embed).color(Color.RED).text("Question for " + answerer.getAsTag() + " expired.").replace(message);
-			}
-		});
 	}
 	/**
 	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}.

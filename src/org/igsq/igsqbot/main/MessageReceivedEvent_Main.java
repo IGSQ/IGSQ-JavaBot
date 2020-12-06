@@ -10,11 +10,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageReceivedEvent_Main extends ListenerAdapter
 {	
-	public MessageReceivedEvent_Main()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
     public void onMessageReceived(MessageReceivedEvent event)
     {

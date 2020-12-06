@@ -3,7 +3,14 @@ package org.igsq.igsqbot;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.commands.Main_Command;
-import org.igsq.igsqbot.logging.Main_Logging;
+import org.igsq.igsqbot.commands.MessageReactionAddEvent_Help;
+import org.igsq.igsqbot.commands.MessageReactionAddEvent_Report;
+import org.igsq.igsqbot.commands.MessageReactionAddEvent_Verification;
+import org.igsq.igsqbot.logging.GuildMemberJoinEvent_Logging;
+import org.igsq.igsqbot.logging.GuildMemberRemoveEvent_Logging;
+import org.igsq.igsqbot.logging.MessageBulkDeleteEvent_Logging;
+import org.igsq.igsqbot.logging.MessageDeleteEvent_Logging;
+import org.igsq.igsqbot.logging.MessageUpdateEvent_Logging;
 import org.igsq.igsqbot.main.MessageDeleteEvent_Main;
 import org.igsq.igsqbot.main.MessageReactionAddEvent_Main;
 import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
@@ -35,7 +42,7 @@ public class Bot
 			@Override
 			public void run() 
 			{
-					System.out.println("Cleaning Message Caches: Starting Now.");
+					System.out.println("Cleaning Message Caches: Starting.");
 					MessageCache.cleanCaches();
 					System.out.println("Cleaning Message Caches: Complete.");
 			} 		
@@ -46,18 +53,25 @@ public class Bot
 			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
 			Common.jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
 			Common.jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+			Common.jda = Common.jdaBuilder.build().awaitReady();
 			
-			new Main_Command();
-			new Main_Logging();
-			
-			new MessageReactionAddEvent_Main();
-			new MessageDeleteEvent_Main();
-			new MessageReceivedEvent_Main();
-		
-			Common.jda = Common.jdaBuilder.build();
-			Common.self = Common.jda.getSelfUser();
-			
-			Common.jda.awaitReady();
+			Common.jda.addEventListener(
+					new Main_Command(), 
+					
+					new MessageReactionAddEvent_Main(),
+					new MessageDeleteEvent_Main(),
+					new MessageReceivedEvent_Main(),
+					
+					new MessageReactionAddEvent_Help(),
+					new MessageReactionAddEvent_Report(),
+					new MessageReactionAddEvent_Verification(),
+					
+					new GuildMemberJoinEvent_Logging(),
+					new GuildMemberRemoveEvent_Logging(),
+					new MessageBulkDeleteEvent_Logging(),
+					new MessageDeleteEvent_Logging(),
+					new MessageUpdateEvent_Logging()
+					);
 			
 			Yaml.applyDefault();
 			

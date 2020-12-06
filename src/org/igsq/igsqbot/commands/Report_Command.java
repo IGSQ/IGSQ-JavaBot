@@ -6,6 +6,7 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -26,6 +27,7 @@ public class Report_Command
 	private String messageLog= "";
 	private User reportedUser = null;
 	private Member reportedMember = null;
+	private JDA jda;
 	
 	public Report_Command(MessageReceivedEvent event)
 	{
@@ -33,6 +35,7 @@ public class Report_Command
 		this.args = Common.depend(args, 0);
 		this.message = event.getMessage();
 		this.author = event.getAuthor();
+		this.jda = event.getJDA();
 		if(event.getChannelType().equals(ChannelType.TEXT)) 
 		{
 			this.channel = event.getTextChannel();
@@ -65,7 +68,7 @@ public class Report_Command
 			else if(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild") == null || Yaml.getFieldString(guild.getId() + ".reportchannel", "guild").isEmpty()) new EmbedGenerator(channel).text("There is no report channel setup.").color(Color.RED).sendTemporary(); // This should log to admins
 			else
 			{
-				reportChannel = Common.jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
+				reportChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
 				
 				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete()) if(selectedMessage.getAuthor().getId().equals(reportedMember.getId())) messageLog += reportedMember.getAsMention() + " | " + selectedMessage.getContentRaw() + "\n";
 				if(messageLog.isEmpty()) messageLog = "No recent messages found for this user.";

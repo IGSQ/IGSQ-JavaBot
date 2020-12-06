@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.commands;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.EventWaiter;
@@ -13,11 +12,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageReactionAddEvent_Help extends ListenerAdapter 
 {
-	public MessageReactionAddEvent_Help()
-	{
-		Common.jdaBuilder.addEventListeners(this);
-	}
-	
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
