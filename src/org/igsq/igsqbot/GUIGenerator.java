@@ -13,10 +13,12 @@ public class GUIGenerator
 	private EmbedGenerator embed;
 	private Message message = null;
 	private static final String NUMBER_CODEPOINT = "\u20E3";
+	private int optionCount = -1;
 
 	public GUIGenerator(EmbedGenerator embed) 
 	{
 		this.embed = embed;
+		
 	}
 	
 	public GUI_State confirmation(User user, long timeout)
@@ -92,15 +94,27 @@ public class GUIGenerator
 		}
 	}
 	
-	public Integer menu(User user, long timeout, int optionCount)
-	{
-		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
-		
-		for(int i = 1; i < optionCount; i++)
+	public int menu(User user, long timeout, int optionCount)
+	{	
+		if(message == null)
 		{
-			message.addReaction(i + NUMBER_CODEPOINT).queue();
+			message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
 		}
-
+		if(this.optionCount == -1)
+		{
+			for(int i = 1; i <= optionCount; i++)
+			{
+				message.addReaction(i + NUMBER_CODEPOINT).queue();
+			}
+		}
+		else
+		{
+			for(int i = this.optionCount + 1; i <= optionCount; i++)
+			{
+				message.addReaction(i + NUMBER_CODEPOINT).queue();
+			}
+		}
+		this.optionCount = optionCount;
 		MessageReactionAddEvent reactionEvent;
 		EventWaiter waiter = new EventWaiter();
 
@@ -126,25 +140,29 @@ public class GUIGenerator
 					}
 					else
 					{
-						return null;
+						return -1;
 					}
 				}
 				catch(Exception exception)
 				{
-					return null;
+					return -1;
 				}
 			}
 			else
 			{
-				return null;
+				return -1;
 			}
 		}
 		else
 		{
-			return null;
+			return -1;
 		}
 	}
 	
+	public EmbedGenerator getEmbed()
+	{
+		return embed;
+	}
 	public Message getMessage()
 	{
 		return message;

@@ -3,6 +3,7 @@ package org.igsq.igsqbot.setup;
 import java.awt.Color;
 
 import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.GUIGenerator;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -50,8 +51,28 @@ public class Setup_Command
 //				new Verification_Setup(event);
 //				break;
 			default:
-				new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary(); 
+				GUIGenerator menu = new GUIGenerator(new EmbedGenerator(channel).text("Are you gay?\n:one: Yes\n:two: yes but lowercase")); 
+				int option = menu.menu(author, 10000, 2);
+				if(option == -1)
+				{
+					new EmbedGenerator(channel).text("SHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIT").replace(menu.getMessage());
+				}
+				else if(option == 1)
+				{
+					new EmbedGenerator(channel).text("Are you gay2?\n:one: Yes2\n:two: yes but lowercase2\n:three: NO\n:four: no but less mad\n:five: banana").replace(menu.getMessage());
+					int option2 = menu.menu(author, 10000, 5);
+					if(option2 == 1)
+					{
+						new EmbedGenerator(channel).text("KankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKanker").replace(menu.getMessage());
+					}
+				}
+				else if(option == 2)
+				{
+					new EmbedGenerator(channel).text("wow, pretty gay! but in lowercase").replace(menu.getMessage());
+				}
+				
 				return;
+		
 				
 		}
 		
