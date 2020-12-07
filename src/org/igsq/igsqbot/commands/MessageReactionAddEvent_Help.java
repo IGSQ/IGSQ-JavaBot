@@ -2,8 +2,6 @@ package org.igsq.igsqbot.commands;
 
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.util.EventWaiter;
-
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.api.entities.User;
@@ -15,15 +13,24 @@ public class MessageReactionAddEvent_Help extends ListenerAdapter
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
-		Message message = event.retrieveMessage().complete();
-		User user = event.retrieveUser().complete();
+		Message message = null;
+		User user = null;
 		String messageID = event.getMessageId();
 		
+		try 
+		{
+			message = event.retrieveMessage().submit().get();
+			user = event.retrieveUser().submit().get();
+		} 
+		catch (Exception exception) 
+		{
+
+		}
 		ReactionEmote reaction = event.getReactionEmote();
 		String codePoint = reaction.getAsCodepoints();
 		
 		
-		if(Yaml.getFieldBool(messageID + ".help.enabled", "internal") && !user.isBot() && !EventWaiter.waitingOnThis(event))
+		if(Yaml.getFieldBool(messageID + ".help.enabled", "internal") && !user.isBot())
 		{
 			event.getReaction().removeReaction(user).queue();
 			

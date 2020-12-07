@@ -30,8 +30,7 @@ public class Test_Command {
 	private void test() 
 	{
 		GUIGenerator generator = new GUIGenerator(new EmbedGenerator(channel).text("Are you okay"));
-		String testState = generator.input(author, 10000);
-		
+		Integer testState = generator.menu(author, 60000, 5);
 		if(testState == null)
 		{
 			new EmbedGenerator(null).text("Timeout").replace(generator.getMessage());
@@ -40,7 +39,7 @@ public class Test_Command {
 		}
 		else
 		{
-			new EmbedGenerator(null).text(testState).replace(generator.getMessage());
+			new EmbedGenerator(null).text("" + testState).replace(generator.getMessage());
 		}
 	}
 }

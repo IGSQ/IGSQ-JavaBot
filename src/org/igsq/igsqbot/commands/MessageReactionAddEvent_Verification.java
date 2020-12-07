@@ -3,7 +3,6 @@ package org.igsq.igsqbot.commands;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.util.EventWaiter;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -20,14 +19,27 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
-		Message message = event.retrieveMessage().complete();
+		Message message = null;
+		User user = null;
+		Member member = null;
+		
 		String messageID = event.getMessageId();
-		User user = event.retrieveUser().complete();
-		Member member = event.retrieveMember().complete();
 		Guild guild = event.getGuild();
 		JDA jda = event.getJDA();
 		
-		if(Yaml.getFieldBool(messageID + ".verification.enabled", "internal") && !user.isBot() && !EventWaiter.waitingOnThis(event))
+		try 
+		{
+			message = event.retrieveMessage().submit().get();
+			user = event.retrieveUser().submit().get();
+			member = event.retrieveMember().complete();
+		} 
+		catch (Exception exception) 
+		{
+
+		}
+
+		
+		if(Yaml.getFieldBool(messageID + ".verification.enabled", "internal") && !user.isBot())
 		{
 			String[] guessedRoles = Yaml.getFieldString(messageID + ".verification.guessedroles", "internal").split(",");
 			String[] guessedAliases = Yaml.getFieldString(messageID + ".verification.guessedaliases", "internal").split(",");
