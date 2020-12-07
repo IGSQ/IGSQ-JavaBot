@@ -7,35 +7,35 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class MessageCache
 {
-	public static MessageCache[] messageCaches = new MessageCache[0];
-	private Message[] messageCache;
-	private String ID;
+	private static MessageCache[] messageCaches = new MessageCache[0];
+	private Message[] cachedMessages;
+	private final String guildId;
 	
-	public MessageCache(String ID)
+	public MessageCache(String guildId)
 	{
-		this.ID = ID;
-		this.messageCache = new Message[0];
+		this.guildId = guildId;
+		this.cachedMessages = new Message[0];
 	}
 	
 	public void set(Message message)
 	{
-		if(messageCache.length >= 1000) 
+		if(cachedMessages.length >= 1000)
 		{
-			messageCache = Common.depend(messageCache, 0);
+			cachedMessages = Common.depend(cachedMessages, 0);
 			clean();
 		}
-		messageCache = Common.append(messageCache, message);
+		cachedMessages = Common.append(cachedMessages, message);
 	}
 	
 	public void set(Message[] messages)
 	{
 		for(Message selectedMessage : messages)
 		{
-			if(messageCache.length >= 1000) 
+			if(cachedMessages.length >= 1000)
 			{
-				messageCache = Common.depend(messageCache, 0);
+				cachedMessages = Common.depend(cachedMessages, 0);
 			}
-			messageCache = Common.append(messageCache, selectedMessage);
+			cachedMessages = Common.append(cachedMessages, selectedMessage);
 		}
 	}
 	
@@ -43,19 +43,19 @@ public class MessageCache
 	{
 		for(Message selectedMessage : messages)
 		{
-			if(messageCache.length >= 1000) 
+			if(cachedMessages.length >= 1000)
 			{
-				messageCache = Common.depend(messageCache, 0);
+				cachedMessages = Common.depend(cachedMessages, 0);
 			}
-			messageCache = Common.append(messageCache, selectedMessage);
+			cachedMessages = Common.append(cachedMessages, selectedMessage);
 		}
 	}
 	
-	public Message get(String ID)
+	public Message get(String id)
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
-			if(selectedMessage.getId().equals(ID))
+			if(selectedMessage.getId().equals(id))
 			{
 				return selectedMessage;
 			}
@@ -63,36 +63,36 @@ public class MessageCache
 		return null;
 	}
 	
-	public void remove(String ID)
+	public void remove(String id)
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
-			if(selectedMessage.getId().equals(ID))
+			if(selectedMessage.getId().equals(id))
 			{
-				messageCache = Common.depend(messageCache, selectedMessage);
+				cachedMessages = Common.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
 	
 	public void remove(Message message)
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
 			if(selectedMessage.equals(message))
 			{
-				messageCache = Common.depend(messageCache, selectedMessage);
+				cachedMessages = Common.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
 	public void remove(Message[] messages)
 	{
-		for(Message selectedCachedMessage : messageCache)
+		for(Message selectedCachedMessage : cachedMessages)
 		{
 			for(Message selectedMessage : messages)
 			{
 				if(selectedCachedMessage.equals(selectedMessage))
 				{
-					messageCache = Common.depend(messageCache, selectedCachedMessage);
+					cachedMessages = Common.depend(cachedMessages, selectedCachedMessage);
 				}
 			}
 		}
@@ -100,23 +100,23 @@ public class MessageCache
 	
 	public void remove(List<Message> messages)
 	{
-		for(Message selectedCachedMessage : messageCache)
+		for(Message selectedCachedMessage : cachedMessages)
 		{
 			for(Message selectedMessage : messages)
 			{
 				if(selectedCachedMessage.equals(selectedMessage))
 				{
-					messageCache = Common.depend(messageCache, selectedCachedMessage);
+					cachedMessages = Common.depend(cachedMessages, selectedCachedMessage);
 				}
 			}
 		}
 	}
 	
-	public boolean isInCache(String ID)
+	public boolean isInCache(String messageId)
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
-			if(selectedMessage.getId().equals(ID))
+			if(selectedMessage.getId().equals(messageId))
 			{
 				return true;
 			}
@@ -126,7 +126,7 @@ public class MessageCache
 	
 	public boolean isInCache(Message message)
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
 			if(selectedMessage.equals(message))
 			{
@@ -138,59 +138,56 @@ public class MessageCache
 	
 	public void update(Message oldMessage, Message newMessage)
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
 			if(selectedMessage.equals(oldMessage))
 			{
-				messageCache = Common.depend(messageCache, selectedMessage);
+				cachedMessages = Common.depend(cachedMessages, selectedMessage);
 				set(newMessage);
 			}
 		}
 	}
 	public void update(String oldMessageID, Message newMessage)
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
 			if(selectedMessage.getId().equals(oldMessageID))
 			{
-				messageCache = Common.depend(messageCache, selectedMessage);
+				cachedMessages = Common.depend(cachedMessages, selectedMessage);
 				set(newMessage);
 			}
 		}
 	}
 	public String getID()
 	{
-		return ID;
+		return guildId;
 	}
 	
-	public Message[] getMessageCache()
+	public Message[] getCachedMessages()
 	{
-		return messageCache;
+		return cachedMessages;
 	}
 	
 	public void clean()
 	{
-		for(Message selectedMessage : messageCache)
+		for(Message selectedMessage : cachedMessages)
 		{
 			if(selectedMessage.getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)))
 			{
-				messageCache = Common.depend(messageCache, selectedMessage);
+				cachedMessages = Common.depend(cachedMessages, selectedMessage);
 			}	
 		}
 	}
 	
 	public void flush()
 	{
-		messageCache = new Message[0];
+		cachedMessages = new Message[0];
 	}
 	
 	public static MessageCache[] append(MessageCache[] array, MessageCache value)
 	{
 		MessageCache[] arrayAppended = new MessageCache[array.length+1];
-		for (int i = 0;i < array.length;i++)
-		{
-			arrayAppended[i] = array[i];
-		}
+        System.arraycopy(array, 0, arrayAppended, 0, array.length);
 		arrayAppended[array.length] = value;
 		return arrayAppended;
 	}
@@ -203,11 +200,11 @@ public class MessageCache
 		}
 	}
 	
-	public static MessageCache getCache(String ID)
+	public static MessageCache getCache(String id)
 	{
 		for(MessageCache selectedCache : messageCaches)
 		{
-			if(selectedCache.getID().equals(ID))
+			if(selectedCache.getID().equals(id))
 			{
 				return selectedCache;
 			}
@@ -215,11 +212,11 @@ public class MessageCache
 		return null;
 	}
 	
-	public static boolean isGuildCached(String ID)
+	public static boolean isGuildCached(String id)
 	{
 		for(MessageCache selectedCache : messageCaches)
 		{
-			if(selectedCache.getID().equals(ID))
+			if(selectedCache.getID().equals(id))
 			{
 				return true;
 			}
@@ -227,14 +224,14 @@ public class MessageCache
 		return false;
 	}
 	
-	public static void addCache(String ID)
+	public static void addCache(String guildId)
 	{
-		messageCaches = append(messageCaches, new MessageCache(ID));
+		messageCaches = append(messageCaches, new MessageCache(guildId));
 	}
 	
-	public static MessageCache addAndReturnCache(String ID)
+	public static MessageCache addAndReturnCache(String id)
 	{
-		MessageCache cache = new MessageCache(ID);
+		MessageCache cache = new MessageCache(id);
 		messageCaches = append(messageCaches, cache);
 		return cache;
 	}

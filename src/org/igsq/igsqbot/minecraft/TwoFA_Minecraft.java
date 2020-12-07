@@ -5,10 +5,7 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.*;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
@@ -18,21 +15,17 @@ public class TwoFA_Minecraft
 {
 	public TwoFA_Minecraft()
 	{
-		TwoFA();
+		twoFA();
 	}
 	
-	private void TwoFA()
+	private void twoFA()
 	{
-		Common.scheduler.scheduleAtFixedRate(new Runnable()
+		Common.scheduler.scheduleAtFixedRate(() ->
 		{
-			@Override
-			public void run() 
+			for(String selectedID : getPending())
 			{
-				for(String selectedID : getPending())
-				{
-					sendDirectMessage(selectedID);
-				}
-			} 		
+				sendDirectMessage(selectedID);
+			}
 		}, 0, 5,TimeUnit.SECONDS);
 	}
 	
@@ -52,26 +45,22 @@ public class TwoFA_Minecraft
 			
 			int code = generateCode();
 			PrivateChannel channel = user.openPrivateChannel().complete();
-			EmbedGenerator embed = new EmbedGenerator(null).text("Here is your Minecraft 2FA Code: " + code + "\n If you did not request this code, please ignore this mesage.");
+			EmbedGenerator embed = new EmbedGenerator(null).text("Here is your Minecraft 2FA Code: " + code + "\n If you did not request this code, please ignore this message.");
 			Message message = channel.sendMessage(embed.getBuilder().build()).complete();
 			
-			Database.UpdateCommand("UPDATE discord_2fa SET code = '" + code +  "' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+			Database.updateCommand("UPDATE discord_2fa SET code = '" + code +  "' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
 
-			Common.scheduler.schedule(new Runnable()
+			Common.scheduler.schedule(() ->
 			{
-				@Override
-				public void run() 
+				new EmbedGenerator(channel).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message.").replace(message);
+				if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
 				{
-					new EmbedGenerator(channel).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this mesage.").replace(message);
-					if(Database.ScalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
-					{
-						Database.UpdateCommand("UPDATE discord_2fa SET current_status = 'expired'");
-					}
-					Yaml.updateField("2fa.blacklist", "internal", Common.stringDepend(Yaml.getFieldString("2fa.blacklist", "internal"), id));
-					Database.UpdateCommand("UPDATE discord_2fa SET code = null WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
-					
-					
-				} 		
+					Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired'");
+				}
+				Yaml.updateField("2fa.blacklist", "internal", Common.stringDepend(Yaml.getFieldString("2fa.blacklist", "internal"), id));
+				Database.updateCommand("UPDATE discord_2fa SET code = null WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+
+
 			}, 60, TimeUnit.SECONDS);
 		}
 	}
@@ -84,26 +73,22 @@ public class TwoFA_Minecraft
 	
 	private String[] getPending()
 	{
-		ResultSet discord_2fa = Database.QueryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending'");
+		ResultSet discord_2fa = Database.queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending'");
 		String[] pendingIDs = new String[0];
 		try 
 		{
 			while(discord_2fa.next())
 			{
-				ResultSet linked_accounts = Database.QueryCommand("SELECT * FROM linked_accounts WHERE uuid = '" + discord_2fa.getString(1) + "';");
+				ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE uuid = '" + discord_2fa.getString(1) + "';");
 				if(linked_accounts.next())
 				{
 					pendingIDs = Common.append(pendingIDs, linked_accounts.getString(3));
-				}
-				else
-				{
-					continue;
 				}
 			}
 		} 
 		catch (SQLException exception) 
 		{
-			
+			new ErrorHandler(exception);
 		}
 		return pendingIDs;
 	}

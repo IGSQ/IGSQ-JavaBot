@@ -12,10 +12,10 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Avatar_Command {
-	private MessageChannel channel;
-	private User author;
-	private Message message;
-	private MessageReceivedEvent event;
+	private final MessageChannel channel;
+	private final User author;
+	private final Message message;
+	private final MessageReceivedEvent event;
 
 	public Avatar_Command(MessageReceivedEvent event) 
 	{
@@ -42,7 +42,7 @@ public class Avatar_Command {
 				for(User selectedUser : message.getMentionedUsers())
 				{
 					new EmbedGenerator(channel)
-					.title(selectedUser.getName() + "\'s Avatar")
+					.title(selectedUser.getName() + "'s Avatar")
 					.image(selectedUser.getEffectiveAvatarUrl())
 					.color(Color.BLUE).send();
 				}	
@@ -54,7 +54,7 @@ public class Avatar_Command {
 			else
 			{		
 		    	EmbedBuilder embedBuilder = new EmbedBuilder();
-		    	embedBuilder.setTitle(author.getName() + "\'s Avatar");
+		    	embedBuilder.setTitle(author.getName() + "'s Avatar");
 		        embedBuilder.setImage(author.getAvatarUrl());
 		        channel.sendMessage(embedBuilder.build()).queue();
 			}

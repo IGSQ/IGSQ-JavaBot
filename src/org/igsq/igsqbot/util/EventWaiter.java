@@ -26,7 +26,7 @@ import java.util.function.Predicate;
  */
 public class EventWaiter 
 {
-    private final static ConcurrentHashMap<Package<?>, Integer> eventList = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Package<?>, Integer> eventList = new ConcurrentHashMap<>();
 
     /**
      * Waits for a specific event to happen, returns the event when detected
@@ -36,9 +36,8 @@ public class EventWaiter
      * @param timeout after which to cancel the wait
      * @param <T> class of the event
      * @return event of success, null on timeout
-     * @throws Exception on exception
      */
-    public <T extends GenericEvent> T waitFor(Class<T> eventClassToWait, Predicate<T> condition, long timeout) throws Exception 
+    public <T extends GenericEvent> T waitFor(Class<T> eventClassToWait, Predicate<T> condition, long timeout) throws InterruptedException
     {
         Package<T> tPackage = new Package<>(eventClassToWait, condition);
         eventList.put(tPackage, 0);
@@ -89,7 +88,7 @@ public class EventWaiter
          * Creates a new object of this class
          *
          * @param classToWait wait for objects of this class
-         * @param condition to check wether the object is the desired one
+         * @param condition to check whether the object is the desired one
          */
         protected Package(Class<E> classToWait, Predicate<E> condition)
         {

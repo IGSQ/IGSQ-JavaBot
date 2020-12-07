@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.ErrorHandler;
 import org.igsq.igsqbot.Yaml;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -28,7 +29,8 @@ public class MessageReactionAddEvent_Report extends ListenerAdapter
 		} 
 		catch (Exception exception) 
 		{
-
+			new ErrorHandler(exception);
+			return;
 		}
 		if(Yaml.getFieldBool(messageID + ".report.enabled", "internal") && !user.isBot())
 		{

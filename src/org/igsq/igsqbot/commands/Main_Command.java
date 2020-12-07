@@ -40,79 +40,74 @@ public class Main_Command extends ListenerAdapter
     		else id = event.getChannel().getId();
     		if(getHandler(id) == null) cooldownHandlers = Common_Command.append(cooldownHandlers, new Cooldown_Handler(id));
 
-    		Common.commandExecuter.submit(new Runnable()
-    				{
-						@Override
-						public void run() 
-						{
-				        	switch(command)
-				        	{
-					        	case "poll":
-					        		new Poll_Command(event);
-					        		break;
-					        	case "avatar":
-					        		new Avatar_Command(event);
-					        		break;
-					        		
-					        	case "shutdown":
-					        		new Shutdown_Command(event);
-					        		break;
-					        		
-					        	case "clear":
-					        		new Clear_Command(event);
-					        		break;
-					        		
-					        	case "verify":
-					        	case "v":
-					        	case "accept":
-					        		new Verify_Command(event);
-					        		break;
-					        		
-					        	case "test":
-					        		new Test_Command(event);
-					        		break;
-					        		
-					        	case "report":
-					        		new Report_Command(event);
-					        		break;	
-					        		
-					        	case "suggest":
-					        		new Suggestion_Command(event);
-					        		break;
-					        		
-					        	case "help":
-					        		new Help_Command(event);
-					        		break;
-					        		
-					        	case "modhelp":
-					        		new Modhelp_Command(event);
-					        		break;
-					        		
-					        	case "link":
-					        	case "minecraft":
-					        	case "mc":
-					        		new Link_Minecraft(event);
-					        		break;
-					        		
-					        	case "setup":
-					        		new Setup_Command(event);
-					        		break;
-					        		
+    		Common.commandExecutor.submit(() ->
+		    {
+	            switch(command)
+	            {
+		            case "poll":
+			            new Poll_Command(event);
+			            break;
+		            case "avatar":
+			            new Avatar_Command(event);
+			            break;
+
+		            case "shutdown":
+			            new Shutdown_Command(event);
+			            break;
+
+		            case "clear":
+			            new Clear_Command(event);
+			            break;
+
+		            case "verify":
+		            case "v":
+		            case "accept":
+			            new Verify_Command(event);
+			            break;
+
+		            case "test":
+			            new Test_Command(event);
+			            break;
+
+		            case "report":
+			            new Report_Command(event);
+			            break;
+
+		            case "suggest":
+			            new Suggestion_Command(event);
+			            break;
+
+		            case "help":
+			            new Help_Command(event);
+			            break;
+
+		            case "modhelp":
+			            new Modhelp_Command(event);
+			            break;
+
+		            case "link":
+		            case "minecraft":
+		            case "mc":
+			            new Link_Minecraft(event);
+			            break;
+
+		            case "setup":
+			            new Setup_Command(event);
+			            break;
+
 //					        	case "alias":
 //					        		new Alias_Command(event);
 //					        		break;
 //					        	case "decline":
 //					        		new Decline_Command(event);
 //					        		break;
-					        		
-					        	default:
-					        		new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
-					        		break;
-				        	}
-							
-						}
-    		
-    				});
+
+		            default:
+			            new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
+			            break;
+	            }
+
+		    });
         }
     }
     

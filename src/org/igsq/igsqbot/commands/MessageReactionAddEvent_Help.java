@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.commands;
 
 import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.ErrorHandler;
 import org.igsq.igsqbot.Yaml;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
@@ -24,7 +25,8 @@ public class MessageReactionAddEvent_Help extends ListenerAdapter
 		} 
 		catch (Exception exception) 
 		{
-
+			new ErrorHandler(exception);
+			return;
 		}
 		ReactionEmote reaction = event.getReactionEmote();
 		String codePoint = reaction.getAsCodepoints();

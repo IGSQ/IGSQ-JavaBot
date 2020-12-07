@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 public class GUIGenerator
 {
-	private EmbedGenerator embed;
+	private final EmbedGenerator embed;
 	private Message message = null;
 	private static final String NUMBER_CODEPOINT = "\u20E3";
 	private int optionCount = -1;
@@ -41,7 +41,18 @@ public class GUIGenerator
 		
 		if(reactionEvent != null)
 		{
-			reactionEvent.getReaction().removeReaction(reactionEvent.getUser()).queue();
+			User reactingUser = null;
+			try
+			{
+				reactingUser = reactionEvent.retrieveUser().submit().get();
+			}
+			catch (Exception exception)
+			{
+				new ErrorHandler(exception);
+				return GUI_State.EXCEPTION;
+			}
+
+			reactionEvent.getReaction().removeReaction(reactingUser).queue();
 			if(reactionEvent.getReactionEmote().isEmoji())
 			{
 				if(reactionEvent.getReactionEmote().getAsCodepoints().equals("U+2705"))

@@ -19,15 +19,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class Report_Command 
 {
 	private String[] args;
-	private Message message;
-	private User author;
+	private final Message message;
+	private final User author;
 	private TextChannel channel;
-	private MessageChannel reportChannel;
 	private Guild guild;
 	private String messageLog= "";
-	private User reportedUser = null;
 	private Member reportedMember = null;
-	private JDA jda;
+	private final JDA jda;
 	
 	public Report_Command(MessageReceivedEvent event)
 	{
@@ -57,18 +55,18 @@ public class Report_Command
 	
 	private void report()
 	{
-		reportedUser = Common.getUserFromMention(args[0]);
+		User reportedUser = Common.getUserFromMention(args[0]);
 		if(reportedUser != null) 
 		{
 			reportedMember = Common.getMemberFromUser(reportedUser, guild);
-			if(reportedUser.equals(author)) new EmbedGenerator(channel).text("You cant't report yourself!").color(Color.RED).sendTemporary();
+			if(reportedUser.equals(author)) new EmbedGenerator(channel).text("You can't report yourself!").color(Color.RED).sendTemporary();
 			else if(args.length <= 1) new EmbedGenerator(channel).text("Please mention a person & write a report topic.").color(Color.RED).sendTemporary();
 			else if(reportedUser.isBot()) new EmbedGenerator(channel).text("You may not report bots.").color(Color.RED).sendTemporary();
 			else if(reportedMember.isOwner()) new EmbedGenerator(channel).text("You may not report the owner.").color(Color.RED).sendTemporary();
 			else if(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild") == null || Yaml.getFieldString(guild.getId() + ".reportchannel", "guild").isEmpty()) new EmbedGenerator(channel).text("There is no report channel setup.").color(Color.RED).sendTemporary(); // This should log to admins
 			else
 			{
-				reportChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
+				MessageChannel reportChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
 				
 				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete()) if(selectedMessage.getAuthor().getId().equals(reportedMember.getId())) messageLog += reportedMember.getAsMention() + " | " + selectedMessage.getContentRaw() + "\n";
 				if(messageLog.isEmpty()) messageLog = "No recent messages found for this user.";

@@ -17,15 +17,16 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Verify_Command 
 {
+	private final JDA jda;
+	private final Message message;
+	private final User author;
+
 	private TextChannel channel;
-	private User author;
-	private Message message;
 	private Guild guild;
-	private User toVerify;
 	private String guessedRoles = "";
 	private String guessedAliases = "";
 	private String confirmedRoles = "";
-	private JDA jda;
+	private User toVerify;
 
 	public Verify_Command(MessageReceivedEvent event) 
 	{
@@ -60,7 +61,7 @@ public class Verify_Command
 		String[] declinedRoles = new String[0];
 		String queryString = "";
 		String verificationMessage = "";
-		
+
 		try
 		{
 			toVerify = message.getMentionedUsers().get(0);
@@ -92,13 +93,10 @@ public class Verify_Command
 			if(!Common.isFieldEmpty(guild.getId() + ".verifiedrole", "guild"))
 			{
 				Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
-				if(verifiedRole != null)
+				if(verifiedRole != null && Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
 				{
-					if(Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
-					{
-						new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
-						return;
-					}
+					new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
+					return;
 				}
 			}
 		}
@@ -167,7 +165,6 @@ public class Verify_Command
 							verificationMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)\n";
 							guessedRoles += "," + retrievedRoles[currentRole];
 							guessedAliases += "," + queryString;
-							continue;
 						}
 					}
 				}
@@ -179,7 +176,7 @@ public class Verify_Command
 		EmbedGenerator embed = new EmbedGenerator(channel).title("Roles found for user: " + toVerify.getAsTag()).element("Roles:", verificationMessage).footer("This verification was intitiated by " + author.getAsTag());
 		channel.sendMessage(embed.getBuilder().build()).queue
 		(
-			message ->
+			restMessage ->
 			{
 				Yaml.updateField(message.getId() + ".verification.enabled", "internal", true);
 				Yaml.updateField(message.getId() + ".verification.guessedroles", "internal", this.guessedRoles);

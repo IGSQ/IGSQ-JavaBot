@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
+
 public class Bot
 {
 	public static void main(String[] args)
@@ -27,26 +28,18 @@ public class Bot
 		Yaml.createFiles();
 		Yaml.loadFile("@all");
 		
-		Common.scheduler.scheduleAtFixedRate(new Runnable()
+		Common.scheduler.scheduleAtFixedRate(() ->
 		{
-			@Override
-			public void run() 
-			{
-					Yaml.saveFileChanges("@all");
-					Yaml.loadFile("@all");
-			} 		
-    	}, 1, 30,TimeUnit.SECONDS);
+				Yaml.saveFileChanges("@all");
+				Yaml.loadFile("@all");
+		}, 1, 30,TimeUnit.SECONDS);
 		
-		Common.scheduler.scheduleAtFixedRate(new Runnable()
+		Common.scheduler.scheduleAtFixedRate(() ->
 		{
-			@Override
-			public void run() 
-			{
-					System.out.println("Cleaning Message Caches: Starting.");
-					MessageCache.cleanCaches();
-					System.out.println("Cleaning Message Caches: Complete.");
-			} 		
-    	}, 0, 6,TimeUnit.HOURS);
+				System.out.println("Cleaning Message Caches: Starting.");
+				MessageCache.cleanCaches();
+				System.out.println("Cleaning Message Caches: Complete.");
+		}, 0, 6,TimeUnit.HOURS);
 		
 		try 
 		{
@@ -75,8 +68,8 @@ public class Bot
 			
 			Yaml.applyDefault();
 			
-			new Main_Minecraft();
-			new Database();
+			Main_Minecraft.startMinecraft();
+			Database.startDatabase();
 			
 		}
 		catch(Exception exception)

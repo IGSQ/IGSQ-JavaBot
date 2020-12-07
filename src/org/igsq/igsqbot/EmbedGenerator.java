@@ -10,11 +10,10 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
 
 /**
  * Creates Embeds using JDA's {@link EmbedBuilder} api, with increased functionality.
- * @see #Embed(MessageChannel)
+ * @see #EmbedGenerator(MessageChannel)
  * @see #footer(String)
  * @see #text(String)
  * @see #title(String)
@@ -26,7 +25,6 @@ import net.dv8tion.jda.api.entities.User;
  * @see #send()
  * @see #sendTemporary(int)
  * @see #replace(Message)
- * @see #sendQuestion(User)
  * @see #getBuilder()
  * @see #getChannel()
  * @see #getReactions()
@@ -35,8 +33,8 @@ public class EmbedGenerator{
 	
 	private String[] reactions = {};
 	private MessageChannel channel;
-	private EmbedBuilder embed;
-	private Message message = null;
+	private final EmbedBuilder embed;
+	private Message sentMessage = null;
 	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
 	 * {@link #EmbedGenerator(MessageChannel) Without EmbedBuilder} 
@@ -66,15 +64,15 @@ public class EmbedGenerator{
 	{
 		this.channel = channel;
 		embed = new EmbedBuilder();
-		try {embed.setAuthor(message.getAuthor().toString());} catch(Exception exception) {}
-		try {embed.setColor(message.getColor());} catch(Exception exception) {}
-		try {embed.setDescription(message.getDescription());} catch(Exception exception) {}
-		try {embed.setFooter(message.getFooter().getText());} catch(Exception exception) {}
-		try {embed.setImage(message.getImage().toString());} catch(Exception exception) {}
-		try {embed.setThumbnail(message.getThumbnail().toString());} catch(Exception exception) {}
-		try {embed.setTimestamp(message.getTimestamp());} catch(Exception exception) {}
-		try {embed.setTitle(message.getTitle());} catch(Exception exception) {}
-		try {for(Field selectedField : message.getFields()) embed.addField(selectedField);} catch(Exception exception) {}
+		try {embed.setAuthor(message.getAuthor().toString());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setColor(message.getColor());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setDescription(message.getDescription());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setFooter(message.getFooter().getText());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setImage(message.getImage().toString());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setThumbnail(message.getThumbnail().toString());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setTimestamp(message.getTimestamp());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setTitle(message.getTitle());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {for(Field selectedField : message.getFields()) embed.addField(selectedField);} catch(Exception exception) {new ErrorHandler(exception);}
 	}
 	/**
 	 * Sets the footer of an embed.
@@ -269,7 +267,7 @@ public class EmbedGenerator{
 	}
 	
 	/**
-	 * Sends the message to the channel designated in the {@link #Embed(MessageChannel) constructor}. 
+	 * Sends the message to the channel designated in the {@link #EmbedGenerator(MessageChannel)} (MessageChannel) constructor}. 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageEmbed)
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
@@ -278,12 +276,12 @@ public class EmbedGenerator{
 		if(embed.isEmpty()) return null;
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return null;
 		
-		message = channel.sendMessage(embed.build()).complete();
-		if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
-		return message;
+		sentMessage = channel.sendMessage(embed.build()).complete();
+		if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) sentMessage.addReaction(reaction).queue();
+		return sentMessage;
 	}
 	/**
-	 * Sends the message to the channel designated in the {@link #Embed(MessageChannel) constructor}. Deletes the message after delay time has passed. Uses {@link TimeUnit#MILLISECONDS}.
+	 * Sends the message to the channel designated in the {@link #EmbedGenerator(MessageChannel)} (MessageChannel) constructor}. Deletes the message after delay time has passed. Uses {@link TimeUnit#MILLISECONDS}.
 	 * Overloads {@link #sendTemporary() default 10s}.
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageEmbed)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
@@ -301,15 +299,14 @@ public class EmbedGenerator{
     		{
     			if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
     			message.delete().submitAfter(delay, TimeUnit.MILLISECONDS);
-    			this.message = message;
+    			this.sentMessage = message;
     		}
         );
-		return message;
+		return sentMessage;
 	}
 	/**
-	 * Sends the message to the channel designated in the {@link #Embed(MessageChannel) constructor}. Deletes the message after 10 seconds has passed.
+	 * Sends the message to the channel designated in the {@link #EmbedGenerator(MessageChannel)} constructor}. Deletes the message after 10 seconds has passed.
 	 * Overloads {@link #sendTemporary(int) non default times}.
-	 * @return 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageEmbed)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
 	 * @see org.igsq.igsqbot.EmbedGenerator
@@ -319,9 +316,8 @@ public class EmbedGenerator{
 		return sendTemporary(10000);
 	}
 	/**
-	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}.
-	 * Overloads {@link #replace(Message, int) With delay}
-	 * @return 
+	 * Replaces the message in the channel designated in the {@link #EmbedGenerator(MessageChannel)} constructor}.
+	 * Overloads {@link #replace(Message, long, MessageEmbed)} replace(Message, int) With delay}
 	 * @see net.dv8tion.jda.api.entities.Message#editMessage(Message)
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
@@ -339,9 +335,8 @@ public class EmbedGenerator{
 		);
 	}
 	/**
-	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}.
-	 * Overloads {@link #replace(Message, int) With delay}
-	 * @return 
+	 * Replaces the message in the channel designated in the {@link #EmbedGenerator(MessageChannel)} (MessageChannel) constructor}.
+	 * Overloads {@link #replace(Message, long, MessageEmbed)} With delay}
 	 * @see net.dv8tion.jda.api.entities.Message#editMessage(Message)
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
@@ -357,20 +352,19 @@ public class EmbedGenerator{
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return;
         activeMessage.editMessage(embed.build()).queue
         (
-				message -> 
+				message ->
 				{
 					if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
 				}
 		);
 	}
 	/**
-	 * Replaces the message in the channel designated in the {@link #Embed(MessageChannel) constructor}. Reverts to previous embed after set delay.
+	 * Replaces the message in the channel designated in the {@link #EmbedGenerator(MessageChannel)} (MessageChannel) constructor}. Reverts to previous embed after set delay.
 	 * Overloads {@link #replace(Message) Without delay}
-	 * @return 
 	 * @see net.dv8tion.jda.api.entities.Message#editMessage(Message)
 	 * @see org.igsq.igsqbot.EmbedGenerator
 	 */
-	public void replace(Message activeMessage, int delay, MessageEmbed oldEmbed)
+	public void replace(Message activeMessage, long delay, MessageEmbed oldEmbed)
 	{
 		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal")) return;
 		if(embed.isEmpty()) return;
@@ -382,29 +376,23 @@ public class EmbedGenerator{
 					if(channel instanceof TextChannel && ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
 				}
 		);
+
         Yaml.updateField(activeMessage.getId() + ".changepending", "internal", true);
-        Common.scheduler.schedule(new Runnable()
-        {
-				@Override
-				public void run() 
-				{
-					if(activeMessage != null && oldEmbed.equals(activeMessage.getEmbeds().get(0)) && Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
-			        {
-			        	activeMessage.editMessage(oldEmbed).complete();
-			        }
-				}
-        }, delay, TimeUnit.MILLISECONDS);
-        Common.scheduler.schedule(new Runnable()
-        {
-				@Override
-				public void run() 
-				{
-					if(activeMessage != null && Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
-			        {    	
-			        	Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
-			        }
-				}
-        }, delay + (delay / 10), TimeUnit.MILLISECONDS);
+        Common.scheduler.schedule(() ->
+		{
+			if(oldEmbed.equals(activeMessage.getEmbeds().get(0)) && Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
+			{
+				activeMessage.editMessage(oldEmbed).complete();
+			}
+		}, delay, TimeUnit.MILLISECONDS);
+
+        Common.scheduler.schedule(() ->
+		{
+			if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
+			{
+				Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
+			}
+		}, delay, TimeUnit.MILLISECONDS);
 	}
 	/**
 	 * Gets the {@link EmbedBuilder EmbedBuilder} the message is being built from.
@@ -425,7 +413,7 @@ public class EmbedGenerator{
 		return reactions;
 	}
 	/**
-	 * Gets the channel the embed will be send to, designated by the {@link #Embed(MessageChannel) constructor}
+	 * Gets the channel the embed will be send to, designated by the {@link #EmbedGenerator(MessageChannel)} (MessageChannel) constructor}
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel
 	 * @see org.igsq.igsqbot.MessageGenerator
 	 */

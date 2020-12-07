@@ -22,8 +22,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class MessageGenerator 
 {
 	private String[] reactions = {};
-	private MessageChannel channel;
-	private MessageBuilder messageB;
+	private final MessageChannel channel;
+	private final MessageBuilder messageB;
 	private Message message = null;
 	/**
 	 * Constructor for Message, requires a location for the message to be created in ({@link MessageChannel})

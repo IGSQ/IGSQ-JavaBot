@@ -20,7 +20,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
     {
 		GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
 		MessageChannel channel = event.getChannel();
-		String embedDescription = "";
+		StringBuilder embedDescription = new StringBuilder();
 		MessageCache cache;
 		
 		if(!MessageCache.isGuildCached(event.getGuild().getId()))
@@ -38,22 +38,22 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
 			{
 				Message selectedMessage = cache.get(selectedMessageID);
 				String content = selectedMessage.getContentDisplay();
-				
+
 				if(selectedMessage.getAuthor().isBot()) continue;
 				if(content.length() >= 50) content = content.substring(0, 20) + " **...**";
-				
+
 				if(!Common.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 				{
 					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
 					{
-						if(selectedChannel.equals(channel.getId())) 
+						if(selectedChannel.equals(channel.getId()))
 						{
 							return;
 						}
 					}
 				}
-				
-				embedDescription += selectedMessage.getAuthor().getAsMention() + " --> " + content + "\n";
+
+				embedDescription.append(selectedMessage.getAuthor().getAsMention()).append(" --> ").append(content).append("\n");
 				cache.remove(selectedMessage);
 			}
 		}

@@ -18,12 +18,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class Suggestion_Command 
 {
     private String[] args;
-    private Message message;
-    private User author;
+    private final Message message;
+    private final User author;
     private TextChannel channel;
-    private MessageChannel suggestionChannel;
     private Guild guild;
-    private JDA jda;
+    private final JDA jda;
 
     public Suggestion_Command(MessageReceivedEvent event)
     {
@@ -51,7 +50,7 @@ public class Suggestion_Command
 	}
     private void suggest()
     {
-    	suggestionChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
+        MessageChannel suggestionChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
     	new EmbedGenerator(suggestionChannel).title("Suggestion:").text(args[0]).thumbnail(author.getAvatarUrl()).footer("Suggestion by: " + Common.getMemberFromUser(author, guild).getNickname()).send();
     }
 }

@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.ErrorHandler;
 
 public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 {
@@ -19,10 +20,19 @@ public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{
 		GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
-		Member member = event.getMember();
 		User user = event.getUser();
 		String timeJoined;
-		
+		Member member = null;
+		try
+		{
+			member = event.getGuild().retrieveMember(user).submit().get();
+		}
+		catch (Exception exception)
+		{
+			new ErrorHandler(exception);
+			return;
+		}
+
 		if(member.hasTimeJoined())
 		{
 			timeJoined = member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));

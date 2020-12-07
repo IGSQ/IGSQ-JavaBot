@@ -9,23 +9,23 @@ import org.igsq.igsqbot.Yaml;
 
 public class Cooldown_Handler
 {
-	private final String ID;
+	private final String id;
 	private String[] activeCommands = {};
-	private Cooldown_Handler me = this;
+	private final Cooldown_Handler me = this;
 	
 	ScheduledFuture<?> cooldownTask;
 	Random random = new Random();
 	
 	public Cooldown_Handler(String id)
 	{
-		this.ID = id;
+		this.id = id;
 	}
 	
 	public void createCooldown(String command, int cooldown)
 	{
 		if(getCooldown(command) <= 0) 
 		{
-			Yaml.updateField(ID + ".cooldown." + command, "internal", cooldown);
+			Yaml.updateField(id + ".cooldown." + command, "internal", cooldown);
 			activeCommands = Common.append(activeCommands, command);
 			updateTasks();
 		}
@@ -33,45 +33,41 @@ public class Cooldown_Handler
 	
 	public int getCooldown(String command)
 	{
-		return Yaml.getFieldInt(ID + ".cooldown." + command, "internal");
+		return Yaml.getFieldInt(id + ".cooldown." + command, "internal");
 	}
 	
 	public boolean isCooldownActive(String command)
 	{
-		return Yaml.getFieldInt(ID + ".cooldown." + command, "internal") > 0;
+		return Yaml.getFieldInt(id + ".cooldown." + command, "internal") > 0;
 	}
 	
 	private void updateTasks()
 	{
 		if(cooldownTask != null) cooldownTask.cancel(false);
-		cooldownTask = Common.scheduler.scheduleAtFixedRate(new Runnable()
-    	{
-			@Override
-			public void run() 
+		cooldownTask = Common.scheduler.scheduleAtFixedRate(() ->
+		{
+			if(activeCommands.length == 0)
 			{
-				if(activeCommands.length == 0)
+				Main_Command.removeHandler(me);
+				cooldownTask.cancel(false);
+			}
+
+			for(String selectedCommand : activeCommands)
+			{
+				if(isCooldownActive(selectedCommand))
 				{
-					Main_Command.removeHandler(me);
-					cooldownTask.cancel(false);
+					Yaml.updateField(id + ".cooldown." + selectedCommand, "internal", Yaml.getFieldInt(id + ".cooldown." + selectedCommand, "internal") - 1);
 				}
-				
-				for(String selectedCommand : activeCommands)
+				else
 				{
-					if(isCooldownActive(selectedCommand))
-					{
-						Yaml.updateField(ID + ".cooldown." + selectedCommand, "internal", Yaml.getFieldInt(ID + ".cooldown." + selectedCommand, "internal") - 1);
-					}
-					else
-					{
-						activeCommands = Common.depend(activeCommands, selectedCommand);
-					}
+					activeCommands = Common.depend(activeCommands, selectedCommand);
 				}
-			} 		
-    	}, 0, 1, TimeUnit.MILLISECONDS);
+			}
+		}, 0, 1, TimeUnit.MILLISECONDS);
 	}
 	
 	public String getId() 
 	{
-		return ID;
+		return id;
 	}
 }

@@ -9,40 +9,41 @@ import java.util.concurrent.TimeUnit;
 
 public class Database 
 {
-    static String url;
-    static String user;
-    static String password;
-	public Database()
-	{
-		url = Yaml.getFieldString("MYSQL.database", "config");
-		user = Yaml.getFieldString("MYSQL.username", "config");
-		password = Yaml.getFieldString("MYSQL.password", "config");
-		if(testDatabase()) 
-		{
-			
-		}
-		else System.err.println("A Database Error Has Occured On Startup.");
-	}
-	public static ResultSet QueryCommand(String sql) 
+    private Database()
+    {
+
+    }
+
+    private static String url;
+    private static String user;
+    private static String password;
+	public static void startDatabase()
+    {
+        url = Yaml.getFieldString("MYSQL.database", "config");
+        user = Yaml.getFieldString("MYSQL.username", "config");
+        password = Yaml.getFieldString("MYSQL.password", "config");
+        if(!testDatabase())
+        {
+            System.out.println("A Database Error Has Occurred On Startup.");
+        }
+    }
+
+	public static ResultSet queryCommand(String sql)
 	{
         try 
         {
         	Connection connection = DriverManager.getConnection(url, user, password);
             Statement commandAdapter = connection.createStatement();
             ResultSet resultTable = commandAdapter.executeQuery(sql);
-            Common.scheduler.schedule(new Runnable() 
-            {
-				public void run() 
-				{
-					try
-					{
-						connection.close();
-					}
-					catch (Exception exception)
-					{
-						
-					}
-				} 
+            Common.scheduler.schedule(() -> {
+                try
+                {
+                    connection.close();
+                }
+                catch (Exception exception)
+                {
+                    exception.printStackTrace();
+                }
             },3, TimeUnit.SECONDS);
 			return resultTable;
         }
@@ -51,7 +52,7 @@ public class Database
         	return null;
         } 
     }
-	public static void UpdateCommand(String sql) 
+	public static void updateCommand(String sql)
 	{
         try 
         {
@@ -65,7 +66,7 @@ public class Database
         	exception.printStackTrace();
         }
     }
-	public static int ScalarCommand(String sql) 
+	public static int scalarCommand(String sql)
 	{
         try 
         {
@@ -84,18 +85,19 @@ public class Database
     }
 	public static Boolean testDatabase() 
 	{
-        try 
-        {   
-        	Connection connection = DriverManager.getConnection(url, user, password);
+
+        try
+        {
+            Connection connection =  DriverManager.getConnection(url, user, password);
             Statement commandAdapter = connection.createStatement();
             commandAdapter.executeUpdate("CREATE TABLE IF NOT EXISTS test_database(number int PRIMARY KEY AUTO_INCREMENT,test VARCHAR(36));");
             commandAdapter.executeUpdate("DROP TABLE test_database;");
             connection.close();
             return true;
         }
-        catch (Exception exception) 
+        catch (Exception exception)
         {
-        	return false;
+            return false;
         }
     }
 }

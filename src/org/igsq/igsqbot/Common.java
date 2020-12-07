@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.User;
 
 public class Common {
@@ -23,10 +22,14 @@ public class Common {
 	
 	public static JDABuilder jdaBuilder;
 	public static JDA jda;
-	public static SelfUser self;
 	
-	public final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-	public final static ExecutorService commandExecuter = Executors.newFixedThreadPool(5);
+	public static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	public static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
+
+	private Common()
+	{
+		//Overrides the default, public, constructor
+	}
 	
 	public static String[] depend(String[] array, int location)
     {
@@ -117,10 +120,7 @@ public class Common {
     public static String[] append(String[] array, String value)
     {
     	String[] arrayAppended = new String[array.length+1];
-    	for (int i = 0;i < array.length;i++)
-    	{
-    		arrayAppended[i] = array[i];
-    	}
+		System.arraycopy(array, 0, arrayAppended, 0, array.length);
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
@@ -128,10 +128,7 @@ public class Common {
     public static int[] append(int[] array, int value)
     {
     	int[] arrayAppended = new int[array.length+1];
-    	for (int i = 0;i < array.length;i++)
-    	{
-    		arrayAppended[i] = array[i];
-    	}
+		System.arraycopy(array, 0, arrayAppended, 0, array.length);
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
@@ -149,10 +146,7 @@ public class Common {
     public static Message[] append(Message[] array, Message value)
     {
     	Message[] arrayAppended = new Message[array.length+1];
-    	for (int i = 0;i < array.length;i++)
-    	{
-    		arrayAppended[i] = array[i];
-    	}
+		System.arraycopy(array, 0, arrayAppended, 0, array.length);
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
@@ -160,10 +154,7 @@ public class Common {
 	public static String[][] append(String[][] array, String[] value) 
 	{
     	String[][] arrayAppended = new String[array.length+1][];
-    	for (int i = 0;i < array.length;i++)
-    	{
-    		arrayAppended[i] = array[i];
-    	}
+		System.arraycopy(array, 0, arrayAppended, 0, array.length);
     	arrayAppended[array.length] = value;
     	return arrayAppended;
 	}
@@ -227,7 +218,10 @@ public class Common {
 		{
 			member = guild.retrieveMember(user).complete();
 		}
-		catch(Exception exception) {}
+		catch(Exception exception)
+		{
+			new ErrorHandler(exception);
+		}
 		return member;
 	}
 	public static User getUserFromMention(String arg)
@@ -243,7 +237,10 @@ public class Common {
 		{
 			user = jda.retrieveUserById(id).complete();
 		}
-		catch(Exception exception) {}
+		catch(Exception exception)
+		{
+			new ErrorHandler(exception);
+		}
 		return user;
 	}
 	
@@ -316,10 +313,7 @@ public class Common {
 	public static String stringDepend(String input, String match)
 	{
 		if(!input.contains(match)) return input;
-		if(input.indexOf(match) >= 0)
-		{
-			input = input.substring(0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length(), input.length());
-		}
+		input = input.substring(0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length());
 		return input;
 	}
 	

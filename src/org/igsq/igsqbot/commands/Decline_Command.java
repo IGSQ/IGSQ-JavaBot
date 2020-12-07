@@ -15,16 +15,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Decline_Command 
 {
-	private User author;
-	private MessageChannel channel;
-	private Message message;
-	private Guild guild;
+	private final User author;
+	private final MessageChannel channel;
+	private final Message message;
+	private final Guild guild;
 	private String[] args;
-	private String action;
-	private String alias;
-	private Role role;
 
-	public Decline_Command(MessageReceivedEvent event) 
+    public Decline_Command(MessageReceivedEvent event)
 	{
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
@@ -49,34 +46,35 @@ public class Decline_Command
 	private void alias()
 	{
 		args = Common.depend(args, 0);
-		try { action = args[0]; }
+        String action;
+        try { action = args[0]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid action").send(); return; }
-		
-		switch(action.toLowerCase())
+
+		if (action.equalsIgnoreCase("list") || action.equalsIgnoreCase("show"))
 		{
-			case "list":
-			case "show":
-				EmbedGenerator embed = new EmbedGenerator(channel).title("Declines for " + guild.getName());
-				String description = "";
-				for(String[] selectedAliases : Common_Command.getDeclined(guild.getId()))
+			EmbedGenerator embed = new EmbedGenerator(channel).title("Declines for " + guild.getName());
+			StringBuilder description = new StringBuilder();
+
+			for (String[] selectedAliases : Common_Command.getDeclined(guild.getId()))
+			{
+				Role role;
+				for (int i = 1; i < selectedAliases.length; i++)
 				{
-					Role role = null;
-					for(int i = 1; i < selectedAliases.length; i++)
+					role = Common.getRoleFromMention(guild, selectedAliases[0]);
+					if (role != null)
 					{
-						role = Common.getRoleFromMention(guild, selectedAliases[0]);
-						if(role != null)
-						{
-							description += role.getAsMention() + " ---> " + selectedAliases[i] + "\n";
-						}	
+						description.append(role.getAsMention()).append(" ---> ").append(selectedAliases[i]).append("\n");
 					}
-					description += "\n";
 				}
-				if(description.isEmpty()) description = "No roles found.";
-				embed.text(description).send();
-				return;
+				description.append("\n");
+			}
+			if (description.length() == 0) description = new StringBuilder("No roles found.");
+			embed.text(description.toString()).send();
+			return;
 		}
-		
-		try{ role = Common.getRoleFromMention(guild, args[1]); }
+
+        Role role;
+        try{ role = Common.getRoleFromMention(guild, args[1]); }
 		catch(Exception exception) { role = null; }
 		
 		if(role == null)
@@ -84,8 +82,9 @@ public class Decline_Command
 			new EmbedGenerator(channel).text("Mention a role to alias.").color(Color.RED).sendTemporary();
 			return;
 		}
-		
-		try { alias = args[2]; }
+
+        String alias;
+        try { alias = args[2]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid alias").send(); return; }
 		
 		switch(action.toLowerCase())
@@ -107,6 +106,8 @@ public class Decline_Command
 				{
 					new EmbedGenerator(channel).text("Decline: " + alias + " not found for role: " + role.getAsMention()).sendTemporary();
 				}
+				break;
+			default:
 				break;
 		}
 	}

@@ -13,10 +13,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Shutdown_Command {
 
-	private MessageChannel channel;
-	private User author;
-	private Random random = new Random();
-	private JDA jda;
+	private final MessageChannel channel;
+	private final User author;
+	private final Random random = new Random();
+	private final JDA jda;
 
 	public Shutdown_Command(MessageReceivedEvent event) 
 	{
@@ -37,7 +37,7 @@ public class Shutdown_Command {
 		new EmbedGenerator(channel).text(Common_Command.SHUTDOWN_MESSAGES[random.nextInt(Common_Command.SHUTDOWN_MESSAGES.length)]).color(Color.GRAY).send();
 		jda.shutdown();
 		Yaml.saveFileChanges("@all");
-		Yaml.disgardAndCloseFile("@all");
+		Yaml.disregardAndCloseFile("@all");
 		System.exit(0);
 		
 	}

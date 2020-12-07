@@ -15,14 +15,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Alias_Command 
 {
-	private User author;
-	private MessageChannel channel;
-	private Message message;
-	private Guild guild;
+	private final User author;
+	private final MessageChannel channel;
+	private final Message message;
+	private final Guild guild;
 	private String[] args;
-	private String action;
-	private String alias;
-	private Role role;
 
 	public Alias_Command(MessageReceivedEvent event) 
 	{
@@ -49,6 +46,7 @@ public class Alias_Command
 	private void alias()
 	{
 		args = Common.depend(args, 0);
+		String action;
 		try
 		{
 			action = args[0];
@@ -81,7 +79,10 @@ public class Alias_Command
 				if(description.isEmpty()) description = "No roles found.";
 				embed.text(description).send();
 				return;
+			default:
+				break;
 		}
+		Role role;
 		try
 		{
 			role = Common.getRoleFromMention(guild, args[1]);
@@ -96,7 +97,8 @@ public class Alias_Command
 			new EmbedGenerator(channel).text("Mention a valid role to alias.").color(Color.RED).sendTemporary();
 			return;
 		}
-		
+
+		String alias;
 		try
 		{
 			alias = args[2];
@@ -123,7 +125,7 @@ public class Alias_Command
 				}
 				else
 				{
-					new EmbedGenerator(channel).text("Alias: " + alias + " aleady exists.").sendTemporary();
+					new EmbedGenerator(channel).text("Alias: " + alias + " already exists.").sendTemporary();
 				}
 				break;
 				
@@ -137,6 +139,8 @@ public class Alias_Command
 				{
 					new EmbedGenerator(channel).text("Alias: " + alias + " not found for role: " + role.getAsMention()).sendTemporary();
 				}
+				break;
+			default:
 				break;
 		}
 	}

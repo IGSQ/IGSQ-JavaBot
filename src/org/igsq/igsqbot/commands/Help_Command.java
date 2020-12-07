@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Help_Command {
-	private MessageChannel channel;
-	private User author;
+	private final MessageChannel channel;
+	private final User author;
 
 	public Help_Command(MessageReceivedEvent event) 
 	{

@@ -13,13 +13,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Poll_Command {
 
-	private MessageChannel channel;
-	private User author;
-	private String[] args;
+	private final MessageChannel channel;
+	private final User author;
+	private final String[] args;
 	private String options = "";
 	private String[] reactions = {};
-	private String topic = "";
-	private Color color = Color.LIGHT_GRAY;
+    private Color color = Color.LIGHT_GRAY;
 
 	public Poll_Command(MessageReceivedEvent event) 
 	{
@@ -42,7 +41,7 @@ public class Poll_Command {
 	{
 		if(args.length >= 3) 
 		{
-			topic = args[0];
+            String topic = args[0];
 			for(int i=1; i < args.length && i < Messaging.REACTION_LIMIT+1; i++)
 			{
 				options += args[i] +" " + Common_Command.POLL_EMOJIS[i-1]  + "\n";

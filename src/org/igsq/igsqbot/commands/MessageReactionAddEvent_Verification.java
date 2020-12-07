@@ -2,6 +2,7 @@ package org.igsq.igsqbot.commands;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.ErrorHandler;
 import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.JDA;
@@ -35,7 +36,8 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 		} 
 		catch (Exception exception) 
 		{
-
+			new ErrorHandler(exception);
+			return;
 		}
 
 		
@@ -54,8 +56,12 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 				{
 					event.getReaction().removeReaction(user).queue(); 
 				}
-				catch(Exception exception) { }
-				return; 
+				catch(Exception exception)
+				{
+					new ErrorHandler(exception);
+					return;
+				}
+
 			}
 			if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44d")) 
 			{
@@ -88,7 +94,11 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 					{
 						guild.removeRoleFromMember(verifiedMember, guild.getRoleById(selectedRole)).queue();
 					}
-					catch(Exception exception) { continue; }
+					catch(Exception exception)
+					{
+						new ErrorHandler(exception);
+						return;
+					}
 				}
 				for(String selectedRole : confirmedRoles)
 				{
@@ -96,10 +106,18 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 					{ 
 						guild.addRoleToMember(verifiedMember, guild.getRoleById(selectedRole)).queue(); 
 					}
-					catch(Exception exception) { }
+					catch(Exception exception)
+					{
+						new ErrorHandler(exception);
+						return;
+					}
 				}
 				try {guild.addRoleToMember(verifiedMember, guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"))).queue(); }
-				catch(Exception exception) { }
+				catch(Exception exception)
+				{
+					new ErrorHandler(exception);
+					return;
+				}
 				
 			}
 			message.delete().queue();

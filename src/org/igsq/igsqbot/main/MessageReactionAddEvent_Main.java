@@ -10,10 +10,7 @@ public class MessageReactionAddEvent_Main extends ListenerAdapter
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
-		if(!(event.getUser() == null) && !event.getUser().isBot() && !EventWaiter.waitingOnThis(event))
-		{
-			
-		}
+		EventWaiter.waitingOnThis(event);
     }
 }
   

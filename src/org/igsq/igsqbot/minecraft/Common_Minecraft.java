@@ -9,7 +9,7 @@ public class Common_Minecraft
 {
 	public static String getIDFromUUID(String uuid)
 	{
-		ResultSet linked_accounts = Database.QueryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
+		ResultSet linked_accounts = Database.queryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
 		try 
 		{
 			if(linked_accounts.next())
@@ -25,7 +25,7 @@ public class Common_Minecraft
 	}
 	public static String getNameFromUUID(String uuid)
 	{
-		ResultSet mc_accounts = Database.QueryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + uuid + "';");
+		ResultSet mc_accounts = Database.queryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + uuid + "';");
 		try 
 		{
 			if(mc_accounts.next())
@@ -42,7 +42,7 @@ public class Common_Minecraft
 	
 	public static String getUUIDFromName(String name)
 	{
-		ResultSet mc_accounts = Database.QueryCommand("SELECT uuid FROM mc_accounts WHERE username = '" + name + "';");
+		ResultSet mc_accounts = Database.queryCommand("SELECT uuid FROM mc_accounts WHERE username = '" + name + "';");
 		try 
 		{
 			if(mc_accounts.next())
@@ -59,7 +59,7 @@ public class Common_Minecraft
 	
 	public static String getUUIDFromID(String id)
 	{
-		ResultSet linked_accounts = Database.QueryCommand("SELECT uuid FROM linked_accounts WHERE id = '" + id + "';");
+		ResultSet linked_accounts = Database.queryCommand("SELECT uuid FROM linked_accounts WHERE id = '" + id + "';");
 		try 
 		{
 			if(linked_accounts.next())

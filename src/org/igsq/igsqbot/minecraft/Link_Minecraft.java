@@ -13,13 +13,14 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.ErrorHandler;
 
 public class Link_Minecraft 
 {
-	private User user;
+	private final User user;
 	private String[] args;
-	private Message message;
-	private MessageChannel channel;
+	private final Message message;
+	private final MessageChannel channel;
 
 	public Link_Minecraft(MessageReceivedEvent event) 
 	{
@@ -66,20 +67,19 @@ public class Link_Minecraft
 				showPending();
 				break;
 			default:
-				new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary(); 
-				return;
-		}
+				new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary();
+        }
 	}
 	private void showPending()
 	{
-		ResultSet linked_accounts = Database.QueryCommand("SELECT * FROM linked_accounts WHERE id = '" + user.getId() + "';");
+		ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE id = '" + user.getId() + "';");
 		String embedDescription = "";
 		String status;
 		try 
 		{
 			while(linked_accounts.next())
 			{
-				ResultSet mc_accounts = Database.QueryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + linked_accounts.getString(2) + "';");
+				ResultSet mc_accounts = Database.queryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + linked_accounts.getString(2) + "';");
 				if(mc_accounts.next())
 				{
 					switch(linked_accounts.getString(4).toLowerCase())
@@ -136,31 +136,28 @@ public class Link_Minecraft
 				return;
 			}
 			
-			ResultSet linked_accounts = Database.QueryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
+			ResultSet linked_accounts = Database.queryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
 			if(linked_accounts.next())
 			{
 				id = linked_accounts.getString(1);
 				if(id.equals(user.getId()))
 				{
-					Database.UpdateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';" );
-					new EmbedGenerator(channel).text("Link removed for account: " + username).sendTemporary(); 
-					return;
-				}
+					Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';" );
+					new EmbedGenerator(channel).text("Link removed for account: " + username).sendTemporary();
+                }
 				else
 				{
-					new EmbedGenerator(channel).text("That Minecraft account is not linked to your Discord.").sendTemporary(); 
-					return;
-				}
+					new EmbedGenerator(channel).text("That Minecraft account is not linked to your Discord.").sendTemporary();
+                }
 			}
 			else
 			{
-				new EmbedGenerator(channel).text("That Minecraft account is not linked, please link before trying to delink.").sendTemporary(); 
-				return;
-			}
+				new EmbedGenerator(channel).text("That Minecraft account is not linked, please link before trying to delink.").sendTemporary();
+            }
 		} 
 		catch (SQLException exception) 
 		{
-			
+			new ErrorHandler(exception);
 		}
 	}
 	
@@ -181,9 +178,9 @@ public class Link_Minecraft
 		String username = Common_Minecraft.getNameFromUUID(uuid);
 		if(uuid != null)
 		{
-			boolean isWaiting = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'dwait';") > 0;
-			boolean isAlreadyLinked = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + user.getId() +"' AND current_status = 'linked';") > 0;
-			boolean isUsersAccount = Database.ScalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'linked';") > 0;
+			boolean isWaiting = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'dwait';") > 0;
+			boolean isAlreadyLinked = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + user.getId() +"' AND current_status = 'linked';") > 0;
+			boolean isUsersAccount = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'linked';") > 0;
 			
 			if(isUsersAccount)
 			{
@@ -197,23 +194,20 @@ public class Link_Minecraft
 			}
 			if(isWaiting)
 			{
-				Database.UpdateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
-				Database.UpdateCommand("DELETE FROM linked_accounts WHERE id = '" + user.getId() + "' AND current_status = 'dwait';");
+				Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
+				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + user.getId() + "' AND current_status = 'dwait';");
 				new EmbedGenerator(channel).text("Link confirmed for account: " + username).sendTemporary();
-				return;
-			}
+            }
 			else
 			{
-				Database.UpdateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + user.getId() + "','mwait');");
+				Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + user.getId() + "','mwait');");
 				new EmbedGenerator(channel).text("Link added for account: " + username).sendTemporary();
-				return;
-			}
+            }
 		}
 		else
 		{
-			new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary(); 
-			return;
-		}
+			new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary();
+        }
 	} 
 }
 

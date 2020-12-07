@@ -5,4 +5,9 @@ bin/
 /target/
 *.bat
 data/
+<<<<<<< Updated upstream
 .idea/
+=======
+.idea/
+>>>>>>> Stashed changes
+*.iml

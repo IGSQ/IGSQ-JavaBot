@@ -13,10 +13,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Setup_Command 
 {
-	private MessageChannel channel;
-	private User author;
-	private Member member;
-	private String[] args;
+	private final MessageChannel channel;
+	private final User author;
+	private final Member member;
+	private final String[] args;
 	public Setup_Command(MessageReceivedEvent event)
 	{
 		this.author = event.getAuthor();
@@ -70,11 +70,7 @@ public class Setup_Command
 				{
 					new EmbedGenerator(channel).text("wow, pretty gay! but in lowercase").replace(menu.getMessage());
 				}
-				
-				return;
-		
-				
 		}
-		
 	}
 }
+

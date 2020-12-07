@@ -6,6 +6,8 @@ import org.igsq.igsqbot.Yaml;
 
 public class Common_Command 
 {
+	private Common_Command()
+	{ } // Override the default constructor
 	public static final String[] POLL_EMOJIS_UNICODE = {"U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991"};
 	public static final String[] POLL_EMOJIS = {":pear:", ":watermelon:", ":pineapple:", ":apple:", ":banana:", ":avocado:", ":eggplant:", ":kiwi:", ":grapes:", ":blueberries:", ":cherries:", ":onion:", ":peach:", ":lemon:", ":tangerine:", ":melon:", ":coconut:",":garlic:", ":cucumber:", ":squid:"};
 	public static final EmbedGenerator[] HELP_PAGE_TEXT = {new EmbedGenerator(null).title("__**Help Page 1**__").element(".Avatar","Shows the avatar of mentioned user.\n.avatar [user]", true).element(".Poll", "Creates a poll using user input\n.poll [question]/[option1]/[option2]/etc", true).element(".Suggest", "Suggest an idea to the community\n.suggest [suggestion]", true),
@@ -27,10 +29,7 @@ public class Common_Command
 	public static Cooldown_Handler[] append(Cooldown_Handler[] array, Cooldown_Handler value)
 	{
 		Cooldown_Handler[] arrayAppended = new Cooldown_Handler[array.length+1];
-		for (int i = 0;i < array.length;i++)
-		{
-			arrayAppended[i] = array[i];
-		}
+        System.arraycopy(array, 0, arrayAppended, 0, array.length);
 		arrayAppended[array.length] = value;
 		return arrayAppended;
 	}
@@ -86,13 +85,12 @@ public class Common_Command
 					if(Common.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
 					{
 						Yaml.updateField(id + ".references." + i + ".aliases", "verification", alias);
-						return;
 					}
 					else
 					{
 						Yaml.updateField(id + ".references." + i + ".aliases", "verification", Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") + "," + alias);
-						return;
 					}
+					return;
 				}
 			}
 			i++;
@@ -135,13 +133,12 @@ public class Common_Command
 					if(Common.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
 					{
 						Yaml.updateField(id + ".references." + i + ".declined", "verification", alias);
-						return;
 					}
 					else
 					{
 						Yaml.updateField(id + ".references." + i + ".declined", "verification", Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") + "," + alias);
-						return;
 					}
+					return;
 				}
 			}
 			i++;
@@ -158,16 +155,16 @@ public class Common_Command
 			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
 			{
 				String[] aliases = Yaml.getFieldString(guild + ".references." + i + ".aliases", "verification").split(",");
-				String dependedAliases = "";
+				StringBuilder dependedAliases = new StringBuilder();
 				for(String selectedAlias : aliases)
 				{
 					if(!selectedAlias.equals(alias))
 					{
-						dependedAliases += "," + selectedAlias;
+						dependedAliases.append(",").append(selectedAlias);
 					}
 				}
 				
-				Yaml.updateField(guild + ".references." + i + ".aliases", "verification", dependedAliases);
+				Yaml.updateField(guild + ".references." + i + ".aliases", "verification", dependedAliases.toString());
 				return true;
 			}
 			i++;
@@ -182,16 +179,16 @@ public class Common_Command
 			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
 			{
 				String[] aliases = Yaml.getFieldString(guild + ".references." + i + ".declined", "verification").split(",");
-				String dependedAliases = "";
+				StringBuilder dependedAliases = new StringBuilder();
 				for(String selectedAlias : aliases)
 				{
 					if(!selectedAlias.equals(alias))
 					{
-						dependedAliases += "," + selectedAlias;
+						dependedAliases.append(",").append(selectedAlias);
 					}
 				}
 				
-				Yaml.updateField(guild + ".references." + i + ".declined", "verification", dependedAliases);
+				Yaml.updateField(guild + ".references." + i + ".declined", "verification", dependedAliases.toString());
 				return true;
 			}
 			i++;

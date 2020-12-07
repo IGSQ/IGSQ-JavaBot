@@ -17,13 +17,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Clear_Command 
 {
+	private final Message message;
+	private final User author;
+
 	private TextChannel channel;
-	private User author;
 	private Member guildAuthor = null;
-	private Message message;
 	private Member me = null;
 	private String[] args;
-	private int amount;
 	private Cooldown_Handler handler;
 	final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
@@ -57,7 +57,8 @@ public class Clear_Command
 
 	private void clear()
 	{
-		try 
+		int amount;
+		try
 		{
 			amount = Integer.parseInt(args[0]);
 		}
@@ -69,17 +70,14 @@ public class Clear_Command
 		if(handler.isCooldownActive("clear"))
 		{
 			new EmbedGenerator(channel).text("This command is on cooldown. (Remaining: " + handler.getCooldown("clear") / 1000 + "s)").color(Color.RED).sendTemporary();
-			return;
 		}
 		else if(amount <= 0)
 		{
 			new EmbedGenerator(channel).text("Invalid amount entered.").color(Color.RED).sendTemporary();
-			return;
 		}
 		else if(amount > 51)
 		{
 			new EmbedGenerator(channel).text("You tried to delete too many messages (Limit: 50)").color(Color.RED).sendTemporary();
-			return;
 		}
 		else
 		{

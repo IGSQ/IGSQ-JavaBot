@@ -1,12 +1,12 @@
 package org.igsq.igsqbot.minecraft;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.ErrorHandler;
 import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -15,37 +15,50 @@ import net.dv8tion.jda.api.entities.Role;
 
 public class Sync_Minecraft 
 {
-	private static final Map<String, String> ranks = new Hashtable<String, String>();
-	private static Guild guild = Common.jda.getGuildById(Yaml.getFieldString("BOT.server", "config"));
-	private static Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
-	
+	private static final Map<String, String> ranks = new HashMap<>();
+	private static final Guild guild = Common.jda.getGuildById(Yaml.getFieldString("BOT.server", "config"));
+	private static Role verifiedRole = null;
+
+	private Sync_Minecraft()
+	{
+		//Overriding the default, public, constructor
+	}
+
 	public static void sync()
 	{
-		for(Member selectedMember : guild.loadMembers().get())
+		if(guild == null)
 		{
-			if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
+			Main_Minecraft.cancelSync();
+		}
+		else
+		{
+			verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
+			for(Member selectedMember : guild.loadMembers().get())
 			{
-				String username = selectedMember.getUser().getAsTag();
-				String nickname = selectedMember.getEffectiveName();
-				String id = selectedMember.getId();
-				String rank = getRank(selectedMember);
-				
-				int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ?1:0;
-				int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember)?1:0;
-				int developer = hasRole(Yaml.getFieldString("ranks.default", "minecraft").split(" "), selectedMember) ?1:0;
-				int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember)?1:0;
-				// int retired = hasRole(Yaml.getFieldString("ranks.retired", "minecraft").split(" "), selectedMember)?1:0;
-				int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember)?1:0;
-				
-				boolean userExists = Database.ScalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '"+ id +"';") > 0;
-				
-				if(userExists)
+				if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 				{
-					Database.UpdateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
-				}
-				else
-				{
-					Database.UpdateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
+					String username = selectedMember.getUser().getAsTag();
+					String nickname = selectedMember.getEffectiveName();
+					String id = selectedMember.getId();
+					String rank = getRank(selectedMember);
+
+					int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ?1:0;
+					int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember)?1:0;
+					int developer = hasRole(Yaml.getFieldString("ranks.default", "minecraft").split(" "), selectedMember) ?1:0;
+					int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember)?1:0;
+					// int retired = hasRole(Yaml.getFieldString("ranks.retired", "minecraft").split(" "), selectedMember)?1:0;
+					int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember)?1:0;
+
+					boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '"+ id +"';") > 0;
+
+					if(userExists)
+					{
+						Database.updateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
+					}
+					else
+					{
+						Database.updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
+					}
 				}
 			}
 		}
@@ -53,37 +66,36 @@ public class Sync_Minecraft
 	
 	public static void clean()
 	{		
-		ResultSet discord_accounts = Database.QueryCommand("SELECT * FROM discord_accounts");
+		ResultSet discord_accounts = Database.queryCommand("SELECT * FROM discord_accounts");
+		if(discord_accounts == null)
+		{
+			Main_Minecraft.cancelClean();
+			return;
+		}
 		try 
 		{
 			while(discord_accounts.next())
 			{
 				Member selectedMember = guild.getMemberById(discord_accounts.getString(1));
 				String id = selectedMember.getId();
-				
+
 				if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 				{
-					ResultSet linked_accounts = Database.QueryCommand("SELECT uuid from linked_accounts WHERE id = '" + id + "';");
-					try 
+					String uuid = Common_Minecraft.getUUIDFromID(id);
+
+					if(uuid != null)
 					{
-						if(linked_accounts.next())
-						{
-							Database.UpdateCommand("DELETE FROM discord_2fa WHERE uuid = '" + linked_accounts.getString(1) + "';");
-							Database.UpdateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
-						}
-					} 
-					catch (SQLException exception) 
-					{
+						Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
+						Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
 					}
-					finally
-					{
-						Database.UpdateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
-					}
+
+					Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
 				}
 			}
 		} 
-		catch (SQLException exception) 
+		catch (Exception exception)
 		{
+			new ErrorHandler(exception);
 		}
 	}
 	
@@ -117,13 +129,13 @@ public class Sync_Minecraft
 		
 		for(Role selectedRole : member.getRoles())
 		{
-			for(String selectedRanks : ranks.keySet())
+			for(Map.Entry<String, String> selectedRanks : ranks.entrySet())
 			{
-				for(String selectedRank : selectedRanks.split(" "))
+				for(String selectedRank : selectedRanks.getKey().split(" "))
 				{
 					if(selectedRole.getId().equals(selectedRank))
 					{
-						return ranks.get(selectedRanks);
+						return selectedRanks.getValue();
 					}
 				}
 			}
