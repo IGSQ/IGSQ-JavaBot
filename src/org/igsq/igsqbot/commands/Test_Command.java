@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.ErrorHandler;
 import org.igsq.igsqbot.GUIGenerator;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -29,17 +30,19 @@ public class Test_Command {
 	
 	private void test() 
 	{
-		GUIGenerator generator = new GUIGenerator(new EmbedGenerator(channel).text("Are you okay"));
-		Integer testState = generator.menu(author, 60000, 5);
-		if(testState == null)
-		{
-			new EmbedGenerator(null).text("Timeout").replace(generator.getMessage());
-			generator.getMessage().delete().queueAfter(5000, TimeUnit.MILLISECONDS);
-			test();
-		}
-		else
-		{
-			new EmbedGenerator(null).text("" + testState).replace(generator.getMessage());
-		}
+//		GUIGenerator generator = new GUIGenerator(new EmbedGenerator(channel).text("Are you okay"));
+//		Integer testState = generator.menu(author, 60000, 5);
+//		if(testState == null)
+//		{
+//			new EmbedGenerator(null).text("Timeout").replace(generator.getMessage());
+//			generator.getMessage().delete().queueAfter(5000, TimeUnit.MILLISECONDS);
+//			test();
+//		}
+//		else
+//		{
+//			new EmbedGenerator(null).text("" + testState).replace(generator.getMessage());
+//		}
+
+		ErrorHandler.causeException();
 	}
 }

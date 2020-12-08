@@ -28,19 +28,6 @@ public class Bot
 		Yaml.createFiles();
 		Yaml.loadFile("@all");
 		
-		Common.scheduler.scheduleAtFixedRate(() ->
-		{
-				Yaml.saveFileChanges("@all");
-				Yaml.loadFile("@all");
-		}, 1, 30,TimeUnit.SECONDS);
-		
-		Common.scheduler.scheduleAtFixedRate(() ->
-		{
-				System.out.println("Cleaning Message Caches: Starting.");
-				MessageCache.cleanCaches();
-				System.out.println("Cleaning Message Caches: Complete.");
-		}, 0, 6,TimeUnit.HOURS);
-		
 		try 
 		{
 			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
@@ -65,12 +52,23 @@ public class Bot
 					new MessageDeleteEvent_Logging(),
 					new MessageUpdateEvent_Logging()
 					);
-			
-			Yaml.applyDefault();
-			
+
+			Common.scheduler.scheduleAtFixedRate(() ->
+			{
+				Yaml.saveFileChanges("@all");
+				Yaml.loadFile("@all");
+			}, 0, 30,TimeUnit.SECONDS);
+
+			Common.scheduler.scheduleAtFixedRate(() ->
+			{
+				System.out.println("Cleaning Message Caches: Starting.");
+				MessageCache.cleanCaches();
+				System.out.println("Cleaning Message Caches: Complete.");
+			}, 0, 6,TimeUnit.HOURS);
+
 			Main_Minecraft.startMinecraft();
 			Database.startDatabase();
-			
+			Yaml.applyDefault();
 		}
 		catch(Exception exception)
 		{

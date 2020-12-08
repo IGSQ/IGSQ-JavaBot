@@ -17,12 +17,15 @@ public class Setup_Command
 	private final User author;
 	private final Member member;
 	private final String[] args;
+	private final MessageReceivedEvent event;
+
 	public Setup_Command(MessageReceivedEvent event)
 	{
 		this.author = event.getAuthor();
 		this.channel = event.getChannel();
 		this.member = event.getMember();
 		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ");
+		this.event = event;
 		setupQuery();
 	}
 	
@@ -47,30 +50,16 @@ public class Setup_Command
 		
 		switch(action.toLowerCase()) 
 		{
-//			case "verify":
-//				new Verification_Setup(event);
-//				break;
+			case "verify":
+			case "verification":
+				new Verification_Setup(event);
+			case "logging":
+			case "log":
+				break;
 			default:
-				GUIGenerator menu = new GUIGenerator(new EmbedGenerator(channel).text("Are you gay?\n:one: Yes\n:two: yes but lowercase")); 
-				int option = menu.menu(author, 10000, 2);
-				if(option == -1)
-				{
-					new EmbedGenerator(channel).text("SHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIT").replace(menu.getMessage());
-				}
-				else if(option == 1)
-				{
-					new EmbedGenerator(channel).text("Are you gay2?\n:one: Yes2\n:two: yes but lowercase2\n:three: NO\n:four: no but less mad\n:five: banana").replace(menu.getMessage());
-					int option2 = menu.menu(author, 10000, 5);
-					if(option2 == 1)
-					{
-						new EmbedGenerator(channel).text("KankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKankerKanker").replace(menu.getMessage());
-					}
-				}
-				else if(option == 2)
-				{
-					new EmbedGenerator(channel).text("wow, pretty gay! but in lowercase").replace(menu.getMessage());
-				}
+				new EmbedGenerator(channel).text("That is an invalid setup parameter").color(Color.RED).sendTemporary();
 		}
 	}
 }
+
 

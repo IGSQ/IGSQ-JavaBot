@@ -1,5 +1,6 @@
 package org.igsq.igsqbot;
 
+import net.dv8tion.jda.api.events.GenericEvent;
 import org.igsq.igsqbot.util.EventWaiter;
 import org.igsq.igsqbot.util.GUI_State;
 
@@ -8,12 +9,14 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
+import java.util.concurrent.ExecutionException;
+
 public class GUIGenerator
 {
 	private final EmbedGenerator embed;
 	private Message message = null;
 	private static final String NUMBER_CODEPOINT = "\u20E3";
-	private int optionCount = -1;
+	private GenericEvent event;
 
 	public GUIGenerator(EmbedGenerator embed) 
 	{
@@ -85,6 +88,7 @@ public class GUIGenerator
 
 		MessageReceivedEvent messageEvent;
 		EventWaiter waiter = new EventWaiter();
+		event = null;
 
 		try
 		{
@@ -97,6 +101,7 @@ public class GUIGenerator
 		
 		if(messageEvent != null)
 		{
+			event = messageEvent;
 			return messageEvent.getMessage().getContentRaw();
 		}
 		else
@@ -106,29 +111,15 @@ public class GUIGenerator
 	}
 	
 	public int menu(User user, long timeout, int optionCount)
-	{	
-		if(message == null)
+	{
+		for(int i = 1; i <= optionCount; i++)
 		{
-			message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
+			message.addReaction(i + NUMBER_CODEPOINT).queue();
 		}
-		if(this.optionCount == -1)
-		{
-			for(int i = 1; i <= optionCount; i++)
-			{
-				message.addReaction(i + NUMBER_CODEPOINT).queue();
-			}
-		}
-		else
-		{
-			for(int i = this.optionCount + 1; i <= optionCount; i++)
-			{
-				message.addReaction(i + NUMBER_CODEPOINT).queue();
-			}
-		}
-		this.optionCount = optionCount;
+
 		MessageReactionAddEvent reactionEvent;
 		EventWaiter waiter = new EventWaiter();
-
+		event = null;
 		try
 		{
 			reactionEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(user) && !event.getUser().isBot(), timeout);
@@ -137,9 +128,22 @@ public class GUIGenerator
 		{
 			reactionEvent = null;
 		}
+
+
 		if(reactionEvent != null)
 		{
-			reactionEvent.getReaction().removeReaction(reactionEvent.getUser()).queue(error -> {});
+			User reactingUser = null;
+			try
+			{
+				reactingUser = reactionEvent.retrieveUser().submit().get();
+			}
+			catch (Exception exception)
+			{
+				new ErrorHandler(exception);
+				return -1;
+			}
+			event = reactionEvent;
+			reactionEvent.getReaction().removeReaction(reactingUser).queue(error -> {});
 			if(reactionEvent.getReactionEmote().isEmoji())
 			{
 				String reactionNumber = reactionEvent.getReactionEmote().getEmoji().substring(0, 1);
@@ -177,5 +181,10 @@ public class GUIGenerator
 	public Message getMessage()
 	{
 		return message;
+	}
+
+	public GenericEvent getEvent()
+	{
+		return event;
 	}
 }

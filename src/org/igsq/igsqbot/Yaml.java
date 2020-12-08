@@ -40,15 +40,16 @@ public class Yaml
 		 try
          {
          	File folder = new File("data");
-	    	if (!folder.exists() && folder.mkdir())
+	    	if (!folder.exists())
+		    {
+			    folder.mkdir();
+		    }
+	         files = new File[fileNames.length];
+	         configurations = new YamlConfiguration[fileNames.length];
+			 for (int i = 0; i < fileNames.length; i++)
 			 {
-				 files = new File[fileNames.length];
-				 configurations = new YamlConfiguration[fileNames.length];
-				 for (int i = 0; i < fileNames.length; i++)
-				 {
-					 files[i] = new File(folder, fileNames[i] + ".yml");
-					 files[i].createNewFile();
-				 }
+				 files[i] = new File(folder, fileNames[i] + ".yml");
+				 files[i].createNewFile();
 			 }
          }
          catch (Exception exception)

@@ -33,7 +33,7 @@ public class Sync_Minecraft
 		else
 		{
 			verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
-			for(Member selectedMember : guild.loadMembers().get())
+			guild.loadMembers(selectedMember ->
 			{
 				if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 				{
@@ -60,7 +60,7 @@ public class Sync_Minecraft
 						Database.updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
 					}
 				}
-			}
+			});
 		}
 	}
 	
