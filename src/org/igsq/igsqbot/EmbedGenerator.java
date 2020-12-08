@@ -276,8 +276,8 @@ public class EmbedGenerator{
 		if(embed.isEmpty()) return null;
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return null;
 		
-		sentMessage = channel.sendMessage(embed.build()).complete();
-		if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) sentMessage.addReaction(reaction).queue();
+		channel.sendMessage(embed.build()).queue(message -> this.sentMessage = message);
+		if(!(channel instanceof TextChannel) || ((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) sentMessage.addReaction(reaction).queue();
 		return sentMessage;
 	}
 	/**
