@@ -16,11 +16,16 @@ public class Cooldown_Handler
 	ScheduledFuture<?> cooldownTask;
 	Random random = new Random();
 	
-	public Cooldown_Handler(String id)
+	public Cooldown_Handler(String guildId)
 	{
-		this.id = id;
+		this.id = guildId;
 	}
-	
+
+	/**
+	 *
+	 * @param command command to cool
+	 * @param cooldown cooldown in milliseconds
+	 */
 	public void createCooldown(String command, int cooldown)
 	{
 		if(getCooldown(command) <= 0) 
