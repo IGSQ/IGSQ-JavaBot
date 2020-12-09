@@ -18,7 +18,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Report_Command 
 {
-	private String[] args;
+	private final String[] args;
 	private final Message message;
 	private final User author;
 	private TextChannel channel;
@@ -29,8 +29,7 @@ public class Report_Command
 	
 	public Report_Command(MessageReceivedEvent event)
 	{
-		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ", 3);
-		this.args = Common.depend(args, 0);
+		this.args = Common.depend(event.getMessage().getContentRaw().toLowerCase().split(" ", 3), 0);
 		this.message = event.getMessage();
 		this.author = event.getAuthor();
 		this.jda = event.getJDA();

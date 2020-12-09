@@ -78,6 +78,7 @@ public class Main_Command extends ListenerAdapter
 			            break;
 
 		            case "help":
+		            case "?":
 			            new Help_Command(event);
 			            break;
 
@@ -98,7 +99,10 @@ public class Main_Command extends ListenerAdapter
 		            case "ping":
 		            	new Ping_Command(event);
 						break;
-
+		            case "uwu":
+		            case "uwufy":
+		            	new Uwu_Command(event);
+		            	break;
 		            default:
 			            new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
 			            break;
