@@ -2,23 +2,24 @@ package org.igsq.igsqbot;
 
 import java.util.concurrent.TimeUnit;
 
-import org.igsq.igsqbot.commands.Main_Command;
-import org.igsq.igsqbot.commands.MessageReactionAddEvent_Help;
-import org.igsq.igsqbot.commands.MessageReactionAddEvent_Report;
-import org.igsq.igsqbot.commands.MessageReactionAddEvent_Verification;
+import org.igsq.igsqbot.events.MessageReactionAddEvent_Help;
+import org.igsq.igsqbot.events.MessageReactionAddEvent_Report;
+import org.igsq.igsqbot.events.MessageReactionAddEvent_Verification;
 import org.igsq.igsqbot.logging.GuildMemberJoinEvent_Logging;
 import org.igsq.igsqbot.logging.GuildMemberRemoveEvent_Logging;
 import org.igsq.igsqbot.logging.MessageBulkDeleteEvent_Logging;
 import org.igsq.igsqbot.logging.MessageDeleteEvent_Logging;
 import org.igsq.igsqbot.logging.MessageUpdateEvent_Logging;
-import org.igsq.igsqbot.main.MessageDeleteEvent_Main;
-import org.igsq.igsqbot.main.MessageReactionAddEvent_Main;
-import org.igsq.igsqbot.main.MessageReceivedEvent_Main;
+import org.igsq.igsqbot.events.MessageDeleteEvent_Main;
+import org.igsq.igsqbot.events.MessageReactionAddEvent_Main;
+import org.igsq.igsqbot.events.MessageReceivedEvent_Main;
 import org.igsq.igsqbot.minecraft.Main_Minecraft;
 
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.util.Yaml;
 
 
 public class Bot
@@ -36,7 +37,7 @@ public class Bot
 			Common.jda = Common.jdaBuilder.build().awaitReady();
 			
 			Common.jda.addEventListener(
-					new Main_Command(), 
+					//new Main_Command(),
 					
 					new MessageReactionAddEvent_Main(),
 					new MessageDeleteEvent_Main(),

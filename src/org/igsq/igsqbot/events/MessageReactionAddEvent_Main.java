@@ -1,6 +1,6 @@
-package org.igsq.igsqbot.main;
+package org.igsq.igsqbot.events;
 
-import org.igsq.igsqbot.util.EventWaiter;
+import org.igsq.igsqbot.objects.EventWaiter;
 
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

@@ -1,15 +1,13 @@
-package org.igsq.igsqbot;
+package org.igsq.igsqbot.objects;
 
 import net.dv8tion.jda.api.events.GenericEvent;
-import org.igsq.igsqbot.util.EventWaiter;
+import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.util.GUI_State;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-
-import java.util.concurrent.ExecutionException;
 
 public class GUIGenerator
 {

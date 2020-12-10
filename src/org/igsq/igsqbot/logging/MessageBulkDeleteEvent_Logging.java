@@ -3,9 +3,9 @@ package org.igsq.igsqbot.logging;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.MessageCache;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;

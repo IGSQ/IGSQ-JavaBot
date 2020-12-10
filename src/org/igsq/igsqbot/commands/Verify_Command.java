@@ -1,10 +1,12 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
+import java.util.List;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -55,6 +57,7 @@ public class Verify_Command
 	
 	private void verify() 
 	{
+		List<Message> retrievedMessages = getMessages(channel, 10);
 		String messageContent = "";
 		String[] retrievedRoles = Common_Command.getRoles(guild.getId());
 		String[] assignedRoles = new String[0];
@@ -93,22 +96,38 @@ public class Verify_Command
 			if(!Common.isFieldEmpty(guild.getId() + ".verifiedrole", "guild"))
 			{
 				Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
+
 				if(verifiedRole != null && Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
 				{
 					new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
 					return;
 				}
+				else
+				{
+					new EmbedGenerator(channel).text("There is no verified role setup.").color(Color.RED).sendTemporary();
+					return;
+				}
 			}
 		}
-		
-		for(Message selectedMessage : channel.getHistory().retrievePast(10).complete()) 
+
+		if(retrievedMessages != null)
 		{
-			if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(jda.getSelfUser())) 
+			for(Message selectedMessage : retrievedMessages)
 			{
-				messageContent += " " + selectedMessage.getContentRaw();
+				if(selectedMessage.getAuthor().equals(toVerify) && !selectedMessage.getAuthor().equals(jda.getSelfUser()))
+				{
+					messageContent += "" + selectedMessage.getContentRaw();
+				}
 			}
 		}
-		
+		else
+		{
+			new EmbedGenerator(channel).text("An error occurred while retrieving the users messages.").color(Color.RED).sendTemporary();
+			return;
+		}
+
+
+
 		int currentRole = 0;
 		for(String[] selectedAliases : Common_Command.getAliases(guild.getId()))
 		{
@@ -188,5 +207,19 @@ public class Verify_Command
 			}
 		);
 	}
+	
+	private List<Message> getMessages(TextChannel channel, int amount)
+	{
+		try
+		{
+			return channel.getHistory().retrievePast(amount).submit().get();
+		}
+		catch(Exception exception)
+		{
+			new ErrorHandler(exception);
+			return null;
+		}
+	}
+
 }
 

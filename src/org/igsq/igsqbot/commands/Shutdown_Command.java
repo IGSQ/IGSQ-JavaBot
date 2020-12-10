@@ -3,8 +3,8 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 import java.util.Random;
 
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageChannel;

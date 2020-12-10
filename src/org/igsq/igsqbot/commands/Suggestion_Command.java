@@ -3,8 +3,8 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -17,17 +17,16 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Suggestion_Command 
 {
-    private String[] args;
+    private final String[] args;
     private final Message message;
     private final User author;
+    private final JDA jda;
     private TextChannel channel;
     private Guild guild;
-    private final JDA jda;
 
     public Suggestion_Command(MessageReceivedEvent event)
     {
-        this.args = event.getMessage().getContentRaw().toLowerCase().split(" ", 2);
-        this.args = Common.depend(args, 0);
+        this.args = Common.depend(event.getMessage().getContentRaw().toLowerCase().split(" ", 2), 0);
         this.message = event.getMessage();
         this.author = event.getAuthor();
         this.jda = event.getJDA();
@@ -51,6 +50,13 @@ public class Suggestion_Command
     private void suggest()
     {
         MessageChannel suggestionChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
-    	new EmbedGenerator(suggestionChannel).title("Suggestion:").text(args[0]).thumbnail(author.getAvatarUrl()).footer("Suggestion by: " + Common.getMemberFromUser(author, guild).getNickname()).send();
+        if(suggestionChannel != null)
+        {
+            new EmbedGenerator(suggestionChannel).title("Suggestion:").text(args[0]).thumbnail(author.getAvatarUrl()).footer("Suggestion by: " + Common.getMemberFromUser(author, guild).getNickname()).send();
+        }
+    	else
+        {
+            new EmbedGenerator(channel).text("There is no setup Suggestion Channel").color(Color.RED).sendTemporary();
+        }
     }
 }

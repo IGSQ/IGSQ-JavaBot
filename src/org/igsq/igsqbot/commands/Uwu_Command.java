@@ -1,14 +1,12 @@
 package org.igsq.igsqbot.commands;
 
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +45,6 @@ public class Uwu_Command
 		Collections.replaceAll(chars, "i", "iw");
 
 		chars.forEach(sentence::append);
-		new EmbedGenerator(channel).text(sentence.toString()).footer("This sentence was UwU'd by: " + author.getAsTag()).color(Color.WHITE).send();
+		new EmbedGenerator(channel).text(sentence.toString()).footer("This sentence was UwU'd by: " + author.getAsTag()).color(Color.PINK).send();
 	}
 }

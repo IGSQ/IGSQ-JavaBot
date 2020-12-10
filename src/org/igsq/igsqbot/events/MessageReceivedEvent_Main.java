@@ -1,8 +1,9 @@
-package org.igsq.igsqbot.main;
+package org.igsq.igsqbot.events;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.MessageCache;
-import org.igsq.igsqbot.util.EventWaiter;
+import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.handlers.CommandHandler;
+import org.igsq.igsqbot.objects.EventWaiter;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -23,6 +24,12 @@ public class MessageReceivedEvent_Main extends ListenerAdapter
 			{
 				MessageCache.getCache(event.getGuild().getId()).set(event.getMessage());
 			}
+
+
+		}
+		else if(event.getMessage().getContentRaw().startsWith(Common.BOT_PREFIX))
+		{
+			CommandHandler.handle(event);
 		}
     }
 }

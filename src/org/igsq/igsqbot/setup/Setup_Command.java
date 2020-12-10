@@ -2,8 +2,7 @@ package org.igsq.igsqbot.setup;
 
 import java.awt.Color;
 
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.GUIGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;

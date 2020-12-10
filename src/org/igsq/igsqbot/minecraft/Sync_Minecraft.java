@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.ErrorHandler;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Member;

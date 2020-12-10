@@ -3,7 +3,7 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;

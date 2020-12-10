@@ -29,5 +29,6 @@
     <orderEntry type="library" name="Maven: me.carleslc.Simple-YAML:Simple-Yaml:1.7.1" level="project" />
     <orderEntry type="library" name="Maven: me.carleslc.Simple-YAML:Simple-Configuration:1.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.26" level="project" />
+    <orderEntry type="library" name="Maven: io.github.classgraph:classgraph:4.8.93" level="project" />
   </component>
 </module>

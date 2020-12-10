@@ -1,5 +1,7 @@
 package org.igsq.igsqbot;
 
+import org.igsq.igsqbot.util.Yaml;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

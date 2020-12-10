@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.util;
+package org.igsq.igsqbot.objects;
 
 /*
  *     Copyright 2020 Horstexplorer @ https://www.netbeacon.de

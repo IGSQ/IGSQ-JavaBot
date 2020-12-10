@@ -1,9 +1,10 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.events;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.ErrorHandler;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.commands.Common_Command;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;

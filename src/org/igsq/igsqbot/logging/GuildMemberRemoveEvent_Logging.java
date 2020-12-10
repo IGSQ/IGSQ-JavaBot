@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.ErrorHandler;
+import org.igsq.igsqbot.objects.ErrorHandler;
 
 public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 {

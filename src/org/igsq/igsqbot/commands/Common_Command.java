@@ -1,8 +1,9 @@
 package org.igsq.igsqbot.commands;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.handlers.CooldownHandler;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.Yaml;
 
 public class Common_Command 
 {
@@ -26,17 +27,17 @@ public class Common_Command
 			"Well. I suppose we could just sit in this room and glare at each other until somebody drops dead, but I have a better idea."};
     
 	
-	public static Cooldown_Handler[] append(Cooldown_Handler[] array, Cooldown_Handler value)
+	public static CooldownHandler[] append(CooldownHandler[] array, CooldownHandler value)
 	{
-		Cooldown_Handler[] arrayAppended = new Cooldown_Handler[array.length+1];
+		CooldownHandler[] arrayAppended = new CooldownHandler[array.length+1];
         System.arraycopy(array, 0, arrayAppended, 0, array.length);
 		arrayAppended[array.length] = value;
 		return arrayAppended;
 	}
 
-	public static Cooldown_Handler[] depend(Cooldown_Handler[] array, Cooldown_Handler value)
+	public static CooldownHandler[] depend(CooldownHandler[] array, CooldownHandler value)
 	{
-		Cooldown_Handler[] arrayDepended = new Cooldown_Handler[array.length-1];
+		CooldownHandler[] arrayDepended = new CooldownHandler[array.length-1];
 	    int hitRemove = 0;
 	    
 	    for (int i = 0;i < array.length;i++)

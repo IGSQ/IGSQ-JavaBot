@@ -6,14 +6,14 @@ import java.sql.SQLException;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.igsq.igsqbot.ErrorHandler;
+import org.igsq.igsqbot.objects.ErrorHandler;
 
 public class Link_Minecraft 
 {

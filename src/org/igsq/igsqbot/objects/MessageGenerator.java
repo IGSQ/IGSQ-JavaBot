@@ -1,4 +1,4 @@
-package org.igsq.igsqbot;
+package org.igsq.igsqbot.objects;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +8,9 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.MentionType;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Messaging;
+
 /**
  * Creates Message using JDA's {@link MessageBuilder} api, with increased functionality.
  * @see #Message(MessageChannel)
@@ -27,7 +30,7 @@ public class MessageGenerator
 	private Message message = null;
 	/**
 	 * Constructor for Message, requires a location for the message to be created in ({@link MessageChannel})
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public MessageGenerator(MessageChannel channel)
 	{
@@ -38,7 +41,7 @@ public class MessageGenerator
 	/**
 	 * Adds a reaction to the message which is done after the message has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Messaging#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String[]) Multiple (Array)}.
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public MessageGenerator reaction(String emojiUnicode) 
 	{
@@ -50,7 +53,7 @@ public class MessageGenerator
 	/**
 	 * Adds an array of reactions to the message which is done after the message has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Messaging#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String) Singular}.
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public MessageGenerator reaction(String[] emojiUnicodes) 
 	{
@@ -66,7 +69,7 @@ public class MessageGenerator
 	/**
 	 * Gets the reactions ready to be added to the message.
 	 * @see  #reaction(String[])
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public String[] getReactions() 
 	{
@@ -75,7 +78,7 @@ public class MessageGenerator
 	/**
 	 * Gets the channel the message will be send to, designated by the {@link #Message(MessageChannel) constructor}
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public MessageChannel getChannel() 
 	{
@@ -83,7 +86,7 @@ public class MessageGenerator
 	}
 	/**
 	 * Gets the {@link MessageBuilder MessageBuilder} the message is being built from.
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public MessageBuilder getBuilder() 
 	{
@@ -92,7 +95,7 @@ public class MessageGenerator
 	/**
 	 * Sets the text of the message.
 	 * @see net.dv8tion.jda.api.MessageBuilder#setContent(String)
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public MessageGenerator text(String text) 
 	{
@@ -103,7 +106,7 @@ public class MessageGenerator
 	/**
 	 * Sends the message to the channel designated in the {@link #Message(MessageChannel) constructor}.
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(net.dv8tion.jda.api.entities.Message)
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public Message send()
 	{
@@ -125,7 +128,7 @@ public class MessageGenerator
 	 * @return 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageGenerator)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public Message sendTemporary(int delay) 
 	{
@@ -150,7 +153,7 @@ public class MessageGenerator
 	 * @return 
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageGenerator)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
-	 * @see org.igsq.igsqbot.MessageGenerator
+	 * @see MessageGenerator
 	 */
 	public Message sendTemporary() 
 	{

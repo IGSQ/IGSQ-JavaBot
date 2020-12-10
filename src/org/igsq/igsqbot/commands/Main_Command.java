@@ -3,10 +3,12 @@ package org.igsq.igsqbot.commands;
 import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.EmbedGenerator;
+import org.igsq.igsqbot.handlers.CooldownHandler;
+import org.igsq.igsqbot.improvedcommands.Clear_Command;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.minecraft.Link_Minecraft;
 import org.igsq.igsqbot.setup.Setup_Command;
-import org.igsq.igsqbot.util.EventWaiter;
+import org.igsq.igsqbot.objects.EventWaiter;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,7 +16,7 @@ import net.dv8tion.jda.api.entities.ChannelType;
 
 public class Main_Command extends ListenerAdapter
 {
-	private static Cooldown_Handler[] cooldownHandlers = {};
+	private static CooldownHandler[] cooldownHandlers = {};
 	
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
@@ -38,7 +40,7 @@ public class Main_Command extends ListenerAdapter
         		id = event.getGuild().getId();
     		}
     		else id = event.getChannel().getId();
-    		if(getHandler(id) == null) cooldownHandlers = Common_Command.append(cooldownHandlers, new Cooldown_Handler(id));
+    		// if(getHandler(id) == null) cooldownHandlers = Common_Command.append(cooldownHandlers, new CooldownHandler(id));
 
     		Common.commandExecutor.submit(() ->
 		    {
@@ -47,17 +49,14 @@ public class Main_Command extends ListenerAdapter
 		            case "poll":
 			            new Poll_Command(event);
 			            break;
-		            case "avatar":
-			            new Avatar_Command(event);
-			            break;
 
 		            case "shutdown":
 			            new Shutdown_Command(event);
 			            break;
 
-		            case "clear":
-			            new Clear_Command(event);
-			            break;
+//		            case "clear":
+//			            new Clear_Command(event);
+//			            break;
 
 		            case "verify":
 		            case "v":
@@ -96,9 +95,9 @@ public class Main_Command extends ListenerAdapter
 			            new Setup_Command(event);
 			            break;
 
-		            case "ping":
-		            	new Ping_Command(event);
-						break;
+//		            case "ping":
+//		            	new Ping_Command(event);
+//						break;
 		            case "uwu":
 		            case "uwufy":
 		            	new Uwu_Command(event);
@@ -112,13 +111,13 @@ public class Main_Command extends ListenerAdapter
         }
     }
     
-    public static Cooldown_Handler getHandler(String id)
-    {
-    	for(Cooldown_Handler selectedHandler : cooldownHandlers) if(selectedHandler.getId().equals(id)) return selectedHandler;
-		return null;
-    }
+//    public static CooldownHandler getHandler(String id)
+//    {
+//    	for(CooldownHandler selectedHandler : cooldownHandlers) if(selectedHandler.getId().equals(id)) return selectedHandler;
+//		return null;
+//    }
     
-    public static void removeHandler(Cooldown_Handler handler)
+    public static void removeHandler(CooldownHandler handler)
     {
     	cooldownHandlers = Common_Command.depend(cooldownHandlers, handler);
     }

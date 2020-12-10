@@ -10,6 +10,9 @@ import org.igsq.igsqbot.*;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.util.Yaml;
 
 public class TwoFA_Minecraft 
 {

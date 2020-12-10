@@ -1,11 +1,9 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
-import java.util.concurrent.TimeUnit;
 
-import org.igsq.igsqbot.EmbedGenerator;
-import org.igsq.igsqbot.ErrorHandler;
-import org.igsq.igsqbot.GUIGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.ErrorHandler;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

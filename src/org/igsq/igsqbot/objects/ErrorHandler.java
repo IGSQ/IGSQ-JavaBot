@@ -1,7 +1,9 @@
-package org.igsq.igsqbot;
+package org.igsq.igsqbot.objects;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.util.Yaml;
 
 import java.awt.*;
 import java.util.InputMismatchException;

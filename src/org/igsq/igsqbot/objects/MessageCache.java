@@ -1,9 +1,10 @@
-package org.igsq.igsqbot;
+package org.igsq.igsqbot.objects;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
 import net.dv8tion.jda.api.entities.Message;
+import org.igsq.igsqbot.Common;
 
 public class MessageCache
 {
