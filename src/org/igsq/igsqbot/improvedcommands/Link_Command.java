@@ -12,8 +12,7 @@ import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 
 public class Link_Command extends Command
 {

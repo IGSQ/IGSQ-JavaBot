@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.Messaging;
 import org.igsq.igsqbot.util.Yaml;
 
@@ -35,8 +36,8 @@ import org.igsq.igsqbot.util.Yaml;
 public class EmbedGenerator{
 	
 	private String[] reactions = {};
-	private MessageChannel channel;
-	private final EmbedBuilder embed;
+	private MessageChannel channel = null;
+	private EmbedBuilder embed = null;
 	private Message sentMessage = null;
 	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
@@ -59,6 +60,24 @@ public class EmbedGenerator{
 		embed = builder;
 	}
 	/**
+	 * Constructor for Embed)
+	 * Overloads {@link #EmbedGenerator(MessageChannel) With EmbedBuilder}
+	 * @see EmbedGenerator
+	 */
+	public EmbedGenerator(MessageEmbed message)
+	{
+		this.embed = new EmbedBuilder();
+		try {embed.setAuthor(message.getAuthor().toString());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setColor(message.getColor());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setDescription(message.getDescription());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setFooter(message.getFooter().getText());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setImage(message.getImage().toString());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setThumbnail(message.getThumbnail().toString());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setTimestamp(message.getTimestamp());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setTitle(message.getTitle());} catch(Exception exception) {new ErrorHandler(exception);}
+		try {for(Field selectedField : message.getFields()) embed.addField(selectedField);} catch(Exception exception) {new ErrorHandler(exception);}
+	}
+	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
 	 * Overloads {@link #EmbedGenerator(MessageChannel) With EmbedBuilder}  
 	 * @see EmbedGenerator
@@ -77,6 +96,13 @@ public class EmbedGenerator{
 		try {embed.setTitle(message.getTitle());} catch(Exception exception) {new ErrorHandler(exception);}
 		try {for(Field selectedField : message.getFields()) embed.addField(selectedField);} catch(Exception exception) {new ErrorHandler(exception);}
 	}
+
+	/**
+	 * Constructs an empty {@link EmbedGenerator}
+	 * @see EmbedGenerator
+	 */
+	public EmbedGenerator() {}
+
 	/**
 	 * Sets the footer of an embed.
 	 * Overloads {@link #footer(String,String) With icon}.

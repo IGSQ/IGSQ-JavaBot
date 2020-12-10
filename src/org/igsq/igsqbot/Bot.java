@@ -37,8 +37,6 @@ public class Bot
 			Common.jda = Common.jdaBuilder.build().awaitReady();
 			
 			Common.jda.addEventListener(
-					//new Main_Command(),
-					
 					new MessageReactionAddEvent_Main(),
 					new MessageDeleteEvent_Main(),
 					new MessageReceivedEvent_Main(),

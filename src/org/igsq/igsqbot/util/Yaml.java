@@ -2,7 +2,7 @@ package org.igsq.igsqbot.util;
 
 import java.io.File;
 
-import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 

@@ -9,7 +9,7 @@ import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.awt.Color;
 import java.util.concurrent.ScheduledFuture;
@@ -44,7 +44,7 @@ public class Ping_Command extends Command
 					channel.sendMessage(embed.getBuilder().build()).queue(
 							message ->
 							{
-								new EmbedGenerator(null).text(
+								new EmbedGenerator().text(
 										"**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms"
 												+ "\n\n**30 Second REST Average**: " + getAverageREST(30, jda) + "ms"
 												+ "\n**1 Minute REST Average**: " + getAverageREST(60, jda) + "ms")

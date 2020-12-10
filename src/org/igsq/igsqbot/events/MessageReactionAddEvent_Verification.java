@@ -3,7 +3,7 @@ package org.igsq.igsqbot.events;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.util.Command_Utils;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.JDA;

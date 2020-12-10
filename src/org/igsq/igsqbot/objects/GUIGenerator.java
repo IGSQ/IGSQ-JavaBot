@@ -2,6 +2,7 @@ package org.igsq.igsqbot.objects;
 
 import net.dv8tion.jda.api.events.GenericEvent;
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.GUI_State;
 
 import net.dv8tion.jda.api.entities.Message;

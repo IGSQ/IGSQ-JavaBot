@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.Yaml;
 
 public class TwoFA_Minecraft 
@@ -48,7 +48,7 @@ public class TwoFA_Minecraft
 			
 			int code = generateCode();
 			PrivateChannel channel = user.openPrivateChannel().complete();
-			EmbedGenerator embed = new EmbedGenerator(null).text("Here is your Minecraft 2FA Code: " + code + "\n If you did not request this code, please ignore this message.");
+			EmbedGenerator embed = new EmbedGenerator().text("Here is your Minecraft 2FA Code: " + code + "\n If you did not request this code, please ignore this message.");
 			Message message = channel.sendMessage(embed.getBuilder().build()).complete();
 			
 			Database.updateCommand("UPDATE discord_2fa SET code = '" + code +  "' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");

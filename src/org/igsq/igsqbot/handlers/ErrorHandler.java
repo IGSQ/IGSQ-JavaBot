@@ -1,8 +1,9 @@
-package org.igsq.igsqbot.objects;
+package org.igsq.igsqbot.handlers;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.Yaml;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class ErrorHandler
 
     private void reportError()
     {
-        GuildChannel errorChannel = Common.jda.getGuildChannelById(Yaml.getFieldString("BOT.error", "config"));
+        GuildChannel errorChannel = Common.jda.getGuildChannelById(!Common.isFieldEmpty("BOT.error", "config") ? Yaml.getFieldString("BOT.error", "config") : "1");
         if(errorChannel == null)
         {
             exception.printStackTrace();

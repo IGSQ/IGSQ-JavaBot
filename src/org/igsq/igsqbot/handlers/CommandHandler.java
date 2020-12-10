@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 
@@ -70,6 +69,7 @@ public abstract class CommandHandler
 		{
 			return;
 		}
+		event.getMessage().delete().queue();
 		Common.commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
 	}
 }

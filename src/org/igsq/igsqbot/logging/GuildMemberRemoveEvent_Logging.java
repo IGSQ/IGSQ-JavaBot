@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 
 public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 {

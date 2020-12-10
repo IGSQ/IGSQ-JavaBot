@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.improvedcommands;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Common;
@@ -34,6 +35,7 @@ public class Report_Command extends Command
 		final User author = ctx.getAuthor();
 		final JDA jda = ctx.getJDA();
 		final Guild guild = ctx.getGuild();
+		final StringBuilder reportDescription = new StringBuilder();
 
 		final User reportedUser = Common.getUserFromMention(args[0]);
 		if(reportedUser != null)
@@ -54,8 +56,6 @@ public class Report_Command extends Command
 			else if(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild") == null || Yaml.getFieldString(guild.getId() + ".reportchannel", "guild").isEmpty()) new EmbedGenerator(channel).text("There is no report channel setup.").color(Color.RED).sendTemporary(); // This should log to admins
 			else
 			{
-
-
 				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
 				{
 					if(selectedMessage.getAuthor().getId().equals(reportedMember.getId()))
@@ -63,11 +63,13 @@ public class Report_Command extends Command
 						messageLog.append(reportedMember.getAsMention()).append(" | ").append(selectedMessage.getContentRaw()).append("\n");
 					}
 				}
+
+				Arrays.stream(Common.depend(args, 0)).forEach(word -> reportDescription.append(" ").append(word));
 				if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
 				EmbedGenerator embed = new EmbedGenerator(reportChannel)
 						.title("New report by: " + author.getAsTag())
 						.element("Reporting user:", reportedMember.getAsMention())
-						.element("Description:", args[1])
+						.element("Description:", reportDescription.toString())
 						.element("Channel:", Common.getChannelAsMention(channel.getId()))
 						.element("Message Log:", messageLog.toString())
 						.color(reportedMember.getColor())
