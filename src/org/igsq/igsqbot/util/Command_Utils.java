@@ -1,13 +1,12 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.util.Yaml;
 
-public class Common_Command 
+public class Command_Utils
 {
-	private Common_Command()
+	private Command_Utils()
 	{ } // Override the default constructor
 	public static final String[] POLL_EMOJIS_UNICODE = {"U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991"};
 	public static final String[] POLL_EMOJIS = {":pear:", ":watermelon:", ":pineapple:", ":apple:", ":banana:", ":avocado:", ":eggplant:", ":kiwi:", ":grapes:", ":blueberries:", ":cherries:", ":onion:", ":peach:", ":lemon:", ":tangerine:", ":melon:", ":coconut:",":garlic:", ":cucumber:", ":squid:"};

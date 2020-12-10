@@ -4,15 +4,15 @@ import java.awt.Color;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.CooldownHandler;
-import org.igsq.igsqbot.improvedcommands.Clear_Command;
+import org.igsq.igsqbot.improvedcommands.Modhelp_Command;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.minecraft.Link_Minecraft;
 import org.igsq.igsqbot.setup.Setup_Command;
 import org.igsq.igsqbot.objects.EventWaiter;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.entities.ChannelType;
+import org.igsq.igsqbot.util.Command_Utils;
 
 public class Main_Command extends ListenerAdapter
 {
@@ -46,9 +46,6 @@ public class Main_Command extends ListenerAdapter
 		    {
 	            switch(command)
 	            {
-		            case "poll":
-			            new Poll_Command(event);
-			            break;
 
 		            case "shutdown":
 			            new Shutdown_Command(event);
@@ -67,30 +64,6 @@ public class Main_Command extends ListenerAdapter
 		            case "test":
 			            new Test_Command(event);
 			            break;
-
-		            case "report":
-			            new Report_Command(event);
-			            break;
-
-		            case "suggest":
-			            new Suggestion_Command(event);
-			            break;
-
-		            case "help":
-		            case "?":
-			            new Help_Command(event);
-			            break;
-
-		            case "modhelp":
-			            new Modhelp_Command(event);
-			            break;
-
-		            case "link":
-		            case "minecraft":
-		            case "mc":
-			            new Link_Minecraft(event);
-			            break;
-
 		            case "setup":
 			            new Setup_Command(event);
 			            break;
@@ -98,10 +71,6 @@ public class Main_Command extends ListenerAdapter
 //		            case "ping":
 //		            	new Ping_Command(event);
 //						break;
-		            case "uwu":
-		            case "uwufy":
-		            	new Uwu_Command(event);
-		            	break;
 		            default:
 			            new EmbedGenerator(event.getChannel()).text("Command " + command + " not found.").color(Color.RED).sendTemporary();
 			            break;
@@ -119,6 +88,6 @@ public class Main_Command extends ListenerAdapter
     
     public static void removeHandler(CooldownHandler handler)
     {
-    	cooldownHandlers = Common_Command.depend(cooldownHandlers, handler);
+    	cooldownHandlers = Command_Utils.depend(cooldownHandlers, handler);
     }
 }

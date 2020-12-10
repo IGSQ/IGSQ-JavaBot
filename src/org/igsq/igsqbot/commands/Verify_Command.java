@@ -6,6 +6,7 @@ import java.util.List;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.ErrorHandler;
+import org.igsq.igsqbot.util.Command_Utils;
 import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.JDA;
@@ -59,7 +60,7 @@ public class Verify_Command
 	{
 		List<Message> retrievedMessages = getMessages(channel, 10);
 		String messageContent = "";
-		String[] retrievedRoles = Common_Command.getRoles(guild.getId());
+		String[] retrievedRoles = Command_Utils.getRoles(guild.getId());
 		String[] assignedRoles = new String[0];
 		String[] declinedRoles = new String[0];
 		String queryString = "";
@@ -129,7 +130,7 @@ public class Verify_Command
 
 
 		int currentRole = 0;
-		for(String[] selectedAliases : Common_Command.getAliases(guild.getId()))
+		for(String[] selectedAliases : Command_Utils.getAliases(guild.getId()))
 		{
 			for(String selectedAlias : selectedAliases)
 			{
@@ -146,7 +147,7 @@ public class Verify_Command
 		}
 		
 		currentRole = 0;
-		for(String[] declinedAliases : Common_Command.getDeclined(guild.getId()))
+		for(String[] declinedAliases : Command_Utils.getDeclined(guild.getId()))
 		{
 			for(String declinedAlias : declinedAliases)
 			{
@@ -163,7 +164,7 @@ public class Verify_Command
 		String[] wordList = messageContent.split(" ");
 		if(assignedRoles.length < 2)
 		{
-			for(String[] selectedAliases : Common_Command.getAliases(guild.getId()))
+			for(String[] selectedAliases : Command_Utils.getAliases(guild.getId()))
 			{
 				for(String selectedAlias: selectedAliases)
 				{

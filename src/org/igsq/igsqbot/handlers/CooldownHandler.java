@@ -5,7 +5,7 @@ import org.igsq.igsqbot.objects.Command;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CooldownHandler
+public abstract class CooldownHandler
 {
 	private CooldownHandler()
 	{

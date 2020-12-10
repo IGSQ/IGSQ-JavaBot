@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Random;
 
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.Command_Utils;
 import org.igsq.igsqbot.util.Yaml;
 
 import net.dv8tion.jda.api.JDA;
@@ -34,7 +35,7 @@ public class Shutdown_Command {
 	
 	private void shutdown() 
 	{
-		new EmbedGenerator(channel).text(Common_Command.SHUTDOWN_MESSAGES[random.nextInt(Common_Command.SHUTDOWN_MESSAGES.length)]).color(Color.GRAY).send();
+		new EmbedGenerator(channel).text(Command_Utils.SHUTDOWN_MESSAGES[random.nextInt(Command_Utils.SHUTDOWN_MESSAGES.length)]).color(Color.GRAY).send();
 		jda.shutdown();
 		Yaml.saveFileChanges("@all");
 		Yaml.disregardAndCloseFile("@all");

@@ -3,6 +3,7 @@ package org.igsq.igsqbot.handlers;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,7 +17,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandHandler
+public abstract class CommandHandler
 {
 	private CommandHandler()
 	{
@@ -47,16 +48,15 @@ public class CommandHandler
 	{
 		final String content = event.getMessage().getContentRaw().substring(Common.BOT_PREFIX.length());
 		final Message message = event.getMessage();
+		final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
+		final Command cmd = COMMANDS.get(issuedCommand);
+		final MessageChannel channel = event.getChannel();
+		final String[] args = Common.depend(event.getMessage().getContentRaw().split(" "), 0);
 
 		if(!message.getContentRaw().startsWith(Common.BOT_PREFIX) || event.getAuthor().isBot())
 		{
 			return;
 		}
-
-		final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-		final Command cmd = COMMANDS.get(issuedCommand);
-		final MessageChannel channel = event.getChannel();
-		final String[] args = Common.depend(event.getMessage().getContentRaw().split(" "), 0);
 
 		if(cmd == null)
 		{
@@ -66,6 +66,10 @@ public class CommandHandler
 			return;
 		}
 
-		cmd.execute(args, new Context(event));
+		if(cmd.isRequiresGuild() && (!event.getChannelType().equals(ChannelType.TEXT) ||!event.getMember().hasPermission(cmd.getRequiredPermissions())))
+		{
+			return;
+		}
+		Common.commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
 	}
 }

@@ -1,6 +1,6 @@
 package org.igsq.igsqbot.events;
 
-import org.igsq.igsqbot.commands.Common_Command;
+import org.igsq.igsqbot.util.Command_Utils;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.ErrorHandler;
 import org.igsq.igsqbot.util.Yaml;
@@ -44,17 +44,17 @@ public class MessageReactionAddEvent_Help extends ListenerAdapter
 				if(reaction.isEmoji() && codePoint.equals("U+25c0"))
 				{
 					page--;
-					if(page == 0) page = Common_Command.HELP_PAGE_TEXT.length;
+					if(page == 0) page = Command_Utils.HELP_PAGE_TEXT.length;
 					Yaml.updateField(messageID + ".help.page", "internal", page);
 				}
 				
 				else if(reaction.isEmoji() && codePoint.equals("U+25b6")) 
 				{
 					page++;
-					if(page == Common_Command.HELP_PAGE_TEXT.length + 1) page = 1;
+					if(page == Command_Utils.HELP_PAGE_TEXT.length + 1) page = 1;
 					Yaml.updateField(messageID + ".help.page", "internal", page);
 				}
-				EmbedGenerator embed = Common_Command.HELP_PAGE_TEXT[page-1];
+				EmbedGenerator embed = Command_Utils.HELP_PAGE_TEXT[page-1];
 				embed.setChannel(message.getChannel()).replace(message);
 			}
 		}

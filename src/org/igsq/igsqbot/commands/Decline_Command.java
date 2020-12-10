@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.util.Command_Utils;
 
 public class Decline_Command 
 {
@@ -55,7 +56,7 @@ public class Decline_Command
 			EmbedGenerator embed = new EmbedGenerator(channel).title("Declines for " + guild.getName());
 			StringBuilder description = new StringBuilder();
 
-			for (String[] selectedAliases : Common_Command.getDeclined(guild.getId()))
+			for (String[] selectedAliases : Command_Utils.getDeclined(guild.getId()))
 			{
 				Role role;
 				for (int i = 1; i < selectedAliases.length; i++)
@@ -92,13 +93,13 @@ public class Decline_Command
 			case "add":
 			case "accept":
 			case "yes":
-				Common_Command.insertDecline(guild.getId(), role.getId(), alias);
+				Command_Utils.insertDecline(guild.getId(), role.getId(), alias);
 				new EmbedGenerator(channel).text("Added Decline: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				break;
 				
 			case "remove":
 			case "delete":
-				if(Common_Command.removeDecline(guild.getId(), role.getId(), alias))
+				if(Command_Utils.removeDecline(guild.getId(), role.getId(), alias))
 				{
 					new EmbedGenerator(channel).text("Removed Decline: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				}

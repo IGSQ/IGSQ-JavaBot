@@ -1,7 +1,7 @@
 package org.igsq.igsqbot.events;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.commands.Common_Command;
+import org.igsq.igsqbot.util.Command_Utils;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.ErrorHandler;
 import org.igsq.igsqbot.util.Yaml;
@@ -68,7 +68,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 			{
 				for(int i = 0; i < guessedRoles.length; i++)
 				{
-					Common_Command.insertAlias(guild.getId(), guessedRoles[i], guessedAliases[i]);
+					Command_Utils.insertAlias(guild.getId(), guessedRoles[i], guessedAliases[i]);
 					confirmedRoles = Common.append(confirmedRoles, guessedRoles[i]);
 				}
 			}
@@ -76,7 +76,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 			{
 				for(int i = 0; i < guessedRoles.length; i++)
 				{
-					Common_Command.insertDecline(guild.getId(), guessedRoles[i], guessedAliases[i]);
+					Command_Utils.insertDecline(guild.getId(), guessedRoles[i], guessedAliases[i]);
 				}
 			}
 			if(!Common.isFieldEmpty(guild.getId() + ".welcomechannel", "guild"))

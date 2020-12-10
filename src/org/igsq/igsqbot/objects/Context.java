@@ -1,9 +1,7 @@
 package org.igsq.igsqbot.objects;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Context
@@ -33,5 +31,15 @@ public class Context
 	public User getAuthor()
 	{
 		return event.getAuthor();
+	}
+
+	public JDA getJDA()
+	{
+		return event.getJDA();
+	}
+
+	public ChannelType getChannelType()
+	{
+		return event.getChannelType();
 	}
 }

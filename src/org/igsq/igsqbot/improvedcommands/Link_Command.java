@@ -1,79 +1,36 @@
-package org.igsq.igsqbot.minecraft;
+package org.igsq.igsqbot.improvedcommands;
 
-import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.objects.EmbedGenerator;
-
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.minecraft.Common_Minecraft;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.objects.ErrorHandler;
 
-public class Link_Minecraft 
+public class Link_Command extends Command
 {
-	private final User user;
-	private String[] args;
-	private final Message message;
-	private final MessageChannel channel;
 
-	public Link_Minecraft(MessageReceivedEvent event) 
+	private String[] args;
+	private MessageChannel channel;
+	private User author;
+
+	public Link_Command()
 	{
-		this.user = event.getAuthor();
-		this.message = event.getMessage();
-		this.channel = event.getChannel();
-		
-		this.args = event.getMessage().getContentRaw().toLowerCase().split(" ", 3);
-		this.args = Common.depend(args, 0);
-		linkQuery();
+		super("link", new String[]{"mclink", "minecraft"}, "Controls Minecraft links.", new Permission[]{}, false,0);
 	}
-	
-	private void linkQuery()
-	{
-		if(!user.isBot() && message.isFromType(ChannelType.TEXT)) link();
-		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
-	}
-	private void link()
-	{
-		String action;
-		try
-		{
-			action = args[0];
-		}
-		catch(Exception exception) 
-		{
-			new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary(); 
-			return;
-		}
-		
-		switch(action.toLowerCase())
-		{
-			case "add":
-			case "new":
-				addLink();
-				break;
-			case "remove":
-			case "delete":
-				removeLink();
-				break;
-			case "show":
-			case "list":
-			case "pending":
-				showPending();
-				break;
-			default:
-				new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary();
-        }
-	}
+
 	private void showPending()
 	{
-		ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE id = '" + user.getId() + "';");
-		String embedDescription = "";
+		final ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE id = '" + author.getId() + "';");
+		final StringBuilder embedDescription = new StringBuilder();
 		String status;
 		try 
 		{
@@ -97,7 +54,7 @@ public class Link_Minecraft
 						status = "Status not found / invalid";
 						break;
 					}
-					embedDescription += mc_accounts.getString(1) + ": " + status + "\n";
+					embedDescription.append(mc_accounts.getString(1)).append(": ").append(status).append("\n");
 				}
 			}
 		} 
@@ -106,9 +63,9 @@ public class Link_Minecraft
 			exception.printStackTrace();
 		}
 		
-		if(embedDescription.isEmpty()) embedDescription = "No accounts pending";
+		if(embedDescription.length() == 0) embedDescription.append("No accounts pending");
 		
-		new EmbedGenerator(channel).title("All links for " + user.getAsTag()).text(embedDescription).send();
+		new EmbedGenerator(channel).title("All links for " + author.getAsTag()).text(embedDescription.toString()).send();
 	}
 	private void removeLink()
 	{
@@ -140,7 +97,7 @@ public class Link_Minecraft
 			if(linked_accounts.next())
 			{
 				id = linked_accounts.getString(1);
-				if(id.equals(user.getId()))
+				if(id.equals(author.getId()))
 				{
 					Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';" );
 					new EmbedGenerator(channel).text("Link removed for account: " + username).sendTemporary();
@@ -160,7 +117,7 @@ public class Link_Minecraft
 			new ErrorHandler(exception);
 		}
 	}
-	
+
 	private void addLink()
 	{
 		String mcAccount = "";
@@ -170,18 +127,18 @@ public class Link_Minecraft
 		}
 		catch(Exception exception)
 		{
-			new EmbedGenerator(channel).text("You did not enter a Minecraft account").sendTemporary(); 
+			new EmbedGenerator(channel).text("You did not enter a Minecraft account").sendTemporary();
 			return;
 		}
-		
+
 		String uuid = Common_Minecraft.getUUIDFromName(mcAccount);
 		String username = Common_Minecraft.getNameFromUUID(uuid);
 		if(uuid != null)
 		{
 			boolean isWaiting = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'dwait';") > 0;
-			boolean isAlreadyLinked = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + user.getId() +"' AND current_status = 'linked';") > 0;
+			boolean isAlreadyLinked = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + author.getId() +"' AND current_status = 'linked';") > 0;
 			boolean isUsersAccount = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'linked';") > 0;
-			
+
 			if(isUsersAccount)
 			{
 				new EmbedGenerator(channel).text("There is already an account linked to that Minecraft username.").sendTemporary();
@@ -195,12 +152,12 @@ public class Link_Minecraft
 			if(isWaiting)
 			{
 				Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
-				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + user.getId() + "' AND current_status = 'dwait';");
+				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
 				new EmbedGenerator(channel).text("Link confirmed for account: " + username).sendTemporary();
             }
 			else
 			{
-				Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + user.getId() + "','mwait');");
+				Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
 				new EmbedGenerator(channel).text("Link added for account: " + username).sendTemporary();
             }
 		}
@@ -208,7 +165,48 @@ public class Link_Minecraft
 		{
 			new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary();
         }
-	} 
+	}
+
+	@Override
+	public void execute(String[] args, Context ctx)
+	{
+		final String action;
+		this.args = args;
+		this.channel = ctx.getChannel();
+		this.author = ctx.getAuthor();
+
+		try
+		{
+			action = args[0];
+		}
+		catch(Exception exception)
+		{
+			new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary();
+			return;
+		}
+
+		switch(action.toLowerCase())
+		{
+			case "add":
+			case "new":
+				addLink();
+				break;
+
+			case "remove":
+			case "delete":
+				removeLink();
+				break;
+
+			case "show":
+			case "list":
+			case "pending":
+				showPending();
+				break;
+
+			default:
+				new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary();
+		}
+	}
 }
 
 	

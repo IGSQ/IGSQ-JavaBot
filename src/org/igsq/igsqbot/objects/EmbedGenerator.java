@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Messaging;
+import org.igsq.igsqbot.util.Messaging;
 import org.igsq.igsqbot.util.Yaml;
 
 /**
@@ -279,8 +279,19 @@ public class EmbedGenerator{
 		if(embed.isEmpty()) return null;
 		if(channel instanceof TextChannel && !((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE)) return null;
 		
-		channel.sendMessage(embed.build()).queue(message -> this.sentMessage = message);
-		if(!(channel instanceof TextChannel) || ((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) sentMessage.addReaction(reaction).queue();
+		channel.sendMessage(embed.build()).queue(
+				message ->
+				{
+					this.sentMessage = message;
+					if(!(channel instanceof TextChannel) || ((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION))
+					{
+						for (String reaction : reactions)
+						{
+							message.addReaction(reaction).queue();
+						}
+					}
+				});
+
 		return sentMessage;
 	}
 	/**

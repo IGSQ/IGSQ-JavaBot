@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.Message.MentionType;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Messaging;
+import org.igsq.igsqbot.util.Messaging;
 
 /**
  * Creates Message using JDA's {@link MessageBuilder} api, with increased functionality.

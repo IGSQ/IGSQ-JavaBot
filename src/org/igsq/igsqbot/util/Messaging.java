@@ -1,4 +1,4 @@
-package org.igsq.igsqbot;
+package org.igsq.igsqbot.util;
 
 public class Messaging
 {

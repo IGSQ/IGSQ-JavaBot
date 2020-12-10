@@ -19,7 +19,7 @@ public class Clear_Command extends Command
 {
 	public Clear_Command()
 	{
-		super("clear", new String[]{"purge"}, "Clears the channel with the specified amount", new Permission[]{Permission.MESSAGE_MANAGE}, 5);
+		super("clear", new String[]{"purge"}, "Clears the channel with the specified amount", new Permission[]{Permission.MESSAGE_MANAGE}, true,5);
 	}
 
 	@Override

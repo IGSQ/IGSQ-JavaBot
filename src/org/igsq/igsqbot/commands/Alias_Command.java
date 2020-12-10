@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.util.Command_Utils;
 
 public class Alias_Command 
 {
@@ -63,7 +64,7 @@ public class Alias_Command
 			case "show":
 				EmbedGenerator embed = new EmbedGenerator(channel).title("Aliases for " + guild.getName());
 				String description = "";
-				for(String[] selectedAliases : Common_Command.getAliases(guild.getId()))
+				for(String[] selectedAliases : Command_Utils.getAliases(guild.getId()))
 				{
 					Role role = null;
 					for(int i = 1; i < selectedAliases.length; i++)
@@ -118,9 +119,9 @@ public class Alias_Command
 			case "add":
 			case "accept":
 			case "yes":
-				if(!Common_Command.isAliasExists(guild.getId(), alias))
+				if(!Command_Utils.isAliasExists(guild.getId(), alias))
 				{
-					Common_Command.insertAlias(guild.getId(), role.getId(), alias);
+					Command_Utils.insertAlias(guild.getId(), role.getId(), alias);
 					new EmbedGenerator(channel).text("Added alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				}
 				else
@@ -131,7 +132,7 @@ public class Alias_Command
 				
 			case "remove":
 			case "delete":
-				if(Common_Command.removeAlias(guild.getId(), role.getId(), alias))
+				if(Command_Utils.removeAlias(guild.getId(), role.getId(), alias))
 				{
 					new EmbedGenerator(channel).text("Removed alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				}
