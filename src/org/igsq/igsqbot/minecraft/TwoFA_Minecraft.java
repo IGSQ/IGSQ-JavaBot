@@ -1,23 +1,17 @@
 package org.igsq.igsqbot.minecraft;
 
+import net.dv8tion.jda.api.entities.User;
+
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.Array_Utils;
+import org.igsq.igsqbot.util.User_Utils;
+
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
-import org.igsq.igsqbot.*;
-
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.PrivateChannel;
-import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Array_Utils;
-import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.util.String_Utils;
-import org.igsq.igsqbot.util.User_Utils;
-import org.igsq.igsqbot.util.Yaml_Utils;
 
 public class TwoFA_Minecraft 
 {
