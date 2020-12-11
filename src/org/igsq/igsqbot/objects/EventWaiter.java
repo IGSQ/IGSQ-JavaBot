@@ -112,7 +112,7 @@ public class EventWaiter
                     this.event = (E) event;
                     synchronized(this)
                     {
-                    	this.notify();
+                    	this.notifyAll();
                     }
                     return true;
                 }

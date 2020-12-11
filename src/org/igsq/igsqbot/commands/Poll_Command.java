@@ -1,15 +1,16 @@
-package org.igsq.igsqbot.improvedcommands;
+package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.util.Array_Utils;
 import org.igsq.igsqbot.util.Command_Utils;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.util.Messaging;
+import org.igsq.igsqbot.util.Embed_Utils;
 
 import java.awt.*;
 
@@ -41,11 +42,11 @@ public class Poll_Command extends Command
 		if(slashArgs.length >= 3)
 		{
 			String topic = slashArgs[0];
-			for(int i=1; i < slashArgs.length && i < Messaging.REACTION_LIMIT+1; i++)
+			for(int i = 1; i < slashArgs.length && i < Embed_Utils.REACTION_LIMIT+1; i++)
 			{
-				options.append(slashArgs[i]).append(" ").append(Command_Utils.POLL_EMOJIS[i - 1]).append("\n");
-				if(args.length <= Messaging.REACTION_LIMIT/2+1) options.append("\n");
-				reactions = Common.append(reactions, Command_Utils.POLL_EMOJIS_UNICODE[i-1]);
+				options.append(slashArgs[i]).append(" ").append(Command_Utils.POLL_EMOJIS.get(i - 1)).append("\n");
+				if(args.length <= Embed_Utils.REACTION_LIMIT/2+1) options.append("\n");
+				reactions = Array_Utils.append(reactions, Command_Utils.POLL_EMOJIS_UNICODE.get(i-1));
 			}
 			new EmbedGenerator(channel)
 					.title("Poll:")
@@ -53,13 +54,13 @@ public class Poll_Command extends Command
 					.element("Options:", options.toString())
 					.footer("Poll created by "+ author.getAsTag())
 					.thumbnail(author.getAvatarUrl())
-					.color(Color.YELLOW)
+					.color(Common.IGSQ_PURPLE)
 					.reaction(reactions)
 					.send();
 		}
 		else
 		{
-			new EmbedGenerator(channel).text("A poll needs at least 2 options!").color(Color.RED).sendTemporary();
+			Embed_Utils.sendError(channel, "A poll needs at least 2 options!");
 		}
 	}
 }

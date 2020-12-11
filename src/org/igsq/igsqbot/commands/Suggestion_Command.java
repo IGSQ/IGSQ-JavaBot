@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.improvedcommands;
+package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -9,9 +9,11 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.util.Yaml;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.util.Embed_Utils;
+import org.igsq.igsqbot.util.String_Utils;
+import org.igsq.igsqbot.util.User_Utils;
 
-import java.awt.Color;
 
 public class Suggestion_Command extends Command
 {
@@ -33,21 +35,22 @@ public class Suggestion_Command extends Command
         {
             if(!guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_WRITE) || !guild.getSelfMember().hasAccess((GuildChannel) suggestionChannel))
             {
-                new EmbedGenerator(channel).text("I cannot access / write into to the suggestion channel: " + Common.getChannelAsMention(suggestionChannel.getId())).color(Color.RED).sendTemporary();
+                Embed_Utils.sendError(channel, "I cannot access / write into to the suggestion channel: " + String_Utils.getChannelAsMention(suggestionChannel.getId()));
             }
             else
             {
                 new EmbedGenerator(suggestionChannel)
                         .title("Suggestion:")
                         .text(args[0])
+                        .color(Common.IGSQ_PURPLE)
                         .thumbnail(author.getAvatarUrl())
-                        .footer("Suggestion by: " + Common.getMemberFromUser(author, guild).getNickname())
+                        .footer("Suggestion by: " + User_Utils.getMemberFromUser(author, guild).getNickname())
                         .send();
             }
         }
         else
         {
-            new EmbedGenerator(channel).text("There is no setup Suggestion Channel").color(Color.RED).sendTemporary();
+            Embed_Utils.sendError(channel, "There is no setup suggestion Channel");
         }
     }
 }

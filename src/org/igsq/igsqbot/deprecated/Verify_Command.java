@@ -1,13 +1,14 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.deprecated;
 
 import java.awt.Color;
+import java.util.Collections;
 import java.util.List;
 
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Command_Utils;
-import org.igsq.igsqbot.util.Yaml;
+import org.igsq.igsqbot.util.*;
+import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -87,18 +88,18 @@ public class Verify_Command
 			new EmbedGenerator(channel).text("You cannot verify bots.").color(Color.RED).sendTemporary();
 			return;
 		}
-		else if(Common.getMemberFromUser(toVerify, guild).isOwner())
+		else if(User_Utils.getMemberFromUser(toVerify, guild).isOwner())
 		{
 			new EmbedGenerator(channel).text("You cannot verify the owner.").color(Color.RED).sendTemporary();
 			return;
 		}
 		else
 		{
-			if(!Common.isFieldEmpty(guild.getId() + ".verifiedrole", "guild"))
+			if(!Yaml_Utils.isFieldEmpty(guild.getId() + ".verifiedrole", "guild"))
 			{
 				Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
 
-				if(verifiedRole != null && Common.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
+				if(verifiedRole != null && User_Utils.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
 				{
 					new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
 					return;
@@ -137,8 +138,8 @@ public class Verify_Command
 				if(messageContent.contains(selectedAlias))
 				{
 					verificationMessage += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[currentRole] + "> (Known)\n";
-					assignedRoles = Common.append(assignedRoles, retrievedRoles[currentRole]);
-					messageContent = Common.stringDepend(messageContent, selectedAlias);
+					assignedRoles = Array_Utils.append(assignedRoles, retrievedRoles[currentRole]);
+					messageContent = String_Utils.stringDepend(messageContent, selectedAlias);
 					confirmedRoles += "," + retrievedRoles[currentRole];
 					break;
 				}
@@ -151,9 +152,9 @@ public class Verify_Command
 		{
 			for(String declinedAlias : declinedAliases)
 			{
-				if(messageContent.contains(declinedAlias) && !Common.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
+				if(messageContent.contains(declinedAlias) && !Array_Utils.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
 				{
-					declinedRoles = Common.append(declinedRoles, retrievedRoles[currentRole]);
+					declinedRoles = Array_Utils.append(declinedRoles, retrievedRoles[currentRole]);
 					break;
 				}
 			}
@@ -180,7 +181,7 @@ public class Verify_Command
 							queryString = wordList[i];
 						}
 						
-						if(Common.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !Common.isValueInArray(declinedRoles, retrievedRoles[currentRole]) && !Common.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
+						if(String_Utils.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !Array_Utils.isValueInArray(declinedRoles, retrievedRoles[currentRole]) && !Array_Utils.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
 						{
 							verificationMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)\n";
 							guessedRoles += "," + retrievedRoles[currentRole];
@@ -218,7 +219,7 @@ public class Verify_Command
 		catch(Exception exception)
 		{
 			new ErrorHandler(exception);
-			return null;
+			return Collections.emptyList();
 		}
 	}
 

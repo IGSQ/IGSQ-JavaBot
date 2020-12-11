@@ -12,16 +12,21 @@ import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Yaml;
+import org.igsq.igsqbot.util.Array_Utils;
+import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.util.String_Utils;
+import org.igsq.igsqbot.util.User_Utils;
+import org.igsq.igsqbot.util.Yaml_Utils;
 
 public class TwoFA_Minecraft 
 {
-	public TwoFA_Minecraft()
+	private TwoFA_Minecraft()
 	{
-		twoFA();
+		//Overrides the default, public, constructor
 	}
 	
-	private void twoFA()
+	public static void startTwoFA()
 	{
 		Common.scheduler.scheduleAtFixedRate(() ->
 		{
@@ -32,64 +37,57 @@ public class TwoFA_Minecraft
 		}, 0, 5,TimeUnit.SECONDS);
 	}
 	
-	private void sendDirectMessage(String id)
+	private static void sendDirectMessage(String id)
 	{
-		User user = Common.getUserFromMention(id);
-		if(user != null && (Common.isFieldEmpty("2fa.blacklist", "internal") || !Common.isValueInArray(Yaml.getFieldString("2fa.blacklist", "internal").split(","), id)))
+		User user = User_Utils.getUserFromMention(id);
+		if(user != null)
 		{
-			if(Common.isFieldEmpty("2fa.blacklist", "internal"))
-			{
-				Yaml.updateField("2fa.blacklist", "internal", id);
-			}
-			else
-			{
-				Yaml.updateField("2fa.blacklist", "internal", Yaml.getFieldString("2fa.blacklist", "internal") + "," + id);
-			}
-			
-			int code = generateCode();
-			PrivateChannel channel = user.openPrivateChannel().complete();
-			EmbedGenerator embed = new EmbedGenerator().text("Here is your Minecraft 2FA Code: " + code + "\n If you did not request this code, please ignore this message.");
-			Message message = channel.sendMessage(embed.getBuilder().build()).complete();
-			
-			Database.updateCommand("UPDATE discord_2fa SET code = '" + code +  "' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
-
-			Common.scheduler.schedule(() ->
-			{
-				new EmbedGenerator(channel).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message.").replace(message);
-				if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
+			String code = generateCode();
+			user.openPrivateChannel().queue(
+				channel ->
 				{
-					Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired'");
+					EmbedGenerator embed = new EmbedGenerator(channel)
+							.text("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
+							.color(Common.IGSQ_PURPLE);
+					channel.sendMessage(embed.getBuilder().build()).queue(
+							message ->
+							{
+								Database.updateCommand("UPDATE discord_2fa SET code = '" + code +  "' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+
+								Common.scheduler.schedule(() ->
+								{
+									new EmbedGenerator(message.getEmbeds().get(0)).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message.").replace(message);
+									if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
+									{
+										Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+									}
+									Database.updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+
+								}, 60, TimeUnit.SECONDS);
+							}
+					);
 				}
-				Yaml.updateField("2fa.blacklist", "internal", Common.stringDepend(Yaml.getFieldString("2fa.blacklist", "internal"), id));
-				Database.updateCommand("UPDATE discord_2fa SET code = null WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
-
-
-			}, 60, TimeUnit.SECONDS);
+			);
 		}
 	}
 			
-	private int generateCode()
+	private static String generateCode()
 	{
-		Random random = new Random();
-		return random.nextInt(9999);
+		return String.format("%06d", new Random().nextInt(999999));
 	}
 	
-	private String[] getPending()
+	private static String[] getPending()
 	{
-		ResultSet discord_2fa = Database.queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending'");
+		ResultSet discord_2fa = Database.queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending' AND `code` IS NULL");
 		String[] pendingIDs = new String[0];
 		try 
 		{
 			while(discord_2fa.next())
 			{
-				ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE uuid = '" + discord_2fa.getString(1) + "';");
-				if(linked_accounts.next())
-				{
-					pendingIDs = Common.append(pendingIDs, linked_accounts.getString(3));
-				}
+				pendingIDs = Array_Utils.append(pendingIDs, Common_Minecraft.getIDFromUUID(discord_2fa.getString(1)));
 			}
 		} 
-		catch (SQLException exception) 
+		catch (Exception exception)
 		{
 			new ErrorHandler(exception);
 		}

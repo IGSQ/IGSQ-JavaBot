@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.improvedcommands;
+package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -10,8 +10,8 @@ import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.util.String_Utils;
 
-import java.awt.Color;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -35,7 +35,7 @@ public class Ping_Command extends Command
 			return;
 		}
 		CooldownHandler.addCooldown(author.getIdLong(), this);
-		EmbedGenerator embed = new EmbedGenerator(channel).color(Color.ORANGE).title("Pong!").footer(Common.getTimestamp());
+		EmbedGenerator embed = new EmbedGenerator(channel).color(Common.IGSQ_PURPLE).title("Pong!").footer(String_Utils.getTimestamp());
 
 		jda.getRestPing().queue(
 				time ->
@@ -43,17 +43,15 @@ public class Ping_Command extends Command
 					embed.text("**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms");
 					channel.sendMessage(embed.getBuilder().build()).queue(
 							message ->
-							{
-								new EmbedGenerator().text(
-										"**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms"
-												+ "\n\n**30 Second REST Average**: " + getAverageREST(30, jda) + "ms"
-												+ "\n**1 Minute REST Average**: " + getAverageREST(60, jda) + "ms")
+							new EmbedGenerator().text(
+									"**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms"
+											+ "\n\n**30 Second REST Average**: " + getAverageREST(30, jda) + "ms"
+											+ "\n**1 Minute REST Average**: " + getAverageREST(60, jda) + "ms")
 
-										.color(Color.ORANGE)
-										.title("Pong!")
-										.footer(Common.getTimestamp())
-										.replace(message);
-							});
+									.color(Common.IGSQ_PURPLE)
+									.title("Pong!")
+									.footer(String_Utils.getTimestamp())
+									.replace(message));
 				}
 		);
 	}

@@ -1,8 +1,7 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.deprecated;
 
 import java.awt.Color;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -12,7 +11,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.util.Array_Utils;
 import org.igsq.igsqbot.util.Command_Utils;
+import org.igsq.igsqbot.util.User_Utils;
 
 public class Decline_Command 
 {
@@ -46,7 +47,7 @@ public class Decline_Command
 	
 	private void alias()
 	{
-		args = Common.depend(args, 0);
+		args = Array_Utils.depend(args, 0);
         String action;
         try { action = args[0]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid action").send(); return; }
@@ -61,7 +62,7 @@ public class Decline_Command
 				Role role;
 				for (int i = 1; i < selectedAliases.length; i++)
 				{
-					role = Common.getRoleFromMention(guild, selectedAliases[0]);
+					role = User_Utils.getRoleFromMention(guild, selectedAliases[0]);
 					if (role != null)
 					{
 						description.append(role.getAsMention()).append(" ---> ").append(selectedAliases[i]).append("\n");
@@ -75,7 +76,7 @@ public class Decline_Command
 		}
 
         Role role;
-        try{ role = Common.getRoleFromMention(guild, args[1]); }
+        try{ role = User_Utils.getRoleFromMention(guild, args[1]); }
 		catch(Exception exception) { role = null; }
 		
 		if(role == null)

@@ -1,11 +1,13 @@
-package org.igsq.igsqbot.improvedcommands;
+package org.igsq.igsqbot.commands;
 
+import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.minecraft.Common_Minecraft;
 import org.igsq.igsqbot.objects.Command;
@@ -13,6 +15,7 @@ import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.util.Embed_Utils;
 
 public class Link_Command extends Command
 {
@@ -41,19 +44,19 @@ public class Link_Command extends Command
 					switch(linked_accounts.getString(4).toLowerCase())
 					{
 					case "mwait":
-						status = "Pending Minecraft confirmation.";
+						status = "pending Minecraft confirmation.";
 						break;
 					case "dwait":
-						status = "Pending Discord confirmation.";
+						status = "pending Discord confirmation.";
 						break;
 					case "linked":
-						status = "Linked!";
+						status = "linked!";
 						break;
 					default:
-						status = "Status not found / invalid";
+						status = "status not found / invalid";
 						break;
 					}
-					embedDescription.append(mc_accounts.getString(1)).append(": ").append(status).append("\n");
+					embedDescription.append("**").append(mc_accounts.getString(1)).append("**: ").append(status).append("\n");
 				}
 			}
 		} 
@@ -64,7 +67,11 @@ public class Link_Command extends Command
 		
 		if(embedDescription.length() == 0) embedDescription.append("No accounts pending");
 		
-		new EmbedGenerator(channel).title("All links for " + author.getAsTag()).text(embedDescription.toString()).send();
+		new EmbedGenerator(channel)
+				.title("All links for " + author.getAsTag())
+				.text(embedDescription.toString())
+				.color(Common.IGSQ_PURPLE)
+				.send();
 	}
 	private void removeLink()
 	{
@@ -76,11 +83,10 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			new EmbedGenerator(channel).text("You did not enter a Minecraft account").sendTemporary(); 
+			Embed_Utils.sendError(channel, "You did not enter a Minecraft account");
 			return;
 		}
-		
-		
+
 		try 
 		{
 			String uuid = Common_Minecraft.getUUIDFromName(mcAccount);
@@ -88,7 +94,7 @@ public class Link_Command extends Command
 			
 			if(username == null)
 			{
-				new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary();
+				Embed_Utils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
 				return;
 			}
 			
@@ -99,16 +105,19 @@ public class Link_Command extends Command
 				if(id.equals(author.getId()))
 				{
 					Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';" );
-					new EmbedGenerator(channel).text("Link removed for account: " + username).sendTemporary();
+					new EmbedGenerator(channel)
+							.text("Link removed for account: " + username)
+							.color(Common.IGSQ_PURPLE)
+							.sendTemporary();
                 }
 				else
 				{
-					new EmbedGenerator(channel).text("That Minecraft account is not linked to your Discord.").sendTemporary();
+					Embed_Utils.sendError(channel, "That Minecraft account is not linked to your Discord.");
                 }
 			}
 			else
 			{
-				new EmbedGenerator(channel).text("That Minecraft account is not linked, please link before trying to delink.").sendTemporary();
+				Embed_Utils.sendError(channel, "That Minecraft account is not linked, please link before trying to delink.");
             }
 		} 
 		catch (SQLException exception) 
@@ -126,7 +135,7 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			new EmbedGenerator(channel).text("You did not enter a Minecraft account").sendTemporary();
+			Embed_Utils.sendError(channel, "You did not enter a Minecraft account");
 			return;
 		}
 
@@ -140,29 +149,33 @@ public class Link_Command extends Command
 
 			if(isUsersAccount)
 			{
-				new EmbedGenerator(channel).text("There is already an account linked to that Minecraft username.").sendTemporary();
-				return;
+				Embed_Utils.sendError(channel, "There is already an account linked to that Minecraft username.");
 			}
-			if(isAlreadyLinked)
+			else if(isAlreadyLinked)
 			{
 				new EmbedGenerator(channel).text("There is already an account linked to your Discord, please delink first.").sendTemporary();
-				return;
 			}
-			if(isWaiting)
+			else if(isWaiting)
 			{
 				Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
 				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
-				new EmbedGenerator(channel).text("Link confirmed for account: " + username).sendTemporary();
+				new EmbedGenerator(channel)
+						.text("Link confirmed for account: " + username)
+						.color(Common.IGSQ_PURPLE)
+						.sendTemporary();
             }
 			else
 			{
 				Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
-				new EmbedGenerator(channel).text("Link added for account: " + username).sendTemporary();
+				new EmbedGenerator(channel)
+						.color(Common.IGSQ_PURPLE)
+						.text("Link added for account: " + username)
+						.sendTemporary();
             }
 		}
 		else
 		{
-			new EmbedGenerator(channel).text("That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.").sendTemporary();
+			Embed_Utils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
         }
 	}
 
@@ -180,7 +193,7 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary();
+			Embed_Utils.sendError(channel, "You entered an invalid action");
 			return;
 		}
 
@@ -203,7 +216,7 @@ public class Link_Command extends Command
 				break;
 
 			default:
-				new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary();
+				Embed_Utils.sendError(channel, "You entered an invalid action");
 		}
 	}
 }

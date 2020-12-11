@@ -8,8 +8,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.MentionType;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.util.Messaging;
+import org.igsq.igsqbot.util.Array_Utils;
+import org.igsq.igsqbot.util.Embed_Utils;
 
 /**
  * Creates Message using JDA's {@link MessageBuilder} api, with increased functionality.
@@ -39,19 +39,19 @@ public class MessageGenerator
 		messageB.allowMentions(MentionType.USER);
 	}
 	/**
-	 * Adds a reaction to the message which is done after the message has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Messaging#REACTION_LIMIT} reactions exist they will be ignored.
+	 * Adds a reaction to the message which is done after the message has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Embed_Utils#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String[]) Multiple (Array)}.
 	 * @see MessageGenerator
 	 */
 	public MessageGenerator reaction(String emojiUnicode) 
 	{
-		if(reactions.length >= Messaging.REACTION_LIMIT) return this;
-		reactions = Common.append(reactions, emojiUnicode);
+		if(reactions.length >= Embed_Utils.REACTION_LIMIT) return this;
+		reactions = Array_Utils.append(reactions, emojiUnicode);
 		return this;
 	}
 	
 	/**
-	 * Adds an array of reactions to the message which is done after the message has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Messaging#REACTION_LIMIT} reactions exist they will be ignored.
+	 * Adds an array of reactions to the message which is done after the message has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Embed_Utils#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String) Singular}.
 	 * @see MessageGenerator
 	 */
@@ -59,8 +59,8 @@ public class MessageGenerator
 	{
 		for(String emojiUnicode : emojiUnicodes) 
 		{
-			if(reactions.length >= Messaging.REACTION_LIMIT) return this;
-			reactions = Common.append(reactions, emojiUnicode);
+			if(reactions.length >= Embed_Utils.REACTION_LIMIT) return this;
+			reactions = Array_Utils.append(reactions, emojiUnicode);
 		}
 		return this;
 	}

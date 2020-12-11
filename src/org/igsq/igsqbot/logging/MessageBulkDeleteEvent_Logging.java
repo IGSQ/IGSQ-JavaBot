@@ -2,23 +2,24 @@ package org.igsq.igsqbot.logging;
 
 import java.awt.Color;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.MessageCache;
-import org.igsq.igsqbot.util.Yaml;
+import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.util.String_Utils;
+import org.igsq.igsqbot.util.Yaml_Utils;
 
-public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: implement .clear to trigger similar functionality to this
+public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 {
 	@Override
     public void onMessageBulkDelete(MessageBulkDeleteEvent event)
     {
-		GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
+		GuildChannel logChannel = Yaml_Utils.getLogChannel(event.getGuild().getId());
 		MessageChannel channel = event.getChannel();
 		StringBuilder embedDescription = new StringBuilder();
 		MessageCache cache;
@@ -42,7 +43,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
 				if(selectedMessage.getAuthor().isBot()) continue;
 				if(content.length() >= 50) content = content.substring(0, 20) + " **...**";
 
-				if(!Common.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+				if(!Yaml_Utils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 				{
 					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
 					{
@@ -60,9 +61,9 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter //TODO: impl
 		if(logChannel != null)
 		{
 			new EmbedGenerator((MessageChannel) logChannel).title("Messages Deleted").text(
-			"**Channel**: " + Common.getChannelAsMention(channel.getId()) +
+			"**Channel**: " + String_Utils.getChannelAsMention(channel.getId()) +
 			"\n\n**Messages**: " + embedDescription)
-			.color(Color.PINK).footer("Logged on: " + Common.getTimestamp()).send();
+			.color(Color.PINK).footer("Logged on: " + String_Utils.getTimestamp()).send();
 		}
     }
 }

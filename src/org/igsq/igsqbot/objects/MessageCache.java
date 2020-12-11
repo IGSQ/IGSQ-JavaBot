@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import net.dv8tion.jda.api.entities.Message;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.util.Array_Utils;
 
 public class MessageCache
 {
@@ -22,10 +22,10 @@ public class MessageCache
 	{
 		if(cachedMessages.length >= 1000)
 		{
-			cachedMessages = Common.depend(cachedMessages, 0);
+			cachedMessages = Array_Utils.depend(cachedMessages, 0);
 			clean();
 		}
-		cachedMessages = Common.append(cachedMessages, message);
+		cachedMessages = Array_Utils.append(cachedMessages, message);
 	}
 	
 	public void set(Message[] messages)
@@ -34,9 +34,9 @@ public class MessageCache
 		{
 			if(cachedMessages.length >= 1000)
 			{
-				cachedMessages = Common.depend(cachedMessages, 0);
+				cachedMessages = Array_Utils.depend(cachedMessages, 0);
 			}
-			cachedMessages = Common.append(cachedMessages, selectedMessage);
+			cachedMessages = Array_Utils.append(cachedMessages, selectedMessage);
 		}
 	}
 	
@@ -46,9 +46,9 @@ public class MessageCache
 		{
 			if(cachedMessages.length >= 1000)
 			{
-				cachedMessages = Common.depend(cachedMessages, 0);
+				cachedMessages = Array_Utils.depend(cachedMessages, 0);
 			}
-			cachedMessages = Common.append(cachedMessages, selectedMessage);
+			cachedMessages = Array_Utils.append(cachedMessages, selectedMessage);
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getId().equals(id))
 			{
-				cachedMessages = Common.depend(cachedMessages, selectedMessage);
+				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public class MessageCache
 		{
 			if(selectedMessage.equals(message))
 			{
-				cachedMessages = Common.depend(cachedMessages, selectedMessage);
+				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class MessageCache
 			{
 				if(selectedCachedMessage.equals(selectedMessage))
 				{
-					cachedMessages = Common.depend(cachedMessages, selectedCachedMessage);
+					cachedMessages = Array_Utils.depend(cachedMessages, selectedCachedMessage);
 				}
 			}
 		}
@@ -107,7 +107,7 @@ public class MessageCache
 			{
 				if(selectedCachedMessage.equals(selectedMessage))
 				{
-					cachedMessages = Common.depend(cachedMessages, selectedCachedMessage);
+					cachedMessages = Array_Utils.depend(cachedMessages, selectedCachedMessage);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ public class MessageCache
 		{
 			if(selectedMessage.equals(oldMessage))
 			{
-				cachedMessages = Common.depend(cachedMessages, selectedMessage);
+				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
 				set(newMessage);
 			}
 		}
@@ -154,7 +154,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getId().equals(oldMessageID))
 			{
-				cachedMessages = Common.depend(cachedMessages, selectedMessage);
+				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
 				set(newMessage);
 			}
 		}
@@ -175,7 +175,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)))
 			{
-				cachedMessages = Common.depend(cachedMessages, selectedMessage);
+				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
 			}	
 		}
 	}

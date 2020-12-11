@@ -3,10 +3,9 @@ package org.igsq.igsqbot.logging;
 import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.MessageCache;
-import org.igsq.igsqbot.util.Yaml;
+import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.GuildChannel;
@@ -14,6 +13,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.util.String_Utils;
+import org.igsq.igsqbot.util.Yaml_Utils;
 
 public class MessageUpdateEvent_Logging extends ListenerAdapter
 {
@@ -37,7 +38,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 			{
 				Message newMessage = event.getMessage();
 				Message oldMessage = cache.get(event.getMessageId());
-				GuildChannel logChannel = Common.getLogChannel(event.getGuild().getId());
+				GuildChannel logChannel = Yaml_Utils.getLogChannel(event.getGuild().getId());
 				MessageChannel channel = event.getChannel();
 				String newContent = newMessage.getContentDisplay();
 				String oldContent = oldMessage.getContentDisplay();
@@ -46,7 +47,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 				if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 				if(oldContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 				
-				if(!Common.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+				if(!Yaml_Utils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 				{
 					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
 					{
@@ -61,11 +62,11 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 				{
 					new EmbedGenerator((MessageChannel) logChannel).title("Message Altered").text(
 					"**Author**: " + newMessage.getAuthor().getAsMention() +
-					"\n**Sent In**: " + Common.getChannelAsMention(channel.getId()) +
+					"\n**Sent In**: " + String_Utils.getChannelAsMention(channel.getId()) +
 					"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
 					"\n\n**Message Content Before**: " + oldContent +
 					"\n**Message Content After**: " + newContent)
-					.color(Color.PINK).footer("Logged on: " + Common.getTimestamp()).send();
+					.color(Color.PINK).footer("Logged on: " + String_Utils.getTimestamp()).send();
 				}
 				cache.update(oldMessage, newMessage);
 			}

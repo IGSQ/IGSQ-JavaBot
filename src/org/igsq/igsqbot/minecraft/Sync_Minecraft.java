@@ -7,7 +7,7 @@ import java.util.Map;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Yaml;
+import org.igsq.igsqbot.Yaml;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.entities.Role;
 public class Sync_Minecraft 
 {
 	private static final Map<String, String> ranks = new HashMap<>();
-	private static final Guild guild = Common.jda.getGuildById(Yaml.getFieldString("BOT.server", "config"));
+	private static final Guild guild = Common.getJda().getGuildById(Yaml.getFieldString("BOT.server", "config"));
 	private static Role verifiedRole = null;
 
 	private Sync_Minecraft()
@@ -44,7 +44,7 @@ public class Sync_Minecraft
 
 					int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ?1:0;
 					int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember)?1:0;
-					int developer = hasRole(Yaml.getFieldString("ranks.default", "minecraft").split(" "), selectedMember) ?1:0;
+					int developer = hasRole(Yaml.getFieldString("ranks.developer", "minecraft").split(" "), selectedMember) ?1:0;
 					int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember)?1:0;
 					// int retired = hasRole(Yaml.getFieldString("ranks.retired", "minecraft").split(" "), selectedMember)?1:0;
 					int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember)?1:0;
@@ -76,21 +76,25 @@ public class Sync_Minecraft
 		{
 			while(discord_accounts.next())
 			{
-				Member selectedMember = guild.getMemberById(discord_accounts.getString(1));
-				String id = selectedMember.getId();
-
-				if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
-				{
-					String uuid = Common_Minecraft.getUUIDFromID(id);
-
-					if(uuid != null)
+				guild.retrieveMemberById(discord_accounts.getString(1)).queue(
+					selectedMember ->
 					{
-						Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
-						Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
-					}
+						final String id = selectedMember.getId();
 
-					Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
-				}
+						if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
+						{
+							String uuid = Common_Minecraft.getUUIDFromID(id);
+
+							if(uuid != null)
+							{
+								Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
+								Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
+							}
+
+							Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
+						}
+					}
+				);
 			}
 		} 
 		catch (Exception exception)

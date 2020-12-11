@@ -4,6 +4,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Yaml;
 
 public class Main_Minecraft 
 {
@@ -17,8 +18,8 @@ public class Main_Minecraft
 
 	public static void startMinecraft()
 	{
+		TwoFA_Minecraft.startTwoFA();
 		new GuildMemberRemoveEvent_Minecraft();
-		new TwoFA_Minecraft();
 	}
 
 	public static void cancelSync()

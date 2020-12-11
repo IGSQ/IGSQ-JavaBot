@@ -7,6 +7,10 @@ import org.igsq.igsqbot.Database;
 
 public class Common_Minecraft 
 {
+	private Common_Minecraft()
+	{
+		//Overrides the default, public constructor
+	}
 	public static String getIDFromUUID(String uuid)
 	{
 		ResultSet linked_accounts = Database.queryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");

@@ -12,8 +12,9 @@ import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Messaging;
-import org.igsq.igsqbot.util.Yaml;
+import org.igsq.igsqbot.util.Array_Utils;
+import org.igsq.igsqbot.util.Embed_Utils;
+import org.igsq.igsqbot.Yaml;
 
 /**
  * Creates Embeds using JDA's {@link EmbedBuilder} api, with increased functionality.
@@ -67,15 +68,15 @@ public class EmbedGenerator{
 	public EmbedGenerator(MessageEmbed message)
 	{
 		this.embed = new EmbedBuilder();
-		try {embed.setAuthor(message.getAuthor().toString());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {embed.setColor(message.getColor());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {embed.setDescription(message.getDescription());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {embed.setFooter(message.getFooter().getText());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {embed.setImage(message.getImage().toString());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {embed.setThumbnail(message.getThumbnail().toString());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {embed.setTimestamp(message.getTimestamp());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {embed.setTitle(message.getTitle());} catch(Exception exception) {new ErrorHandler(exception);}
-		try {for(Field selectedField : message.getFields()) embed.addField(selectedField);} catch(Exception exception) {new ErrorHandler(exception);}
+		try {embed.setAuthor(message.getAuthor().toString());} catch(Exception ignored) {}
+		try {embed.setColor(message.getColor());} catch(Exception ignored) {}
+		try {embed.setDescription(message.getDescription());} catch(Exception ignored) {}
+		try {embed.setFooter(message.getFooter().getText());} catch(Exception ignored) {}
+		try {embed.setImage(message.getImage().toString());} catch(Exception ignored) {}
+		try {embed.setThumbnail(message.getThumbnail().toString());} catch(Exception ignored) {}
+		try {embed.setTimestamp(message.getTimestamp());} catch(Exception ignored) {}
+		try {embed.setTitle(message.getTitle());} catch(Exception ignored) {}
+		try {for(Field selectedField : message.getFields()) embed.addField(selectedField);} catch(Exception ignored) {}
 	}
 	/**
 	 * Constructor for Embed, requires a location for the embed to be created in ({@link MessageChannel})
@@ -127,26 +128,26 @@ public class EmbedGenerator{
 	}
 	
 	/**
-	 * Sets the title of an embed. Cannot be more characters than {@link Messaging#EMBED_TITLE_LIMIT}.
+	 * Sets the title of an embed. Cannot be more characters than {@link Embed_Utils#EMBED_TITLE_LIMIT}.
 	 * Overloads {@link #title(String, String) With icon}.
 	 * @see net.dv8tion.jda.api.EmbedBuilder#setTitle(String)
 	 * @see EmbedGenerator
 	 */
 	public EmbedGenerator title(String text) 
 	{
-		if(text.length() > Messaging.EMBED_TITLE_LIMIT) return this;
+		if(text.length() > Embed_Utils.EMBED_TITLE_LIMIT) return this;
 		embed.setTitle(text);
 		return this;
 	}
 	/**
-	 * Sets the title of an embed with an icon using a url. Cannot be more characters than {@link Messaging#EMBED_TITLE_LIMIT}.
+	 * Sets the title of an embed with an icon using a url. Cannot be more characters than {@link Embed_Utils#EMBED_TITLE_LIMIT}.
 	 * Overloads {@link #title(String) Without icon}.
 	 * @see net.dv8tion.jda.api.EmbedBuilder#setTitle(String,String)
 	 * @see EmbedGenerator
 	 */
 	public EmbedGenerator title(String text,String iconUrl) 
 	{
-		if(text.length() > Messaging.EMBED_TITLE_LIMIT) return this;
+		if(text.length() > Embed_Utils.EMBED_TITLE_LIMIT) return this;
 		embed.setTitle(text, iconUrl);
 		return this;
 	}
@@ -269,18 +270,18 @@ public class EmbedGenerator{
 		return this;
 	}
 	/**
-	 * Adds a reaction to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Messaging#REACTION_LIMIT} reactions exist they will be ignored.
+	 * Adds a reaction to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Embed_Utils#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String[]) Multiple (Array)}.
 	 * @see EmbedGenerator
 	 */
 	public EmbedGenerator reaction(String emojiUnicode) 
 	{
-		if(reactions.length >= Messaging.REACTION_LIMIT) return this;
-		reactions = Common.append(reactions, emojiUnicode);
+		if(reactions.length >= Embed_Utils.REACTION_LIMIT) return this;
+		reactions = Array_Utils.append(reactions, emojiUnicode);
 		return this;
 	}
 	/**
-	 * Adds an array of reactions to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Messaging#REACTION_LIMIT} reactions exist they will be ignored.
+	 * Adds an array of reactions to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Embed_Utils#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String) Singular}.
 	 * @see EmbedGenerator
 	 * @see MessageGenerator#reaction(String[])
@@ -289,8 +290,8 @@ public class EmbedGenerator{
 	{
 		for(String emojiUnicode : emojiUnicodes) 
 		{
-			if(reactions.length >= Messaging.REACTION_LIMIT) return this;
-			reactions = Common.append(reactions, emojiUnicode);
+			if(reactions.length >= Embed_Utils.REACTION_LIMIT) return this;
+			reactions = Array_Utils.append(reactions, emojiUnicode);
 		}
 		return this;
 	}
@@ -338,7 +339,7 @@ public class EmbedGenerator{
     		message -> 
     		{
     			if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
-    			message.delete().submitAfter(delay, TimeUnit.MILLISECONDS);
+    			message.delete().queueAfter(delay, TimeUnit.MILLISECONDS);
     			this.sentMessage = message;
     		}
         );

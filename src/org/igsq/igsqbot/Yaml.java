@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.util;
+package org.igsq.igsqbot;
 
 import java.io.File;
 

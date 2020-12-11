@@ -52,6 +52,7 @@ public class Setup_Command
 			case "verify":
 			case "verification":
 				new Verification_Setup(event);
+				break;
 			case "logging":
 			case "log":
 				break;

@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.events.MessageReactionAddEvent_Help;
 import org.igsq.igsqbot.events.MessageReactionAddEvent_Report;
-import org.igsq.igsqbot.events.MessageReactionAddEvent_Verification;
 import org.igsq.igsqbot.logging.GuildMemberJoinEvent_Logging;
 import org.igsq.igsqbot.logging.GuildMemberRemoveEvent_Logging;
 import org.igsq.igsqbot.logging.MessageBulkDeleteEvent_Logging;
@@ -19,7 +18,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.igsq.igsqbot.objects.MessageCache;
-import org.igsq.igsqbot.util.Yaml;
 
 
 public class Bot
@@ -31,19 +29,19 @@ public class Bot
 		
 		try 
 		{
-			Common.jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
-			Common.jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
-			Common.jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
-			Common.jda = Common.jdaBuilder.build().awaitReady();
+			Common.setJdaBuilder(JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config")));
+			Common.getJdaBuilder().enableIntents(GatewayIntent.GUILD_MEMBERS);
+			Common.getJdaBuilder().setMemberCachePolicy(MemberCachePolicy.ALL);
+			Common.setJda(Common.getJdaBuilder().build().awaitReady());
 			
-			Common.jda.addEventListener(
+			Common.getJda().addEventListener(
 					new MessageReactionAddEvent_Main(),
 					new MessageDeleteEvent_Main(),
 					new MessageReceivedEvent_Main(),
 					
 					new MessageReactionAddEvent_Help(),
 					new MessageReactionAddEvent_Report(),
-					new MessageReactionAddEvent_Verification(),
+					//new MessageReactionAddEvent_Verification(),
 					
 					new GuildMemberJoinEvent_Logging(),
 					new GuildMemberRemoveEvent_Logging(),

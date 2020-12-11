@@ -2,11 +2,8 @@ package org.igsq.igsqbot.events;
 
 import org.igsq.igsqbot.util.Command_Utils;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Yaml;
-import net.dv8tion.jda.api.entities.Message;
+import org.igsq.igsqbot.Yaml;
 import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -15,48 +12,48 @@ public class MessageReactionAddEvent_Help extends ListenerAdapter
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
-		Message message = null;
-		User user = null;
-		String messageID = event.getMessageId();
+		final String messageID = event.getMessageId();
+		final ReactionEmote reaction = event.getReactionEmote();
+		final String codePoint = reaction.getAsCodepoints();
 		
-		try 
-		{
-			message = event.retrieveMessage().submit().get();
-			user = event.retrieveUser().submit().get();
-		} 
-		catch (Exception exception) 
-		{
-			new ErrorHandler(exception);
-			return;
-		}
-		ReactionEmote reaction = event.getReactionEmote();
-		String codePoint = reaction.getAsCodepoints();
-		
-		
-		if(Yaml.getFieldBool(messageID + ".help.enabled", "internal") && !user.isBot())
-		{
-			event.getReaction().removeReaction(user).queue();
-			
-			if(Yaml.getFieldString(messageID + ".help.user","internal").equals(event.getUserId()))
-			{
-				int page = Yaml.getFieldInt(messageID + ".help.page", "internal");
-				
-				if(reaction.isEmoji() && codePoint.equals("U+25c0"))
+		event.retrieveMessage().queue(
+		message ->
+
+			event.retrieveMember().queue(
+			member ->
+
+				event.retrieveUser().queue(
+				user ->
 				{
-					page--;
-					if(page == 0) page = Command_Utils.HELP_PAGE_TEXT.length;
-					Yaml.updateField(messageID + ".help.page", "internal", page);
+					if(Yaml.getFieldBool(messageID + ".help.enabled", "internal") && !user.isBot())
+					{
+						event.getReaction().removeReaction(user).queue();
+
+						if(Yaml.getFieldString(messageID + ".help.user","internal").equals(event.getUserId()))
+						{
+							int page = Yaml.getFieldInt(messageID + ".help.page", "internal");
+
+							if(reaction.isEmoji() && codePoint.equals("U+25c0"))
+							{
+								page--;
+								if(page == 0) page = Command_Utils.HELP_PAGE_TEXT.size();
+								Yaml.updateField(messageID + ".help.page", "internal", page);
+							}
+
+							else if(reaction.isEmoji() && codePoint.equals("U+25b6"))
+							{
+								page++;
+								if(page == Command_Utils.HELP_PAGE_TEXT.size() + 1) page = 1;
+								Yaml.updateField(messageID + ".help.page", "internal", page);
+							}
+							EmbedGenerator embed = Command_Utils.HELP_PAGE_TEXT.get(page-1);
+							embed.setChannel(message.getChannel()).replace(message);
+						}
+					}
 				}
-				
-				else if(reaction.isEmoji() && codePoint.equals("U+25b6")) 
-				{
-					page++;
-					if(page == Command_Utils.HELP_PAGE_TEXT.length + 1) page = 1;
-					Yaml.updateField(messageID + ".help.page", "internal", page);
-				}
-				EmbedGenerator embed = Command_Utils.HELP_PAGE_TEXT[page-1];
-				embed.setChannel(message.getChannel()).replace(message);
-			}
-		}
+				)
+			)
+		);
+
     }
 }
