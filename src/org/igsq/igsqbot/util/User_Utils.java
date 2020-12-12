@@ -108,4 +108,9 @@ public class User_Utils
 			return false;
 		}
 	}
+
+	public static String getRoleAsMention(String id)
+	{
+		return "<@&" + id + ">";
+	}
 }

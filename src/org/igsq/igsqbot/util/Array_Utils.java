@@ -8,34 +8,16 @@ public class Array_Utils
 	{
 		//Overrides the default, public, constructor
 	}
-	public static String arrayCompile(String[] array)
+	public static String arrayCompile(String[] array, String delimiter)
 	{
 		StringBuilder builder = new StringBuilder();
 		for(String selectedPart : array)
 		{
-			builder.append(selectedPart);
+			builder.append(selectedPart).append(delimiter);
 		}
 		return builder.toString();
 	}
-	public static String arrayCompile(String[] array, boolean addSpaces)
-	{
-		StringBuilder builder = new StringBuilder();
-		if(addSpaces)
-		{
-			for(String selectedPart : array)
-			{
-				builder.append(selectedPart).append(" ");
-			}
-		}
-		else
-		{
-			for(String selectedPart : array)
-			{
-				builder.append(selectedPart);
-			}
-		}
-		return builder.toString();
-	}
+
 	public static String[] depend(String[] array, int location)
     {
         String[] arrayDepended = new String[array.length-1];

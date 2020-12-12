@@ -51,7 +51,7 @@ public class GUIGenerator
 			catch (Exception exception)
 			{
 				new ErrorHandler(exception);
-				return GUI_State.EXCEPTION;
+				return null;
 			}
 
 			reactionEvent.getReaction().removeReaction(reactingUser).queue();
@@ -67,17 +67,17 @@ public class GUIGenerator
 				}
 				else
 				{
-					return GUI_State.INVALID_EMOJI;
+					return null;
 				}
 			}
 			else
 			{
-				return GUI_State.INVALID_EMOJI;
+				return null;
 			}
 		}
 		else
 		{
-			return GUI_State.TIMEOUT;
+			return null;
 		}
 	}
 	
@@ -111,12 +111,14 @@ public class GUIGenerator
 	
 	public int menu(User user, long timeout, int optionCount)
 	{
+		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
+
 		for(int i = 1; i <= optionCount; i++)
 		{
 			message.addReaction(i + NUMBER_CODEPOINT).queue();
 		}
 
-		MessageReactionAddEvent reactionEvent;
+		final MessageReactionAddEvent reactionEvent;
 		EventWaiter waiter = new EventWaiter();
 		event = null;
 		try
@@ -125,24 +127,15 @@ public class GUIGenerator
 		} 
 		catch (Exception exception) 
 		{
-			reactionEvent = null;
+			return -1;
 		}
 
 
 		if(reactionEvent != null)
 		{
-			User reactingUser = null;
-			try
-			{
-				reactingUser = reactionEvent.retrieveUser().submit().get();
-			}
-			catch (Exception exception)
-			{
-				new ErrorHandler(exception);
-				return -1;
-			}
 			event = reactionEvent;
-			reactionEvent.getReaction().removeReaction(reactingUser).queue(error -> {});
+			reactionEvent.retrieveUser().queue(reactingUser -> reactionEvent.getReaction().removeReaction(reactingUser).queue(null, error -> {}));
+
 			if(reactionEvent.getReactionEmote().isEmoji())
 			{
 				String reactionNumber = reactionEvent.getReactionEmote().getEmoji().substring(0, 1);
@@ -154,21 +147,22 @@ public class GUIGenerator
 					}
 					else
 					{
-						return -1;
+						return menu(user, timeout, optionCount);
 					}
 				}
 				catch(Exception exception)
 				{
-					return -1;
+					return menu(user, timeout, optionCount);
 				}
 			}
 			else
 			{
-				return -1;
+				return menu(user, timeout, optionCount);
 			}
 		}
 		else
 		{
+			message.delete().queue();
 			return -1;
 		}
 	}

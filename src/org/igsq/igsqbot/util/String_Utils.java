@@ -73,11 +73,10 @@ public class String_Utils
 		return score < accuracy;
 	}
 
-	public static String stringDepend(String input, String match)
+	public static String stringDepend(String input, String match, String delimiter)
 	{
 		if(!input.contains(match)) return input;
-		input = input.substring(0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length());
-		return input;
+		return input.substring(input.startsWith(delimiter) ? 1 : 0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length());
 	}
 
 	public static String getTimestamp()

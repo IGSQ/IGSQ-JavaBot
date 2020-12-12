@@ -22,10 +22,10 @@ public class MessageCache
 	{
 		if(cachedMessages.length >= 1000)
 		{
-			cachedMessages = Array_Utils.depend(cachedMessages, 0);
+			cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, 0);
 			clean();
 		}
-		cachedMessages = Array_Utils.append(cachedMessages, message);
+		cachedMessages = (Message[]) Array_Utils.append(cachedMessages, message);
 	}
 	
 	public void set(Message[] messages)
@@ -34,9 +34,9 @@ public class MessageCache
 		{
 			if(cachedMessages.length >= 1000)
 			{
-				cachedMessages = Array_Utils.depend(cachedMessages, 0);
+				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, 0);
 			}
-			cachedMessages = Array_Utils.append(cachedMessages, selectedMessage);
+			cachedMessages = (Message[]) Array_Utils.append(cachedMessages, selectedMessage);
 		}
 	}
 	
@@ -46,9 +46,9 @@ public class MessageCache
 		{
 			if(cachedMessages.length >= 1000)
 			{
-				cachedMessages = Array_Utils.depend(cachedMessages, 0);
+				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, 0);
 			}
-			cachedMessages = Array_Utils.append(cachedMessages, selectedMessage);
+			cachedMessages = (Message[]) Array_Utils.append(cachedMessages, selectedMessage);
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getId().equals(id))
 			{
-				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
+				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public class MessageCache
 		{
 			if(selectedMessage.equals(message))
 			{
-				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
+				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class MessageCache
 			{
 				if(selectedCachedMessage.equals(selectedMessage))
 				{
-					cachedMessages = Array_Utils.depend(cachedMessages, selectedCachedMessage);
+					cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedCachedMessage);
 				}
 			}
 		}
@@ -107,7 +107,7 @@ public class MessageCache
 			{
 				if(selectedCachedMessage.equals(selectedMessage))
 				{
-					cachedMessages = Array_Utils.depend(cachedMessages, selectedCachedMessage);
+					cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedCachedMessage);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ public class MessageCache
 		{
 			if(selectedMessage.equals(oldMessage))
 			{
-				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
+				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedMessage);
 				set(newMessage);
 			}
 		}
@@ -154,7 +154,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getId().equals(oldMessageID))
 			{
-				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
+				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedMessage);
 				set(newMessage);
 			}
 		}
@@ -175,7 +175,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)))
 			{
-				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
+				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedMessage);
 			}	
 		}
 	}

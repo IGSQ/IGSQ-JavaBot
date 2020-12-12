@@ -25,7 +25,7 @@ public class Uwu_Command extends Command
 	@Override
 	public void execute(String[] args, Context ctx)
 	{
-		final List<String> chars = Arrays.stream(Array_Utils.arrayCompile(args, true).split("")).collect(Collectors.toList());
+		final List<String> chars = Arrays.stream(Array_Utils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
 		final StringBuilder finalSentence = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();
 		final User author = ctx.getAuthor();

@@ -139,7 +139,7 @@ public class Verify_Command
 				{
 					verificationMessage += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[currentRole] + "> (Known)\n";
 					assignedRoles = Array_Utils.append(assignedRoles, retrievedRoles[currentRole]);
-					messageContent = String_Utils.stringDepend(messageContent, selectedAlias);
+					messageContent = String_Utils.stringDepend(messageContent, selectedAlias, "");
 					confirmedRoles += "," + retrievedRoles[currentRole];
 					break;
 				}

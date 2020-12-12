@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.Array_Utils;
@@ -102,7 +104,10 @@ public class EmbedGenerator{
 	 * Constructs an empty {@link EmbedGenerator}
 	 * @see EmbedGenerator
 	 */
-	public EmbedGenerator() {}
+	public EmbedGenerator()
+	{
+		embed = new EmbedBuilder();
+	}
 
 	/**
 	 * Sets the footer of an embed.
@@ -338,8 +343,14 @@ public class EmbedGenerator{
 		(
     		message -> 
     		{
-    			if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION)) for(String reaction : reactions) message.addReaction(reaction).queue();
-    			message.delete().queueAfter(delay, TimeUnit.MILLISECONDS);
+    			if(!(channel instanceof TextChannel) || ((TextChannel)channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION))
+			    {
+			    	for(String reaction : reactions)
+				    {
+				    	message.addReaction(reaction).queue();
+				    }
+			    }
+    			message.delete().queueAfter(delay, TimeUnit.MILLISECONDS, null, ErrorResponseException.ignore(ErrorResponse.UNKNOWN_MESSAGE));
     			this.sentMessage = message;
     		}
         );

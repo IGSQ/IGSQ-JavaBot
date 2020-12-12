@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.deprecated;
+package org.igsq.igsqbot.events;
 
 import org.igsq.igsqbot.util.Array_Utils;
 import org.igsq.igsqbot.util.Command_Utils;
