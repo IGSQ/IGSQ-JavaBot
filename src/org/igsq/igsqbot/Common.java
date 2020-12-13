@@ -25,7 +25,6 @@ public class Common
 	private static JDA jda;
 	
 	public static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-	public static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
 
 	private Common()
 	{

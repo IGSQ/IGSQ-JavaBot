@@ -10,6 +10,8 @@ import org.igsq.igsqbot.util.Array_Utils;
 import org.igsq.igsqbot.util.User_Utils;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +45,7 @@ public class TwoFA_Minecraft
 					EmbedGenerator embed = new EmbedGenerator(channel)
 							.text("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
 							.color(Common.IGSQ_PURPLE);
+
 					channel.sendMessage(embed.getBuilder().build()).queue(
 							message ->
 							{
@@ -70,15 +73,15 @@ public class TwoFA_Minecraft
 		return String.format("%06d", new Random().nextInt(999999));
 	}
 	
-	private static String[] getPending()
+	private static List<String> getPending()
 	{
 		ResultSet discord_2fa = Database.queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending' AND `code` IS NULL");
-		String[] pendingIDs = new String[0];
+		List<String> pendingIDs = new ArrayList<>();
 		try 
 		{
 			while(discord_2fa.next())
 			{
-				pendingIDs = Array_Utils.append(pendingIDs, Common_Minecraft.getIDFromUUID(discord_2fa.getString(1)));
+				pendingIDs.add(Common_Minecraft.getIDFromUUID(discord_2fa.getString(1)));
 			}
 		} 
 		catch (Exception exception)

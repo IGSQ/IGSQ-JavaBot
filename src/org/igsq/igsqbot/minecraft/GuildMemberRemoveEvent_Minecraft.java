@@ -11,17 +11,18 @@ public class GuildMemberRemoveEvent_Minecraft extends ListenerAdapter
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{
 		Member member = event.getMember();
-		String id = member.getId();
-		String uuid = Common_Minecraft.getUUIDFromID(id);
 
-
-		if(uuid != null)
+		if(member != null)
 		{
-			Database.updateCommand("DELETE FROM discord_2fa WHERE id = '" + uuid + "';");
-			Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
+			String id = member.getId();
+			String uuid = Common_Minecraft.getUUIDFromID(id);
+			if(uuid != null)
+			{
+				Database.updateCommand("DELETE FROM discord_2fa WHERE id = '" + uuid + "';");
+				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
+			}
+			Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
 		}
-
-		Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
 	}
 }
 

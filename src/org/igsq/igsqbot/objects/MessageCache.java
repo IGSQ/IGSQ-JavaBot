@@ -34,9 +34,9 @@ public class MessageCache
 		{
 			if(cachedMessages.length >= 1000)
 			{
-				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, 0);
+				cachedMessages = Array_Utils.depend(cachedMessages, 0);
 			}
-			cachedMessages = (Message[]) Array_Utils.append(cachedMessages, selectedMessage);
+			cachedMessages = Array_Utils.append(cachedMessages, selectedMessage);
 		}
 	}
 	
@@ -46,9 +46,9 @@ public class MessageCache
 		{
 			if(cachedMessages.length >= 1000)
 			{
-				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, 0);
+				cachedMessages = Array_Utils.depend(cachedMessages, 0);
 			}
-			cachedMessages = (Message[]) Array_Utils.append(cachedMessages, selectedMessage);
+			cachedMessages = Array_Utils.append(cachedMessages, selectedMessage);
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getId().equals(id))
 			{
-				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedMessage);
+				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public class MessageCache
 		{
 			if(selectedMessage.equals(message))
 			{
-				cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedMessage);
+				cachedMessages = Array_Utils.depend(cachedMessages, selectedMessage);
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class MessageCache
 			{
 				if(selectedCachedMessage.equals(selectedMessage))
 				{
-					cachedMessages = (Message[]) Array_Utils.depend(cachedMessages, selectedCachedMessage);
+					cachedMessages = Array_Utils.depend(cachedMessages, selectedCachedMessage);
 				}
 			}
 		}

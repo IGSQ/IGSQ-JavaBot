@@ -24,8 +24,6 @@ public class MessageReceivedEvent_Main extends ListenerAdapter
 			{
 				MessageCache.getCache(event.getGuild().getId()).set(event.getMessage());
 			}
-
-
 		}
 		else if(event.getMessage().getContentRaw().startsWith(Common.BOT_PREFIX))
 		{

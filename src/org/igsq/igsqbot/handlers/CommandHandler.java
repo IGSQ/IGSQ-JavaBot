@@ -18,6 +18,8 @@ import org.igsq.igsqbot.util.Array_Utils;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public abstract class CommandHandler
 {
@@ -25,9 +27,9 @@ public abstract class CommandHandler
 	{
 		//Overrides the default, public, constructor
 	}
-
 	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(Common.COMMAND_PACKAGE);
 	private static final Map<String, Command> COMMANDS = new HashMap<>();
+	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
 
 	static
 	{
@@ -68,7 +70,7 @@ public abstract class CommandHandler
 			return;
 		}
 
-		if(cmd.isRequiresGuild() && (!event.getChannelType().equals(ChannelType.TEXT) ||!event.getMember().hasPermission(cmd.getRequiredPermissions())))
+		if(cmd.isRequiresGuild() && (!event.getChannelType().equals(ChannelType.TEXT)||!event.getMember().hasPermission(cmd.getRequiredPermissions())))
 		{
 			return;
 		}
@@ -77,6 +79,7 @@ public abstract class CommandHandler
 		{
 			event.getMessage().delete().queue();
 		}
-		Common.commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
+
+		commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
 	}
 }
