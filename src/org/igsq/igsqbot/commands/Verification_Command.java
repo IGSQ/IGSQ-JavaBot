@@ -1,23 +1,23 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.EventWaiter;
 import org.igsq.igsqbot.util.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Verification_Command extends Command
 {
-	private String[] messageContent = new String[0];
+	private final List<String> messageContent = new ArrayList<>();
 
 	public Verification_Command()
 	{
@@ -31,6 +31,8 @@ public class Verification_Command extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final Guild guild = ctx.getGuild();
 		final User verificationTarget;
+		final User author = ctx.getAuthor();
+		final JDA jda = ctx.getJDA();
 
 		final String[] retrievedRoles = Command_Utils.getRoles(guild.getId());
 
@@ -48,17 +50,17 @@ public class Verification_Command extends Command
 			messages ->
 			{
 				messages.forEach(
-				message ->
+				selectedMessage ->
 				{
-					if(message.getAuthor().equals(verificationTarget))
+					if(selectedMessage.getAuthor().equals(verificationTarget) && !selectedMessage.getContentRaw().startsWith(Common.BOT_PREFIX))
 					{
-						messageContent = Array_Utils.append(messageContent, message.getContentRaw() + " ");
+						messageContent.addAll(Arrays.asList(selectedMessage.getContentRaw().split(" ")));
 					}
 				});
 
 
-				final Map<String, String> aliasMatches = findMatches(Command_Utils.getAliases(guild.getId()), retrievedRoles);
-				final Map<String, String> declineMatches = findMatches(Command_Utils.getDeclined(guild.getId()), retrievedRoles);
+				final Map<String, String> aliasMatches = findMatches(Command_Utils.getAliases(guild.getId()));
+				final Map<String, String> declineMatches = findMatches(Command_Utils.getDeclined(guild.getId()));
 
 				aliasMatches.forEach((key, value) ->
 				{
@@ -75,7 +77,8 @@ public class Verification_Command extends Command
 								.append("\n")
 				);
 
-				findSimilar(Command_Utils.getAliases(guild.getId()), retrievedRoles).forEach((alias, role) ->
+				final Map<String, String> similarMatches = findSimilar(Command_Utils.getAliases(guild.getId()), aliasMatches.values().toArray(new String[0]));
+				similarMatches.forEach((alias, role) ->
 						embedText.append("Detected Role: ")
 						.append(User_Utils.getRoleAsMention(role))
 						.append(" (Guess) for '")
@@ -87,50 +90,121 @@ public class Verification_Command extends Command
 						.text(embedText.length() == 0 ? "No roles found for this user." : embedText.toString())
 						.color(Common.IGSQ_PURPLE)
 						.reaction(Common.TICK_REACTIONS.toArray(new String[0]))
-						.send();
+						.sendTemporary();
+
+				EventWaiter waiter = new EventWaiter();
+				MessageReactionAddEvent reactionAddEvent;
+				try
+				{
+					reactionAddEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(author) && !event.getUser().isBot(), 10000);
+				}
+				catch(Exception exception)
+				{
+					reactionAddEvent = null;
+				}
+
+				if(reactionAddEvent != null)
+				{
+					final MessageChannel welcomeChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
+					final StringBuilder roleText = new StringBuilder();
+					final List<Role> finalRoles = new ArrayList<>();
+					long verificationMember = User_Utils.getMemberFromUser(verificationTarget, guild).getIdLong();
+
+					aliasMatches.values().forEach(id -> finalRoles.add(guild.getRoleById(id)));
+
+					if(reactionAddEvent.getReactionEmote().getAsCodepoints().equalsIgnoreCase(Common.TICK_REACTIONS.get(0)))
+					{
+						similarMatches.values().forEach(id -> finalRoles.add(guild.getRoleById(id)));
+
+						for(Role selectedRole : finalRoles)
+						{
+							if(selectedRole != null)
+							{
+								guild.addRoleToMember(verificationMember, selectedRole).queue();
+								roleText.append(selectedRole.getAsMention()).append(" ");
+							}
+						}
+
+						if(welcomeChannel == null)
+						{
+							Embed_Utils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
+						}
+						else
+						{
+							new EmbedGenerator(welcomeChannel)
+									.title(verificationTarget.getAsTag())
+									.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
+									.color(Common.IGSQ_PURPLE)
+									.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
+						}
+					}
+					else if(reactionAddEvent.getReactionEmote().getAsCodepoints().equalsIgnoreCase(Common.TICK_REACTIONS.get(1)))
+					{
+						for(Role selectedRole : finalRoles)
+						{
+							if(selectedRole != null)
+							{
+								guild.addRoleToMember(verificationMember, selectedRole).queue();
+								roleText.append(selectedRole.getAsMention()).append(" ");
+							}
+						}
+
+						if(welcomeChannel == null)
+						{
+							Embed_Utils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
+						}
+						else
+						{
+							new EmbedGenerator(welcomeChannel)
+									.title(verificationTarget.getAsTag())
+									.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
+									.color(Common.IGSQ_PURPLE)
+									.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
+						}
+					}
+				}
 			}
 		);
 	}
 
-	private Map<String, String> findMatches(String[][] input, String[] roles)
+	private Map<String, String> findMatches(String[][] input)
 	{
-		int currentRole = 0;
 		Map<String, String> result = new HashMap<>();
 		for(String[] aliasCollection : input)
 		{
-			final int finalCurrentRole = currentRole;
-			Arrays.stream(aliasCollection)
-					.filter(word -> Array_Utils.isValueInArray(messageContent, word))
-					.forEach(word ->
-					{
-						result.putIfAbsent(word, roles[finalCurrentRole]);
-						messageContent = (String[]) Array_Utils.depend(messageContent, word);
-					});
-			currentRole++;
+			for(String selectedAlias : aliasCollection)
+			{
+				if(!result.containsValue(aliasCollection[0]) && messageContent.contains(selectedAlias))
+				{
+					result.putIfAbsent(selectedAlias, aliasCollection[0]);
+					messageContent.remove(selectedAlias);
+				}
+			}
 		}
 		return result;
 	}
 
-	private Map<String, String> findSimilar(String[][] input, String[] roles)
+	private Map<String, String> findSimilar(String[][] aliases, String[] matchedRoles)
 	{
-		int currentRole = 0;
 		Map<String, String> result = new HashMap<>();
-		for(String[] aliasCollection : input)
+
+		for(String[] aliasCollection : aliases)
 		{
-			final int finalCurrentRole = currentRole;
 			Arrays.stream(aliasCollection)
-					.forEach(alias ->
-					Arrays.stream(messageContent)
-						.forEach(messageWord ->
-						{
-							if(String_Utils.isOption(alias, messageWord, 10))
+					.filter(alias -> !messageContent.contains(alias))
+					.forEach(currentAlias ->
+					{
+						messageContent.forEach(currentWord ->
 							{
-								result.putIfAbsent(messageWord, roles[finalCurrentRole]);
+								if(!Array_Utils.isValueInArray(matchedRoles, aliasCollection[0]) && String_Utils.isOption(currentAlias,currentWord,10))
+								{
+									result.putIfAbsent(currentWord, aliasCollection[0]);
+								}
 							}
-						}
-					));
-			currentRole++;
+						);
+					});
 		}
+
 		return result;
 	}
 }
