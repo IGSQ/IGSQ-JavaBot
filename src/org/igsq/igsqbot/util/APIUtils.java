@@ -2,17 +2,20 @@ package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Base64;
 
 public class APIUtils
 {
 	public static final String USER_AGENT = "IGSQBOT/1.0";
 
+	public static String getAUTH(String auth)
+	{
+		return Base64.getEncoder().encodeToString((auth).getBytes());
+	}
 	public static String sendGET(String url)
 	{
 		try
@@ -46,6 +49,35 @@ public class APIUtils
 			// Set ourselves as if we're "vaguely netscape"
 			con.setRequestMethod("POST");
 			con.setRequestProperty("User-Agent", USER_AGENT);
+
+			// For POST only - Configure parameters
+			con.setDoOutput(true);
+			OutputStream os = con.getOutputStream();
+			os.write(params.getBytes());
+			os.flush();
+			os.close();
+
+			// Handle String
+			return (handleHTTPResponse(con));
+		}
+		catch(Exception exception)
+		{
+			return "";
+		}
+	}
+
+	public static String sendPOST(String url, String params, String auth)
+	{
+		try
+		{
+			// Get and open a connection, stored in connection object
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+			// Set ourselves as if we're "vaguely netscape"
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Authorization", "Basic " + auth);
 
 			// For POST only - Configure parameters
 			con.setDoOutput(true);

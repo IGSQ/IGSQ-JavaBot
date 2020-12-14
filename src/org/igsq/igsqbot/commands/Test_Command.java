@@ -15,6 +15,6 @@ public class Test_Command extends Command
 	public void execute(String[] args, Context ctx)
 	{
 		ctx.getChannel().sendMessage(APIUtils.sendPOST("https://www.reddit.com/api/v1/access_token",
-				"{\"grant_type\":\"client_credentials\"}")).queue();
+				"{\"grant_type\": \"client_credentials\", \"username\": \"IGSQBot\", \"password\": \"IGSQBot\"}", APIUtils.getAUTH("pi8ChrsmgKUXPQ:MCCC7cE77WhTRsYwBYDQwG1TENO7Gw"))).queue();
 	}
 }
