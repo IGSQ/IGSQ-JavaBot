@@ -10,7 +10,7 @@ import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.MessageCache;
-import org.igsq.igsqbot.util.Embed_Utils;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -42,11 +42,11 @@ public class Clear_Command extends Command
 		}
 		if(amount <= 0)
 		{
-			Embed_Utils.sendError(channel, "Invalid amount entered.");
+			EmbedUtils.sendError(channel, "Invalid amount entered.");
 		}
 		else if(amount > 51)
 		{
-			Embed_Utils.sendError(channel, "You tried to delete too many messages (Limit: 50)");
+			EmbedUtils.sendError(channel, "You tried to delete too many messages (Limit: 50)");
 		}
 		else if(CooldownHandler.isOnCooldown(author.getIdLong(), this))
 		{

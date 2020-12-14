@@ -34,15 +34,13 @@ public class Verification_Command extends Command
 		final User author = ctx.getAuthor();
 		final JDA jda = ctx.getJDA();
 
-		final String[] retrievedRoles = Command_Utils.getRoles(guild.getId());
-
 		try
 		{
-			verificationTarget = User_Utils.getUserFromMention(args[0]);
+			verificationTarget = UserUtils.getUserFromMention(args[0]);
 		}
 		catch(Exception exception)
 		{
-			Embed_Utils.sendError(channel, "Enter a user to verify!");
+			EmbedUtils.sendError(channel, "Enter a user to verify!");
 			return;
 		}
 
@@ -59,8 +57,8 @@ public class Verification_Command extends Command
 				});
 
 
-				final Map<String, String> aliasMatches = findMatches(Command_Utils.getAliases(guild.getId()));
-				final Map<String, String> declineMatches = findMatches(Command_Utils.getDeclined(guild.getId()));
+				final Map<String, String> aliasMatches = findMatches(CommandUtils.getAliases(guild.getId()));
+				final Map<String, String> declineMatches = findMatches(CommandUtils.getDeclined(guild.getId()));
 
 				aliasMatches.forEach((key, value) ->
 				{
@@ -72,15 +70,15 @@ public class Verification_Command extends Command
 
 				aliasMatches.forEach((alias, role) ->
 						embedText.append("Detected Role: ")
-								.append(User_Utils.getRoleAsMention(role))
+								.append(UserUtils.getRoleAsMention(role))
 								.append(" (Sure)")
 								.append("\n")
 				);
 
-				final Map<String, String> similarMatches = findSimilar(Command_Utils.getAliases(guild.getId()), aliasMatches.values().toArray(new String[0]));
+				final Map<String, String> similarMatches = findSimilar(CommandUtils.getAliases(guild.getId()), aliasMatches.values().toArray(new String[0]));
 				similarMatches.forEach((alias, role) ->
 						embedText.append("Detected Role: ")
-						.append(User_Utils.getRoleAsMention(role))
+						.append(UserUtils.getRoleAsMention(role))
 						.append(" (Guess) for '")
 						.append(alias)
 						.append("'\n"));
@@ -88,7 +86,7 @@ public class Verification_Command extends Command
 				new EmbedGenerator(channel)
 						.title("Verification for " + verificationTarget.getAsTag())
 						.text(embedText.length() == 0 ? "No roles found for this user." : embedText.toString())
-						.color(Common.IGSQ_PURPLE)
+						.color(EmbedUtils.IGSQ_PURPLE)
 						.reaction(Common.TICK_REACTIONS.toArray(new String[0]))
 						.sendTemporary();
 
@@ -108,7 +106,7 @@ public class Verification_Command extends Command
 					final MessageChannel welcomeChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
 					final StringBuilder roleText = new StringBuilder();
 					final List<Role> finalRoles = new ArrayList<>();
-					long verificationMember = User_Utils.getMemberFromUser(verificationTarget, guild).getIdLong();
+					long verificationMember = UserUtils.getMemberFromUser(verificationTarget, guild).getIdLong();
 
 					aliasMatches.values().forEach(id -> finalRoles.add(guild.getRoleById(id)));
 
@@ -127,14 +125,14 @@ public class Verification_Command extends Command
 
 						if(welcomeChannel == null)
 						{
-							Embed_Utils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
+							EmbedUtils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
 						}
 						else
 						{
 							new EmbedGenerator(welcomeChannel)
 									.title(verificationTarget.getAsTag())
 									.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
-									.color(Common.IGSQ_PURPLE)
+									.color(EmbedUtils.IGSQ_PURPLE)
 									.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
 						}
 					}
@@ -151,14 +149,14 @@ public class Verification_Command extends Command
 
 						if(welcomeChannel == null)
 						{
-							Embed_Utils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
+							EmbedUtils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
 						}
 						else
 						{
 							new EmbedGenerator(welcomeChannel)
 									.title(verificationTarget.getAsTag())
 									.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
-									.color(Common.IGSQ_PURPLE)
+									.color(EmbedUtils.IGSQ_PURPLE)
 									.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
 						}
 					}
@@ -196,7 +194,7 @@ public class Verification_Command extends Command
 					{
 						messageContent.forEach(currentWord ->
 							{
-								if(!Array_Utils.isValueInArray(matchedRoles, aliasCollection[0]) && String_Utils.isOption(currentAlias,currentWord,10))
+								if(!ArrayUtils.isValueInArray(matchedRoles, aliasCollection[0]) && StringUtils.isOption(currentAlias,currentWord,10))
 								{
 									result.putIfAbsent(currentWord, aliasCollection[0]);
 								}

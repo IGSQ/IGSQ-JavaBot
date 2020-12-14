@@ -12,15 +12,15 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.String_Utils;
-import org.igsq.igsqbot.util.Yaml_Utils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 {
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{
-		GuildChannel logChannel = Yaml_Utils.getLogChannel(event.getGuild().getId());
+		GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 		User user = event.getUser();
 		String timeJoined;
 		Member member = null;
@@ -47,7 +47,7 @@ public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 			new EmbedGenerator((MessageChannel)logChannel).title("Member Left").text(
 			"**Member**: " + member.getAsMention() + 
 			"\n**Joined On**: " + timeJoined)
-			.color(Color.PINK).footer("Logged on: " + String_Utils.getTimestamp()).send();
+			.color(Color.PINK).footer("Logged on: " + StringUtils.getTimestamp()).send();
 		}
 	}
 }

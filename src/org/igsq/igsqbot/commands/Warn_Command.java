@@ -4,9 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
@@ -31,26 +29,26 @@ public class Warn_Command extends Command
 		final Guild guild = ctx.getGuild();
 		final User author = ctx.getAuthor();
 
-		if(args.length > 1 && User_Utils.isUserMention(args[0]))
+		if(args.length > 1 && UserUtils.isUserMention(args[0]))
 		{
-			warnTarget = User_Utils.getUserFromMention(args[0]);
+			warnTarget = UserUtils.getUserFromMention(args[0]);
 			if(warnTarget == null)
 			{
-				Embed_Utils.sendError(channel, "Enter an valid user.");
+				EmbedUtils.sendError(channel, "Enter an valid user.");
 			}
 			else
 			{
-				addWarning(warnTarget, String.join("", Array_Utils.depend(args, 0)), guild.getId(), channel);
+				addWarning(warnTarget, String.join("", ArrayUtils.depend(args, 0)), guild.getId(), channel);
 			}
 		}
-		else if(args.length > 1 && !User_Utils.isUserMention(args[0]))
+		else if(args.length > 1 && !UserUtils.isUserMention(args[0]))
 		{
 			action = args[0];
 
-			warnTarget = User_Utils.getUserFromMention(args[1]);
+			warnTarget = UserUtils.getUserFromMention(args[1]);
 			if(warnTarget == null)
 			{
-				Embed_Utils.sendError(channel, "Enter an valid user.");
+				EmbedUtils.sendError(channel, "Enter an valid user.");
 				return;
 			}
 
@@ -64,18 +62,18 @@ public class Warn_Command extends Command
 			}
 			else
 			{
-				Embed_Utils.sendError(channel, "Enter a valid action.");
+				EmbedUtils.sendError(channel, "Enter a valid action.");
 			}
 		}
 		else
 		{
-			Embed_Utils.sendError(channel, "Invalid syntax.");
+			EmbedUtils.sendError(channel, "Invalid syntax.");
 		}
 	}
 
 	private void addWarning(User user, String reason, String guildId, MessageChannel channel)
 	{
-		Yaml_Utils.fieldAppend(guildId + ".warnings." + user.getId(), "punishment",reason + " - " + String_Utils.getTimestamp(), ",");
+		YamlUtils.fieldAppend(guildId + ".warnings." + user.getId(), "punishment",reason + " - " + StringUtils.getTimestamp(), ",");
 
 		new EmbedGenerator(channel).text("Warned " + user.getAsMention() + " for reason: " + reason).color(Color.GREEN).sendTemporary(2000);
 
@@ -89,7 +87,7 @@ public class Warn_Command extends Command
 		{
 			embedText.append(selectedWarning).append("\n");
 		}
-		embed.text(embedText.length() > 0 ? embedText.toString() : "This user has no warnings.").footer(String_Utils.getTimestamp()).color(Common.IGSQ_PURPLE).send();
+		embed.text(embedText.length() > 0 ? embedText.toString() : "This user has no warnings.").footer(StringUtils.getTimestamp()).color(EmbedUtils.IGSQ_PURPLE).send();
 	}
 
 	private void removeWarning(User user, String guildId, MessageChannel channel, User author)
@@ -98,7 +96,7 @@ public class Warn_Command extends Command
 
 		if(warnings.length == 0)
 		{
-			Embed_Utils.sendError(channel, "That user has no warnings.");
+			EmbedUtils.sendError(channel, "That user has no warnings.");
 			return;
 		}
 		StringBuilder embedText = new StringBuilder();
@@ -107,14 +105,14 @@ public class Warn_Command extends Command
 		{
 			embedText.append(i).append(": ").append(warnings[i]);
 		}
-		EmbedGenerator embed = new EmbedGenerator(channel).title("Select a warning to remove.").color(Common.IGSQ_PURPLE).text(embedText.toString());
+		EmbedGenerator embed = new EmbedGenerator(channel).title("Select a warning to remove.").color(EmbedUtils.IGSQ_PURPLE).text(embedText.toString());
 		GUIGenerator gui = new GUIGenerator(embed);
 		int chosenWarning = gui.menu(author, 60000, warnings.length);
 
 		if(chosenWarning != -1)
 		{
-			warnings = Array_Utils.depend(warnings, chosenWarning-1);
-			Yaml.updateField(guildId + ".warnings." + user.getId(), "punishment", Array_Utils.arrayCompile(warnings, ","));
+			warnings = ArrayUtils.depend(warnings, chosenWarning-1);
+			Yaml.updateField(guildId + ".warnings." + user.getId(), "punishment", ArrayUtils.arrayCompile(warnings, ","));
 
 			new EmbedGenerator(channel).text("Removed warning: " + warnings[chosenWarning-1]).color(Color.GREEN).sendTemporary();
 		}

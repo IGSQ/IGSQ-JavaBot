@@ -61,7 +61,7 @@ public class Verify_Command
 	{
 		List<Message> retrievedMessages = getMessages(channel, 10);
 		String messageContent = "";
-		String[] retrievedRoles = Command_Utils.getRoles(guild.getId());
+		String[] retrievedRoles = CommandUtils.getRoles(guild.getId());
 		String[] assignedRoles = new String[0];
 		String[] declinedRoles = new String[0];
 		String queryString = "";
@@ -88,18 +88,18 @@ public class Verify_Command
 			new EmbedGenerator(channel).text("You cannot verify bots.").color(Color.RED).sendTemporary();
 			return;
 		}
-		else if(User_Utils.getMemberFromUser(toVerify, guild).isOwner())
+		else if(UserUtils.getMemberFromUser(toVerify, guild).isOwner())
 		{
 			new EmbedGenerator(channel).text("You cannot verify the owner.").color(Color.RED).sendTemporary();
 			return;
 		}
 		else
 		{
-			if(!Yaml_Utils.isFieldEmpty(guild.getId() + ".verifiedrole", "guild"))
+			if(!YamlUtils.isFieldEmpty(guild.getId() + ".verifiedrole", "guild"))
 			{
 				Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
 
-				if(verifiedRole != null && User_Utils.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
+				if(verifiedRole != null && UserUtils.getMemberFromUser(toVerify, guild).getRoles().contains(verifiedRole))
 				{
 					new EmbedGenerator(channel).text("This member is already verified.").color(Color.RED).sendTemporary();
 					return;
@@ -131,15 +131,15 @@ public class Verify_Command
 
 
 		int currentRole = 0;
-		for(String[] selectedAliases : Command_Utils.getAliases(guild.getId()))
+		for(String[] selectedAliases : CommandUtils.getAliases(guild.getId()))
 		{
 			for(String selectedAlias : selectedAliases)
 			{
 				if(messageContent.contains(selectedAlias))
 				{
 					verificationMessage += "Detected Alias: " + selectedAlias + " for role <@&" + retrievedRoles[currentRole] + "> (Known)\n";
-					assignedRoles = Array_Utils.append(assignedRoles, retrievedRoles[currentRole]);
-					messageContent = String_Utils.stringDepend(messageContent, selectedAlias, "");
+					assignedRoles = ArrayUtils.append(assignedRoles, retrievedRoles[currentRole]);
+					messageContent = StringUtils.stringDepend(messageContent, selectedAlias, "");
 					confirmedRoles += "," + retrievedRoles[currentRole];
 					break;
 				}
@@ -148,13 +148,13 @@ public class Verify_Command
 		}
 		
 		currentRole = 0;
-		for(String[] declinedAliases : Command_Utils.getDeclined(guild.getId()))
+		for(String[] declinedAliases : CommandUtils.getDeclined(guild.getId()))
 		{
 			for(String declinedAlias : declinedAliases)
 			{
-				if(messageContent.contains(declinedAlias) && !Array_Utils.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
+				if(messageContent.contains(declinedAlias) && !ArrayUtils.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
 				{
-					declinedRoles = Array_Utils.append(declinedRoles, retrievedRoles[currentRole]);
+					declinedRoles = ArrayUtils.append(declinedRoles, retrievedRoles[currentRole]);
 					break;
 				}
 			}
@@ -165,7 +165,7 @@ public class Verify_Command
 		String[] wordList = messageContent.split(" ");
 		if(assignedRoles.length < 2)
 		{
-			for(String[] selectedAliases : Command_Utils.getAliases(guild.getId()))
+			for(String[] selectedAliases : CommandUtils.getAliases(guild.getId()))
 			{
 				for(String selectedAlias: selectedAliases)
 				{
@@ -181,7 +181,7 @@ public class Verify_Command
 							queryString = wordList[i];
 						}
 						
-						if(String_Utils.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !Array_Utils.isValueInArray(declinedRoles, retrievedRoles[currentRole]) && !Array_Utils.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
+						if(StringUtils.isOption(selectedAlias, queryString, 15) && !guessedRoles.contains(retrievedRoles[currentRole]) && !ArrayUtils.isValueInArray(declinedRoles, retrievedRoles[currentRole]) && !ArrayUtils.isValueInArray(assignedRoles, retrievedRoles[currentRole]))
 						{
 							verificationMessage += "Detected Country: <@&" + retrievedRoles[currentRole] + "> (Guess)\n";
 							guessedRoles += "," + retrievedRoles[currentRole];

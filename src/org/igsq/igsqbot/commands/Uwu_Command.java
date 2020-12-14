@@ -3,13 +3,12 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.util.Array_Utils;
+import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,7 @@ public class Uwu_Command extends Command
 	@Override
 	public void execute(String[] args, Context ctx)
 	{
-		final List<String> chars = Arrays.stream(Array_Utils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
+		final List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
 		final StringBuilder finalSentence = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();
 		final User author = ctx.getAuthor();
@@ -40,6 +39,6 @@ public class Uwu_Command extends Command
 		new EmbedGenerator(channel)
 				.text(finalSentence.toString())
 				.footer("This sentence was UwU'd by: " + author.getAsTag())
-				.color(Common.IGSQ_PURPLE).send();
+				.color(EmbedUtils.IGSQ_PURPLE).send();
 	}
 }

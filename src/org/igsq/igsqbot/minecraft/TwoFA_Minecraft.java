@@ -6,8 +6,8 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.util.Array_Utils;
-import org.igsq.igsqbot.util.User_Utils;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class TwoFA_Minecraft
 	
 	private static void sendDirectMessage(String id)
 	{
-		User user = User_Utils.getUserFromMention(id);
+		User user = UserUtils.getUserFromMention(id);
 		if(user != null)
 		{
 			String code = generateCode();
@@ -44,7 +44,7 @@ public class TwoFA_Minecraft
 				{
 					EmbedGenerator embed = new EmbedGenerator(channel)
 							.text("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
-							.color(Common.IGSQ_PURPLE);
+							.color(EmbedUtils.IGSQ_PURPLE);
 
 					channel.sendMessage(embed.getBuilder().build()).queue(
 							message ->

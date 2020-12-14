@@ -34,10 +34,10 @@ public class Report_Command extends Command
 		final Guild guild = ctx.getGuild();
 		final StringBuilder reportDescription = new StringBuilder();
 
-		final User reportedUser = User_Utils.getUserFromMention(args[0]);
+		final User reportedUser = UserUtils.getUserFromMention(args[0]);
 		if(reportedUser != null)
 		{
-			Member reportedMember = User_Utils.getMemberFromUser(reportedUser, guild);
+			Member reportedMember = UserUtils.getMemberFromUser(reportedUser, guild);
 			MessageChannel reportChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
 
 			if(reportChannel == null)
@@ -46,11 +46,11 @@ public class Report_Command extends Command
 				return;
 			}
 
-			if(reportedUser.equals(author)) Embed_Utils.sendError(channel, "You can't report yourself!");
-			else if(args.length <= 1) Embed_Utils.sendError(channel, "Please mention a person & write a report topic.");
-			else if(reportedUser.isBot()) Embed_Utils.sendError(channel, "You may not report bots.");
-			else if(reportedMember.isOwner()) Embed_Utils.sendError(channel, "You may not report the owner.");
-			else if(Yaml_Utils.isFieldEmpty(guild.getId() + ".reportchannel", "guild")) Embed_Utils.sendError(channel, "There is no report channel setup.");
+			if(reportedUser.equals(author)) EmbedUtils.sendError(channel, "You can't report yourself!");
+			else if(args.length <= 1) EmbedUtils.sendError(channel, "Please mention a person & write a report topic.");
+			else if(reportedUser.isBot()) EmbedUtils.sendError(channel, "You may not report bots.");
+			else if(reportedMember.isOwner()) EmbedUtils.sendError(channel, "You may not report the owner.");
+			else if(YamlUtils.isFieldEmpty(guild.getId() + ".reportchannel", "guild")) EmbedUtils.sendError(channel, "There is no report channel setup.");
 			else
 			{
 				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
@@ -61,16 +61,16 @@ public class Report_Command extends Command
 					}
 				}
 
-				Arrays.stream(Array_Utils.depend(args, 0)).forEach(word -> reportDescription.append(" ").append(word));
+				Arrays.stream(ArrayUtils.depend(args, 0)).forEach(word -> reportDescription.append(" ").append(word));
 				if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
 				EmbedGenerator embed = new EmbedGenerator(reportChannel)
 						.title("New report by: " + author.getAsTag())
 						.element("Reporting user:", reportedMember.getAsMention())
 						.element("Description:", reportDescription.toString())
-						.element("Channel:", String_Utils.getChannelAsMention(channel.getId()))
+						.element("Channel:", StringUtils.getChannelAsMention(channel.getId()))
 						.element("Message Log:", messageLog.toString())
 						.color(reportedMember.getColor())
-						.footer("This report is unhandled and can only be dealt by members higher than " + User_Utils.getMemberFromUser(author, guild).getRoles().get(0).getName());
+						.footer("This report is unhandled and can only be dealt by members higher than " + UserUtils.getMemberFromUser(author, guild).getRoles().get(0).getName());
 
 				reportChannel.sendMessage(embed.getBuilder().build()).queue
 						(
@@ -85,6 +85,6 @@ public class Report_Command extends Command
 
 			}
 		}
-		else Embed_Utils.sendError(channel, "Could not find the user " + args[0] + ".");
+		else EmbedUtils.sendError(channel, "Could not find the user " + args[0] + ".");
 	}
 }

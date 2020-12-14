@@ -13,7 +13,7 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
-import org.igsq.igsqbot.util.Array_Utils;
+import org.igsq.igsqbot.util.ArrayUtils;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -27,7 +27,8 @@ public abstract class CommandHandler
 	{
 		//Overrides the default, public, constructor
 	}
-	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(Common.COMMAND_PACKAGE);
+	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
+	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final Map<String, Command> COMMANDS = new HashMap<>();
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
 
@@ -55,7 +56,7 @@ public abstract class CommandHandler
 		final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 		final Command cmd = COMMANDS.get(issuedCommand);
 		final MessageChannel channel = event.getChannel();
-		final String[] args = Array_Utils.depend(event.getMessage().getContentRaw().split(" "), 0);
+		final String[] args = ArrayUtils.depend(event.getMessage().getContentRaw().split(" "), 0);
 
 		if(!message.getContentRaw().startsWith(Common.BOT_PREFIX) || event.getAuthor().isBot())
 		{

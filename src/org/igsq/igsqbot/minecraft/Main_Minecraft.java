@@ -4,7 +4,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.Yaml;
 
 public class Main_Minecraft 
 {

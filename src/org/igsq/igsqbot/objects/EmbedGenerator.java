@@ -14,8 +14,8 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Array_Utils;
-import org.igsq.igsqbot.util.Embed_Utils;
+import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.Yaml;
 
 /**
@@ -133,26 +133,26 @@ public class EmbedGenerator{
 	}
 	
 	/**
-	 * Sets the title of an embed. Cannot be more characters than {@link Embed_Utils#EMBED_TITLE_LIMIT}.
+	 * Sets the title of an embed. Cannot be more characters than {@link EmbedUtils#EMBED_TITLE_LIMIT}.
 	 * Overloads {@link #title(String, String) With icon}.
 	 * @see net.dv8tion.jda.api.EmbedBuilder#setTitle(String)
 	 * @see EmbedGenerator
 	 */
 	public EmbedGenerator title(String text) 
 	{
-		if(text.length() > Embed_Utils.EMBED_TITLE_LIMIT) return this;
+		if(text.length() > EmbedUtils.EMBED_TITLE_LIMIT) return this;
 		embed.setTitle(text);
 		return this;
 	}
 	/**
-	 * Sets the title of an embed with an icon using a url. Cannot be more characters than {@link Embed_Utils#EMBED_TITLE_LIMIT}.
+	 * Sets the title of an embed with an icon using a url. Cannot be more characters than {@link EmbedUtils#EMBED_TITLE_LIMIT}.
 	 * Overloads {@link #title(String) Without icon}.
 	 * @see net.dv8tion.jda.api.EmbedBuilder#setTitle(String,String)
 	 * @see EmbedGenerator
 	 */
 	public EmbedGenerator title(String text,String iconUrl) 
 	{
-		if(text.length() > Embed_Utils.EMBED_TITLE_LIMIT) return this;
+		if(text.length() > EmbedUtils.EMBED_TITLE_LIMIT) return this;
 		embed.setTitle(text, iconUrl);
 		return this;
 	}
@@ -275,18 +275,18 @@ public class EmbedGenerator{
 		return this;
 	}
 	/**
-	 * Adds a reaction to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Embed_Utils#REACTION_LIMIT} reactions exist they will be ignored.
+	 * Adds a reaction to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link EmbedUtils#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String[]) Multiple (Array)}.
 	 * @see EmbedGenerator
 	 */
 	public EmbedGenerator reaction(String emojiUnicode) 
 	{
-		if(reactions.length >= Embed_Utils.REACTION_LIMIT) return this;
-		reactions = Array_Utils.append(reactions, emojiUnicode);
+		if(reactions.length >= EmbedUtils.REACTION_LIMIT) return this;
+		reactions = ArrayUtils.append(reactions, emojiUnicode);
 		return this;
 	}
 	/**
-	 * Adds an array of reactions to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link Embed_Utils#REACTION_LIMIT} reactions exist they will be ignored.
+	 * Adds an array of reactions to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link EmbedUtils#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String) Singular}.
 	 * @see EmbedGenerator
 	 * @see MessageGenerator#reaction(String[])
@@ -295,8 +295,8 @@ public class EmbedGenerator{
 	{
 		for(String emojiUnicode : emojiUnicodes) 
 		{
-			if(reactions.length >= Embed_Utils.REACTION_LIMIT) return this;
-			reactions = Array_Utils.append(reactions, emojiUnicode);
+			if(reactions.length >= EmbedUtils.REACTION_LIMIT) return this;
+			reactions = ArrayUtils.append(reactions, emojiUnicode);
 		}
 		return this;
 	}

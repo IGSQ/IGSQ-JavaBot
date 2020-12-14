@@ -3,12 +3,12 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.util.Command_Utils;
+import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 public class Modhelp_Command extends Command
 {
@@ -21,8 +21,8 @@ public class Modhelp_Command extends Command
 	public void execute(String[] args, Context ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
-		final EmbedGenerator embed = Command_Utils.MODPAGE_TEXT.get(0);
-		embed.setChannel(channel).color(Common.IGSQ_PURPLE);
+		final EmbedGenerator embed = ArrayUtils.MODPAGE_TEXT.get(0);
+		embed.setChannel(channel).color(EmbedUtils.IGSQ_PURPLE);
 		final User author = ctx.getAuthor();
 
 		channel.sendMessage(embed.getBuilder().build()).queue

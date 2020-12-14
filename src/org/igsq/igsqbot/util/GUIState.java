@@ -1,6 +1,6 @@
 package org.igsq.igsqbot.util;
 
-public enum GUI_State 
+public enum GUIState
 {
 	TRUE,
 	FALSE,

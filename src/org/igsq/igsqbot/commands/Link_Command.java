@@ -1,13 +1,11 @@
 package org.igsq.igsqbot.commands;
 
-import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.minecraft.Common_Minecraft;
 import org.igsq.igsqbot.objects.Command;
@@ -15,7 +13,7 @@ import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.Embed_Utils;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 public class Link_Command extends Command
 {
@@ -70,7 +68,7 @@ public class Link_Command extends Command
 		new EmbedGenerator(channel)
 				.title("All links for " + author.getAsTag())
 				.text(embedDescription.toString())
-				.color(Common.IGSQ_PURPLE)
+				.color(EmbedUtils.IGSQ_PURPLE)
 				.send();
 	}
 	private void removeLink()
@@ -83,7 +81,7 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			Embed_Utils.sendError(channel, "You did not enter a Minecraft account");
+			EmbedUtils.sendError(channel, "You did not enter a Minecraft account");
 			return;
 		}
 
@@ -94,7 +92,7 @@ public class Link_Command extends Command
 			
 			if(username == null)
 			{
-				Embed_Utils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
+				EmbedUtils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
 				return;
 			}
 			
@@ -107,17 +105,17 @@ public class Link_Command extends Command
 					Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';" );
 					new EmbedGenerator(channel)
 							.text("Link removed for account: " + username)
-							.color(Common.IGSQ_PURPLE)
+							.color(EmbedUtils.IGSQ_PURPLE)
 							.sendTemporary();
                 }
 				else
 				{
-					Embed_Utils.sendError(channel, "That Minecraft account is not linked to your Discord.");
+					EmbedUtils.sendError(channel, "That Minecraft account is not linked to your Discord.");
                 }
 			}
 			else
 			{
-				Embed_Utils.sendError(channel, "That Minecraft account is not linked, please link before trying to delink.");
+				EmbedUtils.sendError(channel, "That Minecraft account is not linked, please link before trying to delink.");
             }
 		} 
 		catch (SQLException exception) 
@@ -135,7 +133,7 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			Embed_Utils.sendError(channel, "You did not enter a Minecraft account");
+			EmbedUtils.sendError(channel, "You did not enter a Minecraft account");
 			return;
 		}
 
@@ -149,7 +147,7 @@ public class Link_Command extends Command
 
 			if(isUsersAccount)
 			{
-				Embed_Utils.sendError(channel, "There is already an account linked to that Minecraft username.");
+				EmbedUtils.sendError(channel, "There is already an account linked to that Minecraft username.");
 			}
 			else if(isAlreadyLinked)
 			{
@@ -161,21 +159,21 @@ public class Link_Command extends Command
 				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
 				new EmbedGenerator(channel)
 						.text("Link confirmed for account: " + username)
-						.color(Common.IGSQ_PURPLE)
+						.color(EmbedUtils.IGSQ_PURPLE)
 						.sendTemporary();
             }
 			else
 			{
 				Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
 				new EmbedGenerator(channel)
-						.color(Common.IGSQ_PURPLE)
+						.color(EmbedUtils.IGSQ_PURPLE)
 						.text("Link added for account: " + username)
 						.sendTemporary();
             }
 		}
 		else
 		{
-			Embed_Utils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
+			EmbedUtils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
         }
 	}
 
@@ -193,7 +191,7 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			Embed_Utils.sendError(channel, "You entered an invalid action");
+			EmbedUtils.sendError(channel, "You entered an invalid action");
 			return;
 		}
 
@@ -216,7 +214,7 @@ public class Link_Command extends Command
 				break;
 
 			default:
-				Embed_Utils.sendError(channel, "You entered an invalid action");
+				EmbedUtils.sendError(channel, "You entered an invalid action");
 		}
 	}
 }

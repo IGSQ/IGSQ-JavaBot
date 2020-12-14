@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.Yaml;
 
@@ -16,7 +16,7 @@ import net.dv8tion.jda.api.entities.Role;
 public class Sync_Minecraft 
 {
 	private static final Map<String, String> ranks = new HashMap<>();
-	private static final Guild guild = Common.getJda().getGuildById(Yaml.getFieldString("BOT.server", "config"));
+	private static final Guild guild = IGSQBot.getJDA().getGuildById(Yaml.getFieldString("BOT.server", "config"));
 	private static Role verifiedRole = null;
 
 	private Sync_Minecraft()

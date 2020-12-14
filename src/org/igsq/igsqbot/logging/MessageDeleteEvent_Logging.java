@@ -13,8 +13,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.util.String_Utils;
-import org.igsq.igsqbot.util.Yaml_Utils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 public class MessageDeleteEvent_Logging extends ListenerAdapter
 {
@@ -36,14 +36,14 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 		    Message message = cache.get(event.getMessageId());
 		    if(cache.isInCache(message))
 		    {
-			    GuildChannel logChannel = Yaml_Utils.getLogChannel(event.getGuild().getId());
+			    GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 			    MessageChannel channel = event.getChannel();
 			    String content = message.getContentDisplay();
 
 			    if(message.getAuthor().isBot()) return;
 			    if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
 
-			    if(!Yaml_Utils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+			    if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 			    {
 				    for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
 				    {
@@ -58,10 +58,10 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 			    {
 				    new EmbedGenerator((MessageChannel) logChannel).title("Message Deleted").text(
 						    "**Author**: " + message.getAuthor().getAsMention() +
-								    "\n**Sent In**: " + String_Utils.getChannelAsMention(channel.getId()) +
+								    "\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
 								    "\n**Sent On**: " + message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
 								    "\n\n**Message Content**: " + content)
-						    .color(Color.PINK).footer("Logged on: " + String_Utils.getTimestamp()).send();
+						    .color(Color.PINK).footer("Logged on: " + StringUtils.getTimestamp()).send();
 			    }
 			    cache.remove(message);
 		    }

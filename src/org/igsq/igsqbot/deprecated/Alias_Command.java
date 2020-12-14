@@ -11,9 +11,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.igsq.igsqbot.util.Array_Utils;
-import org.igsq.igsqbot.util.Command_Utils;
-import org.igsq.igsqbot.util.User_Utils;
+import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.CommandUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 public class Alias_Command 
 {
@@ -47,7 +47,7 @@ public class Alias_Command
 	
 	private void alias()
 	{
-		args = Array_Utils.depend(args, 0);
+		args = ArrayUtils.depend(args, 0);
 		String action;
 		try
 		{
@@ -65,12 +65,12 @@ public class Alias_Command
 			case "show":
 				EmbedGenerator embed = new EmbedGenerator(channel).title("Aliases for " + guild.getName());
 				String description = "";
-				for(String[] selectedAliases : Command_Utils.getAliases(guild.getId()))
+				for(String[] selectedAliases : CommandUtils.getAliases(guild.getId()))
 				{
 					Role role = null;
 					for(int i = 1; i < selectedAliases.length; i++)
 					{
-						role = User_Utils.getRoleFromMention(guild, selectedAliases[0]);
+						role = UserUtils.getRoleFromMention(guild, selectedAliases[0]);
 						if(role != null)
 						{
 							description += role.getAsMention() + " ---> " + selectedAliases[i] + "\n";
@@ -87,7 +87,7 @@ public class Alias_Command
 		Role role;
 		try
 		{
-			role = User_Utils.getRoleFromMention(guild, args[1]);
+			role = UserUtils.getRoleFromMention(guild, args[1]);
 		}
 		catch(Exception exception) 
 		{
@@ -120,9 +120,9 @@ public class Alias_Command
 			case "add":
 			case "accept":
 			case "yes":
-				if(!Command_Utils.isAliasExists(guild.getId(), alias))
+				if(!CommandUtils.isAliasExists(guild.getId(), alias))
 				{
-					Command_Utils.insertAlias(guild.getId(), role.getId(), alias);
+					CommandUtils.insertAlias(guild.getId(), role.getId(), alias);
 					new EmbedGenerator(channel).text("Added alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				}
 				else
@@ -133,7 +133,7 @@ public class Alias_Command
 				
 			case "remove":
 			case "delete":
-				if(Command_Utils.removeAlias(guild.getId(), role.getId(), alias))
+				if(CommandUtils.removeAlias(guild.getId(), role.getId(), alias))
 				{
 					new EmbedGenerator(channel).text("Removed alias: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				}

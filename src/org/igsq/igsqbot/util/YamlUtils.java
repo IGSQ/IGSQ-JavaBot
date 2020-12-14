@@ -1,12 +1,12 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 
-public class Yaml_Utils
+public class YamlUtils
 {
-	private Yaml_Utils()
+	private YamlUtils()
 	{
 		//Overrides the default, public constructor
 	}
@@ -17,7 +17,7 @@ public class Yaml_Utils
 
 	public static GuildChannel getLogChannel(String guildID)
 	{
-		return Common.getJda().getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
+		return IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
 	}
 
 	public static String fieldAppend(String path, String filename, String delimiter, Object data)

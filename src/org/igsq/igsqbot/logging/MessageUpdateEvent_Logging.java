@@ -13,8 +13,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.util.String_Utils;
-import org.igsq.igsqbot.util.Yaml_Utils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 public class MessageUpdateEvent_Logging extends ListenerAdapter
 {
@@ -38,7 +38,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 			{
 				Message newMessage = event.getMessage();
 				Message oldMessage = cache.get(event.getMessageId());
-				GuildChannel logChannel = Yaml_Utils.getLogChannel(event.getGuild().getId());
+				GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 				MessageChannel channel = event.getChannel();
 				String newContent = newMessage.getContentDisplay();
 				String oldContent = oldMessage.getContentDisplay();
@@ -47,7 +47,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 				if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 				if(oldContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 				
-				if(!Yaml_Utils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 				{
 					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
 					{
@@ -62,11 +62,11 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 				{
 					new EmbedGenerator((MessageChannel) logChannel).title("Message Altered").text(
 					"**Author**: " + newMessage.getAuthor().getAsMention() +
-					"\n**Sent In**: " + String_Utils.getChannelAsMention(channel.getId()) +
+					"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
 					"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
 					"\n\n**Message Content Before**: " + oldContent +
 					"\n**Message Content After**: " + newContent)
-					.color(Color.PINK).footer("Logged on: " + String_Utils.getTimestamp()).send();
+					.color(Color.PINK).footer("Logged on: " + StringUtils.getTimestamp()).send();
 				}
 				cache.update(oldMessage, newMessage);
 			}

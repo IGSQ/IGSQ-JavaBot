@@ -3,9 +3,9 @@ package org.igsq.igsqbot.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class String_Utils
+public class StringUtils
 {
-	private String_Utils()
+	private StringUtils()
 	{
 		//Overrides the default, public, constructor
 	}

@@ -11,15 +11,15 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.util.String_Utils;
-import org.igsq.igsqbot.util.Yaml_Utils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 public class GuildMemberJoinEvent_Logging extends ListenerAdapter
 {
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event)
 	{
-		GuildChannel logChannel = Yaml_Utils.getLogChannel(event.getGuild().getId());
+		GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 		Member member = event.getMember();
 		User user = event.getUser();
 		
@@ -28,7 +28,7 @@ public class GuildMemberJoinEvent_Logging extends ListenerAdapter
 			new EmbedGenerator((MessageChannel)logChannel).title("Member Joined").text(
 			"**Member**: " + member.getAsMention() + 
 			"\n**Joined On**: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
-			.color(Color.PINK).footer("Logged on: " + String_Utils.getTimestamp()).send();
+			.color(Color.PINK).footer("Logged on: " + StringUtils.getTimestamp()).send();
 		}
 	}
 }

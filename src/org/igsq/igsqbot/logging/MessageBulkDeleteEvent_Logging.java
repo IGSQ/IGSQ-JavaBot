@@ -11,15 +11,15 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.util.String_Utils;
-import org.igsq.igsqbot.util.Yaml_Utils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 {
 	@Override
     public void onMessageBulkDelete(MessageBulkDeleteEvent event)
     {
-		GuildChannel logChannel = Yaml_Utils.getLogChannel(event.getGuild().getId());
+		GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 		MessageChannel channel = event.getChannel();
 		StringBuilder embedDescription = new StringBuilder();
 		MessageCache cache;
@@ -43,7 +43,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 				if(selectedMessage.getAuthor().isBot()) continue;
 				if(content.length() >= 50) content = content.substring(0, 20) + " **...**";
 
-				if(!Yaml_Utils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 				{
 					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
 					{
@@ -61,9 +61,9 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 		if(logChannel != null)
 		{
 			new EmbedGenerator((MessageChannel) logChannel).title("Messages Deleted").text(
-			"**Channel**: " + String_Utils.getChannelAsMention(channel.getId()) +
+			"**Channel**: " + StringUtils.getChannelAsMention(channel.getId()) +
 			"\n\n**Messages**: " + embedDescription)
-			.color(Color.PINK).footer("Logged on: " + String_Utils.getTimestamp()).send();
+			.color(Color.PINK).footer("Logged on: " + StringUtils.getTimestamp()).send();
 		}
     }
 }

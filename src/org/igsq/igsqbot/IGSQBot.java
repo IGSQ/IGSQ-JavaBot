@@ -2,6 +2,7 @@ package org.igsq.igsqbot;
 
 import java.util.concurrent.TimeUnit;
 
+import net.dv8tion.jda.api.JDA;
 import org.igsq.igsqbot.events.MessageReactionAddEvent_Help;
 import org.igsq.igsqbot.events.MessageReactionAddEvent_Report;
 import org.igsq.igsqbot.logging.GuildMemberJoinEvent_Logging;
@@ -20,8 +21,10 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.igsq.igsqbot.objects.MessageCache;
 
 
-public class Bot
+public class IGSQBot
 {
+	private static JDA jda;
+
 	public static void main(String[] args)
 	{
 		Yaml.createFiles();
@@ -29,12 +32,13 @@ public class Bot
 		
 		try 
 		{
-			Common.setJdaBuilder(JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config")));
-			Common.getJdaBuilder().enableIntents(GatewayIntent.GUILD_MEMBERS);
-			Common.getJdaBuilder().setMemberCachePolicy(MemberCachePolicy.ALL);
-			Common.setJda(Common.getJdaBuilder().build().awaitReady());
-			
-			Common.getJda().addEventListener(
+			JDABuilder jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
+			jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
+			jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+
+			jda = jdaBuilder.build().awaitReady();
+
+			jda.addEventListener(
 					new MessageReactionAddEvent_Main(),
 					new MessageDeleteEvent_Main(),
 					new MessageReceivedEvent_Main(),
@@ -67,10 +71,15 @@ public class Bot
 			Database.startDatabase();
 			Yaml.applyDefault();
 		}
+
 		catch(Exception exception)
 		{
-			System.err.println("Bot Failed To Start!");
 			exception.printStackTrace();
 		}
+	}
+
+	public static JDA getJDA()
+	{
+		return jda;
 	}
 }

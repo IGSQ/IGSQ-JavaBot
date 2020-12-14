@@ -4,12 +4,12 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
-public class User_Utils
+public class UserUtils
 {
-	private User_Utils()
+	private UserUtils()
 	{
 		//Overrides the default, public constructor
 	}
@@ -69,7 +69,7 @@ public class User_Utils
 		User user = null;
 		try
 		{
-			user = Common.getJda().retrieveUserById(id).complete();
+			user = IGSQBot.getJDA().retrieveUserById(id).complete();
 		}
 		catch(Exception exception)
 		{

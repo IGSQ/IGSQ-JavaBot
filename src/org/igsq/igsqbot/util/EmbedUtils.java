@@ -6,13 +6,14 @@ import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.awt.*;
 
-public class Embed_Utils
+public class EmbedUtils
 {
 	public static final int CHARACTER_LIMIT = 2048;
 	public static final int REACTION_LIMIT = 20;
 	public static final int EMBED_TITLE_LIMIT = 256;
+	public static final Color IGSQ_PURPLE = new Color(104, 89, 133);
 
-	private Embed_Utils()
+	private EmbedUtils()
 	{
 		//Overrides the default, public, constructor
 	}

@@ -1,41 +1,38 @@
 package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Command_Utils
+public class CommandUtils
 {
-	private Command_Utils()
+	private CommandUtils()
 	{
 		// Override the default, public, constructor
 	}
+
 	public static final List<String> POLL_EMOJIS_UNICODE = Collections.unmodifiableList(new ArrayList<>(Arrays.asList("U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991")));
 	public static final List<String> POLL_EMOJIS = Collections.unmodifiableList(new ArrayList<>(Arrays.asList(":pear:", ":watermelon:", ":pineapple:", ":apple:", ":banana:", ":avocado:", ":eggplant:", ":kiwi:", ":grapes:", ":blueberries:", ":cherries:", ":onion:", ":peach:", ":lemon:", ":tangerine:", ":melon:", ":coconut:",":garlic:", ":cucumber:", ":squid:")));
-	public static final List<EmbedGenerator> HELP_PAGE_TEXT = Collections.unmodifiableList(new ArrayList<>(Arrays.asList(new EmbedGenerator().title("__**Help Page 1**__").element(".Avatar","Shows the avatar of mentioned user.\n.avatar [user]", true).element(".Poll", "Creates a poll using user input\n.poll [question]/[option1]/[option2]/etc", true).element(".Suggest", "Suggest an idea to the community\n.suggest [suggestion]", true),
-													  new EmbedGenerator().title("__**Help Page 2**__").element("BIg noober","big noober very noober", true))));
-	public static final List<EmbedGenerator> MODPAGE_TEXT = Collections.unmodifiableList(new ArrayList<>(Arrays.asList(new EmbedGenerator().title("__**Mod Help Page 1**__").element(".Clear", "Clears messages by specified amount in the current channel.\n .clear [amount]", true).element(".Verify","Verifies specified user with aliases for this server.\n .verify [user]", true).element(".Alias","Adds alias' and declinations for this server, used in Verification.\n ADD SYNTAX HERE"))));
 
 	public static String[][] getAliases(String id)
 	{
 		int i = 0;
 		String[][] result = new String[0][0];
-		while(!Yaml_Utils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
 		{
-			if(!Yaml_Utils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
+			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
 			{
 				String[] role = new String[0];
-				role = Array_Utils.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(",")) role = Array_Utils.append(role, selectedAlias);
-				result = Array_Utils.append(result, role);
+				role = ArrayUtils.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(",")) role = ArrayUtils.append(role, selectedAlias);
+				result = ArrayUtils.append(result, role);
 			}
 			else
 			{
-				result = Array_Utils.append(result, new String[0]);
+				result = ArrayUtils.append(result, new String[0]);
 			}
 			i++;
 		}
@@ -44,13 +41,13 @@ public class Command_Utils
 	public static void insertAlias(String id, String role, String alias)
 	{
 		int i = 0;
-		while(!Yaml_Utils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
 		{
 			if((Yaml.getFieldString(id + ".references." + i + ".id", "verification").equals(role)))
 			{
-				if(Yaml_Utils.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !Array_Utils.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
+				if(YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !ArrayUtils.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
 				{
-					if(Yaml_Utils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
+					if(YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
 					{
 						Yaml.updateField(id + ".references." + i + ".aliases", "verification", alias);
 					}
@@ -70,7 +67,7 @@ public class Command_Utils
 	public static int findReferenceForRole(String guild, String role)
 	{
 		int i = 0;
-		while(!Yaml_Utils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
 		{
 			if(Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role))
 			{
@@ -83,7 +80,7 @@ public class Command_Utils
 	public static int findHighestReference(String guild)
 	{
 		int i = -1;
-		while(!Yaml_Utils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
 		{
 			i++;
 		}
@@ -92,13 +89,13 @@ public class Command_Utils
 	public static void insertDecline(String id, String role, String alias)
 	{
 		int i = 0;
-		while(!Yaml_Utils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
 		{
 			if((Yaml.getFieldString(id + ".references." + i + ".id", "verification").equals(role)))
 			{
-				if(Yaml_Utils.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !Array_Utils.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
+				if(YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !ArrayUtils.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
 				{
-					if(Yaml_Utils.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
+					if(YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
 					{
 						Yaml.updateField(id + ".references." + i + ".declined", "verification", alias);
 					}
@@ -118,7 +115,7 @@ public class Command_Utils
 	public static boolean removeAlias(String guild, String role, String alias)
 	{
 		int i = 0;
-		while(!Yaml_Utils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
 		{
 			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
 			{
@@ -142,7 +139,7 @@ public class Command_Utils
 	public static boolean removeDecline(String guild, String role, String alias)
 	{
 		int i = 0;
-		while(!Yaml_Utils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
+		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
 		{
 			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
 			{
@@ -167,9 +164,9 @@ public class Command_Utils
 	{
 		int i = 0;
 		String[] result = new String[0];
-		while(!Yaml_Utils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
 		{
-			result = Array_Utils.append(result, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
+			result = ArrayUtils.append(result, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
 			i++;
 		}
 		return result;
@@ -177,7 +174,7 @@ public class Command_Utils
 	public static boolean isAliasExists(String guild, String alias)
 	{
 		int i = 0;
-		while(!Yaml_Utils.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
+		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
 		{
 			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".aliases", "verification").split(","))
 			{
@@ -193,7 +190,7 @@ public class Command_Utils
 	public static boolean isDeclinedExist(String guild, String alias)
 	{
 		int i = 0;
-		while(!Yaml_Utils.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
+		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
 		{
 			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".declined", "verification").split(","))
 			{
@@ -210,18 +207,18 @@ public class Command_Utils
 	{
 		int i = 0;
 		String[][] result = new String[0][0];
-		while(!Yaml_Utils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
 		{
-			if(!Yaml_Utils.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
+			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
 			{
 				String[] role = new String[0];
-				role = Array_Utils.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) role = Array_Utils.append(role, selectedAlias);
-				result = Array_Utils.append(result, role);
+				role = ArrayUtils.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) role = ArrayUtils.append(role, selectedAlias);
+				result = ArrayUtils.append(result, role);
 			}
 			else
 			{
-				result = Array_Utils.append(result, new String[0]);
+				result = ArrayUtils.append(result, new String[0]);
 			}
 			i++;
 		}

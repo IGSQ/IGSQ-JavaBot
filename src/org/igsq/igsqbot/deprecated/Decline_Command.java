@@ -11,9 +11,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.igsq.igsqbot.util.Array_Utils;
-import org.igsq.igsqbot.util.Command_Utils;
-import org.igsq.igsqbot.util.User_Utils;
+import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.CommandUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 public class Decline_Command 
 {
@@ -47,7 +47,7 @@ public class Decline_Command
 	
 	private void alias()
 	{
-		args = Array_Utils.depend(args, 0);
+		args = ArrayUtils.depend(args, 0);
         String action;
         try { action = args[0]; }
 		catch(Exception exception) { new EmbedGenerator(channel).text("You entered an invalid action").send(); return; }
@@ -57,12 +57,12 @@ public class Decline_Command
 			EmbedGenerator embed = new EmbedGenerator(channel).title("Declines for " + guild.getName());
 			StringBuilder description = new StringBuilder();
 
-			for (String[] selectedAliases : Command_Utils.getDeclined(guild.getId()))
+			for (String[] selectedAliases : CommandUtils.getDeclined(guild.getId()))
 			{
 				Role role;
 				for (int i = 1; i < selectedAliases.length; i++)
 				{
-					role = User_Utils.getRoleFromMention(guild, selectedAliases[0]);
+					role = UserUtils.getRoleFromMention(guild, selectedAliases[0]);
 					if (role != null)
 					{
 						description.append(role.getAsMention()).append(" ---> ").append(selectedAliases[i]).append("\n");
@@ -76,7 +76,7 @@ public class Decline_Command
 		}
 
         Role role;
-        try{ role = User_Utils.getRoleFromMention(guild, args[1]); }
+        try{ role = UserUtils.getRoleFromMention(guild, args[1]); }
 		catch(Exception exception) { role = null; }
 		
 		if(role == null)
@@ -94,13 +94,13 @@ public class Decline_Command
 			case "add":
 			case "accept":
 			case "yes":
-				Command_Utils.insertDecline(guild.getId(), role.getId(), alias);
+				CommandUtils.insertDecline(guild.getId(), role.getId(), alias);
 				new EmbedGenerator(channel).text("Added Decline: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				break;
 				
 			case "remove":
 			case "delete":
-				if(Command_Utils.removeDecline(guild.getId(), role.getId(), alias))
+				if(CommandUtils.removeDecline(guild.getId(), role.getId(), alias))
 				{
 					new EmbedGenerator(channel).text("Removed Decline: " + alias + " for role: " + role.getAsMention()).sendTemporary();
 				}

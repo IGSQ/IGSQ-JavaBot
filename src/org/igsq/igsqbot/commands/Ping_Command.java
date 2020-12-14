@@ -10,7 +10,8 @@ import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.String_Utils;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.StringUtils;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +36,7 @@ public class Ping_Command extends Command
 			return;
 		}
 		CooldownHandler.addCooldown(author.getIdLong(), this);
-		EmbedGenerator embed = new EmbedGenerator(channel).color(Common.IGSQ_PURPLE).title("Pong!").footer(String_Utils.getTimestamp());
+		EmbedGenerator embed = new EmbedGenerator(channel).color(EmbedUtils.IGSQ_PURPLE).title("Pong!").footer(StringUtils.getTimestamp());
 
 		jda.getRestPing().queue(
 				time ->
@@ -48,9 +49,9 @@ public class Ping_Command extends Command
 											+ "\n\n**30 Second REST Average**: " + getAverageREST(30, jda) + "ms"
 											+ "\n**1 Minute REST Average**: " + getAverageREST(60, jda) + "ms")
 
-									.color(Common.IGSQ_PURPLE)
+									.color(EmbedUtils.IGSQ_PURPLE)
 									.title("Pong!")
-									.footer(String_Utils.getTimestamp())
+									.footer(StringUtils.getTimestamp())
 									.replace(message));
 				}
 		);

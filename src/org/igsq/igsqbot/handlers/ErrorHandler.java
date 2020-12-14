@@ -2,13 +2,12 @@ package org.igsq.igsqbot.handlers;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.util.Yaml_Utils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 import java.awt.*;
-import java.util.InputMismatchException;
 
 public class ErrorHandler
 {
@@ -23,7 +22,7 @@ public class ErrorHandler
 
     private void reportError()
     {
-        GuildChannel errorChannel = Common.getJda().getGuildChannelById(!Yaml_Utils.isFieldEmpty("BOT.error", "config") ? Yaml.getFieldString("BOT.error", "config") : "1");
+        GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(!YamlUtils.isFieldEmpty("BOT.error", "config") ? Yaml.getFieldString("BOT.error", "config") : "1");
         if(errorChannel == null)
         {
             exception.printStackTrace();

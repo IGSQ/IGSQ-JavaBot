@@ -1,7 +1,7 @@
 package org.igsq.igsqbot.events;
 
-import org.igsq.igsqbot.util.Array_Utils;
-import org.igsq.igsqbot.util.Command_Utils;
+import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.Yaml;
@@ -15,8 +15,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.util.User_Utils;
-import org.igsq.igsqbot.util.Yaml_Utils;
+import org.igsq.igsqbot.util.UserUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 public class MessageReactionAddEvent_Verification extends ListenerAdapter 
 {
@@ -50,8 +50,8 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 			String[] guessedAliases = Yaml.getFieldString(messageID + ".verification.guessedaliases", "internal").split(",");
 			String[] confirmedRoles = Yaml.getFieldString(messageID + ".verification.confirmedroles", "internal").split(",");
 
-			Member verifiedMember = User_Utils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
-			Member initiater = User_Utils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.verifier", "internal")).complete(), guild);
+			Member verifiedMember = UserUtils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
+			Member initiater = UserUtils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.verifier", "internal")).complete(), guild);
 			// if(!member.canInteract(verifiedMember)) { event.getReaction().removeReaction(user).queue(); return; }
 			if(!initiater.equals(member)) 
 			{ 
@@ -70,18 +70,18 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 			{
 				for(int i = 0; i < guessedRoles.length; i++)
 				{
-					Command_Utils.insertAlias(guild.getId(), guessedRoles[i], guessedAliases[i]);
-					confirmedRoles = Array_Utils.append(confirmedRoles, guessedRoles[i]);
+					CommandUtils.insertAlias(guild.getId(), guessedRoles[i], guessedAliases[i]);
+					confirmedRoles = ArrayUtils.append(confirmedRoles, guessedRoles[i]);
 				}
 			}
 			else if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44e"))
 			{
 				for(int i = 0; i < guessedRoles.length; i++)
 				{
-					Command_Utils.insertDecline(guild.getId(), guessedRoles[i], guessedAliases[i]);
+					CommandUtils.insertDecline(guild.getId(), guessedRoles[i], guessedAliases[i]);
 				}
 			}
-			if(!Yaml_Utils.isFieldEmpty(guild.getId() + ".welcomechannel", "guild"))
+			if(!YamlUtils.isFieldEmpty(guild.getId() + ".welcomechannel", "guild"))
 			{
 				String parsedRoles = "";
 				
