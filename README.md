@@ -18,8 +18,8 @@
 **Error Handling**
 
 This project implements an error handler which is dependent on
-the config option `BOT.error` within the `config` YML file, without this set to a channel
-the handler will log to console only
+the config option `BOT.error` within the `config` YML file, without this set to a channel,
+the handler will default to console only.
 
 **Building and Running**
 
