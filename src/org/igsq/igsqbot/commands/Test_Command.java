@@ -2,7 +2,6 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.objects.*;
-import org.igsq.igsqbot.util.APIUtils;
 
 public class Test_Command extends Command
 {
@@ -14,7 +13,6 @@ public class Test_Command extends Command
 	@Override
 	public void execute(String[] args, Context ctx)
 	{
-		ctx.getChannel().sendMessage(APIUtils.sendPOST("https://www.reddit.com/api/v1/access_token",
-				"{\"grant_type\": \"client_credentials\", \"username\": \"IGSQBot\", \"password\": \"IGSQBot\"}", APIUtils.getAUTH("pi8ChrsmgKUXPQ:MCCC7cE77WhTRsYwBYDQwG1TENO7Gw"))).queue();
+		// Placeholder method
 	}
 }
