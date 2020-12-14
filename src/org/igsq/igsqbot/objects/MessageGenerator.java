@@ -13,7 +13,6 @@ import org.igsq.igsqbot.util.EmbedUtils;
 
 /**
  * Creates Message using JDA's {@link MessageBuilder} api, with increased functionality.
- * @see #Message(MessageChannel)
  * @see #text(String)
  * @see #reaction(String[])
  * @see #send()
@@ -76,7 +75,7 @@ public class MessageGenerator
 		return reactions;
 	}
 	/**
-	 * Gets the channel the message will be send to, designated by the {@link #Message(MessageChannel) constructor}
+	 * Gets the channel the message will be send to, designated by the
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel
 	 * @see MessageGenerator
 	 */
@@ -104,7 +103,7 @@ public class MessageGenerator
 	}
 	
 	/**
-	 * Sends the message to the channel designated in the {@link #Message(MessageChannel) constructor}.
+	 * Sends the message to the channel designated in the .
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(net.dv8tion.jda.api.entities.Message)
 	 * @see MessageGenerator
 	 */
@@ -123,10 +122,9 @@ public class MessageGenerator
         return message;
 	}
 	/**
-	 * Sends the message to the channel designated in the {@link #Message(MessageChannel) constructor}. Deletes the message after delay time has passed. Uses {@link TimeUnit#MILLISECONDS}.
+	 * Sends the message to the channel designated in the . Deletes the message after delay time has passed. Uses {@link TimeUnit#MILLISECONDS}.
 	 * Overloads {@link #sendTemporary() default 10s}.
 	 * @return 
-	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageGenerator)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
 	 * @see MessageGenerator
 	 */
@@ -148,10 +146,9 @@ public class MessageGenerator
 		return message;
 	}
 	/**
-	 * Sends the message to the channel designated in the {@link #Message(MessageChannel) constructor}. Deletes the message after 10 seconds has passed.
+	 * Sends the message to the channel designated in the . Deletes the message after 10 seconds has passed.
 	 * Overloads {@link #sendTemporary(int) non default times}.
 	 * @return 
-	 * @see  net.dv8tion.jda.api.entities.MessageChannel#sendMessage(MessageGenerator)
 	 * @see  net.dv8tion.jda.api.entities.Message#delete()
 	 * @see MessageGenerator
 	 */

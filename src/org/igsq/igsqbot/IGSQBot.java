@@ -3,6 +3,7 @@ package org.igsq.igsqbot;
 import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Activity;
 import org.igsq.igsqbot.events.MessageReactionAddEvent_Help;
 import org.igsq.igsqbot.events.MessageReactionAddEvent_Report;
 import org.igsq.igsqbot.logging.GuildMemberJoinEvent_Logging;
@@ -20,7 +21,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.igsq.igsqbot.objects.MessageCache;
 
-
 public class IGSQBot
 {
 	private static JDA jda;
@@ -32,11 +32,12 @@ public class IGSQBot
 		
 		try 
 		{
-			JDABuilder jdaBuilder = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"));
-			jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
-			jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+			jda = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"))
+					.enableIntents(GatewayIntent.GUILD_MEMBERS)
+					.setMemberCachePolicy(MemberCachePolicy.ALL)
 
-			jda = jdaBuilder.build().awaitReady();
+					.setActivity(Activity.watching("everything"))
+					.build().awaitReady();
 
 			jda.addEventListener(
 					new MessageReactionAddEvent_Main(),

@@ -11,7 +11,8 @@ import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Poll_Command extends Command
 {
@@ -26,7 +27,7 @@ public class Poll_Command extends Command
 		final StringBuilder options = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();
 		final User author = ctx.getAuthor();
-		String[] reactions = new String[0];
+		final List<String> reactions = new ArrayList<>();
 		final String[] slashArgs;
 		try
 		{
@@ -34,7 +35,7 @@ public class Poll_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			new EmbedGenerator(channel).text("A poll needs at least 2 options!").color(Color.RED).sendTemporary();
+			EmbedUtils.sendError(channel, "A poll needs at least 2 options!");
 			return;
 		}
 
@@ -45,7 +46,7 @@ public class Poll_Command extends Command
 			{
 				options.append(slashArgs[i]).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n");
 				if(args.length <= EmbedUtils.REACTION_LIMIT/2+1) options.append("\n");
-				reactions = ArrayUtils.append(reactions, CommandUtils.POLL_EMOJIS_UNICODE.get(i-1));
+				reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i-1));
 			}
 			new EmbedGenerator(channel)
 					.title("Poll:")
@@ -54,7 +55,7 @@ public class Poll_Command extends Command
 					.footer("Poll created by "+ author.getAsTag())
 					.thumbnail(author.getAvatarUrl())
 					.color(EmbedUtils.IGSQ_PURPLE)
-					.reaction(reactions)
+					.reaction(reactions.toArray(new String[0]))
 					.send();
 		}
 		else

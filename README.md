@@ -8,6 +8,7 @@
  - [ ] Logging
  - [ ] Help / Modhelp
  - [ ] Alias / Decline
+ - [ ] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**

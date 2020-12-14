@@ -3,6 +3,7 @@ package org.igsq.igsqbot.util;
 import net.dv8tion.jda.api.entities.Message;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -106,7 +107,7 @@ public class ArrayUtils
     	arrayAppended[array.length] = value;
     	return arrayAppended;
     }
-
+    
 	public static int[] append(int[] array, int value)
     {
     	int[] arrayAppended = new int[array.length+1];
