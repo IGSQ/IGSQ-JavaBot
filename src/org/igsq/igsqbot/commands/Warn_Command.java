@@ -75,7 +75,7 @@ public class Warn_Command extends Command
 
 	private void addWarning(User user, String reason, String guildId, MessageChannel channel)
 	{
-		Yaml.updateField(guildId + ".warnings." + user.getId(), "punishment",reason + " - " + String_Utils.getTimestamp() + ",");
+		Yaml_Utils.fieldAppend(guildId + ".warnings." + user.getId(), "punishment",reason + " - " + String_Utils.getTimestamp(), ",");
 
 		new EmbedGenerator(channel).text("Warned " + user.getAsMention() + " for reason: " + reason).color(Color.GREEN).sendTemporary(2000);
 

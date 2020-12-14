@@ -19,4 +19,31 @@ public class Yaml_Utils
 	{
 		return Common.getJda().getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
 	}
+
+	public static String fieldAppend(String path, String filename, String delimiter, Object data)
+	{
+		if(isFieldEmpty(path, filename))
+		{
+			return data + delimiter;
+		}
+		else
+		{
+			String onFile = Yaml.getFieldString(path, filename);
+
+			onFile = onFile.strip();
+			while(onFile.startsWith(delimiter))
+			{
+				onFile = onFile.substring(0,1);
+			}
+
+			if(onFile.endsWith(delimiter))
+			{
+				return onFile + data;
+			}
+			else
+			{
+				return onFile + delimiter + data;
+			}
+		}
+	}
 }
