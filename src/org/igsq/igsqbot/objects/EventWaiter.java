@@ -17,6 +17,7 @@ package org.igsq.igsqbot.objects;
  */
 
 import net.dv8tion.jda.api.events.GenericEvent;
+import org.igsq.igsqbot.util.StringUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;

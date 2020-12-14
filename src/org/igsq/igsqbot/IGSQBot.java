@@ -30,8 +30,8 @@ public class IGSQBot
 		Yaml.createFiles();
 		Yaml.loadFile("@all");
 		Yaml.applyDefault();
-		
-		try 
+
+		try
 		{
 			jda = JDABuilder.createDefault(Yaml.getFieldString("bot.token", "config"))
 					.enableIntents(GatewayIntent.GUILD_MEMBERS)
@@ -44,17 +44,16 @@ public class IGSQBot
 					new MessageReactionAddEvent_Main(),
 					new MessageDeleteEvent_Main(),
 					new MessageReceivedEvent_Main(),
-					
+
 					new MessageReactionAddEvent_Help(),
 					new MessageReactionAddEvent_Report(),
-					//new MessageReactionAddEvent_Verification(),
-					
+
 					new GuildMemberJoinEvent_Logging(),
 					new GuildMemberRemoveEvent_Logging(),
 					new MessageBulkDeleteEvent_Logging(),
 					new MessageDeleteEvent_Logging(),
 					new MessageUpdateEvent_Logging()
-					);
+			);
 
 			Common.scheduler.scheduleAtFixedRate(() ->
 			{

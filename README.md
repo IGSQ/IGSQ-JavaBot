@@ -12,7 +12,7 @@
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
  
- - GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register
+- [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register
 
 ##Building and Running
 

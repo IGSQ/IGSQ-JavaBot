@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -60,13 +61,17 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 				
 				if(logChannel != null)
 				{
-					new EmbedGenerator((MessageChannel) logChannel).title("Message Altered").text(
-					"**Author**: " + newMessage.getAuthor().getAsMention() +
-					"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
-					"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
-					"\n\n**Message Content Before**: " + oldContent +
-					"\n**Message Content After**: " + newContent)
-					.color(Color.PINK).footer("Logged on: " + StringUtils.getTimestamp()).send();
+					new EmbedGenerator((MessageChannel) logChannel)
+							.title("Message Altered")
+							.text(
+							"**Author**: " + newMessage.getAuthor().getAsMention() +
+							"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
+							"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+							"\n\n**Message Content Before**: " + oldContent +
+							"\n**Message Content After**: " + newContent)
+							.color(EmbedUtils.IGSQ_PURPLE)
+							.footer("Logged on: " + StringUtils.getTimestamp())
+							.send();
 				}
 				cache.update(oldMessage, newMessage);
 			}

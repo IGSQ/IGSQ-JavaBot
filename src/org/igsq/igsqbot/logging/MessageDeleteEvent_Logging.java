@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -56,12 +57,16 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 
 			    if(logChannel != null)
 			    {
-				    new EmbedGenerator((MessageChannel) logChannel).title("Message Deleted").text(
-						    "**Author**: " + message.getAuthor().getAsMention() +
+				    new EmbedGenerator((MessageChannel) logChannel)
+						    .title("Message Deleted")
+						            .text(
+						            "**Author**: " + message.getAuthor().getAsMention() +
 								    "\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
 								    "\n**Sent On**: " + message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
 								    "\n\n**Message Content**: " + content)
-						    .color(Color.PINK).footer("Logged on: " + StringUtils.getTimestamp()).send();
+						            .color(EmbedUtils.IGSQ_PURPLE)
+						            .footer("Logged on: " + StringUtils.getTimestamp())
+						            .send();
 			    }
 			    cache.remove(message);
 		    }

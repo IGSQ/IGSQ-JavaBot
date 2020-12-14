@@ -1,11 +1,7 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
-
-import java.util.InputMismatchException;
+import org.igsq.igsqbot.objects.*;
 
 public class Test_Command extends Command
 {
@@ -17,6 +13,7 @@ public class Test_Command extends Command
 	@Override
 	public void execute(String[] args, Context ctx)
 	{
-		new ErrorHandler(new InputMismatchException("THIS IS AN INPUT MISMATCH EXCEPTION"));
+		GUIGenerator generator = new GUIGenerator(new EmbedGenerator(ctx.getChannel()).text("REACT TO ME"));
+		generator.getEmbed().text("" + generator.menu(ctx.getAuthor(), 10000, 10)).replace(generator.getMessage());
 	}
 }
