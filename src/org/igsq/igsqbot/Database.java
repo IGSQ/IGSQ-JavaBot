@@ -19,12 +19,14 @@ public class Database
     private static String password;
 	public static void startDatabase()
     {
-        url = Yaml.getFieldString("MYSQL.database", "config");
-        user = Yaml.getFieldString("MYSQL.username", "config");
-        password = Yaml.getFieldString("MYSQL.password", "config");
+        url = Yaml.getFieldString("mysql.database", "config");
+        user = Yaml.getFieldString("mysql.username", "config");
+        password = Yaml.getFieldString("mysql.password", "config");
         if(!testDatabase())
         {
-            System.out.println("A Database Error Has Occurred On Startup.");
+            System.out.println("A database connection could not be established, " +
+                    "this could be due to a faulty installation, " +
+                    "incorrect credentials, or a networking error");
         }
     }
 

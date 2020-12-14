@@ -29,10 +29,11 @@ public class IGSQBot
 	{
 		Yaml.createFiles();
 		Yaml.loadFile("@all");
+		Yaml.applyDefault();
 		
 		try 
 		{
-			jda = JDABuilder.createDefault(Yaml.getFieldString("BOT.token", "config"))
+			jda = JDABuilder.createDefault(Yaml.getFieldString("bot.token", "config"))
 					.enableIntents(GatewayIntent.GUILD_MEMBERS)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
 
@@ -70,7 +71,6 @@ public class IGSQBot
 
 			Main_Minecraft.startMinecraft();
 			Database.startDatabase();
-			Yaml.applyDefault();
 		}
 
 		catch(Exception exception)

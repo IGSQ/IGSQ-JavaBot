@@ -22,7 +22,7 @@ public class ErrorHandler
 
     private void reportError()
     {
-        GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(!YamlUtils.isFieldEmpty("BOT.error", "config") ? Yaml.getFieldString("BOT.error", "config") : "1");
+        GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(!YamlUtils.isFieldEmpty("bot.error", "config") ? Yaml.getFieldString("BOT.error", "config") : "1");
         if(errorChannel == null)
         {
             exception.printStackTrace();

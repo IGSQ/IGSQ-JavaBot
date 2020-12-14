@@ -186,13 +186,14 @@ public class Yaml
     
     public static void applyDefault()
     {
-        addFieldDefault("MYSQL","config",true);
-        addFieldDefault("MYSQL.username","config","username");
-        addFieldDefault("MYSQL.password","config","password");
-        addFieldDefault("MYSQL.database","config","jdbc:mysql://localhost:3306/database?useSSL=false");
+        addFieldDefault("mysql","config",true);
+        addFieldDefault("mysql.username","config","username");
+        addFieldDefault("mysql.password","config","password");
+        addFieldDefault("mysql.database","config","jdbc:mysql://localhost:3306/database?useSSL=false");
         
-        addFieldDefault("BOT.token","config","token");
-        addFieldDefault("BOT.server","config","");
+        addFieldDefault("bot.token","config","token");
+        addFieldDefault("bot.server","config","");
+        addFieldDefault("bot.error", "config", "");
         
         addFieldDefault("ranks.default", "minecraft", "");
         
