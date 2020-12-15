@@ -4,12 +4,12 @@
  - [x] Verification Rewrite (to be reviewed)
  - [ ] GUIGenerator further implementation
  - [x] Project Refactor
- - [ ] Logging expantion
+ - [ ] Logging expansion
  - [ ] Help / Modhelp
  - [ ] Alias / Decline
  - [ ] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
  - [ ] Input catching
- - [ ] Implement .help using the COMMANDS array for its information
+ - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Per guild prefixing
 
 ## Known Issues
