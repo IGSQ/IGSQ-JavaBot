@@ -2,6 +2,7 @@ package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.awt.*;
@@ -20,7 +21,37 @@ public class EmbedUtils
 
 	public static void sendError(MessageChannel channel, String errorText)
 	{
-		new EmbedGenerator(channel).text(errorText).color(Color.RED).sendTemporary().addReaction(Common.TICK_REACTIONS.get(1)).queue();
+		new EmbedGenerator(channel)
+				.text(":x: " + errorText)
+				.color(Color.RED)
+				.footer(StringUtils.getTimestamp())
+				.sendTemporary();
 	}
 
+	public static void sendSyntaxError(MessageChannel channel, Command command)
+	{
+		new EmbedGenerator(channel)
+				.text(":negative_squared_cross_mark: The provided syntax was incorrect.\n`" + Common.BOT_PREFIX + command.getInvoke() +  " " + command.getSyntax() + "`")
+				.color(Color.RED)
+				.footer(StringUtils.getTimestamp())
+				.sendTemporary();
+	}
+
+	public static void sendPermissionError(MessageChannel channel, Command command)
+	{
+		new EmbedGenerator(channel)
+				.text(":negative_squared_cross_mark: A permission error occurred when attempting to execute command:`" + Common.BOT_PREFIX + command.getInvoke() + "`")
+				.color(Color.RED)
+				.footer(StringUtils.getTimestamp())
+				.sendTemporary();
+	}
+
+	public static void sendSuccessMessage(MessageChannel channel, String successText)
+	{
+		new EmbedGenerator(channel)
+				.text(":white_check_mark: " + successText)
+				.color(Color.GREEN)
+				.footer(StringUtils.getTimestamp())
+				.sendTemporary();
+	}
 }

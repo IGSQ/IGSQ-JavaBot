@@ -27,7 +27,7 @@ public class ArrayUtils
 		{
 			builder.append(selectedPart).append(delimiter);
 		}
-		return builder.toString();
+		return builder.toString().strip();
 	}
 
 	public static String[] depend(String[] array, int location)

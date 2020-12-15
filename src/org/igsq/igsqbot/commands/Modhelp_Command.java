@@ -14,7 +14,7 @@ public class Modhelp_Command extends Command
 {
 	public Modhelp_Command()
 	{
-		super("modhelp", new String[]{}, "Shows the modhelp menu for this bot", new Permission[]{Permission.MESSAGE_MANAGE}, false, 0);
+		super("modhelp", new String[]{}, "Shows the modhelp menu for this bot", "[none]",new Permission[]{Permission.MESSAGE_MANAGE}, false, 0);
 	}
 
 	@Override

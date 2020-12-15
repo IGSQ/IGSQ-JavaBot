@@ -18,7 +18,7 @@ public class Uwu_Command extends Command
 {
 	public Uwu_Command()
 	{
-		super("uwu", new String[]{"uwufy"}, "UwU's the specified sentence", new Permission[]{}, false,0);
+		super("uwu", new String[]{"uwufy"}, "UwU's the specified sentence","[text]", new Permission[]{}, false,0);
 	}
 
 	@Override
@@ -28,6 +28,12 @@ public class Uwu_Command extends Command
 		final StringBuilder finalSentence = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();
 		final User author = ctx.getAuthor();
+
+		if(args.length < 1)
+		{
+			EmbedUtils.sendSyntaxError(channel,this);
+			return;
+		}
 
 		Collections.replaceAll(chars, "r", "w");
 		Collections.replaceAll(chars, "o", "wo");

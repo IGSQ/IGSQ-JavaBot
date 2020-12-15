@@ -14,7 +14,7 @@ public class Avatar_Command extends Command
 {
 	public Avatar_Command()
 	{
-		super("avatar", new String[]{}, "Shows the avatar for the mentioned user(s)", new Permission[]{}, false, 0);
+		super("avatar", new String[]{}, "Shows the avatar for the mentioned user(s)", "[user(s) -3-]" , new Permission[]{}, false, 0);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class Avatar_Command extends Command
 		}
 		else if(message.getMentionedUsers().size() > 3)
 		{
-			EmbedUtils.sendError(channel, "Too many users entered! (Limit: 3)");
+			EmbedUtils.sendSyntaxError(channel,this);
 		}
 		else
 		{

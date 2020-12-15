@@ -10,12 +10,14 @@ public abstract class Command
 	private final Permission[] requiredPermissions;
 	private final int cooldown;
 	private final boolean requiresGuild;
+	private final String syntax;
 
-	protected Command(final String invoke, final String[] aliases, final String description, final Permission[] requiredPermissions, boolean requiresGuild, int cooldown)
+	protected Command(final String invoke, final String[] aliases, final String description, final String syntax, final Permission[] requiredPermissions, boolean requiresGuild, int cooldown)
 	{
 		this.invoke = invoke;
 		this.aliases = aliases;
 		this.description = description;
+		this.syntax = syntax;
 		this.requiredPermissions = requiredPermissions;
 		this.requiresGuild = requiresGuild;
 		this.cooldown = cooldown;
@@ -46,6 +48,11 @@ public abstract class Command
 	public int getCooldown()
 	{
 		return cooldown;
+	}
+
+	public String getSyntax()
+	{
+		return syntax;
 	}
 
 	public boolean isRequiresGuild()

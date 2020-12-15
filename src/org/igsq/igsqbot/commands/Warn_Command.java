@@ -17,7 +17,7 @@ public class Warn_Command extends Command
 {
 	public Warn_Command()
 	{
-		super("warn", new String[]{}, "Handles the user warning system", new Permission[]{}, true, 0);
+		super("warn", new String[]{}, "Handles the user warning system","[user][reason] | [show|remove][user]", new Permission[]{}, true, 0);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class Warn_Command extends Command
 			warnTarget = UserUtils.getUserFromMention(args[0]);
 			if(warnTarget == null)
 			{
-				EmbedUtils.sendError(channel, "Enter an valid user.");
+				EmbedUtils.sendSyntaxError(channel,this);
 			}
 			else
 			{
@@ -48,7 +48,7 @@ public class Warn_Command extends Command
 			warnTarget = UserUtils.getUserFromMention(args[1]);
 			if(warnTarget == null)
 			{
-				EmbedUtils.sendError(channel, "Enter an valid user.");
+				EmbedUtils.sendSyntaxError(channel,this);
 				return;
 			}
 
@@ -62,12 +62,12 @@ public class Warn_Command extends Command
 			}
 			else
 			{
-				EmbedUtils.sendError(channel, "Enter a valid action.");
+				EmbedUtils.sendSyntaxError(channel,this);
 			}
 		}
 		else
 		{
-			EmbedUtils.sendError(channel, "Invalid syntax.");
+			EmbedUtils.sendSyntaxError(channel,this);
 		}
 	}
 

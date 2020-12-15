@@ -10,12 +10,12 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.awt.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -28,8 +28,8 @@ public abstract class CommandHandler
 		//Overrides the default, public, constructor
 	}
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
-	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final Map<String, Command> COMMANDS = new HashMap<>();
+	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
 
 	static
@@ -43,13 +43,15 @@ public abstract class CommandHandler
 				for (final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
 			}
 		}
-		catch (final Exception exception)
+		catch (Exception exception)
 		{
 			new ErrorHandler(exception);
 		}
 	}
 
-	public static void handle(final MessageReceivedEvent event)
+	public static final Map<String, Command> COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
+
+	public static void handle(MessageReceivedEvent event)
 	{
 		final String content = event.getMessage().getContentRaw().substring(Common.BOT_PREFIX.length());
 		final Message message = event.getMessage();
@@ -65,15 +67,13 @@ public abstract class CommandHandler
 
 		if(cmd == null)
 		{
-			new EmbedGenerator(channel).text("Command `" + issuedCommand + "` was not found")
-			.color(Color.RED)
-			.sendTemporary();
+			EmbedUtils.sendError(channel, "Command `" + issuedCommand + "` was not found");
 			return;
 		}
 
 		if(cmd.isRequiresGuild() && (!event.getChannelType().equals(ChannelType.TEXT)||!event.getMember().hasPermission(cmd.getRequiredPermissions())))
 		{
-			return;
+			EmbedUtils.sendError(channel, "This command cannot be executed here, either it requires execution in a server, or a permission error occurred.");
 		}
 
 		if(event.getChannelType().equals(ChannelType.TEXT) && event.getGuild().getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))

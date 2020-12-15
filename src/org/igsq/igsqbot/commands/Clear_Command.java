@@ -20,7 +20,7 @@ public class Clear_Command extends Command
 {
 	public Clear_Command()
 	{
-		super("clear", new String[]{"purge"}, "Clears the channel with the specified amount", new Permission[]{Permission.MESSAGE_MANAGE}, true,5);
+		super("clear", new String[]{"purge"}, "Clears the channel with the specified amount", "[amount -50-]", new Permission[]{Permission.MESSAGE_MANAGE}, true,5);
 	}
 
 	@Override
@@ -37,56 +37,55 @@ public class Clear_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			new EmbedGenerator(channel).text("Enter a number as the amount.").color(Color.RED).sendTemporary();
+			EmbedUtils.sendSyntaxError(channel,this);
 			return;
 		}
 		if(amount <= 0)
 		{
-			EmbedUtils.sendError(channel, "Invalid amount entered.");
+			EmbedUtils.sendSyntaxError(channel,this);
 		}
 		else if(amount > 51)
 		{
-			EmbedUtils.sendError(channel, "You tried to delete too many messages (Limit: 50)");
+			EmbedUtils.sendSyntaxError(channel,this);
 		}
 		else if(CooldownHandler.isOnCooldown(author.getIdLong(), this))
 		{
-
+			return;
 		}
-		else
-		{
-			CooldownHandler.addCooldown(author.getIdLong(), this);
-			channel.getHistory().retrievePast(amount).queue(
-					messages ->
+
+		CooldownHandler.addCooldown(author.getIdLong(), this);
+		channel.getHistory().retrievePast(amount).queue(
+				messages ->
+				{
+					channel.purgeMessages(messages);
+					new EmbedGenerator(channel)
+							.text("Deleted " + (messages.size()) + " messages")
+							.color(Color.GREEN)
+							.sendTemporary(5000);
+
+					final MessageCache cache;
+
+					if(!MessageCache.isGuildCached(guild.getId()))
 					{
-						channel.purgeMessages(messages);
-						new EmbedGenerator(channel)
-								.text("Deleted " + (messages.size()) + " messages")
-								.color(Color.GREEN)
-								.sendTemporary(5000);
+						cache = MessageCache.addAndReturnCache(guild.getId());
+					}
+					else
+					{
+						cache = MessageCache.getCache(guild.getId());
+					}
 
-						final MessageCache cache;
+					List<String> messageIds = new ArrayList<>();
+					messages.forEach(message -> messageIds.add(message.getId()));
 
-						if(!MessageCache.isGuildCached(guild.getId()))
+					for(String selectedMessageID : messageIds)
+					{
+						if(cache.isInCache(selectedMessageID))
 						{
-							cache = MessageCache.addAndReturnCache(guild.getId());
-						}
-						else
-						{
-							cache = MessageCache.getCache(guild.getId());
-						}
-
-						List<String> messageIds = new ArrayList<>();
-						messages.forEach(message -> messageIds.add(message.getId()));
-
-						for(String selectedMessageID : messageIds)
-						{
-							if(cache.isInCache(selectedMessageID))
-							{
-								cache.remove(cache.get(selectedMessageID));
-							}
+							cache.remove(cache.get(selectedMessageID));
 						}
 					}
-			);
-		}
+				}
+		);
+
 	}
 }

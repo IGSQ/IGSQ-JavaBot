@@ -18,7 +18,7 @@ public class Poll_Command extends Command
 {
 	public Poll_Command()
 	{
-		super("poll", new String[]{}, "Starts a poll for users to vote in.", new Permission[]{}, false,0);
+		super("poll", new String[]{}, "Starts a poll for users to vote in.","[title]/[option1]/[option2]-20-",new Permission[]{}, false,0);
 	}
 
 	@Override
@@ -29,16 +29,13 @@ public class Poll_Command extends Command
 		final User author = ctx.getAuthor();
 		final List<String> reactions = new ArrayList<>();
 		final String[] slashArgs;
-		try
+
+		if(args.length != 1)
 		{
-			slashArgs = args[0].split("/");
-		}
-		catch(Exception exception)
-		{
-			EmbedUtils.sendError(channel, "A poll needs at least 2 options!");
+			EmbedUtils.sendSyntaxError(channel,this);
 			return;
 		}
-
+		slashArgs = args[0].split("/");
 		if(slashArgs.length >= 3)
 		{
 			String topic = slashArgs[0];
@@ -60,7 +57,7 @@ public class Poll_Command extends Command
 		}
 		else
 		{
-			EmbedUtils.sendError(channel, "A poll needs at least 2 options!");
+			EmbedUtils.sendSyntaxError(channel,this);
 		}
 	}
 }

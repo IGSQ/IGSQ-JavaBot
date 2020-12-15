@@ -14,7 +14,7 @@ public class Help_Command extends Command
 {
 	public Help_Command()
 	{
-		super("help", new String[]{"?", "howto", "commands"}, "Shows the help menu for this bot", new Permission[]{}, false, 0);
+		super("help", new String[]{"?", "howto", "commands"}, "Shows the help menu for this bot", "[none]", new Permission[]{}, false, 0);
 	}
 
 	@Override

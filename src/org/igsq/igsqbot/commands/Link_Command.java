@@ -24,7 +24,48 @@ public class Link_Command extends Command
 
 	public Link_Command()
 	{
-		super("link", new String[]{"mclink", "minecraft"}, "Controls Minecraft links.", new Permission[]{}, false,0);
+		super("link", new String[]{"mclink", "minecraft"}, "Controls Minecraft links.","[add|remove][mcName] | [list]", new Permission[]{}, false,0);
+	}
+
+	@Override
+	public void execute(String[] args, Context ctx)
+	{
+		final String action;
+		this.args = args;
+		this.channel = ctx.getChannel();
+		this.author = ctx.getAuthor();
+
+		try
+		{
+			action = args[0];
+		}
+		catch(Exception exception)
+		{
+			EmbedUtils.sendError(channel, "You entered an invalid action");
+			return;
+		}
+
+		switch(action.toLowerCase())
+		{
+			case "add":
+			case "new":
+				addLink();
+				break;
+
+			case "remove":
+			case "delete":
+				removeLink();
+				break;
+
+			case "show":
+			case "list":
+			case "pending":
+				showPending();
+				break;
+
+			default:
+				EmbedUtils.sendSyntaxError(channel,this);
+		}
 	}
 
 	private void showPending()
@@ -81,7 +122,7 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			EmbedUtils.sendError(channel, "You did not enter a Minecraft account");
+			EmbedUtils.sendSyntaxError(channel,this);
 			return;
 		}
 
@@ -133,7 +174,7 @@ public class Link_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			EmbedUtils.sendError(channel, "You did not enter a Minecraft account");
+			EmbedUtils.sendSyntaxError(channel,this);
 			return;
 		}
 
@@ -157,10 +198,7 @@ public class Link_Command extends Command
 			{
 				Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
 				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
-				new EmbedGenerator(channel)
-						.text("Link confirmed for account: " + username)
-						.color(EmbedUtils.IGSQ_PURPLE)
-						.sendTemporary();
+				EmbedUtils.sendSuccessMessage(channel, "Link confirmed for account: " + username);
             }
 			else
 			{
@@ -175,47 +213,6 @@ public class Link_Command extends Command
 		{
 			EmbedUtils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
         }
-	}
-
-	@Override
-	public void execute(String[] args, Context ctx)
-	{
-		final String action;
-		this.args = args;
-		this.channel = ctx.getChannel();
-		this.author = ctx.getAuthor();
-
-		try
-		{
-			action = args[0];
-		}
-		catch(Exception exception)
-		{
-			EmbedUtils.sendError(channel, "You entered an invalid action");
-			return;
-		}
-
-		switch(action.toLowerCase())
-		{
-			case "add":
-			case "new":
-				addLink();
-				break;
-
-			case "remove":
-			case "delete":
-				removeLink();
-				break;
-
-			case "show":
-			case "list":
-			case "pending":
-				showPending();
-				break;
-
-			default:
-				EmbedUtils.sendError(channel, "You entered an invalid action");
-		}
 	}
 }
 

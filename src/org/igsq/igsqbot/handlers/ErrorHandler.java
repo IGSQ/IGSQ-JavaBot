@@ -22,18 +22,25 @@ public class ErrorHandler
 
     private void reportError()
     {
-        GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(!YamlUtils.isFieldEmpty("bot.error", "config") ? Yaml.getFieldString("BOT.error", "config") : "1");
-        if(errorChannel == null)
+        if(YamlUtils.isFieldEmpty("bot.error", "config"))
         {
             exception.printStackTrace();
         }
         else
         {
+            GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString("bot.error", "config"));
+            if(errorChannel == null)
+            {
+                exception.printStackTrace();
+                return;
+            }
             EmbedGenerator embed = new EmbedGenerator((MessageChannel) errorChannel)
                     .color(Color.RED)
-                    .title("Unhandled Exception: " + exception.toString());
+                    .title("Unhandled Exception");
+
             StringBuilder  embedText = new StringBuilder();
 
+            embedText.append("**").append(exception.toString()).append("**");
             embedText.append("```");
             for(StackTraceElement selectedElement: exception.getStackTrace())
             {

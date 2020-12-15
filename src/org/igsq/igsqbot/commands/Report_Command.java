@@ -21,7 +21,7 @@ public class Report_Command extends Command
 {
 	public Report_Command()
 	{
-		super("report", new String[]{}, "Reports the specified member with the specified reason", new Permission[]{}, true, 60);
+		super("report", new String[]{}, "Reports the specified member with the specified reason","[user][reason]",new Permission[]{}, true, 60);
 	}
 
 	@Override
@@ -32,7 +32,12 @@ public class Report_Command extends Command
 		final User author = ctx.getAuthor();
 		final JDA jda = ctx.getJDA();
 		final Guild guild = ctx.getGuild();
-		final StringBuilder reportDescription = new StringBuilder();
+
+		if(args.length < 2)
+		{
+			EmbedUtils.sendSyntaxError(channel,this);
+			return;
+		}
 
 		final User reportedUser = UserUtils.getUserFromMention(args[0]);
 		if(reportedUser != null)
@@ -47,7 +52,6 @@ public class Report_Command extends Command
 			}
 
 			if(reportedUser.equals(author)) EmbedUtils.sendError(channel, "You can't report yourself!");
-			else if(args.length <= 1) EmbedUtils.sendError(channel, "Please mention a person & write a report topic.");
 			else if(reportedUser.isBot()) EmbedUtils.sendError(channel, "You may not report bots.");
 			else if(reportedMember.isOwner()) EmbedUtils.sendError(channel, "You may not report the owner.");
 			else if(YamlUtils.isFieldEmpty(guild.getId() + ".reportchannel", "guild")) EmbedUtils.sendError(channel, "There is no report channel setup.");
@@ -61,12 +65,11 @@ public class Report_Command extends Command
 					}
 				}
 
-				Arrays.stream(ArrayUtils.depend(args, 0)).forEach(word -> reportDescription.append(" ").append(word));
 				if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
 				EmbedGenerator embed = new EmbedGenerator(reportChannel)
 						.title("New report by: " + author.getAsTag())
 						.element("Reporting user:", reportedMember.getAsMention())
-						.element("Description:", reportDescription.toString())
+						.element("Description:", ArrayUtils.arrayCompile(ArrayUtils.depend(args, 0), " "))
 						.element("Channel:", StringUtils.getChannelAsMention(channel.getId()))
 						.element("Message Log:", messageLog.toString())
 						.color(reportedMember.getColor())

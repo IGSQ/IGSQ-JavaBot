@@ -21,7 +21,7 @@ public class Ping_Command extends Command
 {
 	public Ping_Command()
 	{
-		super("ping", new String[]{}, "Shows the bots current ping to Discord", new Permission[]{Permission.MESSAGE_MANAGE},false, 10);
+		super("ping", new String[]{}, "Shows the bots current ping to Discord","[none]", new Permission[]{Permission.MESSAGE_MANAGE},false, 10);
 	}
 
 	@Override
@@ -30,6 +30,12 @@ public class Ping_Command extends Command
 		final User author = ctx.getAuthor();
 		final MessageChannel channel = ctx.getChannel();
 		final JDA jda = ctx.getJDA();
+
+		if(args.length > 0)
+		{
+			EmbedUtils.sendSyntaxError(channel,this);
+			return;
+		}
 
 		if(CooldownHandler.isOnCooldown(author.getIdLong(), this))
 		{

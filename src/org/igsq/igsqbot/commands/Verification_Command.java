@@ -21,7 +21,7 @@ public class Verification_Command extends Command
 
 	public Verification_Command()
 	{
-		super("verify", new String[]{"v", "accept"}, "Verifies the specified user into the server", new Permission[]{}, true, 0);
+		super("verify", new String[]{"v", "accept"}, "Verifies the specified user into the server","[user]", new Permission[]{}, true, 0);
 	}
 
 	@Override
@@ -40,8 +40,13 @@ public class Verification_Command extends Command
 		}
 		catch(Exception exception)
 		{
-			EmbedUtils.sendError(channel, "Enter a user to verify!");
+			EmbedUtils.sendSyntaxError(channel,this);
 			return;
+		}
+
+		if(args.length != 1)
+		{
+			EmbedUtils.sendSyntaxError(channel,this);
 		}
 
 		channel.getHistory().retrievePast(10).queue(
