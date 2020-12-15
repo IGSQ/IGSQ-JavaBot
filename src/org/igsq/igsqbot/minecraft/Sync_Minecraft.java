@@ -42,12 +42,12 @@ public class Sync_Minecraft
 					String id = selectedMember.getId();
 					String rank = getRank(selectedMember);
 
-					int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ?1:0;
-					int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember)?1:0;
-					int developer = hasRole(Yaml.getFieldString("ranks.developer", "minecraft").split(" "), selectedMember) ?1:0;
-					int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember)?1:0;
+					int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ? 1 : 0;
+					int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember)? 1 : 0;
+					int developer = hasRole(Yaml.getFieldString("ranks.developer", "minecraft").split(" "), selectedMember) ? 1 : 0;
+					int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember)? 1 : 0;
 					// int retired = hasRole(Yaml.getFieldString("ranks.retired", "minecraft").split(" "), selectedMember)?1:0;
-					int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember)?1:0;
+					int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember) ? 1 : 0;
 
 					boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '"+ id +"';") > 0;
 

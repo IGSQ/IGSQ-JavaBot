@@ -1,7 +1,5 @@
 package org.igsq.igsqbot.logging;
 
-import java.awt.Color;
-
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.MessageCache;
 import org.igsq.igsqbot.Yaml;
@@ -39,8 +37,12 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 			if(cache.isInCache(selectedMessageID))
 			{
 				Message selectedMessage = cache.get(selectedMessageID);
-				String content = selectedMessage.getContentDisplay();
+				String content = selectedMessage.getContentRaw();
 
+				if(StringUtils.isCommand(content, event.getGuild().getId()))
+				{
+					return;
+				}
 				if(selectedMessage.getAuthor().isBot()) continue;
 				if(content.length() >= 50) content = content.substring(0, 20) + " **...**";
 

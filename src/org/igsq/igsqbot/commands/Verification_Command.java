@@ -55,7 +55,7 @@ public class Verification_Command extends Command
 				messages.forEach(
 				selectedMessage ->
 				{
-					if(selectedMessage.getAuthor().equals(verificationTarget) && !selectedMessage.getContentRaw().startsWith(Common.BOT_PREFIX))
+					if(selectedMessage.getAuthor().equals(verificationTarget) && !selectedMessage.getContentRaw().startsWith(Common.DEFAULT_BOT_PREFIX))
 					{
 						messageContent.addAll(Arrays.asList(selectedMessage.getContentRaw().split(" ")));
 					}

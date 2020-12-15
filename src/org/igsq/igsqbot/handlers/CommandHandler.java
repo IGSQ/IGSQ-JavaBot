@@ -4,15 +4,14 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -51,35 +50,76 @@ public abstract class CommandHandler
 
 	public static void handle(MessageReceivedEvent event)
 	{
-		final String content = event.getMessage().getContentRaw().substring(Common.BOT_PREFIX.length());
-		final Message message = event.getMessage();
-		final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-		final Command cmd = COMMANDS.get(issuedCommand);
-		final MessageChannel channel = event.getChannel();
 		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split(" ")).collect(Collectors.toList());
+		final ChannelType channelType = event.getChannelType();
+		final MessageChannel channel = event.getChannel();
 		args.remove(0);
 
-		if(!message.getContentRaw().startsWith(Common.BOT_PREFIX) || event.getAuthor().isBot())
+		if(channelType.equals(ChannelType.TEXT))
 		{
-			return;
-		}
+			final Guild guild = event.getGuild();
+			final String prefix = YamlUtils.getGuildPrefix(guild.getId());
+			final Member member = event.getMember();
+			final String selfID = IGSQBot.getJDA().getSelfUser().getId();
+			final String messageContent = event.getMessage().getContentRaw();
 
-		if(cmd == null)
+			final String content;
+			final String issuedCommand;
+			final Command cmd;
+			if(messageContent.startsWith(prefix))
+			{
+				content = messageContent.substring(prefix.length()).trim();
+				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
+				cmd = COMMANDS.get(issuedCommand);
+			}
+			else if(messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">"))
+			{
+				content = messageContent.substring(messageContent.indexOf(">") + 1).trim();
+				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
+				cmd = COMMANDS.get(issuedCommand);
+			}
+			else
+			{
+				return;
+			}
+
+			if(cmd == null)
+			{
+				EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
+				return;
+			}
+			if(!guild.getSelfMember().hasPermission((GuildChannel) channel, cmd.getRequiredPermissions())
+					|| !member.hasPermission((GuildChannel) channel, cmd.getRequiredPermissions()))
+			{
+				EmbedUtils.sendPermissionError(channel, cmd);
+				return;
+			}
+			if(guild.getSelfMember().hasPermission(Permission.MESSAGE_MANAGE))
+			{
+				event.getMessage().delete().queue();
+			}
+			commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
+
+		}
+		else
 		{
-			EmbedUtils.sendError(channel, "Command `" + issuedCommand + "` was not found");
-			return;
-		}
+			final String prefix = Common.DEFAULT_BOT_PREFIX;
+			if(event.getMessage().getContentRaw().startsWith(prefix))
+			{
+				final String content = event.getMessage().getContentRaw().substring(prefix.length());
+				final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
+				final Command cmd = COMMANDS.get(issuedCommand);
 
-		if(cmd.isRequiresGuild() && (!event.getChannelType().equals(ChannelType.TEXT)||!event.getMember().hasPermission(cmd.getRequiredPermissions())))
-		{
-			EmbedUtils.sendError(channel, "This command cannot be executed here, either it requires execution in a server, or a permission error occurred.");
-		}
+				if(cmd.isRequiresGuild())
+				{
+					EmbedUtils.sendError(channel, "This command requires execution in a guild.");
+				}
+				else
+				{
+					commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
+				}
+			}
 
-		if(event.getChannelType().equals(ChannelType.TEXT) && event.getGuild().getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
-		{
-			event.getMessage().delete().queue();
 		}
-
-		commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
 	}
 }

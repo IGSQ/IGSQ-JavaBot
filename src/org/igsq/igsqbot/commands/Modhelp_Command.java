@@ -26,18 +26,23 @@ public class Modhelp_Command extends Command
 		final EmbedGenerator embed = ArrayUtils.MODPAGE_TEXT.get(0);
 		embed.setChannel(channel).color(EmbedUtils.IGSQ_PURPLE);
 		final User author = ctx.getAuthor();
-
-		channel.sendMessage(embed.getBuilder().build()).queue
-				(
-						message ->
-						{
-							Yaml.updateField(message.getId() + ".modhelp.user", "internal", author.getId());
-							Yaml.updateField(message.getId() + ".modhelp.enabled", "internal", true);
-							Yaml.updateField(message.getId() + ".modhelp.page", "internal", 1);
-							message.addReaction("U+25C0").queue();
-							message.addReaction("U+25B6").queue();
-						}
-				);
-
+		if(!args.isEmpty())
+		{
+			EmbedUtils.sendSyntaxError(channel, this);
+		}
+		else
+		{
+			channel.sendMessage(embed.getBuilder().build()).queue
+					(
+							message ->
+							{
+								Yaml.updateField(message.getId() + ".modhelp.user", "internal", author.getId());
+								Yaml.updateField(message.getId() + ".modhelp.enabled", "internal", true);
+								Yaml.updateField(message.getId() + ".modhelp.page", "internal", 1);
+								message.addReaction("U+25C0").queue();
+								message.addReaction("U+25B6").queue();
+							}
+					);
+		}
 	}
 }

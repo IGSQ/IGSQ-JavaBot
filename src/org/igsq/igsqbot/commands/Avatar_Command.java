@@ -26,19 +26,17 @@ public class Avatar_Command extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final User author = message.getAuthor();
 
-		if(message.getMentionedUsers().size() <= 3 && message.getMentionedUsers().size() > 1)
-		{
-			for(User selectedUser : message.getMentionedUsers())
-			{
-				new EmbedGenerator(channel)
-						.title(selectedUser.getAsTag() + "'s Avatar")
-						.image(selectedUser.getEffectiveAvatarUrl())
-						.color(EmbedUtils.IGSQ_PURPLE).send();
-			}
-		}
-		else if(message.getMentionedUsers().size() > 3)
+		if(message.getMentionedUsers().size() > 3)
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
+		}
+		else if(message.getMentionedUsers().size() > 1)
+		{
+			message.getMentionedUsers().forEach(user -> new EmbedGenerator(channel)
+					.title(user.getAsTag() + "'s Avatar")
+					.image(user.getEffectiveAvatarUrl())
+					.color(EmbedUtils.IGSQ_PURPLE).send());
+
 		}
 		else
 		{

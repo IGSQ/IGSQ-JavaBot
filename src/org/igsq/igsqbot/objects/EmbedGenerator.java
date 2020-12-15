@@ -18,7 +18,6 @@ import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.Yaml;
 

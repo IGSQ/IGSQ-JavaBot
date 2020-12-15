@@ -1,5 +1,8 @@
 package org.igsq.igsqbot.util;
 
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.IGSQBot;
+
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -97,6 +100,11 @@ public class StringUtils
 		{
 			return false;
 		}
+	}
+
+	public static boolean isCommand(String message, String guildId)
+	{
+		return message.startsWith(YamlUtils.getGuildPrefix(guildId)) || message.startsWith("<@" + IGSQBot.getJDA().getSelfUser().getId() + ">") || message.startsWith("<@!" + IGSQBot.getJDA().getSelfUser().getId() + ">");
 	}
 
 }

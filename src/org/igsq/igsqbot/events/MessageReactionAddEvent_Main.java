@@ -4,7 +4,6 @@ import org.igsq.igsqbot.objects.EventWaiter;
 
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.util.StringUtils;
 
 public class MessageReactionAddEvent_Main extends ListenerAdapter 
 {

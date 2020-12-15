@@ -76,6 +76,7 @@ public class IGSQBot
 		{
 			exception.printStackTrace();
 		}
+		jda.getUserById();
 	}
 
 	public static JDA getJDA()

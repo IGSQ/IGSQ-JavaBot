@@ -81,7 +81,7 @@ public class Yaml
     			return configurations[i].getString(path);
     		}
     	}
-    	return null;
+    	return "";
     }
 
     public static Boolean getFieldBool(String path,String fileName) 

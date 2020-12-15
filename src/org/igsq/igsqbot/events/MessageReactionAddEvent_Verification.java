@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.events;
 
-import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;

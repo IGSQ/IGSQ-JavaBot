@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.entities.GuildChannel;
+import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 
@@ -45,5 +46,15 @@ public class YamlUtils
 				return onFile + delimiter + data;
 			}
 		}
+	}
+
+	public static String getGuildPrefix(String guildId)
+	{
+		return isFieldEmpty(guildId + ".prefix", "guild") ? Common.DEFAULT_BOT_PREFIX : Yaml.getFieldString(guildId + ".prefix", "guild").trim();
+	}
+
+	public static void setGuildPrefix(String guildId, String prefix)
+	{
+		Yaml.updateField(guildId + ".prefix", "guild", " " + prefix);
 	}
 }

@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.logging;
 
-import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -34,13 +33,18 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 			    cache = MessageCache.getCache(event.getGuild().getId());
 		    }
 
-		    Message message = cache.get(event.getMessageId());
-		    if(cache.isInCache(message))
+
+		    if(cache.isInCache(event.getMessageId()))
 		    {
+			    Message message = cache.get(event.getMessageId());
 			    GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 			    MessageChannel channel = event.getChannel();
-			    String content = message.getContentDisplay();
+			    String content = message.getContentRaw();
 
+			    if(StringUtils.isCommand(content, event.getGuild().getId()))
+			    {
+			    	return;
+			    }
 			    if(message.getAuthor().isBot()) return;
 			    if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
 

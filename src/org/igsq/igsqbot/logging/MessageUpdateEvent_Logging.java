@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.logging;
 
-import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 
 import org.igsq.igsqbot.objects.EmbedGenerator;
@@ -41,8 +40,13 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 				Message oldMessage = cache.get(event.getMessageId());
 				GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 				MessageChannel channel = event.getChannel();
-				String newContent = newMessage.getContentDisplay();
-				String oldContent = oldMessage.getContentDisplay();
+				String newContent = newMessage.getContentRaw();
+				String oldContent = oldMessage.getContentRaw();
+
+				if(StringUtils.isCommand(newMessage.getContentRaw(), event.getGuild().getId()))
+				{
+					return;
+				}
 				
 				if(newMessage.getAuthor().isBot()) return;
 				if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";

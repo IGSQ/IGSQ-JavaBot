@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.util;
 
-import net.dv8tion.jda.api.entities.Message;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.util.List;

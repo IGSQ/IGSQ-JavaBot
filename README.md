@@ -10,7 +10,7 @@
  - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
  - [x] Input catching
  - [ ] Implement .help to use the COMMANDS array for its information
- - [ ] Per guild prefixing
+ - [x] Per guild prefixing
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**

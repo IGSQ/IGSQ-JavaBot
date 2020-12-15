@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.logging;
 
-import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 
 import org.igsq.igsqbot.objects.EmbedGenerator;

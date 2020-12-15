@@ -33,7 +33,7 @@ public class Report_Command extends Command
 		final JDA jda = ctx.getJDA();
 		final Guild guild = ctx.getGuild();
 
-		if(args.size() < 2)
+		if(args.size() != 2)
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 			return;
