@@ -7,7 +7,7 @@
  - [ ] Logging expansion
  - [ ] Help / Modhelp
  - [ ] Alias / Decline
- - [ ] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
+ - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
  - [ ] Input catching
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Per guild prefixing
