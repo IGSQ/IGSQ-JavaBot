@@ -1,20 +1,23 @@
 # IGSQBot Developer Edition
 ## TODO
 **Features that are still to be fully implemented**
- - [ ] Verification Rewrite
- - [ ] GUIGenerator
- - [ ] Project Refactor
- - [ ] Logging
+ - [x] Verification Rewrite (to be reviewed)
+ - [ ] GUIGenerator further implementation
+ - [x] Project Refactor
+ - [ ] Logging expantion
  - [ ] Help / Modhelp
  - [ ] Alias / Decline
  - [ ] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
+ - [ ] Input catching
+ - [ ] Implement .help using the COMMANDS array for its information
+ - [ ] Per guild prefixing
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
  
 - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register
 
-##Building and Running
+## Building and Running
 
 **In order to run this project, you need JDK 14 or higher.**
 
