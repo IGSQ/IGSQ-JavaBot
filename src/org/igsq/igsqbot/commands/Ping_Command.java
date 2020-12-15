@@ -13,6 +13,7 @@ import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -25,13 +26,13 @@ public class Ping_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final User author = ctx.getAuthor();
 		final MessageChannel channel = ctx.getChannel();
 		final JDA jda = ctx.getJDA();
 
-		if(args.length > 0)
+		if(!args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 			return;

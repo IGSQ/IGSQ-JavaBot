@@ -25,7 +25,7 @@ public class Verification_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final StringBuilder embedText = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();
@@ -36,7 +36,7 @@ public class Verification_Command extends Command
 
 		try
 		{
-			verificationTarget = UserUtils.getUserFromMention(args[0]);
+			verificationTarget = UserUtils.getUserFromMention(args.get(0));
 		}
 		catch(Exception exception)
 		{
@@ -44,7 +44,7 @@ public class Verification_Command extends Command
 			return;
 		}
 
-		if(args.length != 1)
+		if(args.size() != 1)
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 		}
@@ -170,44 +170,39 @@ public class Verification_Command extends Command
 		);
 	}
 
-	private Map<String, String> findMatches(String[][] input)
+	private Map<String, String> findMatches(Map<String, String> input)
 	{
 		Map<String, String> result = new HashMap<>();
-		for(String[] aliasCollection : input)
+
+		input.forEach((role, alias) ->
 		{
-			for(String selectedAlias : aliasCollection)
+			if(!result.containsValue(alias) && messageContent.contains(alias))
 			{
-				if(!result.containsValue(aliasCollection[0]) && messageContent.contains(selectedAlias))
-				{
-					result.putIfAbsent(selectedAlias, aliasCollection[0]);
-					messageContent.remove(selectedAlias);
-				}
+				result.putIfAbsent(alias, role);
+				messageContent.remove(alias);
 			}
-		}
+		});
 		return result;
 	}
 
-	private Map<String, String> findSimilar(String[][] aliases, String[] matchedRoles)
+	private Map<String, String> findSimilar(Map<String, String> aliases, String[] matchedRoles)
 	{
 		Map<String, String> result = new HashMap<>();
 
-		for(String[] aliasCollection : aliases)
-		{
-			Arrays.stream(aliasCollection)
-					.filter(alias -> !messageContent.contains(alias))
-					.forEach(currentAlias ->
-					{
-						messageContent.forEach(currentWord ->
-							{
-								if(!ArrayUtils.isValueInArray(matchedRoles, aliasCollection[0]) && StringUtils.isOption(currentAlias,currentWord,10))
-								{
-									result.putIfAbsent(currentWord, aliasCollection[0]);
-								}
-							}
-						);
-					});
-		}
 
+		aliases.forEach((alias, role) ->
+		{
+			if(!messageContent.contains(alias))
+			{
+				messageContent.forEach(currentWord ->
+				{
+					if(!ArrayUtils.isValueInArray(matchedRoles, role) && StringUtils.isOption(alias,currentWord,10))
+					{
+						result.putIfAbsent(currentWord, role);
+					}
+				});
+			}
+		});
 		return result;
 	}
 }

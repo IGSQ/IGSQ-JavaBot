@@ -1,6 +1,9 @@
 package org.igsq.igsqbot.objects;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -38,7 +41,7 @@ import org.igsq.igsqbot.Yaml;
  */
 public class EmbedGenerator{
 	
-	private String[] reactions = {};
+	private List<String> reactions = new ArrayList<>();
 	private MessageChannel channel = null;
 	private EmbedBuilder embed = null;
 	private Message sentMessage = null;
@@ -281,8 +284,8 @@ public class EmbedGenerator{
 	 */
 	public EmbedGenerator reaction(String emojiUnicode) 
 	{
-		if(reactions.length >= EmbedUtils.REACTION_LIMIT) return this;
-		reactions = ArrayUtils.append(reactions, emojiUnicode);
+		if(reactions.size() >= EmbedUtils.REACTION_LIMIT) return this;
+		reactions.add(emojiUnicode);
 		return this;
 	}
 	/**
@@ -293,11 +296,8 @@ public class EmbedGenerator{
 	 */
 	public EmbedGenerator reaction(String[] emojiUnicodes) 
 	{
-		for(String emojiUnicode : emojiUnicodes) 
-		{
-			if(reactions.length >= EmbedUtils.REACTION_LIMIT) return this;
-			reactions = ArrayUtils.append(reactions, emojiUnicode);
-		}
+		if(reactions.size() + emojiUnicodes.length >= EmbedUtils.REACTION_LIMIT) return this;
+		reactions.addAll(Arrays.asList(emojiUnicodes));
 		return this;
 	}
 	
@@ -460,7 +460,7 @@ public class EmbedGenerator{
 	 * @see  #reaction(String[])
 	 * @see MessageGenerator
 	 */
-	public String[] getReactions() 
+	public List<String> getReactions()
 	{
 		return reactions;
 	}

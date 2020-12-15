@@ -22,14 +22,14 @@ public class Uwu_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
 		final StringBuilder finalSentence = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();
 		final User author = ctx.getAuthor();
 
-		if(args.length < 1)
+		if(args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 			return;

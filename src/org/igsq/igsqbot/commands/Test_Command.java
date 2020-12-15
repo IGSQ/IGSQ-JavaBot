@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.*;
 
+import java.util.List;
+
 public class Test_Command extends Command
 {
 	public Test_Command()
@@ -12,7 +14,7 @@ public class Test_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		new ErrorHandler(new InterruptedException("TEST EXCEPTION"));
 	}

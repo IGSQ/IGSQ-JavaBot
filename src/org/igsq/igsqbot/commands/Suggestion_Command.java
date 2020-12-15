@@ -11,8 +11,9 @@ import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
+
+import java.util.List;
 
 
 public class Suggestion_Command extends Command
@@ -23,13 +24,13 @@ public class Suggestion_Command extends Command
     }
 
     @Override
-    public void execute(String[] args, Context ctx)
+    public void execute(List<String> args, Context ctx)
     {
         final Guild guild = ctx.getGuild();
         final User author = ctx.getAuthor();
         final MessageChannel channel = ctx.getChannel();
 
-        if(args.length < 1)
+        if(args.isEmpty())
         {
             EmbedUtils.sendSyntaxError(channel, this);
             return;

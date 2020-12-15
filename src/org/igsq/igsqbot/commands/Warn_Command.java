@@ -11,7 +11,9 @@ import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.GUIGenerator;
 import org.igsq.igsqbot.util.*;
 
-import java.awt.*;
+import java.awt.Color;
+import java.util.Arrays;
+import java.util.List;
 
 public class Warn_Command extends Command
 {
@@ -21,7 +23,7 @@ public class Warn_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final User warnTarget;
 		final MessageChannel channel = ctx.getChannel();
@@ -29,23 +31,24 @@ public class Warn_Command extends Command
 		final Guild guild = ctx.getGuild();
 		final User author = ctx.getAuthor();
 
-		if(args.length > 1 && UserUtils.isUserMention(args[0]))
+
+		if(args.size() == 1 && UserUtils.isUserMention(args.get(0)))
 		{
-			warnTarget = UserUtils.getUserFromMention(args[0]);
+			args.remove(0);
+			warnTarget = UserUtils.getUserFromMention(args.get(0));
 			if(warnTarget == null)
 			{
 				EmbedUtils.sendSyntaxError(channel,this);
 			}
 			else
 			{
-				addWarning(warnTarget, String.join("", ArrayUtils.depend(args, 0)), guild.getId(), channel);
+				addWarning(warnTarget, ArrayUtils.arrayCompile(args, " "), guild.getId(), channel);
 			}
 		}
-		else if(args.length > 1 && !UserUtils.isUserMention(args[0]))
+		else if(args.size() > 1 && !UserUtils.isUserMention(args.get(0)))
 		{
-			action = args[0];
-
-			warnTarget = UserUtils.getUserFromMention(args[1]);
+			action = args.get(0);
+			warnTarget = UserUtils.getUserFromMention(args.get(1));
 			if(warnTarget == null)
 			{
 				EmbedUtils.sendSyntaxError(channel,this);
@@ -92,29 +95,29 @@ public class Warn_Command extends Command
 
 	private void removeWarning(User user, String guildId, MessageChannel channel, User author)
 	{
-		String[] warnings = Yaml.getFieldString(guildId + ".warnings." + user.getId(), "punishment").split(",");
+		List<String> warnings = Arrays.asList(Yaml.getFieldString(guildId + ".warnings." + user.getId(), "punishment").split(","));
 
-		if(warnings.length == 0)
+		if(warnings.size() == 0)
 		{
 			EmbedUtils.sendError(channel, "That user has no warnings.");
 			return;
 		}
 		StringBuilder embedText = new StringBuilder();
 
-		for(int i = 1; i < warnings.length; i++)
+		for(int i = 1; i < warnings.size(); i++)
 		{
-			embedText.append(i).append(": ").append(warnings[i]);
+			embedText.append(i).append(": ").append(warnings.get(i));
 		}
 		EmbedGenerator embed = new EmbedGenerator(channel).title("Select a warning to remove.").color(EmbedUtils.IGSQ_PURPLE).text(embedText.toString());
 		GUIGenerator gui = new GUIGenerator(embed);
-		int chosenWarning = gui.menu(author, 60000, warnings.length);
+		int chosenWarning = gui.menu(author, 60000, warnings.size());
 
 		if(chosenWarning != -1)
 		{
-			warnings = ArrayUtils.depend(warnings, chosenWarning-1);
+			warnings.remove(chosenWarning-1);
 			Yaml.updateField(guildId + ".warnings." + user.getId(), "punishment", ArrayUtils.arrayCompile(warnings, ","));
 
-			new EmbedGenerator(channel).text("Removed warning: " + warnings[chosenWarning-1]).color(Color.GREEN).sendTemporary();
+			new EmbedGenerator(channel).text("Removed warning: " + warnings.get(chosenWarning-1)).color(Color.GREEN).sendTemporary();
 		}
 	}
 }

@@ -15,9 +15,7 @@ import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,7 +56,8 @@ public abstract class CommandHandler
 		final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 		final Command cmd = COMMANDS.get(issuedCommand);
 		final MessageChannel channel = event.getChannel();
-		final String[] args = ArrayUtils.depend(event.getMessage().getContentRaw().split(" "), 0);
+		final List<String> args = Arrays.asList(event.getMessage().getContentRaw().split(" "));
+		args.remove(0);
 
 		if(!message.getContentRaw().startsWith(Common.BOT_PREFIX) || event.getAuthor().isBot())
 		{

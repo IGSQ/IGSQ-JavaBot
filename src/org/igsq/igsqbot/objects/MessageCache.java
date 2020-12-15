@@ -1,54 +1,42 @@
 package org.igsq.igsqbot.objects;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.dv8tion.jda.api.entities.Message;
-import org.igsq.igsqbot.util.ArrayUtils;
 
 public class MessageCache
 {
-	private static MessageCache[] messageCaches = new MessageCache[0];
-	private Message[] cachedMessages;
+	private static List<MessageCache> messageCaches = new ArrayList<>();
+	private final List<Message> cachedMessages;
 	private final String guildId;
 	
 	public MessageCache(String guildId)
 	{
 		this.guildId = guildId;
-		this.cachedMessages = new Message[0];
+		this.cachedMessages = new ArrayList<>();
 	}
 	
 	public void set(Message message)
 	{
-		if(cachedMessages.length >= 1000)
+		if(cachedMessages.size() >= 1000)
 		{
-			cachedMessages = (Message[]) ArrayUtils.depend(cachedMessages, 0);
+			cachedMessages.remove(0);
 			clean();
 		}
-		cachedMessages = (Message[]) ArrayUtils.append(cachedMessages, message);
-	}
-	
-	public void set(Message[] messages)
-	{
-		for(Message selectedMessage : messages)
-		{
-			if(cachedMessages.length >= 1000)
-			{
-				cachedMessages = ArrayUtils.depend(cachedMessages, 0);
-			}
-			cachedMessages = ArrayUtils.append(cachedMessages, selectedMessage);
-		}
+		cachedMessages.add(message);
 	}
 	
 	public void set(List<Message> messages)
 	{
 		for(Message selectedMessage : messages)
 		{
-			if(cachedMessages.length >= 1000)
+			if(cachedMessages.size() >= 1000)
 			{
-				cachedMessages = ArrayUtils.depend(cachedMessages, 0);
+				cachedMessages.remove(0);
 			}
-			cachedMessages = ArrayUtils.append(cachedMessages, selectedMessage);
+			cachedMessages.add(selectedMessage);
 		}
 	}
 	
@@ -66,51 +54,17 @@ public class MessageCache
 	
 	public void remove(String id)
 	{
-		for(Message selectedMessage : cachedMessages)
-		{
-			if(selectedMessage.getId().equals(id))
-			{
-				cachedMessages = ArrayUtils.depend(cachedMessages, selectedMessage);
-			}
-		}
+		cachedMessages.removeIf(selectedMessage -> selectedMessage.getId().equals(id));
 	}
 	
 	public void remove(Message message)
 	{
-		for(Message selectedMessage : cachedMessages)
-		{
-			if(selectedMessage.equals(message))
-			{
-				cachedMessages = ArrayUtils.depend(cachedMessages, selectedMessage);
-			}
-		}
+		cachedMessages.removeIf(selectedMessage -> selectedMessage.equals(message));
 	}
-	public void remove(Message[] messages)
-	{
-		for(Message selectedCachedMessage : cachedMessages)
-		{
-			for(Message selectedMessage : messages)
-			{
-				if(selectedCachedMessage.equals(selectedMessage))
-				{
-					cachedMessages = ArrayUtils.depend(cachedMessages, selectedCachedMessage);
-				}
-			}
-		}
-	}
-	
+
 	public void remove(List<Message> messages)
 	{
-		for(Message selectedCachedMessage : cachedMessages)
-		{
-			for(Message selectedMessage : messages)
-			{
-				if(selectedCachedMessage.equals(selectedMessage))
-				{
-					cachedMessages = (Message[]) ArrayUtils.depend(cachedMessages, selectedCachedMessage);
-				}
-			}
-		}
+		cachedMessages.removeAll(messages);
 	}
 	
 	public boolean isInCache(String messageId)
@@ -143,7 +97,7 @@ public class MessageCache
 		{
 			if(selectedMessage.equals(oldMessage))
 			{
-				cachedMessages = (Message[]) ArrayUtils.depend(cachedMessages, selectedMessage);
+				cachedMessages.remove(selectedMessage);
 				set(newMessage);
 			}
 		}
@@ -154,7 +108,7 @@ public class MessageCache
 		{
 			if(selectedMessage.getId().equals(oldMessageID))
 			{
-				cachedMessages = (Message[]) ArrayUtils.depend(cachedMessages, selectedMessage);
+				cachedMessages.remove(selectedMessage);
 				set(newMessage);
 			}
 		}
@@ -164,25 +118,19 @@ public class MessageCache
 		return guildId;
 	}
 	
-	public Message[] getCachedMessages()
+	public List<Message> getCachedMessages()
 	{
 		return cachedMessages;
 	}
 	
 	public void clean()
 	{
-		for(Message selectedMessage : cachedMessages)
-		{
-			if(selectedMessage.getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)))
-			{
-				cachedMessages = (Message[]) ArrayUtils.depend(cachedMessages, selectedMessage);
-			}	
-		}
+		cachedMessages.removeIf(selectedMessage -> selectedMessage.getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)));
 	}
 	
 	public void flush()
 	{
-		cachedMessages = new Message[0];
+		cachedMessages.clear();
 	}
 	
 	public static MessageCache[] append(MessageCache[] array, MessageCache value)
@@ -227,13 +175,13 @@ public class MessageCache
 	
 	public static void addCache(String guildId)
 	{
-		messageCaches = append(messageCaches, new MessageCache(guildId));
+		messageCaches.add(new MessageCache(guildId));
 	}
 	
 	public static MessageCache addAndReturnCache(String id)
 	{
 		MessageCache cache = new MessageCache(id);
-		messageCaches = append(messageCaches, cache);
+		messageCaches.add(cache);
 		return cache;
 	}
 }

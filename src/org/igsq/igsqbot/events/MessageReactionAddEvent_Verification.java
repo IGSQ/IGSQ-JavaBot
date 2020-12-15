@@ -18,6 +18,9 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.util.UserUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MessageReactionAddEvent_Verification extends ListenerAdapter 
 {
 	@Override
@@ -48,7 +51,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 		{
 			String[] guessedRoles = Yaml.getFieldString(messageID + ".verification.guessedroles", "internal").split(",");
 			String[] guessedAliases = Yaml.getFieldString(messageID + ".verification.guessedaliases", "internal").split(",");
-			String[] confirmedRoles = Yaml.getFieldString(messageID + ".verification.confirmedroles", "internal").split(",");
+			List<String> confirmedRoles = Arrays.asList(Yaml.getFieldString(messageID + ".verification.confirmedroles", "internal").split(","));
 
 			Member verifiedMember = UserUtils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
 			Member initiater = UserUtils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.verifier", "internal")).complete(), guild);
@@ -71,7 +74,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 				for(int i = 0; i < guessedRoles.length; i++)
 				{
 					CommandUtils.insertAlias(guild.getId(), guessedRoles[i], guessedAliases[i]);
-					confirmedRoles = ArrayUtils.append(confirmedRoles, guessedRoles[i]);
+					confirmedRoles.add(guessedRoles[i]);
 				}
 			}
 			else if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44e"))

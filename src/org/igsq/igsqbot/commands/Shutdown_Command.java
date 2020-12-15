@@ -6,6 +6,8 @@ import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.List;
+
 public class Shutdown_Command extends Command
 {
 	public Shutdown_Command()
@@ -14,9 +16,9 @@ public class Shutdown_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
-		if(args.length > 0)
+		if(!args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(ctx.getChannel(),this);
 			return;

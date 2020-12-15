@@ -10,6 +10,8 @@ import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.List;
+
 public class Help_Command extends Command
 {
 	public Help_Command()
@@ -18,7 +20,7 @@ public class Help_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final EmbedGenerator embed = ArrayUtils.HELP_PAGE_TEXT.get(0);

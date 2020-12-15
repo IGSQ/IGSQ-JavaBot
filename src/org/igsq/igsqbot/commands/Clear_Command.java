@@ -24,7 +24,7 @@ public class Clear_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final int amount;
 		final MessageChannel channel = ctx.getChannel();
@@ -33,7 +33,7 @@ public class Clear_Command extends Command
 
 		try
 		{
-			amount = Integer.parseInt(args[0]);
+			amount = Integer.parseInt(args.get(0));
 		}
 		catch(Exception exception)
 		{

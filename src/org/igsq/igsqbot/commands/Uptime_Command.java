@@ -10,6 +10,7 @@ import org.igsq.igsqbot.util.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Uptime_Command extends Command
 {
@@ -19,8 +20,13 @@ public class Uptime_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
+		if(!args.isEmpty())
+		{
+			EmbedUtils.sendSyntaxError(ctx.getChannel(), this);
+			return;
+		}
 		Duration uptime = Duration.between(Common.START_TIMESTAMP, LocalDateTime.now());
 		new EmbedGenerator(ctx.getChannel())
 				.text("Uptime: " + uptime.toDays() + " days, " + uptime.toHours() + " hours, " + uptime.toSeconds() + " seconds.")

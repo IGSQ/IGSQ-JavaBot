@@ -2,10 +2,7 @@ package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class CommandUtils
 {
@@ -17,27 +14,44 @@ public class CommandUtils
 	public static final List<String> POLL_EMOJIS_UNICODE = Collections.unmodifiableList(new ArrayList<>(Arrays.asList("U+1F350", " U+1F349", "U+1F34D", "U+1F34E", "U+1F34C", "U+1F951", "U+1F346", "U+1F95D", "U+1F347", "U+1FAD0", "U+1F352", "U+1F9C5", "U+1F351", "U+1F34B", "U+1F34A","U+1F348", "U+1F965", "U+1F9C4", "U+1F952", "U+1F991")));
 	public static final List<String> POLL_EMOJIS = Collections.unmodifiableList(new ArrayList<>(Arrays.asList(":pear:", ":watermelon:", ":pineapple:", ":apple:", ":banana:", ":avocado:", ":eggplant:", ":kiwi:", ":grapes:", ":blueberries:", ":cherries:", ":onion:", ":peach:", ":lemon:", ":tangerine:", ":melon:", ":coconut:",":garlic:", ":cucumber:", ":squid:")));
 
-	public static String[][] getAliases(String id)
+	public static Map<String, String> getAliases(String id)
 	{
 		int i = 0;
-		String[][] result = new String[0][0];
+		Map<String, String> result = new HashMap<>();
 		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
 		{
 			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
 			{
-				String[] role = new String[0];
-				role = ArrayUtils.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(",")) role = ArrayUtils.append(role, selectedAlias);
-				result = ArrayUtils.append(result, role);
-			}
-			else
-			{
-				result = ArrayUtils.append(result, new String[0]);
+				String role = Yaml.getFieldString(id + ".references." + i + ".id", "verification");
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(","))
+				{
+					result.putIfAbsent(role, selectedAlias);
+				}
 			}
 			i++;
 		}
 		return result;
 	}
+
+	public static Map<String, String> getDeclined(String id)
+	{
+		int i = 0;
+		Map<String, String> result = new HashMap<>();
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
+		{
+			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
+			{
+				String role = Yaml.getFieldString(id + ".references." + i + ".id", "verification");
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","))
+				{
+					result.putIfAbsent(role, selectedAlias);
+				}
+			}
+			i++;
+		}
+		return result;
+	}
+
 	public static void insertAlias(String id, String role, String alias)
 	{
 		int i = 0;
@@ -160,13 +174,13 @@ public class CommandUtils
 		}
 		return false;
 	}
-	public static String[] getRoles(String id)
+	public static List<String> getRoles(String id)
 	{
 		int i = 0;
-		String[] result = new String[0];
+		List<String> result = new ArrayList<>();
 		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
 		{
-			result = ArrayUtils.append(result, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
+			result.add(Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
 			i++;
 		}
 		return result;
@@ -186,42 +200,5 @@ public class CommandUtils
 			i++;
 		}
 		return false;
-	}
-	public static boolean isDeclinedExist(String guild, String alias)
-	{
-		int i = 0;
-		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
-		{
-			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".declined", "verification").split(","))
-			{
-				if(selectedAlias.equals(alias))
-				{
-					return true;
-				}
-			}
-			i++;
-		}
-		return false;
-	}
-	public static String[][] getDeclined(String id)
-	{
-		int i = 0;
-		String[][] result = new String[0][0];
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
-		{
-			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
-			{
-				String[] role = new String[0];
-				role = ArrayUtils.append(role, Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(",")) role = ArrayUtils.append(role, selectedAlias);
-				result = ArrayUtils.append(result, role);
-			}
-			else
-			{
-				result = ArrayUtils.append(result, new String[0]);
-			}
-			i++;
-		}
-		return result;
 	}
 }

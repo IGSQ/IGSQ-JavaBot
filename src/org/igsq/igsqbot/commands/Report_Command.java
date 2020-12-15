@@ -1,7 +1,7 @@
 package org.igsq.igsqbot.commands;
 
 import java.awt.Color;
-import java.util.Arrays;
+import java.util.List;
 
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.objects.Command;
@@ -25,7 +25,7 @@ public class Report_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final StringBuilder messageLog = new StringBuilder();
@@ -33,17 +33,18 @@ public class Report_Command extends Command
 		final JDA jda = ctx.getJDA();
 		final Guild guild = ctx.getGuild();
 
-		if(args.length < 2)
+		if(args.size() < 2)
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 			return;
 		}
 
-		final User reportedUser = UserUtils.getUserFromMention(args[0]);
+		final User reportedUser = UserUtils.getUserFromMention(args.get(0));
 		if(reportedUser != null)
 		{
 			Member reportedMember = UserUtils.getMemberFromUser(reportedUser, guild);
 			MessageChannel reportChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
+			args.remove(0);
 
 			if(reportChannel == null)
 			{
@@ -69,7 +70,7 @@ public class Report_Command extends Command
 				EmbedGenerator embed = new EmbedGenerator(reportChannel)
 						.title("New report by: " + author.getAsTag())
 						.element("Reporting user:", reportedMember.getAsMention())
-						.element("Description:", ArrayUtils.arrayCompile(ArrayUtils.depend(args, 0), " "))
+						.element("Description:", ArrayUtils.arrayCompile(args, " "))
 						.element("Channel:", StringUtils.getChannelAsMention(channel.getId()))
 						.element("Message Log:", messageLog.toString())
 						.color(reportedMember.getColor())
@@ -88,6 +89,6 @@ public class Report_Command extends Command
 
 			}
 		}
-		else EmbedUtils.sendError(channel, "Could not find the user " + args[0] + ".");
+		else EmbedUtils.sendError(channel, "Could not find the user " + args.get(0) + ".");
 	}
 }

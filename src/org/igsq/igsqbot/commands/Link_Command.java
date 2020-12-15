@@ -2,6 +2,7 @@ package org.igsq.igsqbot.commands;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -18,7 +19,7 @@ import org.igsq.igsqbot.util.EmbedUtils;
 public class Link_Command extends Command
 {
 
-	private String[] args;
+	private List<String> args;
 	private MessageChannel channel;
 	private User author;
 
@@ -28,7 +29,7 @@ public class Link_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final String action;
 		this.args = args;
@@ -37,7 +38,7 @@ public class Link_Command extends Command
 
 		try
 		{
-			action = args[0];
+			action = args.get(0);
 		}
 		catch(Exception exception)
 		{
@@ -118,7 +119,7 @@ public class Link_Command extends Command
 		String id = "";
 		try
 		{
-			mcAccount = args[1];
+			mcAccount = args.get(1);
 		}
 		catch(Exception exception)
 		{
@@ -170,7 +171,7 @@ public class Link_Command extends Command
 		String mcAccount = "";
 		try
 		{
-			mcAccount = args[1];
+			mcAccount = args.get(1);
 		}
 		catch(Exception exception)
 		{

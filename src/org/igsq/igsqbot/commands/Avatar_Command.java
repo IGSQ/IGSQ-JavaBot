@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.List;
+
 public class Avatar_Command extends Command
 {
 	public Avatar_Command()
@@ -18,7 +20,7 @@ public class Avatar_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final Message message = ctx.getMessage();
 		final MessageChannel channel = ctx.getChannel();

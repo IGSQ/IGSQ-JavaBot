@@ -2,6 +2,8 @@ package org.igsq.igsqbot.objects;
 
 import net.dv8tion.jda.api.Permission;
 
+import java.util.List;
+
 public abstract class Command
 {
 	private final String invoke;
@@ -23,7 +25,7 @@ public abstract class Command
 		this.cooldown = cooldown;
 	}
 
-	public abstract void execute(final String[] args, Context ctx);
+	public abstract void execute(final List<String> args, Context ctx);
 
 	public String getInvoke()
 	{

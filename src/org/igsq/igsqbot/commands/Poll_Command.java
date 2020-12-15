@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
-import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
@@ -22,7 +21,7 @@ public class Poll_Command extends Command
 	}
 
 	@Override
-	public void execute(String[] args, Context ctx)
+	public void execute(List<String> args, Context ctx)
 	{
 		final StringBuilder options = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();
@@ -30,19 +29,18 @@ public class Poll_Command extends Command
 		final List<String> reactions = new ArrayList<>();
 		final String[] slashArgs;
 
-		if(args.length != 1)
+		if(args.size() != 1)
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 			return;
 		}
-		slashArgs = args[0].split("/");
+		slashArgs = args.get(0).split("/");
 		if(slashArgs.length >= 3)
 		{
 			String topic = slashArgs[0];
 			for(int i = 1; i < slashArgs.length && i < EmbedUtils.REACTION_LIMIT+1; i++)
 			{
-				options.append(slashArgs[i]).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n");
-				if(args.length <= EmbedUtils.REACTION_LIMIT/2+1) options.append("\n");
+				options.append(slashArgs[i]).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n\n");
 				reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i-1));
 			}
 			new EmbedGenerator(channel)
