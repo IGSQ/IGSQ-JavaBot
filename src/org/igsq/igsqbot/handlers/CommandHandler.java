@@ -12,12 +12,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
-import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public abstract class CommandHandler
 {
@@ -56,7 +56,7 @@ public abstract class CommandHandler
 		final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 		final Command cmd = COMMANDS.get(issuedCommand);
 		final MessageChannel channel = event.getChannel();
-		final List<String> args = Arrays.asList(event.getMessage().getContentRaw().split(" "));
+		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split(" ")).collect(Collectors.toList());
 		args.remove(0);
 
 		if(!message.getContentRaw().startsWith(Common.BOT_PREFIX) || event.getAuthor().isBot())

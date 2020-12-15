@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -297,7 +298,7 @@ public class EmbedGenerator{
 	public EmbedGenerator reaction(String[] emojiUnicodes) 
 	{
 		if(reactions.size() + emojiUnicodes.length >= EmbedUtils.REACTION_LIMIT) return this;
-		reactions.addAll(Arrays.asList(emojiUnicodes));
+		reactions.addAll(Arrays.stream(emojiUnicodes).collect(Collectors.toList()));
 		return this;
 	}
 	

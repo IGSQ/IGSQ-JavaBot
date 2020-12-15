@@ -11,7 +11,6 @@ import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.GUIGenerator;
 import org.igsq.igsqbot.util.*;
 
-import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class Warn_Command extends Command
 	{
 		YamlUtils.fieldAppend(guildId + ".warnings." + user.getId(), "punishment",reason + " - " + StringUtils.getTimestamp(), ",");
 
-		new EmbedGenerator(channel).text("Warned " + user.getAsMention() + " for reason: " + reason).color(Color.GREEN).sendTemporary(2000);
+		EmbedUtils.sendSuccess(channel, "Warned " + user.getAsMention() + " for reason: " + reason);
 
 	}
 
@@ -97,7 +96,7 @@ public class Warn_Command extends Command
 	{
 		List<String> warnings = Arrays.asList(Yaml.getFieldString(guildId + ".warnings." + user.getId(), "punishment").split(","));
 
-		if(warnings.size() == 0)
+		if(warnings.isEmpty())
 		{
 			EmbedUtils.sendError(channel, "That user has no warnings.");
 			return;
@@ -117,7 +116,7 @@ public class Warn_Command extends Command
 			warnings.remove(chosenWarning-1);
 			Yaml.updateField(guildId + ".warnings." + user.getId(), "punishment", ArrayUtils.arrayCompile(warnings, ","));
 
-			new EmbedGenerator(channel).text("Removed warning: " + warnings.get(chosenWarning-1)).color(Color.GREEN).sendTemporary();
+			EmbedUtils.sendSuccess(channel, "Removed warning: " + warnings.get(chosenWarning-1));
 		}
 	}
 }

@@ -22,7 +22,7 @@ public class EmbedUtils
 	public static void sendError(MessageChannel channel, String errorText)
 	{
 		new EmbedGenerator(channel)
-				.text(":x: " + errorText)
+				.text("<:igsqCross:788476443885174834> " + errorText)
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();
@@ -31,7 +31,7 @@ public class EmbedUtils
 	public static void sendSyntaxError(MessageChannel channel, Command command)
 	{
 		new EmbedGenerator(channel)
-				.text(":negative_squared_cross_mark: The provided syntax was incorrect.\n`" + Common.BOT_PREFIX + command.getInvoke() +  " " + command.getSyntax() + "`")
+				.text("<:igsqCross:788476443885174834> The provided syntax was incorrect.\n`" + Common.BOT_PREFIX + command.getInvoke() +  " " + command.getSyntax() + "`")
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();
@@ -40,16 +40,16 @@ public class EmbedUtils
 	public static void sendPermissionError(MessageChannel channel, Command command)
 	{
 		new EmbedGenerator(channel)
-				.text(":negative_squared_cross_mark: A permission error occurred when attempting to execute command:`" + Common.BOT_PREFIX + command.getInvoke() + "`")
+				.text("<:igsqCross:788476443885174834> A permission error occurred when attempting to execute command:`" + Common.BOT_PREFIX + command.getInvoke() + "`")
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();
 	}
 
-	public static void sendSuccessMessage(MessageChannel channel, String successText)
+	public static void sendSuccess(MessageChannel channel, String successText)
 	{
 		new EmbedGenerator(channel)
-				.text(":white_check_mark: " + successText)
+				.text("<:igsqTick:788476500012695582> " + successText)
 				.color(Color.GREEN)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();

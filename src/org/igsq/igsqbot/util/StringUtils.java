@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.util;
 
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -83,4 +84,19 @@ public class StringUtils
 	{
 		return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now());
 	}
+
+	public static boolean isURLValid(String url)
+	{
+		try
+		{
+			URL obj = new URL(url);
+			obj.toURI();
+			return true;
+		}
+		catch (Exception exception)
+		{
+			return false;
+		}
+	}
+
 }

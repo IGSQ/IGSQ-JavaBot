@@ -145,10 +145,7 @@ public class Link_Command extends Command
 				if(id.equals(author.getId()))
 				{
 					Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';" );
-					new EmbedGenerator(channel)
-							.text("Link removed for account: " + username)
-							.color(EmbedUtils.IGSQ_PURPLE)
-							.sendTemporary();
+					EmbedUtils.sendSuccess(channel, "Link removed for account: " + username);
                 }
 				else
 				{
@@ -193,21 +190,18 @@ public class Link_Command extends Command
 			}
 			else if(isAlreadyLinked)
 			{
-				new EmbedGenerator(channel).text("There is already an account linked to your Discord, please delink first.").sendTemporary();
+				EmbedUtils.sendError(channel, "There is already an account linked to your Discord, please delink first.");
 			}
 			else if(isWaiting)
 			{
 				Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
 				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
-				EmbedUtils.sendSuccessMessage(channel, "Link confirmed for account: " + username);
+				EmbedUtils.sendSuccess(channel, "Link confirmed for account: " + username);
             }
 			else
 			{
 				Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
-				new EmbedGenerator(channel)
-						.color(EmbedUtils.IGSQ_PURPLE)
-						.text("Link added for account: " + username)
-						.sendTemporary();
+				EmbedUtils.sendSuccess(channel, "Link added for account: " + username);
             }
 		}
 		else
