@@ -1,13 +1,15 @@
 # IGSQBot Developer Edition
 ## TODO
 **Features that are still to be fully implemented**
- - [ ] Verification Rewrite
- - [ ] GUIGenerator
- - [ ] Project Refactor
- - [ ] Logging
+ - [x] Verification Rewrite (to be reviewed)
+ - [ ] GUIGenerator further implementation
+ - [x] Project Refactor
+ - [ ] Logging expantion
  - [ ] Help / Modhelp
  - [ ] Alias / Decline
  - [ ] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
+ - [ ] Input catching
+ - [ ] Implement .help using the COMMANDS array for its information
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
