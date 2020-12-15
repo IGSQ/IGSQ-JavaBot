@@ -16,7 +16,7 @@
  
 - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register
 
-##Building and Running
+## Building and Running
 
 **In order to run this project, you need JDK 14 or higher.**
 
