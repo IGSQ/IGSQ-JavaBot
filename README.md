@@ -8,7 +8,7 @@
  - [ ] Help / Modhelp
  - [ ] Alias / Decline
  - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
- - [ ] Input catching
+ - [x] Input catching
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Per guild prefixing
 
