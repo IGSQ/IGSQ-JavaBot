@@ -13,6 +13,7 @@
  - [ ] Alias / Decline (within setup)
  - [ ] Implement slash commands when they release
  - [ ] Add UserUtils function to check if DM can be opened
+ - [ ] Rewrite the event handler
 
 
 ## Known Issues
