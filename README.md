@@ -12,6 +12,7 @@
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within setup)
  - [ ] Implement slash commands when they release
+ - [ ] Rewrite the event handler
 
 
 ## Known Issues
