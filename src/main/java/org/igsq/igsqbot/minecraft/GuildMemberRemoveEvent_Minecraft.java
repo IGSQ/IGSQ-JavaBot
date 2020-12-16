@@ -1,4 +1,4 @@
-package main.java.org.igsq.igsqbot.minecraft;
+package org.igsq.igsqbot.minecraft;
 
 import main.java.org.igsq.igsqbot.Database;
 import net.dv8tion.jda.api.entities.Member;

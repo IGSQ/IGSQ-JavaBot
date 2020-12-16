@@ -1,4 +1,4 @@
-package main.java.org.igsq.igsqbot.objects;
+package org.igsq.igsqbot.objects;
 
 import net.dv8tion.jda.api.Permission;
 

@@ -1,6 +1,6 @@
-package main.java.org.igsq.igsqbot.minecraft;
+package org.igsq.igsqbot.minecraft;
 
-import main.java.org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Common;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;

@@ -1,15 +1,15 @@
-package main.java.org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands;
 
-import main.java.org.igsq.igsqbot.handlers.ErrorHandler;
-import main.java.org.igsq.igsqbot.objects.Command;
-import main.java.org.igsq.igsqbot.objects.Context;
-import main.java.org.igsq.igsqbot.util.EmbedUtils;
-import main.java.org.igsq.igsqbot.util.StringUtils;
-import main.java.org.igsq.igsqbot.util.UserUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 import java.net.URL;
 import java.util.List;

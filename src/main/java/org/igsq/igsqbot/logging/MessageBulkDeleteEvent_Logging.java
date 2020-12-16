@@ -1,16 +1,16 @@
-package main.java.org.igsq.igsqbot.logging;
+package org.igsq.igsqbot.logging;
 
-import main.java.org.igsq.igsqbot.Yaml;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
-import main.java.org.igsq.igsqbot.objects.MessageCache;
-import main.java.org.igsq.igsqbot.util.EmbedUtils;
-import main.java.org.igsq.igsqbot.util.StringUtils;
-import main.java.org.igsq.igsqbot.util.YamlUtils;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 {
@@ -65,7 +65,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 			new EmbedGenerator((MessageChannel) logChannel)
 					.title("Messages Deleted")
 					.text("**Channel**: " + StringUtils.getChannelAsMention(channel.getId())
-					+ "\n\n**Messages**: " + embedDescription)
+					+ "\n\n**Messages**: " + embedDescription.toString())
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())
 					.send();

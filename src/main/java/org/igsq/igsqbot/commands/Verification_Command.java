@@ -1,12 +1,5 @@
-package main.java.org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.Yaml;
-import main.java.org.igsq.igsqbot.objects.Command;
-import main.java.org.igsq.igsqbot.objects.Context;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
-import main.java.org.igsq.igsqbot.objects.EventWaiter;
-import main.java.org.igsq.igsqbot.util.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -14,6 +7,13 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.EventWaiter;
+import org.igsq.igsqbot.util.*;
 
 import java.util.*;
 

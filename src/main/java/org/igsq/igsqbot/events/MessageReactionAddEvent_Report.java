@@ -1,11 +1,11 @@
-package main.java.org.igsq.igsqbot.events;
+package org.igsq.igsqbot.events;
 
-import main.java.org.igsq.igsqbot.Yaml;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.awt.*;
 

@@ -1,4 +1,4 @@
-package main.java.org.igsq.igsqbot.logging;
+package org.igsq.igsqbot.logging;
 
 public class Main_Logging
 {

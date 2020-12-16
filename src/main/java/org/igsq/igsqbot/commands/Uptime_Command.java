@@ -1,12 +1,12 @@
-package main.java.org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.objects.Command;
-import main.java.org.igsq.igsqbot.objects.Context;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
-import main.java.org.igsq.igsqbot.util.EmbedUtils;
-import main.java.org.igsq.igsqbot.util.StringUtils;
 import net.dv8tion.jda.api.Permission;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

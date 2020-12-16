@@ -1,9 +1,9 @@
-package main.java.org.igsq.igsqbot.util;
+package org.igsq.igsqbot.util;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.objects.Command;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.awt.*;
 

@@ -1,4 +1,4 @@
-package main.java.org.igsq.igsqbot.objects;
+package org.igsq.igsqbot.objects;
 
 import main.java.org.igsq.igsqbot.Common;
 import main.java.org.igsq.igsqbot.handlers.ErrorHandler;

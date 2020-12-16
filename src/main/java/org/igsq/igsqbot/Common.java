@@ -1,4 +1,4 @@
-package main.java.org.igsq.igsqbot;
+package org.igsq.igsqbot;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,9 +1,9 @@
-package main.java.org.igsq.igsqbot.util;
+package org.igsq.igsqbot.util;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.IGSQBot;
-import main.java.org.igsq.igsqbot.Yaml;
 import net.dv8tion.jda.api.entities.GuildChannel;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.Yaml;
 
 public class YamlUtils
 {

@@ -1,12 +1,12 @@
-package main.java.org.igsq.igsqbot.minecraft;
+package org.igsq.igsqbot.minecraft;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.Database;
-import main.java.org.igsq.igsqbot.handlers.ErrorHandler;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
-import main.java.org.igsq.igsqbot.util.EmbedUtils;
-import main.java.org.igsq.igsqbot.util.UserUtils;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;

@@ -1,15 +1,15 @@
-package main.java.org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands;
 
-import main.java.org.igsq.igsqbot.handlers.CooldownHandler;
-import main.java.org.igsq.igsqbot.objects.Command;
-import main.java.org.igsq.igsqbot.objects.Context;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
-import main.java.org.igsq.igsqbot.objects.MessageCache;
-import main.java.org.igsq.igsqbot.util.EmbedUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.handlers.CooldownHandler;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -85,6 +85,5 @@ public class Clear_Command extends Command
 					}
 				}
 		);
-
 	}
 }

@@ -1,6 +1,6 @@
-package main.java.org.igsq.igsqbot.util;
+package org.igsq.igsqbot.util;
 
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 
 import java.util.List;
 

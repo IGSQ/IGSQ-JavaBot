@@ -1,12 +1,12 @@
-package main.java.org.igsq.igsqbot.minecraft;
+package org.igsq.igsqbot.minecraft;
 
-import main.java.org.igsq.igsqbot.Database;
-import main.java.org.igsq.igsqbot.IGSQBot;
-import main.java.org.igsq.igsqbot.Yaml;
-import main.java.org.igsq.igsqbot.handlers.ErrorHandler;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

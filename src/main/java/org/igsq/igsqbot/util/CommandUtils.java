@@ -1,6 +1,6 @@
-package main.java.org.igsq.igsqbot.util;
+package org.igsq.igsqbot.util;
 
-import main.java.org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.Yaml;
 
 import java.util.ArrayList;
 import java.util.HashMap;

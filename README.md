@@ -18,6 +18,7 @@
  - [ ] Implement slash commands when they release
  - [ ] Rewrite the event handler
  - [ ] Full logger implementation
+ - [ ] Translation
 
 
 ## Known Issues

@@ -1,14 +1,14 @@
-package main.java.org.igsq.igsqbot;
+package org.igsq.igsqbot;
 
-import main.java.org.igsq.igsqbot.events.*;
-import main.java.org.igsq.igsqbot.logging.*;
-import main.java.org.igsq.igsqbot.minecraft.Main_Minecraft;
-import main.java.org.igsq.igsqbot.objects.MessageCache;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.igsq.igsqbot.events.*;
+import org.igsq.igsqbot.logging.*;
+import org.igsq.igsqbot.minecraft.Main_Minecraft;
+import org.igsq.igsqbot.objects.MessageCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

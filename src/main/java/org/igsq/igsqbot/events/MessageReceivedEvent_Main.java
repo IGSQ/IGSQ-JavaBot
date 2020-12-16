@@ -1,12 +1,12 @@
-package main.java.org.igsq.igsqbot.events;
+package org.igsq.igsqbot.events;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.handlers.CommandHandler;
-import main.java.org.igsq.igsqbot.objects.EventWaiter;
-import main.java.org.igsq.igsqbot.objects.MessageCache;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.handlers.CommandHandler;
+import org.igsq.igsqbot.objects.EventWaiter;
+import org.igsq.igsqbot.objects.MessageCache;
 
 public class MessageReceivedEvent_Main extends ListenerAdapter
 {	

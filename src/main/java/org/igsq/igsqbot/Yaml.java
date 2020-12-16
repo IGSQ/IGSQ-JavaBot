@@ -1,6 +1,6 @@
-package main.java.org.igsq.igsqbot;
+package org.igsq.igsqbot;
 
-import main.java.org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 

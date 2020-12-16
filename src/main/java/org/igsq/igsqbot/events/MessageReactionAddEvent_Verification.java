@@ -1,15 +1,15 @@
-package main.java.org.igsq.igsqbot.events;
+package org.igsq.igsqbot.events;
 
-import main.java.org.igsq.igsqbot.Yaml;
-import main.java.org.igsq.igsqbot.handlers.ErrorHandler;
-import main.java.org.igsq.igsqbot.objects.EmbedGenerator;
-import main.java.org.igsq.igsqbot.util.CommandUtils;
-import main.java.org.igsq.igsqbot.util.UserUtils;
-import main.java.org.igsq.igsqbot.util.YamlUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.CommandUtils;
+import org.igsq.igsqbot.util.UserUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.Arrays;
 import java.util.List;

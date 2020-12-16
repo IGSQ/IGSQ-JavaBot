@@ -1,9 +1,5 @@
-package main.java.org.igsq.igsqbot.objects;
+package org.igsq.igsqbot.objects;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.Yaml;
-import main.java.org.igsq.igsqbot.handlers.ErrorHandler;
-import main.java.org.igsq.igsqbot.util.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,6 +9,10 @@ import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -292,7 +292,6 @@ public class EmbedGenerator{
 	 * Adds an array of reactions to the embed which is done after the embed has been sent. The reactions can be retrieved at any time using {@link #getReactions()}. If more than {@link EmbedUtils#REACTION_LIMIT} reactions exist they will be ignored.
 	 * Overloads {@link #reaction(String) Singular}.
 	 * @see EmbedGenerator
-	 * @see MessageGenerator#reaction(String[])
 	 */
 	public EmbedGenerator reaction(String[] emojiUnicodes) 
 	{
@@ -458,7 +457,6 @@ public class EmbedGenerator{
 	/**
 	 * Gets the reactions ready to be added to the message.
 	 * @see  #reaction(String[])
-	 * @see MessageGenerator
 	 */
 	public List<String> getReactions()
 	{
@@ -467,7 +465,6 @@ public class EmbedGenerator{
 	/**
 	 * Gets the channel the embed will be send to, designated by the {@link #EmbedGenerator(MessageChannel)} (MessageChannel) constructor}
 	 * @see  net.dv8tion.jda.api.entities.MessageChannel
-	 * @see MessageGenerator
 	 */
 	public MessageChannel getChannel() 
 	{

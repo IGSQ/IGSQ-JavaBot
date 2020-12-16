@@ -1,6 +1,6 @@
-package main.java.org.igsq.igsqbot.util;
+package org.igsq.igsqbot.util;
 
-import main.java.org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.IGSQBot;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -20,16 +20,17 @@ public class StringUtils
     {
     	boolean targetFound = false;
     	char[] charArray = string.toCharArray();
-    	String rebuiltString = "";
+    	StringBuilder rebuiltString = new StringBuilder();
+
     	for(int i = 0;i < string.length();i++)
     	{
     		if(!targetFound)
     		{
     			if(charArray[i] == target) targetFound = true;
     		}
-    		else rebuiltString += charArray[i];
+    		else rebuiltString.append(charArray[i]);
     	}
-    	if(targetFound) return rebuiltString;
+    	if(targetFound) return rebuiltString.toString();
     	else return string;
     }
 

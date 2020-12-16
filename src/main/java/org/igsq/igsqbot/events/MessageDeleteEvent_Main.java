@@ -1,8 +1,8 @@
-package main.java.org.igsq.igsqbot.events;
+package org.igsq.igsqbot.events;
 
-import main.java.org.igsq.igsqbot.Yaml;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Yaml;
 
 public class MessageDeleteEvent_Main extends ListenerAdapter
 {

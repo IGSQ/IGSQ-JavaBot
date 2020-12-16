@@ -1,4 +1,4 @@
-package main.java.org.igsq.igsqbot;
+package org.igsq.igsqbot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

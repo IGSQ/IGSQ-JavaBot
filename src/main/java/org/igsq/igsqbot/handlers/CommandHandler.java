@@ -1,17 +1,17 @@
-package main.java.org.igsq.igsqbot.handlers;
+package org.igsq.igsqbot.handlers;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.IGSQBot;
-import main.java.org.igsq.igsqbot.objects.Command;
-import main.java.org.igsq.igsqbot.objects.Context;
-import main.java.org.igsq.igsqbot.util.EmbedUtils;
-import main.java.org.igsq.igsqbot.util.YamlUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;

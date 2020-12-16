@@ -1,6 +1,6 @@
-package main.java.org.igsq.igsqbot.handlers;
+package org.igsq.igsqbot.handlers;
 
-import main.java.org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Command;
 
 import java.util.HashMap;
 import java.util.Map;
