@@ -3,6 +3,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/IGSQ/IGSQ-Bot)](https://github.com/IGSQ/IGSQ-Bot/network)
 [![GitHub stars](https://img.shields.io/github/stars/IGSQ/IGSQ-Bot)](https://github.com/IGSQ/IGSQ-Bot/stargazers)
 [![GitHub license](https://img.shields.io/badge/license-GNU%20AGP-lightgrey)](https://github.com/IGSQ/IGSQ-Bot/tree/Dev/LICENSE)
+
 ## TODO
 **Features that are still to be implemented**
  - [x] Verification Rewrite (to be reviewed)

@@ -24,7 +24,7 @@ public abstract class CommandHandler
 	{
 		//Overrides the default, public, constructor
 	}
-	public static final String COMMAND_PACKAGE = "main.java.org.igsq.igsqbot.commands";
+	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
 	private static final Map<String, Command> COMMANDS = new HashMap<>();
 	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
@@ -121,5 +121,10 @@ public abstract class CommandHandler
 			}
 
 		}
+	}
+
+	public static void shutdown()
+	{
+		commandExecutor.shutdown();
 	}
 }

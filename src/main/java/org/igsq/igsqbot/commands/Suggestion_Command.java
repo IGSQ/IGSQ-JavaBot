@@ -10,6 +10,7 @@ import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
@@ -41,6 +42,10 @@ public class Suggestion_Command extends Command
             if(UserUtils.basicPermCheck(guild.getSelfMember(), suggestionChannel))
             {
                 EmbedUtils.sendPermissionError(channel, this);
+            }
+            else if(CommandUtils.isCommandTooLarge(args))
+            {
+                EmbedUtils.sendSyntaxError(channel, this);
             }
             else
             {

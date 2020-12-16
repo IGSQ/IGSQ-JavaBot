@@ -31,7 +31,8 @@ public class Avatar_Command extends Command
 		}
 		else if(message.getMentionedUsers().size() > 1)
 		{
-			message.getMentionedUsers().forEach(user -> new EmbedGenerator(channel)
+			message.getMentionedUsers().forEach(user ->
+				new EmbedGenerator(channel)
 					.title(user.getAsTag() + "'s Avatar")
 					.image(user.getEffectiveAvatarUrl())
 					.color(EmbedUtils.IGSQ_PURPLE).send());
@@ -40,10 +41,10 @@ public class Avatar_Command extends Command
 		else
 		{
 			new EmbedGenerator(channel)
-					.title(author.getAsTag() + "'s Avatar")
-					.image(author.getAvatarUrl())
-					.color(EmbedUtils.IGSQ_PURPLE)
-					.send();
+				.title(author.getAsTag() + "'s Avatar")
+				.image(author.getAvatarUrl())
+				.color(EmbedUtils.IGSQ_PURPLE)
+				.send();
 		}
 	}
 }

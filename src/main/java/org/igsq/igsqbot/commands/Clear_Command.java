@@ -14,6 +14,7 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Clear_Command extends Command
 {
@@ -52,38 +53,26 @@ public class Clear_Command extends Command
 			return;
 		}
 
-		CooldownHandler.addCooldown(author.getIdLong(), this);
-		channel.getHistory().retrievePast(amount).queue(
-				messages ->
-				{
-					channel.purgeMessages(messages);
-					new EmbedGenerator(channel)
-							.text("Deleted " + (messages.size()) + " messages")
-							.color(Color.GREEN)
-							.sendTemporary(5000);
+		channel.getIterableHistory().takeAsync(amount).thenAccept(messages ->
+		{
+			channel.purgeMessages(messages);
+			new EmbedGenerator(channel)
+					.text("Deleted " + (messages.size()) + " messages")
+					.color(Color.GREEN)
+					.sendTemporary(5000);
 
-					final MessageCache cache;
+			final MessageCache cache;
 
-					if(!MessageCache.isGuildCached(guild.getId()))
-					{
-						cache = MessageCache.addAndReturnCache(guild.getId());
-					}
-					else
-					{
-						cache = MessageCache.getCache(guild.getId());
-					}
+			if(!MessageCache.isGuildCached(guild.getId()))
+			{
+				cache = MessageCache.addAndReturnCache(guild.getId());
+			}
+			else
+			{
+				cache = MessageCache.getCache(guild.getId());
+			}
 
-					List<String> messageIds = new ArrayList<>();
-					messages.forEach(message -> messageIds.add(message.getId()));
-
-					for(String selectedMessageID : messageIds)
-					{
-						if(cache.isInCache(selectedMessageID))
-						{
-							cache.remove(cache.get(selectedMessageID));
-						}
-					}
-				}
-		);
+			messages.stream().filter(cache::isInCache).forEach(cache::remove);
+		});
 	}
 }

@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.io.InputStream;
@@ -24,7 +25,7 @@ public class Mock_Command extends Command
 		final StringBuilder mockText = new StringBuilder();
 		final Random random = new Random();
 
-		if(args.isEmpty())
+		if(args.isEmpty() || CommandUtils.isCommandTooLarge(args))
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
@@ -41,7 +42,6 @@ public class Mock_Command extends Command
 			try
 			{
 				InputStream file = getClass().getClassLoader().getResource("mock.jpg").toURI().toURL().openStream();
-
 				channel.sendFile(file, "mock.jpg").embed(embed.getBuilder().build()).queue();
 			}
 			catch(Exception exception)

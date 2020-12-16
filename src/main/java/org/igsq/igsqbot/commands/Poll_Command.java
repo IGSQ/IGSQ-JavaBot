@@ -10,6 +10,7 @@ import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Poll_Command extends Command
@@ -26,20 +27,20 @@ public class Poll_Command extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final User author = ctx.getAuthor();
 		final List<String> reactions = new ArrayList<>();
-		final String[] slashArgs;
 
-		if(args.size() != 1)
+		if(args.size() != 1 || CommandUtils.isCommandTooLarge(args))
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 			return;
 		}
-		slashArgs = args.get(0).split("/");
-		if(slashArgs.length >= 3)
+
+		final List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
+		if(slashArgs.size() >= 3)
 		{
-			String topic = slashArgs[0];
-			for(int i = 1; i < slashArgs.length && i < EmbedUtils.REACTION_LIMIT+1; i++)
+			String topic = slashArgs.get(0);
+			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT+1; i++)
 			{
-				options.append(slashArgs[i]).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n\n");
+				options.append(slashArgs.get(i)).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n\n");
 				reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i-1));
 			}
 			new EmbedGenerator(channel)

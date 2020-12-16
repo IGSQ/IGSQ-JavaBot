@@ -2,10 +2,8 @@ package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommandUtils
 {
@@ -203,5 +201,10 @@ public class CommandUtils
 			i++;
 		}
 		return false;
+	}
+
+	public static boolean isCommandTooLarge(List<String> args)
+	{
+		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList()).size() > EmbedUtils.CHARACTER_LIMIT;
 	}
 }
