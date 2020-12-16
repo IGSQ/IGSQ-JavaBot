@@ -1,4 +1,5 @@
 # IGSQBot Developer Edition
+[![See latest version](https://img.shields.io/badge/Latest%3A-0.0.1-blue)](https://github.com/IGSQ/IGSQ-Bot/releases)
 ## TODO
 **Features that are still to be implemented**
  - [x] Verification Rewrite (to be reviewed)
