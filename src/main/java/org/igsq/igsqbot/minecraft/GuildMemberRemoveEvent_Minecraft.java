@@ -1,6 +1,6 @@
 package org.igsq.igsqbot.minecraft;
 
-import main.java.org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.Database;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

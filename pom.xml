@@ -79,7 +79,7 @@
                 <configuration>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>main.java.org.igsq.igsqbot.IGSQBot</mainClass>
+                            <mainClass>org.igsq.igsqbot.IGSQBot</mainClass>
                         </transformer>
                     </transformers>
                     <createDependencyReducedPom>false</createDependencyReducedPom>

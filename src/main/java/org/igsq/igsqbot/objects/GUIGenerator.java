@@ -1,7 +1,7 @@
 package org.igsq.igsqbot.objects;
 
-import main.java.org.igsq.igsqbot.Common;
-import main.java.org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;

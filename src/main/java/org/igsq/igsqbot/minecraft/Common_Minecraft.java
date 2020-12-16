@@ -1,6 +1,6 @@
 package org.igsq.igsqbot.minecraft;
 
-import main.java.org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
