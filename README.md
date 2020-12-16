@@ -1,5 +1,5 @@
 # IGSQBot Developer Edition
-[![See latest version](https://img.shields.io/badge/download%3A-0.0.1-blue)](https://github.com/IGSQ/IGSQ-Bot/releases)
+[![See latest version](https://img.shields.io/badge/download-0.0.1-blue)](https://github.com/IGSQ/IGSQ-Bot/releases)
 [![GitHub forks](https://img.shields.io/github/forks/IGSQ/IGSQ-Bot)](https://github.com/IGSQ/IGSQ-Bot/network)
 [![GitHub stars](https://img.shields.io/github/stars/IGSQ/IGSQ-Bot)](https://github.com/IGSQ/IGSQ-Bot/stargazers)
 [![GitHub license](https://img.shields.io/badge/license-GNU%20AGP-lightgrey)](https://github.com/IGSQ/IGSQ-Bot/tree/Dev/LICENSE)
@@ -19,6 +19,7 @@
  - [ ] Rewrite the event handler
  - [ ] Full logger implementation
  - [ ] Translation
+ - [ ] XP system
 
 
 ## Known Issues

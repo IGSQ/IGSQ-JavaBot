@@ -44,6 +44,11 @@ public class IGSQBot
 
 					new GuildMemberJoinEvent_Logging(),
 					new GuildMemberRemoveEvent_Logging(),
+
+					new GuildVoiceJoinEvent_Logging(),
+					new GuildVoiceLeaveEvent_Logging(),
+					new GuildVoiceMoveEvent_Logging(),
+
 					new MessageBulkDeleteEvent_Logging(),
 					new MessageDeleteEvent_Logging(),
 					new MessageUpdateEvent_Logging()

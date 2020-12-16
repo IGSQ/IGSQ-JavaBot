@@ -21,6 +21,11 @@ public class YamlUtils
 		return IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
 	}
 
+	public static GuildChannel getVoidLogChannel(String guildID)
+	{
+		return IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString(guildID + ".voicelog", "guild"));
+	}
+
 	public static String fieldAppend(String path, String filename, String delimiter, Object data)
 	{
 		if(isFieldEmpty(path, filename))
