@@ -12,6 +12,7 @@
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within setup)
  - [ ] Implement slash commands when they release
+ - [ ] Add UserUtils function to check if DM can be opened
 
 
 ## Known Issues
