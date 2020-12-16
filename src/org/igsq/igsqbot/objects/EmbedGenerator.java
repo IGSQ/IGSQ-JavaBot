@@ -1,12 +1,5 @@
 package org.igsq.igsqbot.objects;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,9 +10,16 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.igsq.igsqbot.Yaml;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Creates Embeds using JDA's {@link EmbedBuilder} api, with increased functionality.

@@ -1,19 +1,13 @@
 package org.igsq.igsqbot.events;
 
-import org.igsq.igsqbot.util.CommandUtils;
-import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.Yaml;
-
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.UserUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 

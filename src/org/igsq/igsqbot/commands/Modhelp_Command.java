@@ -3,11 +3,11 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.ArrayUtils;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;

@@ -1,17 +1,16 @@
 package org.igsq.igsqbot.minecraft;
 
-import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.Yaml;
-
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.handlers.ErrorHandler;
+
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Sync_Minecraft 
 {

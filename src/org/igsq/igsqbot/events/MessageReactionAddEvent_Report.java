@@ -1,12 +1,13 @@
 package org.igsq.igsqbot.events;
 
-import java.awt.Color;
-
-import net.dv8tion.jda.api.entities.*;
-import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.Yaml;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+
+import java.awt.*;
 
 public class MessageReactionAddEvent_Report extends ListenerAdapter 
 {

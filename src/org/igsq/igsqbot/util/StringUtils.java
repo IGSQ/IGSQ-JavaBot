@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.util;
 
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.IGSQBot;
 
 import java.net.URL;

@@ -1,9 +1,9 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
+import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;

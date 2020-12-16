@@ -1,9 +1,9 @@
 package org.igsq.igsqbot.minecraft;
 
+import org.igsq.igsqbot.Database;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.igsq.igsqbot.Database;
 
 public class Common_Minecraft 
 {

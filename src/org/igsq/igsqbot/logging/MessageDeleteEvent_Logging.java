@@ -1,20 +1,19 @@
 package org.igsq.igsqbot.logging;
 
-import java.time.format.DateTimeFormatter;
-
 import net.dv8tion.jda.api.entities.ChannelType;
-import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.MessageCache;
-import org.igsq.igsqbot.Yaml;
-
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
+
+import java.time.format.DateTimeFormatter;
 
 public class MessageDeleteEvent_Logging extends ListenerAdapter
 {

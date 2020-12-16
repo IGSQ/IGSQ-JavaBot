@@ -3,8 +3,8 @@ package org.igsq.igsqbot.handlers;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.YamlUtils;
 
 import java.awt.*;

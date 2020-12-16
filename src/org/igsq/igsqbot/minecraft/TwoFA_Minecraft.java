@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.minecraft;
 
 import net.dv8tion.jda.api.entities.User;
-
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.handlers.ErrorHandler;

@@ -2,7 +2,8 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.objects.*;
+import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.objects.Context;
 
 import java.util.List;
 

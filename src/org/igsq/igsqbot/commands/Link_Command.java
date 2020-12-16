@@ -1,20 +1,19 @@
 package org.igsq.igsqbot.commands;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.minecraft.Common_Minecraft;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-
-import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class Link_Command extends Command
 {

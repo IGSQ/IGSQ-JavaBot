@@ -1,14 +1,12 @@
 package org.igsq.igsqbot.objects;
 
-import net.dv8tion.jda.api.events.GenericEvent;
-import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.util.GUIState;
-
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 
 public class GUIGenerator
 {
@@ -23,7 +21,7 @@ public class GUIGenerator
 		
 	}
 	
-	public GUIState confirmation(User user, long timeout)
+	public Boolean confirmation(User user, long timeout)
 	{	
 		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
 		
@@ -59,20 +57,20 @@ public class GUIGenerator
 			{
 				if(reactionEvent.getReactionEmote().getAsCodepoints().equals("U+2705"))
 				{
-					return GUIState.TRUE;
+					return true;
 				}
 				else if(reactionEvent.getReactionEmote().getAsCodepoints().equals("U+274e"))
 				{
-					return GUIState.FALSE;
+					return false;
 				}
 				else
 				{
-					return null;
+					return confirmation(user, timeout);
 				}
 			}
 			else
 			{
-				return null;
+				return confirmation(user, timeout);
 			}
 		}
 		else

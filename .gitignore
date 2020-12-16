@@ -1,9 +1,17 @@
+# project files
+data/
+
+# eclipse files
+.classpath
 .project
 .settings/
-bin/
-.classpath
-/target/
-*.bat
-data/
-.idea/
+/bin/
+
+# intellij files
+/.idea/
 *.iml
+*.ipr
+*.iws
+
+#maven folder
+/target/

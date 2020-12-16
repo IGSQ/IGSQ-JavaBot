@@ -1,10 +1,10 @@
 package org.igsq.igsqbot;
 
-import java.io.File;
-
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
+
+import java.io.File;
 
 
 public class Yaml

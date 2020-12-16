@@ -1,21 +1,16 @@
 package org.igsq.igsqbot.commands;
 
-import java.awt.Color;
-import java.util.List;
-
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
+import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.*;
-import org.igsq.igsqbot.Yaml;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import java.awt.*;
+import java.util.List;
 
 public class Report_Command extends Command
 {

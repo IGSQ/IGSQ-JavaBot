@@ -1,25 +1,16 @@
 package org.igsq.igsqbot;
 
-import java.util.concurrent.TimeUnit;
-
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Activity;
-import org.igsq.igsqbot.events.MessageReactionAddEvent_Help;
-import org.igsq.igsqbot.events.MessageReactionAddEvent_Report;
-import org.igsq.igsqbot.logging.GuildMemberJoinEvent_Logging;
-import org.igsq.igsqbot.logging.GuildMemberRemoveEvent_Logging;
-import org.igsq.igsqbot.logging.MessageBulkDeleteEvent_Logging;
-import org.igsq.igsqbot.logging.MessageDeleteEvent_Logging;
-import org.igsq.igsqbot.logging.MessageUpdateEvent_Logging;
-import org.igsq.igsqbot.events.MessageDeleteEvent_Main;
-import org.igsq.igsqbot.events.MessageReactionAddEvent_Main;
-import org.igsq.igsqbot.events.MessageReceivedEvent_Main;
-import org.igsq.igsqbot.minecraft.Main_Minecraft;
-
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.igsq.igsqbot.events.*;
+import org.igsq.igsqbot.logging.*;
+import org.igsq.igsqbot.minecraft.Main_Minecraft;
 import org.igsq.igsqbot.objects.MessageCache;
+
+import java.util.concurrent.TimeUnit;
 
 public class IGSQBot
 {

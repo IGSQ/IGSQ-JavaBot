@@ -6,10 +6,10 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.CooldownHandler;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.Context;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 

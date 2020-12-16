@@ -1,21 +1,23 @@
 # IGSQBot Developer Edition
 ## TODO
-**Features that are still to be fully implemented**
+**Features that are still to be implemented**
  - [x] Verification Rewrite (to be reviewed)
- - [ ] GUIGenerator further implementation
- - [x] Project Refactor
- - [ ] Logging expansion
- - [ ] Help / Modhelp
- - [ ] Alias / Decline
- - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
- - [x] Input catching
- - [ ] Implement .help to use the COMMANDS array for its information
  - [x] Per guild prefixing
+ - [x] Project Refactor
+ - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
+ - [x] Input catching on commands
+ - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
+ - [ ] Logging expansion (log voice channel stuff)
+ - [ ] Help / Modhelp
+ - [ ] Implement .help to use the COMMANDS array for its information
+ - [ ] Alias / Decline (within setup)
+ - [ ] Implement slash commands when they release
+
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
  
-- [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register
+- [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
 
 ## Building and Running
 
@@ -26,7 +28,7 @@ Cloning the project and running a Maven build with the `pom.xml` will build the 
 When running the JAR, JDK 14's `java.exe` must be pointed to (see the example bat).
 
 In order to connect to discord successfully, you must put a valid bot token (see https://discord.com/developers/applications)
-in `bot.token` within the `config` YML file, which is auto generated on first launch.
+in `bot.token` within the `config` YML file, which is automatically generated on first launch.
 
 **Example .bat file**
 

@@ -1,14 +1,13 @@
 package org.igsq.igsqbot.setup;
 
-import java.awt.Color;
-
-import org.igsq.igsqbot.objects.EmbedGenerator;
-
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.objects.EmbedGenerator;
+
+import java.awt.*;
 
 public class Setup_Command 
 {

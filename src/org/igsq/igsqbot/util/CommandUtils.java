@@ -2,7 +2,10 @@ package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommandUtils
 {
