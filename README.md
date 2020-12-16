@@ -11,16 +11,19 @@
  - [x] Project Refactor
  - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
  - [x] Input catching on commands
+ - [x] Logging expansion (log voice channel stuff) (completed primitive)
+ 
  - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
- - [ ] Logging expansion (log voice channel stuff)
  - [ ] Help / Modhelp
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within setup)
- - [ ] Implement slash commands when they release
+ - [ ] Fully implement the logger
+ 
  - [ ] Rewrite the event handler
- - [ ] Full logger implementation
  - [ ] Translation
  - [ ] XP system
+ 
+ - [ ] Implement slash commands when they release
 
 
 ## Known Issues
