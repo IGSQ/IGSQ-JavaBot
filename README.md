@@ -21,6 +21,7 @@
  - [ ] Full logger implementation
  - [ ] Translation
  - [ ] XP system
+ - [ ] Change cache to Hashmap(MessageID, Message)
 
 
 ## Known Issues
