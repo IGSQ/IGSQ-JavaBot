@@ -5,7 +5,10 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.GUIGenerator;
 
 import java.awt.*;
 
@@ -56,7 +59,32 @@ public class Setup_Command
 			case "log":
 				break;
 			default:
-				new EmbedGenerator(channel).text("That is an invalid setup parameter").color(Color.RED).sendTemporary();
+				EmbedGenerator embed = new EmbedGenerator(channel).text(":one: Verification \n :two: Logging \n :three: Quit");
+				GUIGenerator gui = new GUIGenerator(embed);
+				int menuItem = gui.menu(author, 10000, 3);
+				MessageReactionAddEvent event = (MessageReactionAddEvent) gui.getEvent();
+				switch (menuItem)
+				{
+					case 1:
+						new Verification_Setup(event);
+						break;
+					case 2:
+						new Logging_Setup(event);
+						break;
+					case 3:
+						gui.getMessage().delete().queue();
+						break;
+					default:
+						if (event == null)
+						{
+							//Timeout
+						}
+						else
+						{
+							//Invalid emoji
+							event.getReaction().removeReaction(author).queue();
+						}
+				}
 		}
 	}
 }
