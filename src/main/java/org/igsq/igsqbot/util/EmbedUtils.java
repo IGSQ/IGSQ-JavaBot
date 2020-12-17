@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 
@@ -31,7 +30,7 @@ public class EmbedUtils
 	public static void sendSyntaxError(MessageChannel channel, Command command)
 	{
 		new EmbedGenerator(channel)
-				.text("<:igsqCross:788476443885174834> The provided syntax was incorrect.\n`" + command.getAliases()[0] +  " " + command.getSyntax() + "`")
+				.text("<:igsqCross:788476443885174834> The provided syntax was incorrect.\n`" + command.getAliases()[0] + " " + command.getSyntax() + "`")
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();

@@ -17,7 +17,7 @@ public class PollCommand extends Command
 {
 	public PollCommand()
 	{
-		super("Poll", new String[]{"poll"}, "Starts a poll for users to vote in.","[title]/[option1]/[option2]-20-",new Permission[]{}, false,0);
+		super("Poll", new String[]{"poll"}, "Starts a poll for users to vote in.", "[title]/[option1]/[option2]-20-", new Permission[]{}, false, 0);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class PollCommand extends Command
 
 		if(args.size() != 1 || CommandUtils.isCommandTooLarge(args))
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
 
@@ -38,16 +38,16 @@ public class PollCommand extends Command
 		if(slashArgs.size() >= 3)
 		{
 			String topic = slashArgs.get(0);
-			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT+1; i++)
+			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
 			{
 				options.append(slashArgs.get(i)).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n\n");
-				reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i-1));
+				reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i - 1));
 			}
 			new EmbedGenerator(channel)
 					.title("Poll:")
 					.text(topic)
 					.element("Options:", options.toString())
-					.footer("Poll created by "+ author.getAsTag())
+					.footer("Poll created by " + author.getAsTag())
 					.thumbnail(author.getAvatarUrl())
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.reaction(reactions.toArray(new String[0]))
@@ -55,7 +55,7 @@ public class PollCommand extends Command
 		}
 		else
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
 	}
 }

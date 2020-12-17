@@ -79,6 +79,7 @@ public class CommandUtils
 		Yaml.updateField(id + ".references." + i + ".id", "verification", role);
 		Yaml.updateField(id + ".references." + i + ".name", "verification", alias);
 	}
+
 	public static int findReferenceForRole(String guild, String role)
 	{
 		int i = 0;
@@ -92,6 +93,7 @@ public class CommandUtils
 		}
 		return -1;
 	}
+
 	public static int findHighestReference(String guild)
 	{
 		int i = -1;
@@ -101,6 +103,7 @@ public class CommandUtils
 		}
 		return i;
 	}
+
 	public static void insertDecline(String id, String role, String alias)
 	{
 		int i = 0;
@@ -127,6 +130,7 @@ public class CommandUtils
 		Yaml.updateField(id + ".references." + i + ".id", "verification", role);
 		Yaml.updateField(id + ".references." + i + ".name", "verification", alias);
 	}
+
 	public static boolean removeAlias(String guild, String role, String alias)
 	{
 		int i = 0;
@@ -143,7 +147,7 @@ public class CommandUtils
 						dependedAliases.append(",").append(selectedAlias);
 					}
 				}
-				
+
 				Yaml.updateField(guild + ".references." + i + ".aliases", "verification", dependedAliases.toString());
 				return true;
 			}
@@ -151,6 +155,7 @@ public class CommandUtils
 		}
 		return false;
 	}
+
 	public static boolean removeDecline(String guild, String role, String alias)
 	{
 		int i = 0;
@@ -167,7 +172,7 @@ public class CommandUtils
 						dependedAliases.append(",").append(selectedAlias);
 					}
 				}
-				
+
 				Yaml.updateField(guild + ".references." + i + ".declined", "verification", dependedAliases.toString());
 				return true;
 			}
@@ -175,6 +180,7 @@ public class CommandUtils
 		}
 		return false;
 	}
+
 	public static List<String> getRoles(String id)
 	{
 		int i = 0;
@@ -186,6 +192,7 @@ public class CommandUtils
 		}
 		return result;
 	}
+
 	public static boolean isAliasExists(String guild, String alias)
 	{
 		int i = 0;

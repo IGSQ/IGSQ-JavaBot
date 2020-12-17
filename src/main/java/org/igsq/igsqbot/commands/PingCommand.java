@@ -4,9 +4,9 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
@@ -22,7 +22,7 @@ public class PingCommand extends Command
 {
 	public PingCommand()
 	{
-		super("Ping", new String[]{"ping", "latency"}, "Shows the bots current ping to Discord","[none]", new Permission[]{Permission.MESSAGE_MANAGE},false, 10);
+		super("Ping", new String[]{"ping", "latency"}, "Shows the bots current ping to Discord", "[none]", new Permission[]{Permission.MESSAGE_MANAGE}, false, 10);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class PingCommand extends Command
 
 		if(!args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
 
@@ -51,36 +51,35 @@ public class PingCommand extends Command
 					embed.text("**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms");
 					channel.sendMessage(embed.getBuilder().build()).queue(
 							message ->
-							new EmbedGenerator().text(
-									"**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms"
-											+ "\n\n**30 Second REST Average**: " + getAverageREST(30, jda) + "ms"
-											+ "\n**1 Minute REST Average**: " + getAverageREST(60, jda) + "ms")
+									new EmbedGenerator().text(
+											"**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms"
+													+ "\n\n**REST Average**: " + getAverageREST(jda) + "ms")
 
-									.color(EmbedUtils.IGSQ_PURPLE)
-									.title("Pong!")
-									.footer(StringUtils.getTimestamp())
-									.replace(message));
+											.color(EmbedUtils.IGSQ_PURPLE)
+											.title("Pong!")
+											.footer(StringUtils.getTimestamp())
+											.replace(message));
 				}
 		);
 	}
 
-	private String getAverageREST(int seconds, JDA jda)
+	private String getAverageREST(JDA jda)
 	{
 		AtomicLong averagePing = new AtomicLong();
 
-		ScheduledFuture<?> collectAverages = Common.scheduler.scheduleAtFixedRate(() -> jda.getRestPing().queueAfter(5, TimeUnit.SECONDS, averagePing::addAndGet), 0, 5000, TimeUnit.MILLISECONDS);
-		ScheduledFuture<?> stopCollection = Common.scheduler.schedule(() -> collectAverages.cancel(false), seconds, TimeUnit.SECONDS);
+		ScheduledFuture<?> retrieveTask = TaskHandler.addRepeatingTask(() -> jda.getRestPing().queueAfter(5, TimeUnit.SECONDS, averagePing::addAndGet), TimeUnit.SECONDS, 30);
+		ScheduledFuture<?> stopTask = TaskHandler.addTask(() -> retrieveTask.cancel(false), TimeUnit.SECONDS, 30);
 
 		try
 		{
-			while(!stopCollection.isDone())
+			while(!stopTask.isDone())
 			{
 				synchronized(this)
 				{
 					wait(100);
 				}
 			}
-			return "" + averagePing.get() / (seconds / 5);
+			return "" + averagePing.get();
 		}
 		catch(Exception exception)
 		{

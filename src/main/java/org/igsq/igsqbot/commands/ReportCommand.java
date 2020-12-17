@@ -16,7 +16,7 @@ public class ReportCommand extends Command
 {
 	public ReportCommand()
 	{
-		super("Report", new String[]{"report"}, "Reports the specified member with the specified reason","[user][reason]",new Permission[]{}, true, 60);
+		super("Report", new String[]{"report"}, "Reports the specified member with the specified reason", "[user][reason]", new Permission[]{}, true, 60);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class ReportCommand extends Command
 
 		if(args.size() != 2)
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
 
@@ -50,7 +50,8 @@ public class ReportCommand extends Command
 			if(reportedUser.equals(author)) EmbedUtils.sendError(channel, "You can't report yourself!");
 			else if(reportedUser.isBot()) EmbedUtils.sendError(channel, "You may not report bots.");
 			else if(reportedMember.isOwner()) EmbedUtils.sendError(channel, "You may not report the owner.");
-			else if(YamlUtils.isFieldEmpty(guild.getId() + ".reportchannel", "guild")) EmbedUtils.sendError(channel, "There is no report channel setup.");
+			else if(YamlUtils.isFieldEmpty(guild.getId() + ".reportchannel", "guild"))
+				EmbedUtils.sendError(channel, "There is no report channel setup.");
 			else
 			{
 				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())

@@ -23,9 +23,9 @@
  - [ ] Alias / Decline (within the setup command)
  - [ ] Fully implement the logger
  - [ ] Condense events
+ - [ ] Add VerificationCache to store settings
+ - [ ] Remove raw Yaml links in place of caches / methods
 
-
-   
  - [ ] Rewrite the event waiter
  - [ ] Translation
  - [ ] XP system

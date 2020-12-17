@@ -11,7 +11,7 @@ public class TestCommand extends Command
 {
 	public TestCommand()
 	{
-		super("test", new String[]{"test"}, "Placeholder class for command testing","[none]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
+		super("test", new String[]{"test"}, "Placeholder class for command testing", "[none]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
 	}
 
 	@Override

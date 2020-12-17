@@ -6,8 +6,9 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.igsq.igsqbot.handlers.EventHandler;
+import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.minecraft.MainMinecraft;
-import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,19 +35,18 @@ public class IGSQBot
 					.setEventManager(EventHandler.getEventManager())
 					.build().awaitReady();
 
-			Common.scheduler.scheduleAtFixedRate(() ->
+			TaskHandler.addRepeatingTask(() ->
 			{
 				Yaml.saveFileChanges("@all");
 				Yaml.loadFile("@all");
-			}, 0, 30,TimeUnit.SECONDS);
+			}, "yamlReload", TimeUnit.SECONDS, 30);
 
-			Common.scheduler.scheduleAtFixedRate(MessageCache::cleanCaches, 0, 6,TimeUnit.HOURS);
+			TaskHandler.addRepeatingTask(MessageCache::cleanCaches, "cleanMessageCache", TimeUnit.HOURS, 6);
 
 			EventHandler.setEvents();
 			MainMinecraft.startMinecraft();
 			Database.startDatabase();
 		}
-
 		catch(Exception exception)
 		{
 			LOGGER.error("Fatal exception occurred when the bot tried to start.", exception);

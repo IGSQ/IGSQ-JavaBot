@@ -11,6 +11,7 @@ public abstract class CooldownHandler
 	{
 		//Overrides the default, public, constructor
 	}
+
 	private static final Map<Command, Map<Long, Long>> COOLDOWN_MAP = new HashMap<>(); // K = Command, V = Map<userId, Timestamp>
 
 	public static void addCooldown(final long userID, final Command command)

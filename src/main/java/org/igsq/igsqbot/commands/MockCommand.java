@@ -18,6 +18,7 @@ public class MockCommand extends Command
 	{
 		super("Mock", new String[]{"mock"}, "Mocks the specified text", "[text]", new Permission[]{}, false, 0);
 	}
+
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -32,7 +33,8 @@ public class MockCommand extends Command
 		else
 		{
 			mockText.append('"');
-			args.forEach(word -> {
+			args.forEach(word ->
+			{
 				for(String selectedChar : word.split(""))
 				{
 					mockText.append(random.nextBoolean() ? selectedChar.toUpperCase() : selectedChar.toLowerCase());

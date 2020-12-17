@@ -14,33 +14,33 @@ import org.igsq.igsqbot.util.YamlUtils;
 import java.util.Arrays;
 import java.util.List;
 
-public class MessageReactionAddEvent_Verification extends ListenerAdapter 
+public class MessageReactionAddEvent_Verification extends ListenerAdapter
 {
 	@Override
-    public void onMessageReactionAdd(MessageReactionAddEvent event)
-    {
-	    if(!event.getReactionEmote().isEmoji()) return;
+	public void onMessageReactionAdd(MessageReactionAddEvent event)
+	{
+		if(!event.getReactionEmote().isEmoji()) return;
 		Message message = null;
 		User user = null;
 		Member member = null;
-		
+
 		String messageID = event.getMessageId();
 		Guild guild = event.getGuild();
 		JDA jda = event.getJDA();
-		
-		try 
+
+		try
 		{
 			message = event.retrieveMessage().submit().get();
 			user = event.retrieveUser().submit().get();
 			member = event.retrieveMember().complete();
-		} 
-		catch (Exception exception) 
+		}
+		catch(Exception exception)
 		{
 			new ErrorHandler(exception);
 			return;
 		}
 
-		
+
 		if(Yaml.getFieldBool(messageID + ".verification.enabled", "internal") && !user.isBot())
 		{
 			String[] guessedRoles = Yaml.getFieldString(messageID + ".verification.guessedroles", "internal").split(",");
@@ -50,11 +50,11 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 			Member verifiedMember = UserUtils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.member", "internal")).complete(), guild);
 			Member initiater = UserUtils.getMemberFromUser(jda.retrieveUserById(Yaml.getFieldString(messageID + ".verification.verifier", "internal")).complete(), guild);
 			// if(!member.canInteract(verifiedMember)) { event.getReaction().removeReaction(user).queue(); return; }
-			if(!initiater.equals(member)) 
-			{ 
+			if(!initiater.equals(member))
+			{
 				try
 				{
-					event.getReaction().removeReaction(user).queue(); 
+					event.getReaction().removeReaction(user).queue();
 				}
 				catch(Exception exception)
 				{
@@ -63,7 +63,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 				}
 
 			}
-			if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44d")) 
+			if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+1f44d"))
 			{
 				for(int i = 0; i < guessedRoles.length; i++)
 				{
@@ -81,14 +81,15 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 			if(!YamlUtils.isFieldEmpty(guild.getId() + ".welcomechannel", "guild"))
 			{
 				String parsedRoles = "";
-				
-				for(String selectedRole : confirmedRoles)  if(!selectedRole.isEmpty()) parsedRoles += " <@&" + selectedRole + "> "; 
+
+				for(String selectedRole : confirmedRoles)
+					if(!selectedRole.isEmpty()) parsedRoles += " <@&" + selectedRole + "> ";
 				if(parsedRoles.equals("<@&>") || parsedRoles.isEmpty()) parsedRoles = "No roles found.";
 
 				GuildChannel welcomeChannel = jda.getGuildChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
 				new EmbedGenerator((MessageChannel) welcomeChannel).text(verifiedMember.getAsMention() + ", Welcome to the " + guild.getName() + "!").author(verifiedMember.getUser().getAsTag()).thumbnail(verifiedMember.getUser().getEffectiveAvatarUrl()).element("Roles", parsedRoles).send();
-				
-				for(String selectedRole : Yaml.getFieldString(guild.getId() + ".serverjoinroles", "guild").split(",")) 
+
+				for(String selectedRole : Yaml.getFieldString(guild.getId() + ".serverjoinroles", "guild").split(","))
 				{
 					try
 					{
@@ -102,9 +103,9 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 				}
 				for(String selectedRole : confirmedRoles)
 				{
-					try 
-					{ 
-						guild.addRoleToMember(verifiedMember, guild.getRoleById(selectedRole)).queue(); 
+					try
+					{
+						guild.addRoleToMember(verifiedMember, guild.getRoleById(selectedRole)).queue();
 					}
 					catch(Exception exception)
 					{
@@ -112,15 +113,18 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 						return;
 					}
 				}
-				try {guild.addRoleToMember(verifiedMember, guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"))).queue(); }
+				try
+				{
+					guild.addRoleToMember(verifiedMember, guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"))).queue();
+				}
 				catch(Exception exception)
 				{
 					new ErrorHandler(exception);
 					return;
 				}
-				
+
 			}
 			message.delete().queue();
 		}
-    }
+	}
 }

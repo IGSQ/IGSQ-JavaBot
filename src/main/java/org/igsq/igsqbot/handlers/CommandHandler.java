@@ -24,6 +24,7 @@ public abstract class CommandHandler
 	{
 		//Overrides the default, public, constructor
 	}
+
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
 	private static final Map<String, Command> COMMANDS = new HashMap<>();
 	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
@@ -31,16 +32,16 @@ public abstract class CommandHandler
 
 	static
 	{
-		try (final ScanResult result = CLASS_GRAPH.scan())
+		try(final ScanResult result = CLASS_GRAPH.scan())
 		{
-			for (final ClassInfo cls : result.getAllClasses())
+			for(final ClassInfo cls : result.getAllClasses())
 			{
 				final Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
 				COMMANDS.put(cmd.getInvoke(), cmd);
-				for (final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
+				for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
 			}
 		}
-		catch (Exception exception)
+		catch(Exception exception)
 		{
 			new ErrorHandler(exception);
 		}

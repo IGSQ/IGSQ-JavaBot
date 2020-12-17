@@ -11,6 +11,7 @@ public class YamlUtils
 	{
 		//Overrides the default, public constructor
 	}
+
 	public static boolean isFieldEmpty(String path, String filename)
 	{
 		return Yaml.getFieldString(path, filename) == null || Yaml.getFieldString(path, filename).isEmpty();
@@ -24,7 +25,7 @@ public class YamlUtils
 		}
 		else
 		{
-			return IGSQBot.getJDA().getGuildChannelById( Yaml.getFieldString(guildID + ".textlog", "guild"));
+			return IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
 		}
 	}
 
@@ -36,7 +37,7 @@ public class YamlUtils
 		}
 		else
 		{
-			return IGSQBot.getJDA().getGuildChannelById( Yaml.getFieldString(guildID + ".voicelog", "guild"));
+			return IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString(guildID + ".voicelog", "guild"));
 		}
 
 
@@ -55,7 +56,7 @@ public class YamlUtils
 			onFile = onFile.strip();
 			while(onFile.startsWith(delimiter))
 			{
-				onFile = onFile.substring(0,1);
+				onFile = onFile.substring(0, 1);
 			}
 
 			if(onFile.endsWith(delimiter))

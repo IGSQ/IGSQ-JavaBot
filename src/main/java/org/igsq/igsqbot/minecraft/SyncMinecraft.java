@@ -7,6 +7,7 @@ import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.handlers.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class SyncMinecraft
 	{
 		if(guild == null)
 		{
-			MainMinecraft.cancelSync();
+			TaskHandler.cancelTask("minecraftSync");
 			LOGGER.warn("Minecraft sync stopped due to invalid guild.");
 		}
 		else
@@ -46,13 +47,13 @@ public class SyncMinecraft
 					String rank = getRank(selectedMember);
 
 					int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ? 1 : 0;
-					int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember)? 1 : 0;
+					int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember) ? 1 : 0;
 					int developer = hasRole(Yaml.getFieldString("ranks.developer", "minecraft").split(" "), selectedMember) ? 1 : 0;
-					int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember)? 1 : 0;
+					int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember) ? 1 : 0;
 					// int retired = hasRole(Yaml.getFieldString("ranks.retired", "minecraft").split(" "), selectedMember)?1:0;
 					int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember) ? 1 : 0;
 
-					boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '"+ id +"';") > 0;
+					boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
 
 					if(userExists)
 					{
@@ -66,47 +67,47 @@ public class SyncMinecraft
 			});
 		}
 	}
-	
+
 	public static void clean()
-	{		
+	{
 		ResultSet discord_accounts = Database.queryCommand("SELECT * FROM discord_accounts");
 		if(discord_accounts == null)
 		{
-			MainMinecraft.cancelClean();
+			TaskHandler.cancelTask("minecraftClean");
 			LOGGER.warn("Minecraft cleaning stopped due to invalid discord_accounts table.");
 			return;
 		}
-		try 
+		try
 		{
 			while(discord_accounts.next())
 			{
 				guild.retrieveMemberById(discord_accounts.getString(1)).queue(
-					selectedMember ->
-					{
-						final String id = selectedMember.getId();
-
-						if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
+						selectedMember ->
 						{
-							String uuid = CommonMinecraft.getUUIDFromID(id);
+							final String id = selectedMember.getId();
 
-							if(uuid != null)
+							if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 							{
-								Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
-								Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
-							}
+								String uuid = CommonMinecraft.getUUIDFromID(id);
 
-							Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
+								if(uuid != null)
+								{
+									Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
+									Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
+								}
+
+								Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
+							}
 						}
-					}
 				);
 			}
-		} 
-		catch (Exception exception)
+		}
+		catch(Exception exception)
 		{
 			new ErrorHandler(exception);
 		}
 	}
-	
+
 	private static boolean hasRole(String roleID, Member member)
 	{
 		for(Role selectedRole : member.getRoles())
@@ -118,7 +119,7 @@ public class SyncMinecraft
 		}
 		return false;
 	}
-	
+
 	private static boolean hasRole(String[] roles, Member member)
 	{
 		for(String selectedRole : roles)
@@ -127,14 +128,14 @@ public class SyncMinecraft
 		}
 		return false;
 	}
-	
+
 	private static String getRank(Member member)
 	{
 		if(ranks.isEmpty())
 		{
 			setRanks();
 		}
-		
+
 		for(Role selectedRole : member.getRoles())
 		{
 			for(Map.Entry<String, String> selectedRanks : ranks.entrySet())
@@ -150,27 +151,27 @@ public class SyncMinecraft
 		}
 		return "default";
 	}
-	
+
 	private static void setRanks()
 	{
 		ranks.put(Yaml.getFieldString("ranks.default", "minecraft"), "default");
-		
+
 		ranks.put(Yaml.getFieldString("ranks.rising", "minecraft"), "rising");
 		ranks.put(Yaml.getFieldString("ranks.flying", "minecraft"), "flying");
 		ranks.put(Yaml.getFieldString("ranks.soaring", "minecraft"), "soaring");
-		
+
 		ranks.put(Yaml.getFieldString("ranks.epic", "minecraft"), "epic");
 		ranks.put(Yaml.getFieldString("ranks.epic2", "minecraft"), "epic2");
 		ranks.put(Yaml.getFieldString("ranks.epic3", "minecraft"), "epic3");
-		
+
 		ranks.put(Yaml.getFieldString("ranks.elite", "minecraft"), "elite");
 		ranks.put(Yaml.getFieldString("ranks.elite2", "minecraft"), "elite2");
 		ranks.put(Yaml.getFieldString("ranks.elite3", "minecraft"), "elite3");
-		
+
 		ranks.put(Yaml.getFieldString("ranks.mod", "minecraft"), "mod");
 		ranks.put(Yaml.getFieldString("ranks.mod2", "minecraft"), "mod2");
 		ranks.put(Yaml.getFieldString("ranks.mod3", "minecraft"), "mod3");
-		
+
 		ranks.put(Yaml.getFieldString("ranks.council", "minecraft"), "council");
 	}
 }

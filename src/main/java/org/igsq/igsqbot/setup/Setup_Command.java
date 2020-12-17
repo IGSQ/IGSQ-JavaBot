@@ -6,13 +6,12 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.GUIGenerator;
 
 import java.awt.*;
 
-public class Setup_Command 
+public class Setup_Command
 {
 	private final MessageChannel channel;
 	private final User author;
@@ -29,13 +28,14 @@ public class Setup_Command
 		this.event = event;
 		setupQuery();
 	}
-	
+
 	private void setupQuery()
 	{
 		if(!author.isBot() && member.hasPermission(Permission.MESSAGE_MANAGE)) setup();
-		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
+		else
+			new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
-	
+
 	private void setup()
 	{
 		String action = "";
@@ -43,13 +43,13 @@ public class Setup_Command
 		{
 			action = args[0];
 		}
-		catch(Exception exception) 
+		catch(Exception exception)
 		{
-			new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary(); 
+			new EmbedGenerator(channel).text("You entered an invalid action").sendTemporary();
 			return;
 		}
-		
-		switch(action.toLowerCase()) 
+
+		switch(action.toLowerCase())
 		{
 			case "verify":
 			case "verification":
@@ -63,7 +63,7 @@ public class Setup_Command
 				GUIGenerator gui = new GUIGenerator(embed);
 				int menuItem = gui.menu(author, 10000, 3);
 				MessageReactionAddEvent event = (MessageReactionAddEvent) gui.getEvent();
-				switch (menuItem)
+				switch(menuItem)
 				{
 					case 1:
 						//new Verification_Setup(event);
@@ -75,7 +75,7 @@ public class Setup_Command
 						gui.getMessage().delete().queue();
 						break;
 					default:
-						if (event == null)
+						if(event == null)
 						{
 							//Timeout
 						}

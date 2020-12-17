@@ -15,7 +15,7 @@ public class AvatarCommand extends Command
 {
 	public AvatarCommand()
 	{
-		super("Avatar", new String[]{"avatar", "pfp", "avi"}, "Shows the avatar for the mentioned user(s)", "[user(s) -3-]" , new Permission[]{}, false, 0);
+		super("Avatar", new String[]{"avatar", "pfp", "avi"}, "Shows the avatar for the mentioned user(s)", "[user(s) -3-]", new Permission[]{}, false, 0);
 	}
 
 	@Override
@@ -27,24 +27,24 @@ public class AvatarCommand extends Command
 
 		if(message.getMentionedMembers().size() > 3)
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
-		else if(message.getMentionedMembers().size() >= 1)
+		else if(!message.getMentionedMembers().isEmpty())
 		{
 			message.getMentionedMembers().forEach(member ->
-				new EmbedGenerator(channel)
-					.title(member.getUser().getAsTag() + "'s Avatar")
-					.image(member.getUser().getEffectiveAvatarUrl())
-					.color(EmbedUtils.IGSQ_PURPLE).send());
+					new EmbedGenerator(channel)
+							.title(member.getUser().getAsTag() + "'s Avatar")
+							.image(member.getUser().getEffectiveAvatarUrl())
+							.color(EmbedUtils.IGSQ_PURPLE).send());
 
 		}
 		else
 		{
 			new EmbedGenerator(channel)
-				.title(author.getAsTag() + "'s Avatar")
-				.image(author.getAvatarUrl())
-				.color(EmbedUtils.IGSQ_PURPLE)
-				.send();
+					.title(author.getAsTag() + "'s Avatar")
+					.image(author.getAvatarUrl())
+					.color(EmbedUtils.IGSQ_PURPLE)
+					.send();
 		}
 	}
 }

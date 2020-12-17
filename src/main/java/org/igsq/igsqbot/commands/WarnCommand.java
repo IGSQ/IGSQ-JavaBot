@@ -18,7 +18,7 @@ public class WarnCommand extends Command
 {
 	public WarnCommand()
 	{
-		super("Warn", new String[]{"warn"}, "Handles the user warning system","[user][reason] | [show|remove][user]", new Permission[]{}, true, 0);
+		super("Warn", new String[]{"warn"}, "Handles the user warning system", "[user][reason] | [show|remove][user]", new Permission[]{}, true, 0);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class WarnCommand extends Command
 			warnTarget = UserUtils.getUserFromMention(args.get(0));
 			if(warnTarget == null)
 			{
-				EmbedUtils.sendSyntaxError(channel,this);
+				EmbedUtils.sendSyntaxError(channel, this);
 			}
 			else
 			{
@@ -50,7 +50,7 @@ public class WarnCommand extends Command
 			warnTarget = UserUtils.getUserFromMention(args.get(1));
 			if(warnTarget == null)
 			{
-				EmbedUtils.sendSyntaxError(channel,this);
+				EmbedUtils.sendSyntaxError(channel, this);
 				return;
 			}
 
@@ -64,18 +64,18 @@ public class WarnCommand extends Command
 			}
 			else
 			{
-				EmbedUtils.sendSyntaxError(channel,this);
+				EmbedUtils.sendSyntaxError(channel, this);
 			}
 		}
 		else
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
 	}
 
 	private void addWarning(User user, String reason, String guildId, MessageChannel channel)
 	{
-		YamlUtils.fieldAppend(guildId + ".warnings." + user.getId(), "punishment",reason + " - " + StringUtils.getTimestamp(), ",");
+		YamlUtils.fieldAppend(guildId + ".warnings." + user.getId(), "punishment", reason + " - " + StringUtils.getTimestamp(), ",");
 
 		EmbedUtils.sendSuccess(channel, "Warned " + user.getAsMention() + " for reason: " + reason);
 
@@ -113,10 +113,10 @@ public class WarnCommand extends Command
 
 		if(chosenWarning != -1)
 		{
-			warnings.remove(chosenWarning-1);
+			warnings.remove(chosenWarning - 1);
 			Yaml.updateField(guildId + ".warnings." + user.getId(), "punishment", ArrayUtils.arrayCompile(warnings, ","));
 
-			EmbedUtils.sendSuccess(channel, "Removed warning: " + warnings.get(chosenWarning-1));
+			EmbedUtils.sendSuccess(channel, "Removed warning: " + warnings.get(chosenWarning - 1));
 		}
 	}
 }

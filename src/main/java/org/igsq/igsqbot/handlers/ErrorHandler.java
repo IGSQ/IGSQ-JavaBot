@@ -13,44 +13,44 @@ import java.awt.*;
 
 public class ErrorHandler
 {
-    private final Exception exception;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
+	private final Exception exception;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
 
-    public ErrorHandler(Exception exception)
-    {
-        this.exception = exception;
+	public ErrorHandler(Exception exception)
+	{
+		this.exception = exception;
 
-        reportError();
-    }
+		reportError();
+	}
 
-    private void reportError()
-    {
-        if(YamlUtils.isFieldEmpty("bot.error", "config"))
-        {
-            LOGGER.error("An exception occurred.", exception);
-        }
-        else
-        {
-            GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString("bot.error", "config"));
-            if(errorChannel == null)
-            {
-                LOGGER.error("An exception occurred.", exception);
-                return;
-            }
-            EmbedGenerator embed = new EmbedGenerator((MessageChannel) errorChannel)
-                    .color(Color.RED)
-                    .title("Unhandled Exception");
+	private void reportError()
+	{
+		if(YamlUtils.isFieldEmpty("bot.error", "config"))
+		{
+			LOGGER.error("An exception occurred.", exception);
+		}
+		else
+		{
+			GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString("bot.error", "config"));
+			if(errorChannel == null)
+			{
+				LOGGER.error("An exception occurred.", exception);
+				return;
+			}
+			EmbedGenerator embed = new EmbedGenerator((MessageChannel) errorChannel)
+					.color(Color.RED)
+					.title("Unhandled Exception");
 
-            StringBuilder  embedText = new StringBuilder();
+			StringBuilder embedText = new StringBuilder();
 
-            embedText.append("**").append(exception.toString()).append("**");
-            embedText.append("```");
-            for(StackTraceElement selectedElement: exception.getStackTrace())
-            {
-                embedText.append(selectedElement.toString()).append("\n\n");
-            }
-            embedText.append("```");
-            embed.text(embedText.toString()).send();
-        }
-    }
+			embedText.append("**").append(exception.toString()).append("**");
+			embedText.append("```");
+			for(StackTraceElement selectedElement : exception.getStackTrace())
+			{
+				embedText.append(selectedElement.toString()).append("\n\n");
+			}
+			embedText.append("```");
+			embed.text(embedText.toString()).send();
+		}
+	}
 }

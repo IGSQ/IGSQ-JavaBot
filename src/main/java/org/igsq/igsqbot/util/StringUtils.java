@@ -12,27 +12,29 @@ public class StringUtils
 	{
 		//Overrides the default, public, constructor
 	}
-	/**
-     * Removes all text before a given character. If the character is not found the whole string is returned.
-     * @return <b>String</b>
-     */
-    public static String removeBeforeCharacter(String string,char target)
-    {
-    	boolean targetFound = false;
-    	char[] charArray = string.toCharArray();
-    	StringBuilder rebuiltString = new StringBuilder();
 
-    	for(int i = 0;i < string.length();i++)
-    	{
-    		if(!targetFound)
-    		{
-    			if(charArray[i] == target) targetFound = true;
-    		}
-    		else rebuiltString.append(charArray[i]);
-    	}
-    	if(targetFound) return rebuiltString.toString();
-    	else return string;
-    }
+	/**
+	 * Removes all text before a given character. If the character is not found the whole string is returned.
+	 *
+	 * @return <b>String</b>
+	 */
+	public static String removeBeforeCharacter(String string, char target)
+	{
+		boolean targetFound = false;
+		char[] charArray = string.toCharArray();
+		StringBuilder rebuiltString = new StringBuilder();
+
+		for(int i = 0; i < string.length(); i++)
+		{
+			if(!targetFound)
+			{
+				if(charArray[i] == target) targetFound = true;
+			}
+			else rebuiltString.append(charArray[i]);
+		}
+		if(targetFound) return rebuiltString.toString();
+		else return string;
+	}
 
 	public static String getChannelAsMention(String channelID)
 	{
@@ -45,33 +47,34 @@ public class StringUtils
 		internal = internal.toUpperCase().replaceAll("[^A-Z]", "");
 		input = input.toUpperCase().replaceAll("[^A-Z]", "");
 		if(input.equals(internal)) return true; //Perfect Outcome
-		if(!input.startsWith(internal.split("")[0])) return false; //First character does not match it is most likely going to be a false positive so ignore it
-		if (Math.abs(input.length() - internal.length()) > 3) return false; // Word Length Difference is too big.
+		if(!input.startsWith(internal.split("")[0]))
+			return false; //First character does not match it is most likely going to be a false positive so ignore it
+		if(Math.abs(input.length() - internal.length()) > 3) return false; // Word Length Difference is too big.
 		double score = 0;
 		char[] internalChar = internal.toCharArray();
 		int previousError = Integer.MIN_VALUE;
 		char[] inputChar = input.toCharArray();
-		for (int i = 1;i < internal.length();i++)
+		for(int i = 1; i < internal.length(); i++)
 		{
 			int charScore = Integer.MAX_VALUE;
 			boolean found = false;
-			for(int j = 0; j < input.length();j++)
+			for(int j = 0; j < input.length(); j++)
 			{
-				if(internalChar[i] == inputChar[j] && charScore > Math.abs(j-i))
+				if(internalChar[i] == inputChar[j] && charScore > Math.abs(j - i))
 				{
-					charScore = j-i;
+					charScore = j - i;
 					found = true;
 				}
 			}
 			if(!found)
 			{
-				score +=  internal.length() - (double) (i + 2) / internal.length();
+				score += internal.length() - (double) (i + 2) / internal.length();
 				previousError = 1;
 			}
 			else if(previousError != charScore)
 			{
 				previousError = charScore;
-				score += Math.abs((double)charScore)/internal.length();
+				score += Math.abs((double) charScore) / internal.length();
 			}
 		}
 		return score < accuracy;
@@ -96,7 +99,7 @@ public class StringUtils
 			obj.toURI();
 			return true;
 		}
-		catch (Exception exception)
+		catch(Exception exception)
 		{
 			return false;
 		}

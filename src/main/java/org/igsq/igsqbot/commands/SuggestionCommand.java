@@ -1,7 +1,10 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
@@ -16,50 +19,50 @@ import java.util.List;
 
 public class SuggestionCommand extends Command
 {
-    public SuggestionCommand()
-    {
-        super("Suggestion", new String[]{"suggest", "suggestion", "idea"}, "Suggests an idea in the designated suggestion channel","[topic]", new Permission[]{}, true, 0);
-    }
+	public SuggestionCommand()
+	{
+		super("Suggestion", new String[]{"suggest", "suggestion", "idea"}, "Suggests an idea in the designated suggestion channel", "[topic]", new Permission[]{}, true, 0);
+	}
 
-    @Override
-    public void execute(List<String> args, CommandContext ctx)
-    {
-        final Guild guild = ctx.getGuild();
-        final User author = ctx.getAuthor();
-        final MessageChannel channel = ctx.getChannel();
+	@Override
+	public void execute(List<String> args, CommandContext ctx)
+	{
+		final Guild guild = ctx.getGuild();
+		final User author = ctx.getAuthor();
+		final MessageChannel channel = ctx.getChannel();
 
-        if(args.isEmpty())
-        {
-            EmbedUtils.sendSyntaxError(channel, this);
-            return;
-        }
-        final TextChannel suggestionChannel = guild.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
-        if(suggestionChannel != null)
-        {
-            channel.sendMessage(suggestionChannel.getName());
-            suggestionChannel.sendMessage("hello world");
-            if(!UserUtils.basicPermCheck(guild.getSelfMember(), suggestionChannel))
-            {
-                EmbedUtils.sendPermissionError(channel, this);
-            }
-            else if(CommandUtils.isCommandTooLarge(args))
-            {
-                EmbedUtils.sendSyntaxError(channel, this);
-            }
-            else
-            {
-                new EmbedGenerator((MessageChannel) suggestionChannel)
-                        .title("Suggestion:")
-                        .text(ArrayUtils.arrayCompile(args, " "))
-                        .color(EmbedUtils.IGSQ_PURPLE)
-                        .thumbnail(author.getAvatarUrl())
-                        .footer("Suggestion by: " + UserUtils.getMemberFromUser(author, guild).getEffectiveName() + author.getDiscriminator())
-                        .send();
-            }
-        }
-        else
-        {
-            EmbedUtils.sendError(channel, "There is no setup suggestion Channel");
-        }
-    }
+		if(args.isEmpty())
+		{
+			EmbedUtils.sendSyntaxError(channel, this);
+			return;
+		}
+		final TextChannel suggestionChannel = guild.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
+		if(suggestionChannel != null)
+		{
+			channel.sendMessage(suggestionChannel.getName());
+			suggestionChannel.sendMessage("hello world");
+			if(!UserUtils.basicPermCheck(guild.getSelfMember(), suggestionChannel))
+			{
+				EmbedUtils.sendPermissionError(channel, this);
+			}
+			else if(CommandUtils.isCommandTooLarge(args))
+			{
+				EmbedUtils.sendSyntaxError(channel, this);
+			}
+			else
+			{
+				new EmbedGenerator((MessageChannel) suggestionChannel)
+						.title("Suggestion:")
+						.text(ArrayUtils.arrayCompile(args, " "))
+						.color(EmbedUtils.IGSQ_PURPLE)
+						.thumbnail(author.getAvatarUrl())
+						.footer("Suggestion by: " + UserUtils.getMemberFromUser(author, guild).getEffectiveName() + author.getDiscriminator())
+						.send();
+			}
+		}
+		else
+		{
+			EmbedUtils.sendError(channel, "There is no setup suggestion Channel");
+		}
+	}
 }

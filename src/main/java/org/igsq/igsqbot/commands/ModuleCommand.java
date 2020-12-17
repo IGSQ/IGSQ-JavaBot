@@ -2,7 +2,6 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
@@ -19,8 +18,9 @@ public class ModuleCommand extends Command
 
 	public ModuleCommand()
 	{
-		super("Module", new String[]{"module", "command"}, "Disables / Enables the specified module.", "[enable|disable] [module]", new Permission[]{Permission.ADMINISTRATOR},false, 0);
+		super("Module", new String[]{"module", "command"}, "Disables / Enables the specified module.", "[enable|disable] [module]", new Permission[]{Permission.ADMINISTRATOR}, false, 0);
 	}
+
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{

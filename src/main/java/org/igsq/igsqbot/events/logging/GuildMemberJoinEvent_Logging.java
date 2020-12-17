@@ -21,13 +21,13 @@ public class GuildMemberJoinEvent_Logging extends ListenerAdapter
 		GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 		Member member = event.getMember();
 		User user = event.getUser();
-		
+
 		if(logChannel != null && !user.isBot())
 		{
-			new EmbedGenerator((MessageChannel)logChannel)
+			new EmbedGenerator((MessageChannel) logChannel)
 					.title("Member Joined").text(
 					"**Member**: " + member.getAsMention() +
-					"\n**Joined On**: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
+							"\n**Joined On**: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())
 					.send();

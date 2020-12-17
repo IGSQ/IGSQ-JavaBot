@@ -4,9 +4,9 @@ import net.dv8tion.jda.api.hooks.InterfacedEventManager;
 import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Main;
 import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Report;
+import org.igsq.igsqbot.events.logging.*;
 import org.igsq.igsqbot.events.main.MessageDeleteEvent_Main;
 import org.igsq.igsqbot.events.main.MessageReceivedEvent_Main;
-import org.igsq.igsqbot.events.logging.*;
 
 public class EventHandler
 {
@@ -16,6 +16,7 @@ public class EventHandler
 	{
 		//Overrides the default, public, constructor
 	}
+
 	public static InterfacedEventManager getEventManager()
 	{
 		return eventManager;

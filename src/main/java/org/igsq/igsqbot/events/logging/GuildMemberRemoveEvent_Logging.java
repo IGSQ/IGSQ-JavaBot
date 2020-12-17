@@ -27,7 +27,7 @@ public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 		{
 			member = event.getGuild().retrieveMember(user).submit().get();
 		}
-		catch (Exception exception)
+		catch(Exception exception)
 		{
 			new ErrorHandler(exception);
 			return;
@@ -46,8 +46,8 @@ public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 			new EmbedGenerator((MessageChannel) logChannel)
 					.title("Member Left")
 					.text(
-					"**Member**: " + member.getAsMention() +
-					"\n**Joined On**: " + timeJoined)
+							"**Member**: " + member.getAsMention() +
+									"\n**Joined On**: " + timeJoined)
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())
 					.send();

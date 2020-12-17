@@ -7,8 +7,8 @@ import org.igsq.igsqbot.Yaml;
 public class MessageDeleteEvent_Main extends ListenerAdapter
 {
 	@Override
-    public void onMessageDelete(MessageDeleteEvent event)
-    {
+	public void onMessageDelete(MessageDeleteEvent event)
+	{
 		Yaml.updateField(event.getMessageId(), "internal", null);
-    }
+	}
 }

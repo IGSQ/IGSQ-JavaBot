@@ -23,7 +23,7 @@ public class VerificationCommand extends Command
 
 	public VerificationCommand()
 	{
-		super("Verify", new String[]{"verify", "v", "accept"}, "Verifies the specified user into the server","[user]", new Permission[]{}, true, 0);
+		super("Verify", new String[]{"verify", "v", "accept"}, "Verifies the specified user into the server", "[user]", new Permission[]{}, true, 0);
 	}
 
 	@Override
@@ -42,133 +42,133 @@ public class VerificationCommand extends Command
 		}
 		catch(Exception exception)
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
 
 		if(args.size() != 1)
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
 
 		channel.getHistory().retrievePast(10).queue(
-			messages ->
-			{
-				messages.forEach(
-				selectedMessage ->
+				messages ->
 				{
-					if(selectedMessage.getAuthor().equals(verificationTarget) && !selectedMessage.getContentRaw().startsWith(Common.DEFAULT_BOT_PREFIX))
-					{
-						messageContent.addAll(Arrays.asList(selectedMessage.getContentRaw().split(" ")));
-					}
-				});
-
-
-				final Map<String, String> aliasMatches = findMatches(CommandUtils.getAliases(guild.getId()));
-				final Map<String, String> declineMatches = findMatches(CommandUtils.getDeclined(guild.getId()));
-
-				aliasMatches.forEach((key, value) ->
-				{
-					if(declineMatches.containsKey(key))
-					{
-						aliasMatches.remove(key, value);
-					}
-				});
-
-				aliasMatches.forEach((alias, role) ->
-						embedText.append("Detected Role: ")
-								.append(UserUtils.getRoleAsMention(role))
-								.append(" (Sure)")
-								.append("\n")
-				);
-
-				final Map<String, String> similarMatches = findSimilar(CommandUtils.getAliases(guild.getId()), aliasMatches.values().toArray(new String[0]));
-				similarMatches.forEach((alias, role) ->
-						embedText.append("Detected Role: ")
-						.append(UserUtils.getRoleAsMention(role))
-						.append(" (Guess) for '")
-						.append(alias)
-						.append("'\n"));
-
-				new EmbedGenerator(channel)
-						.title("Verification for " + verificationTarget.getAsTag())
-						.text(embedText.length() == 0 ? "No roles found for this user." : embedText.toString())
-						.color(EmbedUtils.IGSQ_PURPLE)
-						.reaction(Common.TICK_REACTIONS.toArray(new String[0]))
-						.sendTemporary();
-
-				EventWaiter waiter = new EventWaiter();
-				MessageReactionAddEvent reactionAddEvent;
-				try
-				{
-					reactionAddEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(author) && !event.getUser().isBot(), 10000);
-				}
-				catch(Exception exception)
-				{
-					reactionAddEvent = null;
-				}
-
-				if(reactionAddEvent != null)
-				{
-					final MessageChannel welcomeChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
-					final StringBuilder roleText = new StringBuilder();
-					final List<Role> finalRoles = new ArrayList<>();
-					long verificationMember = UserUtils.getMemberFromUser(verificationTarget, guild).getIdLong();
-
-					aliasMatches.values().forEach(id -> finalRoles.add(guild.getRoleById(id)));
-
-					if(reactionAddEvent.getReactionEmote().getAsCodepoints().equalsIgnoreCase(Common.TICK_REACTIONS.get(0)))
-					{
-						similarMatches.values().forEach(id -> finalRoles.add(guild.getRoleById(id)));
-
-						for(Role selectedRole : finalRoles)
-						{
-							if(selectedRole != null)
+					messages.forEach(
+							selectedMessage ->
 							{
-								guild.addRoleToMember(verificationMember, selectedRole).queue();
-								roleText.append(selectedRole.getAsMention()).append(" ");
+								if(selectedMessage.getAuthor().equals(verificationTarget) && !selectedMessage.getContentRaw().startsWith(Common.DEFAULT_BOT_PREFIX))
+								{
+									messageContent.addAll(Arrays.asList(selectedMessage.getContentRaw().split(" ")));
+								}
+							});
+
+
+					final Map<String, String> aliasMatches = findMatches(CommandUtils.getAliases(guild.getId()));
+					final Map<String, String> declineMatches = findMatches(CommandUtils.getDeclined(guild.getId()));
+
+					aliasMatches.forEach((key, value) ->
+					{
+						if(declineMatches.containsKey(key))
+						{
+							aliasMatches.remove(key, value);
+						}
+					});
+
+					aliasMatches.forEach((alias, role) ->
+							embedText.append("Detected Role: ")
+									.append(UserUtils.getRoleAsMention(role))
+									.append(" (Sure)")
+									.append("\n")
+					);
+
+					final Map<String, String> similarMatches = findSimilar(CommandUtils.getAliases(guild.getId()), aliasMatches.values().toArray(new String[0]));
+					similarMatches.forEach((alias, role) ->
+							embedText.append("Detected Role: ")
+									.append(UserUtils.getRoleAsMention(role))
+									.append(" (Guess) for '")
+									.append(alias)
+									.append("'\n"));
+
+					new EmbedGenerator(channel)
+							.title("Verification for " + verificationTarget.getAsTag())
+							.text(embedText.length() == 0 ? "No roles found for this user." : embedText.toString())
+							.color(EmbedUtils.IGSQ_PURPLE)
+							.reaction(Common.TICK_REACTIONS.toArray(new String[0]))
+							.sendTemporary();
+
+					EventWaiter waiter = new EventWaiter();
+					MessageReactionAddEvent reactionAddEvent;
+					try
+					{
+						reactionAddEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(author) && !event.getUser().isBot(), 10000);
+					}
+					catch(Exception exception)
+					{
+						reactionAddEvent = null;
+					}
+
+					if(reactionAddEvent != null)
+					{
+						final MessageChannel welcomeChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".welcomechannel", "guild"));
+						final StringBuilder roleText = new StringBuilder();
+						final List<Role> finalRoles = new ArrayList<>();
+						long verificationMember = UserUtils.getMemberFromUser(verificationTarget, guild).getIdLong();
+
+						aliasMatches.values().forEach(id -> finalRoles.add(guild.getRoleById(id)));
+
+						if(reactionAddEvent.getReactionEmote().getAsCodepoints().equalsIgnoreCase(Common.TICK_REACTIONS.get(0)))
+						{
+							similarMatches.values().forEach(id -> finalRoles.add(guild.getRoleById(id)));
+
+							for(Role selectedRole : finalRoles)
+							{
+								if(selectedRole != null)
+								{
+									guild.addRoleToMember(verificationMember, selectedRole).queue();
+									roleText.append(selectedRole.getAsMention()).append(" ");
+								}
+							}
+
+							if(welcomeChannel == null)
+							{
+								EmbedUtils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
+							}
+							else
+							{
+								new EmbedGenerator(welcomeChannel)
+										.title(verificationTarget.getAsTag())
+										.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
+										.color(EmbedUtils.IGSQ_PURPLE)
+										.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
 							}
 						}
-
-						if(welcomeChannel == null)
+						else if(reactionAddEvent.getReactionEmote().getAsCodepoints().equalsIgnoreCase(Common.TICK_REACTIONS.get(1)))
 						{
-							EmbedUtils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
-						}
-						else
-						{
-							new EmbedGenerator(welcomeChannel)
-									.title(verificationTarget.getAsTag())
-									.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
-									.color(EmbedUtils.IGSQ_PURPLE)
-									.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
-						}
-					}
-					else if(reactionAddEvent.getReactionEmote().getAsCodepoints().equalsIgnoreCase(Common.TICK_REACTIONS.get(1)))
-					{
-						for(Role selectedRole : finalRoles)
-						{
-							if(selectedRole != null)
+							for(Role selectedRole : finalRoles)
 							{
-								guild.addRoleToMember(verificationMember, selectedRole).queue();
-								roleText.append(selectedRole.getAsMention()).append(" ");
+								if(selectedRole != null)
+								{
+									guild.addRoleToMember(verificationMember, selectedRole).queue();
+									roleText.append(selectedRole.getAsMention()).append(" ");
+								}
 							}
-						}
 
-						if(welcomeChannel == null)
-						{
-							EmbedUtils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
-						}
-						else
-						{
-							new EmbedGenerator(welcomeChannel)
-									.title(verificationTarget.getAsTag())
-									.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
-									.color(EmbedUtils.IGSQ_PURPLE)
-									.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
+							if(welcomeChannel == null)
+							{
+								EmbedUtils.sendError(channel, "There is no welcome channel setup, defaulting to role only verification.");
+							}
+							else
+							{
+								new EmbedGenerator(welcomeChannel)
+										.title(verificationTarget.getAsTag())
+										.text(verificationTarget.getAsMention() + " has joined the " + guild.getName())
+										.color(EmbedUtils.IGSQ_PURPLE)
+										.element("Roles", embedText.length() > 0 ? roleText.toString() : "No roles.");
+							}
 						}
 					}
 				}
-			}
 		);
 	}
 
@@ -198,7 +198,7 @@ public class VerificationCommand extends Command
 			{
 				messageContent.forEach(currentWord ->
 				{
-					if(!ArrayUtils.isValueInArray(matchedRoles, role) && StringUtils.isOption(alias,currentWord,10))
+					if(!ArrayUtils.isValueInArray(matchedRoles, role) && StringUtils.isOption(alias, currentWord, 10))
 					{
 						result.putIfAbsent(currentWord, role);
 					}

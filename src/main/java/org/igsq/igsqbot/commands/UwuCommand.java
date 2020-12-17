@@ -1,7 +1,10 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
@@ -11,7 +14,6 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,7 @@ public class UwuCommand extends Command
 {
 	public UwuCommand()
 	{
-		super("UwU", new String[]{"uwu", "uwufy", "owo"}, "UwU's the specified sentence","[text]", new Permission[]{}, false,0);
+		super("UwU", new String[]{"uwu", "uwufy", "owo"}, "UwU's the specified sentence", "[text]", new Permission[]{}, false, 0);
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class UwuCommand extends Command
 
 		if(args.isEmpty() || CommandUtils.isCommandTooLarge(args))
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
 		else if(ctx.getChannelType().equals(ChannelType.TEXT) && !UserUtils.basicPermCheck(ctx.getGuild().getSelfMember(), (TextChannel) channel))
 		{
@@ -40,15 +42,16 @@ public class UwuCommand extends Command
 		}
 		else
 		{
-			for (String c : chars) {
-				switch (c)
+			for(String selectedChar : chars)
+			{
+				switch(selectedChar)
 				{
 					case "r" -> finalSentence.append("w");
 					case "o" -> finalSentence.append("wo");
 					case "l" -> finalSentence.append("w");
 					case "a" -> finalSentence.append("aw");
 					case "i" -> finalSentence.append("iw");
-					default -> finalSentence.append(c);
+					default -> finalSentence.append(selectedChar);
 				}
 			}
 			new EmbedGenerator(channel)

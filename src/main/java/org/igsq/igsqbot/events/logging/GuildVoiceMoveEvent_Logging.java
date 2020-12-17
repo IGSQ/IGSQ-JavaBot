@@ -23,7 +23,7 @@ public class GuildVoiceMoveEvent_Logging extends ListenerAdapter
 		{
 			new EmbedGenerator((MessageChannel) logChannel)
 					.title("Member Moved VC")
-					.text("**Member**: " + member.getAsMention() +  "\n" +
+					.text("**Member**: " + member.getAsMention() + "\n" +
 							"**Old Channel**: " + oldChannel.getName() + "\n" +
 							"**New Channel**: " + newChannel.getName()
 					)

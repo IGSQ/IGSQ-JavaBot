@@ -22,8 +22,8 @@ public class GuildVoiceJoinEvent_Logging extends ListenerAdapter
 		{
 			new EmbedGenerator((MessageChannel) logChannel)
 					.title("Member Joined VC")
-					.text("**Member**: " + member.getAsMention() +  "\n" +
-						"**Channel**: " + channel.getName())
+					.text("**Member**: " + member.getAsMention() + "\n" +
+							"**Channel**: " + channel.getName())
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())
 					.send();

@@ -1,10 +1,9 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.handlers.CommandHandler;
-import org.igsq.igsqbot.minecraft.MainMinecraft;
+import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.GUIGenerator;
@@ -17,9 +16,10 @@ import java.util.List;
 public class ShutdownCommand extends Command
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShutdownCommand.class);
+
 	public ShutdownCommand()
 	{
-		super("Shutdown", new String[]{"shutdown"}, "Shuts the bot down using the proper methods","[none]", new Permission[]{Permission.ADMINISTRATOR}, false, 0);
+		super("Shutdown", new String[]{"shutdown"}, "Shuts the bot down using the proper methods", "[none]", new Permission[]{Permission.ADMINISTRATOR}, false, 0);
 	}
 
 	@Override
@@ -27,16 +27,14 @@ public class ShutdownCommand extends Command
 	{
 		if(!args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(ctx.getChannel(),this);
+			EmbedUtils.sendSyntaxError(ctx.getChannel(), this);
 			return;
 		}
 
 		ctx.getJDA().shutdown();
-		Common.scheduler.shutdown();
 		CommandHandler.shutdown();
 		GUIGenerator.closeAll();
-		MainMinecraft.cancelClean();
-		MainMinecraft.cancelSync();
+		TaskHandler.close();
 
 		Yaml.saveFileChanges("@all");
 		Yaml.disregardAndCloseFile("@all");

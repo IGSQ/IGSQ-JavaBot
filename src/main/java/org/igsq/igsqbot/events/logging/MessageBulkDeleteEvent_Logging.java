@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
@@ -15,13 +15,13 @@ import org.igsq.igsqbot.util.YamlUtils;
 public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 {
 	@Override
-    public void onMessageBulkDelete(MessageBulkDeleteEvent event)
-    {
+	public void onMessageBulkDelete(MessageBulkDeleteEvent event)
+	{
 		GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
 		MessageChannel channel = event.getChannel();
 		StringBuilder embedDescription = new StringBuilder();
 		MessageCache cache;
-		
+
 		if(!MessageCache.isGuildCached(event.getGuild().getId()))
 		{
 			cache = MessageCache.addAndReturnCache(event.getGuild().getId());
@@ -30,7 +30,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 		{
 			cache = MessageCache.getCache(event.getGuild().getId());
 		}
-		
+
 		for(String selectedMessageID : event.getMessageIds())
 		{
 			if(cache.isInCache(selectedMessageID))
@@ -65,10 +65,10 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 			new EmbedGenerator((MessageChannel) logChannel)
 					.title("Messages Deleted")
 					.text("**Channel**: " + StringUtils.getChannelAsMention(channel.getId())
-					+ "\n\n**Messages**: " + embedDescription.toString())
+							+ "\n\n**Messages**: " + embedDescription.toString())
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())
 					.send();
 		}
-    }
+	}
 }

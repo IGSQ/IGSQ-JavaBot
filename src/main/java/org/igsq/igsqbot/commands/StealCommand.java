@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -21,6 +20,7 @@ public class StealCommand extends Command
 	{
 		super("Steal", new String[]{"steal"}, "Steals the specified image and adds it as an emoji", "[name][imageURL(A-Z + _)]", new Permission[]{Permission.MANAGE_EMOTES}, true, 0);
 	}
+
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{

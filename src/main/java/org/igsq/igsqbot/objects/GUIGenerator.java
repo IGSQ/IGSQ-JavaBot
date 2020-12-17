@@ -1,12 +1,12 @@
 package org.igsq.igsqbot.objects;
 
-import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.handlers.ErrorHandler;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +19,17 @@ public class GUIGenerator
 	private static final String NUMBER_CODEPOINT = "\u20E3";
 	private GenericEvent event;
 
-	public GUIGenerator(EmbedGenerator embed) 
+	public GUIGenerator(EmbedGenerator embed)
 	{
 		this.embed = embed;
-		
+
 	}
-	
+
 	public Boolean confirmation(User user, long timeout)
 	{
 		guiList.add(this);
 		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
-		
+
 		for(String selectedReaction : Common.TICK_REACTIONS) message.addReaction(selectedReaction).queue();
 
 		MessageReactionAddEvent reactionEvent;
@@ -38,8 +38,8 @@ public class GUIGenerator
 		try
 		{
 			reactionEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(user) && !event.getUser().isBot(), timeout);
-		} 
-		catch (Exception exception) 
+		}
+		catch(Exception exception)
 		{
 			reactionEvent = null;
 		}
@@ -52,7 +52,7 @@ public class GUIGenerator
 			{
 				reactingUser = reactionEvent.retrieveUser().submit().get();
 			}
-			catch (Exception exception)
+			catch(Exception exception)
 			{
 				new ErrorHandler(exception);
 				return null;
@@ -84,7 +84,7 @@ public class GUIGenerator
 			return null;
 		}
 	}
-	
+
 	public String input(User user, long timeout)
 	{
 		guiList.add(this);
@@ -96,8 +96,8 @@ public class GUIGenerator
 		try
 		{
 			messageEvent = waiter.waitFor(MessageReceivedEvent.class, event -> event.getAuthor().equals(user) && !event.getAuthor().isBot(), timeout);
-		} 
-		catch (Exception exception) 
+		}
+		catch(Exception exception)
 		{
 			messageEvent = null;
 		}
@@ -113,7 +113,7 @@ public class GUIGenerator
 			return null;
 		}
 	}
-	
+
 	public int menu(User user, long timeout, int optionCount)
 	{
 		guiList.add(this);
@@ -130,8 +130,8 @@ public class GUIGenerator
 		try
 		{
 			reactionEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(user) && !event.getUser().isBot(), timeout);
-		} 
-		catch (Exception exception) 
+		}
+		catch(Exception exception)
 		{
 			return -1;
 		}
@@ -140,7 +140,9 @@ public class GUIGenerator
 		if(reactionEvent != null)
 		{
 
-			reactionEvent.retrieveUser().queue(reactingUser -> reactionEvent.getReaction().removeReaction(reactingUser).queue(null, error -> {}));
+			reactionEvent.retrieveUser().queue(reactingUser -> reactionEvent.getReaction().removeReaction(reactingUser).queue(null, error ->
+			{
+			}));
 
 			if(reactionEvent.getReactionEmote().isEmoji())
 			{
@@ -149,7 +151,7 @@ public class GUIGenerator
 				{
 					if(Integer.parseInt(reactionNumber) <= optionCount)
 					{
-						return Integer.parseInt(reactionNumber);		
+						return Integer.parseInt(reactionNumber);
 					}
 					else
 					{
@@ -177,6 +179,7 @@ public class GUIGenerator
 	{
 		message.delete().queue();
 	}
+
 	public static void closeAll()
 	{
 		for(GUIGenerator generator : guiList)
@@ -184,14 +187,17 @@ public class GUIGenerator
 			generator.close();
 		}
 	}
+
 	public EmbedGenerator getEmbed()
 	{
 		return embed;
 	}
+
 	public Message getMessage()
 	{
 		return message;
 	}
+
 	public GenericEvent getEvent()
 	{
 		return event;

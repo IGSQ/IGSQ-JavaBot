@@ -11,6 +11,7 @@ public class UserUtils
 	{
 		//Overrides the default, public constructor
 	}
+
 	public static boolean isUserMention(String arg)
 	{
 		try

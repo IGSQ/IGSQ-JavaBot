@@ -28,7 +28,8 @@ public class Verification_Setup
 	private void verificationSetupQuery()
 	{
 		if(!author.isBot() && member.hasPermission(Permission.MESSAGE_MANAGE)) verificationSetup();
-		else new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
+		else
+			new EmbedGenerator(channel).text("You cannot Execute this command!\nThis may be due to sending it in the wrong channel or not having the required permission.").color(Color.RED).sendTemporary();
 	}
 
 	private void verificationSetup()
@@ -37,8 +38,8 @@ public class Verification_Setup
 		GUIGenerator gui = new GUIGenerator(embed);
 		int menuItem = gui.menu(author, 10000, 3);
 		MessageReactionAddEvent event = (MessageReactionAddEvent) gui.getEvent();
-		
-		switch (menuItem)
+
+		switch(menuItem)
 		{
 			case 1:
 				break;
@@ -48,7 +49,7 @@ public class Verification_Setup
 				gui.getMessage().delete().queue();
 				break;
 			default:
-				if (event == null)
+				if(event == null)
 				{
 					//Timeout
 				}

@@ -22,7 +22,7 @@ public class GuildVoiceLeaveEvent_Logging extends ListenerAdapter
 		{
 			new EmbedGenerator((MessageChannel) logChannel)
 					.title("Member Left VC")
-					.text("**Member**: " + member.getAsMention() +  "\n" +
+					.text("**Member**: " + member.getAsMention() + "\n" +
 							"**Channel**: " + channel.getName())
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())

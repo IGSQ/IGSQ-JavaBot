@@ -8,7 +8,7 @@ import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.MessageCache;
+import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class ClearCommand extends Command
 {
 	public ClearCommand()
 	{
-		super("Clear", new String[]{"clear", "purge"}, "Clears the channel with the specified amount", "[amount -50-]", new Permission[]{Permission.MESSAGE_MANAGE}, true,5);
+		super("Clear", new String[]{"clear", "purge"}, "Clears the channel with the specified amount", "[amount -50-]", new Permission[]{Permission.MESSAGE_MANAGE}, true, 5);
 	}
 
 	@Override
@@ -35,16 +35,16 @@ public class ClearCommand extends Command
 		}
 		catch(Exception exception)
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
 		if(amount <= 0)
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
 		else if(amount > 51)
 		{
-			EmbedUtils.sendSyntaxError(channel,this);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
 		else if(CooldownHandler.isOnCooldown(author.getIdLong(), this))
 		{
