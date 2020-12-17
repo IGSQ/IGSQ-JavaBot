@@ -12,9 +12,9 @@ import org.igsq.igsqbot.util.*;
 import java.awt.*;
 import java.util.List;
 
-public class Report_Command extends Command
+public class ReportCommand extends Command
 {
-	public Report_Command()
+	public ReportCommand()
 	{
 		super("Report", new String[]{"report"}, "Reports the specified member with the specified reason","[user][reason]",new Permission[]{}, true, 60);
 	}

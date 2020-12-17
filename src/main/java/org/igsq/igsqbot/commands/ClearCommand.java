@@ -14,9 +14,9 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import java.awt.*;
 import java.util.List;
 
-public class Clear_Command extends Command
+public class ClearCommand extends Command
 {
-	public Clear_Command()
+	public ClearCommand()
 	{
 		super("Clear", new String[]{"clear", "purge"}, "Clears the channel with the specified amount", "[amount -50-]", new Permission[]{Permission.MESSAGE_MANAGE}, true,5);
 	}

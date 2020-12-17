@@ -17,11 +17,11 @@ import org.igsq.igsqbot.util.*;
 
 import java.util.*;
 
-public class Verification_Command extends Command
+public class VerificationCommand extends Command
 {
 	private final List<String> messageContent = new ArrayList<>();
 
-	public Verification_Command()
+	public VerificationCommand()
 	{
 		super("Verify", new String[]{"verify", "v", "accept"}, "Verifies the specified user into the server","[user]", new Permission[]{}, true, 0);
 	}

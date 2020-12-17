@@ -12,20 +12,21 @@ import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;
 
-public class Modhelp_Command extends Command
+public class HelpCommand extends Command
 {
-	public Modhelp_Command()
+	public HelpCommand()
 	{
-		super("Modhelp", new String[]{"modhelp"}, "Shows the modhelp menu for this bot", "[none]",new Permission[]{Permission.MESSAGE_MANAGE}, false, 0);
+		super("Help", new String[]{"help", "?", "howto", "commands"}, "Shows the help menu for this bot", "[none]", new Permission[]{}, false, 0);
 	}
 
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
-		final EmbedGenerator embed = ArrayUtils.MODPAGE_TEXT.get(0);
+		final EmbedGenerator embed = ArrayUtils.HELP_PAGE_TEXT.get(0);
 		embed.setChannel(channel).color(EmbedUtils.IGSQ_PURPLE);
 		final User author = ctx.getAuthor();
+
 		if(!args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);

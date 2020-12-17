@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Poll_Command extends Command
+public class PollCommand extends Command
 {
-	public Poll_Command()
+	public PollCommand()
 	{
 		super("Poll", new String[]{"poll"}, "Starts a poll for users to vote in.","[title]/[option1]/[option2]-20-",new Permission[]{}, false,0);
 	}

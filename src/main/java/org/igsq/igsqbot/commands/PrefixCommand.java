@@ -12,9 +12,9 @@ import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.List;
 
-public class Prefix_Command extends Command
+public class PrefixCommand extends Command
 {
-	public Prefix_Command()
+	public PrefixCommand()
 	{
 		super("Prefix", new String[]{"prefix"}, "Sets / gets the prefix for the bot in the current server.", "[newPrefix -5-] | [reset] | [none] ", new Permission[]{}, true, 0);
 	}

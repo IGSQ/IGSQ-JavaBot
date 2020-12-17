@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
@@ -14,9 +15,9 @@ import org.igsq.igsqbot.util.UserUtils;
 import java.net.URL;
 import java.util.List;
 
-public class Steal_Command extends Command
+public class StealCommand extends Command
 {
-	public Steal_Command()
+	public StealCommand()
 	{
 		super("Steal", new String[]{"steal"}, "Steals the specified image and adds it as an emoji", "[name][imageURL(A-Z + _)]", new Permission[]{Permission.MANAGE_EMOTES}, true, 0);
 	}
@@ -28,7 +29,7 @@ public class Steal_Command extends Command
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
-		else if(!UserUtils.basicPermCheck(ctx.getGuild().getSelfMember(), (GuildChannel) channel))
+		else if(!UserUtils.basicPermCheck(ctx.getGuild().getSelfMember(), (TextChannel) channel))
 		{
 			EmbedUtils.sendPermissionError(channel, this);
 		}

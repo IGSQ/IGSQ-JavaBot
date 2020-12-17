@@ -7,9 +7,9 @@ import org.igsq.igsqbot.objects.CommandContext;
 
 import java.util.List;
 
-public class Test_Command extends Command
+public class TestCommand extends Command
 {
-	public Test_Command()
+	public TestCommand()
 	{
 		super("test", new String[]{"test"}, "Placeholder class for command testing","[none]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
 	}

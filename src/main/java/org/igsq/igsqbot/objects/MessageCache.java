@@ -1,31 +1,37 @@
 package org.igsq.igsqbot.objects;
 
 import net.dv8tion.jda.api.entities.Message;
+import org.apache.commons.collections4.map.PassiveExpiringMap;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class MessageCache
 {
-	private static List<MessageCache> messageCaches = new ArrayList<>();
-	private final List<Message> cachedMessages;
+	private static final List<MessageCache> messageCaches = new ArrayList<>();
+	private final Map<String, Message> cachedMessages;
 	private final String guildId;
 	
 	public MessageCache(String guildId)
 	{
 		this.guildId = guildId;
-		this.cachedMessages = new ArrayList<>();
+
+		PassiveExpiringMap.ConstantTimeToLiveExpirationPolicy<String, Message> expirationPolicy =
+				new PassiveExpiringMap.ConstantTimeToLiveExpirationPolicy<>(24, TimeUnit.HOURS);
+		this.cachedMessages = new PassiveExpiringMap<>(expirationPolicy, new HashMap<>());
 	}
 	
 	public void set(Message message)
 	{
 		if(cachedMessages.size() >= 1000)
 		{
-			cachedMessages.remove(0);
 			clean();
 		}
-		cachedMessages.add(message);
+		cachedMessages.putIfAbsent(message.getId(), message);
 	}
 	
 	public void set(List<Message> messages)
@@ -34,19 +40,19 @@ public class MessageCache
 		{
 			if(cachedMessages.size() >= 1000)
 			{
-				cachedMessages.remove(0);
+				clean();
 			}
-			cachedMessages.add(selectedMessage);
+			cachedMessages.putIfAbsent(selectedMessage.getId(), selectedMessage);
 		}
 	}
 	
 	public Message get(String id)
 	{
-		for(Message selectedMessage : cachedMessages)
+		for(Map.Entry<String, Message> entry : cachedMessages.entrySet())
 		{
-			if(selectedMessage.getId().equals(id))
+			if(entry.getKey().equals(id))
 			{
-				return selectedMessage;
+				return entry.getValue();
 			}
 		}
 		return null;
@@ -54,24 +60,24 @@ public class MessageCache
 	
 	public void remove(String id)
 	{
-		cachedMessages.removeIf(selectedMessage -> selectedMessage.getId().equals(id));
+		cachedMessages.remove(id);
 	}
 	
 	public void remove(Message message)
 	{
-		cachedMessages.removeIf(selectedMessage -> selectedMessage.equals(message));
+		cachedMessages.remove(message.getId());
 	}
 
 	public void remove(List<Message> messages)
 	{
-		cachedMessages.removeAll(messages);
+		messages.forEach(message -> cachedMessages.remove(message.getId()));
 	}
 	
 	public boolean isInCache(String messageId)
 	{
-		for(Message selectedMessage : cachedMessages)
+		for(String selectedMessage : cachedMessages.keySet())
 		{
-			if(selectedMessage.getId().equals(messageId))
+			if(selectedMessage.equals(messageId))
 			{
 				return true;
 			}
@@ -81,9 +87,9 @@ public class MessageCache
 	
 	public boolean isInCache(Message message)
 	{
-		for(Message selectedMessage : cachedMessages)
+		for(Map.Entry<String, Message> entry : cachedMessages.entrySet())
 		{
-			if(selectedMessage.equals(message))
+			if(entry.getValue().equals(message))
 			{
 				return true;
 			}
@@ -93,52 +99,38 @@ public class MessageCache
 	
 	public void update(Message oldMessage, Message newMessage)
 	{
-		for(Message selectedMessage : cachedMessages)
-		{
-			if(selectedMessage.equals(oldMessage))
-			{
-				cachedMessages.remove(selectedMessage);
-				set(newMessage);
-			}
-		}
+		cachedMessages.remove(oldMessage.getId());
+		set(newMessage);
 	}
 	public void update(String oldMessageID, Message newMessage)
 	{
-		for(Message selectedMessage : cachedMessages)
-		{
-			if(selectedMessage.getId().equals(oldMessageID))
-			{
-				cachedMessages.remove(selectedMessage);
-				set(newMessage);
-			}
-		}
+		cachedMessages.remove(oldMessageID);
+		set(newMessage);
 	}
 	public String getID()
 	{
 		return guildId;
 	}
 	
-	public List<Message> getCachedMessages()
+	public Map<String, Message> getCachedMessages()
 	{
 		return cachedMessages;
 	}
 	
 	public void clean()
 	{
-		cachedMessages.removeIf(selectedMessage -> selectedMessage.getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)));
+		cachedMessages.forEach((id, message) ->
+		{
+			if(message.getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)))
+			{
+				cachedMessages.remove(id);
+			}
+		});
 	}
 	
 	public void flush()
 	{
 		cachedMessages.clear();
-	}
-	
-	public static MessageCache[] append(MessageCache[] array, MessageCache value)
-	{
-		MessageCache[] arrayAppended = new MessageCache[array.length+1];
-        System.arraycopy(array, 0, arrayAppended, 0, array.length);
-		arrayAppended[array.length] = value;
-		return arrayAppended;
 	}
 	
 	public static void cleanCaches()

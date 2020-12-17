@@ -19,6 +19,7 @@ public class MessageReactionAddEvent_Verification extends ListenerAdapter
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
+	    if(!event.getReactionEmote().isEmoji()) return;
 		Message message = null;
 		User user = null;
 		Member member = null;

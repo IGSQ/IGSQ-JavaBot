@@ -12,6 +12,7 @@ public class MessageReactionAddEvent_Help extends ListenerAdapter
 	@Override
     public void onMessageReactionAdd(MessageReactionAddEvent event)
     {
+    	if(!event.getReactionEmote().isEmoji()) return;
 		final String messageID = event.getMessageId();
 		final ReactionEmote reaction = event.getReactionEmote();
 		final String codePoint = reaction.getAsCodepoints();

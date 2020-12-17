@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.handlers.CommandHandler;
-import org.igsq.igsqbot.minecraft.Main_Minecraft;
+import org.igsq.igsqbot.minecraft.MainMinecraft;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.GUIGenerator;
@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class Shutdown_Command extends Command
+public class ShutdownCommand extends Command
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Shutdown_Command.class);
-	public Shutdown_Command()
+	private static final Logger LOGGER = LoggerFactory.getLogger(ShutdownCommand.class);
+	public ShutdownCommand()
 	{
 		super("Shutdown", new String[]{"shutdown"}, "Shuts the bot down using the proper methods","[none]", new Permission[]{Permission.ADMINISTRATOR}, false, 0);
 	}
@@ -35,8 +35,8 @@ public class Shutdown_Command extends Command
 		Common.scheduler.shutdown();
 		CommandHandler.shutdown();
 		GUIGenerator.closeAll();
-		Main_Minecraft.cancelClean();
-		Main_Minecraft.cancelSync();
+		MainMinecraft.cancelClean();
+		MainMinecraft.cancelSync();
 
 		Yaml.saveFileChanges("@all");
 		Yaml.disregardAndCloseFile("@all");

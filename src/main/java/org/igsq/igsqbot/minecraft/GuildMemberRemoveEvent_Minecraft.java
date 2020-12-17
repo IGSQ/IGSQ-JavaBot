@@ -15,7 +15,7 @@ public class GuildMemberRemoveEvent_Minecraft extends ListenerAdapter
 		if(member != null)
 		{
 			String id = member.getId();
-			String uuid = Common_Minecraft.getUUIDFromID(id);
+			String uuid = CommonMinecraft.getUUIDFromID(id);
 			if(uuid != null)
 			{
 				Database.updateCommand("DELETE FROM discord_2fa WHERE id = '" + uuid + "';");

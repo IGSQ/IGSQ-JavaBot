@@ -31,7 +31,7 @@ public class EmbedUtils
 	public static void sendSyntaxError(MessageChannel channel, Command command)
 	{
 		new EmbedGenerator(channel)
-				.text("<:igsqCross:788476443885174834> The provided syntax was incorrect.\n`" + Common.DEFAULT_BOT_PREFIX + command.getAliases()[0] +  " " + command.getSyntax() + "`")
+				.text("<:igsqCross:788476443885174834> The provided syntax was incorrect.\n`" + command.getAliases()[0] +  " " + command.getSyntax() + "`")
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();

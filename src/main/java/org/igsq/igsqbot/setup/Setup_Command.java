@@ -66,10 +66,10 @@ public class Setup_Command
 				switch (menuItem)
 				{
 					case 1:
-						new Verification_Setup(event);
+						//new Verification_Setup(event);
 						break;
 					case 2:
-						new Logging_Setup(event);
+						//new Logging_Setup(event);
 						break;
 					case 3:
 						gui.getMessage().delete().queue();

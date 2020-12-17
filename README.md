@@ -12,16 +12,19 @@
  - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
  - [x] Input catching on commands
  - [x] Logging expansion (log voice channel stuff) (completed primitive)
- 
+ - [x] Change all command invokes to more proper names
+ - [x] Change EmbedUtils to new prefix system (removed prefixes from errors)
+ - [x] Move to InterfacedEventManager as to run event processing async
+ - [x] Change cache to ExpiringMap(MessageID, Message)
+   
  - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [ ] Help / Modhelp
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
  - [ ] Fully implement the logger
- - [ ] Change cache to ExpiringMap(MessageID, Message)
- - [ ] Move to InterfacedEventManager as to run event processing async
- - [ ] Change EmbedUtils to new prefix system
- - [ ] Change all command invokes to more proper names
+ - [ ] Condense events
+
+
    
  - [ ] Rewrite the event waiter
  - [ ] Translation

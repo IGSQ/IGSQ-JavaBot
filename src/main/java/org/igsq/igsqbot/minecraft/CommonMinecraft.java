@@ -5,9 +5,9 @@ import org.igsq.igsqbot.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Common_Minecraft 
+public class CommonMinecraft
 {
-	private Common_Minecraft()
+	private CommonMinecraft()
 	{
 		//Overrides the default, public constructor
 	}

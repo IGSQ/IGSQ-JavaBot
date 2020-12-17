@@ -14,9 +14,9 @@ import org.igsq.igsqbot.util.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class Warn_Command extends Command
+public class WarnCommand extends Command
 {
-	public Warn_Command()
+	public WarnCommand()
 	{
 		super("Warn", new String[]{"warn"}, "Handles the user warning system","[user][reason] | [show|remove][user]", new Permission[]{}, true, 0);
 	}

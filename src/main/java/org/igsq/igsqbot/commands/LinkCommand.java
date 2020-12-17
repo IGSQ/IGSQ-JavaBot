@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.minecraft.Common_Minecraft;
+import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
@@ -15,14 +15,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class Link_Command extends Command
+public class LinkCommand extends Command
 {
 
 	private List<String> args;
 	private MessageChannel channel;
 	private User author;
 
-	public Link_Command()
+	public LinkCommand()
 	{
 		super("Link", new String[]{"link", "mclink", "minecraft"}, "Controls Minecraft links.","[add|remove][mcName] | [list]", new Permission[]{}, false,0);
 	}
@@ -128,8 +128,8 @@ public class Link_Command extends Command
 
 		try 
 		{
-			String uuid = Common_Minecraft.getUUIDFromName(mcAccount);
-			String username = Common_Minecraft.getNameFromUUID(uuid);
+			String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
+			String username = CommonMinecraft.getNameFromUUID(uuid);
 			
 			if(username == null)
 			{
@@ -175,8 +175,8 @@ public class Link_Command extends Command
 			return;
 		}
 
-		String uuid = Common_Minecraft.getUUIDFromName(mcAccount);
-		String username = Common_Minecraft.getNameFromUUID(uuid);
+		String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
+		String username = CommonMinecraft.getNameFromUUID(uuid);
 		if(uuid != null)
 		{
 			boolean isWaiting = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid +"' AND current_status = 'dwait';") > 0;

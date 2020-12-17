@@ -2,18 +2,22 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Locale;
 
-public class Module_Command extends Command
+public class ModuleCommand extends Command
 {
-	public Module_Command()
+	private static final Logger LOGGER = LoggerFactory.getLogger(ModuleCommand.class);
+
+	public ModuleCommand()
 	{
 		super("Module", new String[]{"module", "command"}, "Disables / Enables the specified module.", "[enable|disable] [module]", new Permission[]{Permission.ADMINISTRATOR},false, 0);
 	}
@@ -55,6 +59,7 @@ public class Module_Command extends Command
 		{
 			cmd.setDisabled(false);
 			EmbedUtils.sendSuccess(channel, "Enabled module: `" + cmd.getInvoke() + "`.");
+			LOGGER.warn("Module " + cmd.getInvoke() + " was enabled.");
 		}
 	}
 
@@ -69,6 +74,7 @@ public class Module_Command extends Command
 		{
 			cmd.setDisabled(true);
 			EmbedUtils.sendSuccess(channel, "Disabled module: `" + cmd.getInvoke() + "`.");
+			LOGGER.warn("Module " + cmd.getInvoke() + " was disabled.");
 		}
 	}
 }

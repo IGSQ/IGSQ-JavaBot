@@ -12,9 +12,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Uptime_Command extends Command
+public class UptimeCommand extends Command
 {
-	public Uptime_Command()
+	public UptimeCommand()
 	{
 		super("Uptime", new String[]{"uptime"}, "Displays the bots uptime", "[none]", new Permission[]{}, false, 0);
 	}

@@ -12,9 +12,9 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 
-public class Mock_Command extends Command
+public class MockCommand extends Command
 {
-	public Mock_Command()
+	public MockCommand()
 	{
 		super("Mock", new String[]{"mock"}, "Mocks the specified text", "[text]", new Permission[]{}, false, 0);
 	}
@@ -32,7 +32,14 @@ public class Mock_Command extends Command
 		else
 		{
 			mockText.append('"');
-			args.forEach(word -> { for(String selectedChar : word.split("")) mockText.append(random.nextBoolean() ? selectedChar.toUpperCase() : selectedChar); mockText.append(" "); });
+			args.forEach(word -> {
+				for(String selectedChar : word.split(""))
+				{
+					mockText.append(random.nextBoolean() ? selectedChar.toUpperCase() : selectedChar.toLowerCase());
+				}
+				mockText.append(" ");
+			});
+			mockText.deleteCharAt(mockText.lastIndexOf(" "));
 			mockText.append('"');
 
 			EmbedGenerator embed = new EmbedGenerator(channel)

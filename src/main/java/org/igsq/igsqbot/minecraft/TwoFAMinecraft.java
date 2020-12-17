@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class TwoFA_Minecraft 
+public class TwoFAMinecraft
 {
-	private TwoFA_Minecraft()
+	private TwoFAMinecraft()
 	{
 		//Overrides the default, public, constructor
 	}
@@ -48,16 +48,16 @@ public class TwoFA_Minecraft
 					channel.sendMessage(embed.getBuilder().build()).queue(
 							message ->
 							{
-								Database.updateCommand("UPDATE discord_2fa SET code = '" + code +  "' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+								Database.updateCommand("UPDATE discord_2fa SET code = '" + code +  "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 
 								Common.scheduler.schedule(() ->
 								{
 									new EmbedGenerator(message.getEmbeds().get(0)).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message.").replace(message);
-									if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
+									if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
 									{
-										Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+										Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 									}
-									Database.updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + Common_Minecraft.getUUIDFromID(id) + "';");
+									Database.updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 
 								}, 60, TimeUnit.SECONDS);
 							}
@@ -85,7 +85,7 @@ public class TwoFA_Minecraft
 		{
 			while(discord_2fa.next())
 			{
-				pendingIDs.add(Common_Minecraft.getIDFromUUID(discord_2fa.getString(1)));
+				pendingIDs.add(CommonMinecraft.getIDFromUUID(discord_2fa.getString(1)));
 			}
 		} 
 		catch (Exception exception)

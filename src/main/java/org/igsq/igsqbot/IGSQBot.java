@@ -5,14 +5,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Help;
-import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Main;
-import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Report;
-import org.igsq.igsqbot.events.main.MessageDeleteEvent_Main;
-import org.igsq.igsqbot.events.main.MessageReceivedEvent_Main;
-import org.igsq.igsqbot.events.logging.*;
 import org.igsq.igsqbot.handlers.EventHandler;
-import org.igsq.igsqbot.minecraft.Main_Minecraft;
+import org.igsq.igsqbot.minecraft.MainMinecraft;
 import org.igsq.igsqbot.objects.MessageCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +43,7 @@ public class IGSQBot
 			Common.scheduler.scheduleAtFixedRate(MessageCache::cleanCaches, 0, 6,TimeUnit.HOURS);
 
 			EventHandler.setEvents();
-			Main_Minecraft.startMinecraft();
+			MainMinecraft.startMinecraft();
 			Database.startDatabase();
 		}
 

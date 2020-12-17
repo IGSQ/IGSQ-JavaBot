@@ -11,9 +11,9 @@ import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;
 
-public class Avatar_Command extends Command
+public class AvatarCommand extends Command
 {
-	public Avatar_Command()
+	public AvatarCommand()
 	{
 		super("Avatar", new String[]{"avatar", "pfp", "avi"}, "Shows the avatar for the mentioned user(s)", "[user(s) -3-]" , new Permission[]{}, false, 0);
 	}
@@ -25,16 +25,16 @@ public class Avatar_Command extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final User author = message.getAuthor();
 
-		if(message.getMentionedUsers().size() > 3)
+		if(message.getMentionedMembers().size() > 3)
 		{
 			EmbedUtils.sendSyntaxError(channel,this);
 		}
-		else if(message.getMentionedUsers().size() > 1)
+		else if(message.getMentionedMembers().size() >= 1)
 		{
-			message.getMentionedUsers().forEach(user ->
+			message.getMentionedMembers().forEach(member ->
 				new EmbedGenerator(channel)
-					.title(user.getAsTag() + "'s Avatar")
-					.image(user.getEffectiveAvatarUrl())
+					.title(member.getUser().getAsTag() + "'s Avatar")
+					.image(member.getUser().getEffectiveAvatarUrl())
 					.color(EmbedUtils.IGSQ_PURPLE).send());
 
 		}

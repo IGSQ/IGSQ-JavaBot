@@ -55,6 +55,7 @@ public abstract class CommandHandler
 		final MessageChannel channel = event.getChannel();
 		args.remove(0);
 
+		if(event.getAuthor().isBot()) return;
 		if(channelType.equals(ChannelType.TEXT))
 		{
 			final Guild guild = event.getGuild();
@@ -71,13 +72,28 @@ public abstract class CommandHandler
 			{
 				content = messageContent.substring(prefix.length()).trim();
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				cmd = COMMANDS.get(issuedCommand.toLowerCase());
+				if(!issuedCommand.isEmpty())
+				{
+					cmd = COMMANDS.get(issuedCommand.toLowerCase());
+				}
+				else
+				{
+					return;
+				}
+
 			}
 			else if(messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">"))
 			{
 				content = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				cmd = COMMANDS.get(issuedCommand.toLowerCase());
+				if(!issuedCommand.isEmpty())
+				{
+					cmd = COMMANDS.get(issuedCommand.toLowerCase());
+				}
+				else
+				{
+					return;
+				}
 			}
 			else
 			{

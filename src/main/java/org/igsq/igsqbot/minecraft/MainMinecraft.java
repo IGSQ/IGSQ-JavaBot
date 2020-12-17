@@ -5,19 +5,19 @@ import org.igsq.igsqbot.Common;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class Main_Minecraft 
+public class MainMinecraft
 {
-	private static final ScheduledFuture<?> syncTask = Common.scheduler.scheduleAtFixedRate(Sync_Minecraft::sync, 0, 10,TimeUnit.SECONDS);
-	private static final ScheduledFuture<?> cleanTask = Common.scheduler.scheduleAtFixedRate(Sync_Minecraft::clean, 0, 6,TimeUnit.HOURS);
+	private static final ScheduledFuture<?> syncTask = Common.scheduler.scheduleAtFixedRate(SyncMinecraft::sync, 0, 10,TimeUnit.SECONDS);
+	private static final ScheduledFuture<?> cleanTask = Common.scheduler.scheduleAtFixedRate(SyncMinecraft::clean, 0, 6,TimeUnit.HOURS);
 
-	private Main_Minecraft()
+	private MainMinecraft()
 	{
 		//Override the default, public, constructor
 	}
 
 	public static void startMinecraft()
 	{
-		TwoFA_Minecraft.startTwoFA();
+		TwoFAMinecraft.startTwoFA();
 		new GuildMemberRemoveEvent_Minecraft();
 	}
 

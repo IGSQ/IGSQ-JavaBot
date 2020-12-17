@@ -18,9 +18,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Ping_Command extends Command
+public class PingCommand extends Command
 {
-	public Ping_Command()
+	public PingCommand()
 	{
 		super("Ping", new String[]{"ping", "latency"}, "Shows the bots current ping to Discord","[none]", new Permission[]{Permission.MESSAGE_MANAGE},false, 10);
 	}

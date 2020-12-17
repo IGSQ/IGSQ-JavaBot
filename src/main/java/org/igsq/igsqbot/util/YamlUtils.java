@@ -18,12 +18,28 @@ public class YamlUtils
 
 	public static GuildChannel getLogChannel(String guildID)
 	{
-		return IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString(guildID + ".textlog", "guild"));
+		if(isFieldEmpty(guildID + ".textlog", "guild"))
+		{
+			return null;
+		}
+		else
+		{
+			return IGSQBot.getJDA().getGuildChannelById( Yaml.getFieldString(guildID + ".textlog", "guild"));
+		}
 	}
 
 	public static GuildChannel getVoidLogChannel(String guildID)
 	{
-		return IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString(guildID + ".voicelog", "guild"));
+		if(isFieldEmpty(guildID + ".voicelog", "guild"))
+		{
+			return null;
+		}
+		else
+		{
+			return IGSQBot.getJDA().getGuildChannelById( Yaml.getFieldString(guildID + ".voicelog", "guild"));
+		}
+
+
 	}
 
 	public static String fieldAppend(String path, String filename, String delimiter, Object data)

@@ -14,14 +14,14 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Sync_Minecraft 
+public class SyncMinecraft
 {
 	private static final Map<String, String> ranks = new HashMap<>();
 	private static final Guild guild = IGSQBot.getJDA().getGuildById(Yaml.getFieldString("BOT.server", "config"));
 	private static Role verifiedRole = null;
-	private static final Logger LOGGER = LoggerFactory.getLogger(Sync_Minecraft.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
 
-	private Sync_Minecraft()
+	private SyncMinecraft()
 	{
 		//Overriding the default, public, constructor
 	}
@@ -30,7 +30,7 @@ public class Sync_Minecraft
 	{
 		if(guild == null)
 		{
-			Main_Minecraft.cancelSync();
+			MainMinecraft.cancelSync();
 			LOGGER.warn("Minecraft sync stopped due to invalid guild.");
 		}
 		else
@@ -72,7 +72,7 @@ public class Sync_Minecraft
 		ResultSet discord_accounts = Database.queryCommand("SELECT * FROM discord_accounts");
 		if(discord_accounts == null)
 		{
-			Main_Minecraft.cancelClean();
+			MainMinecraft.cancelClean();
 			LOGGER.warn("Minecraft cleaning stopped due to invalid discord_accounts table.");
 			return;
 		}
@@ -87,7 +87,7 @@ public class Sync_Minecraft
 
 						if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 						{
-							String uuid = Common_Minecraft.getUUIDFromID(id);
+							String uuid = CommonMinecraft.getUUIDFromID(id);
 
 							if(uuid != null)
 							{
