@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
@@ -18,10 +18,10 @@ public class Steal_Command extends Command
 {
 	public Steal_Command()
 	{
-		super("steal", new String[]{}, "Steals the specified image and adds it as an emoji", "[name][imageURL(A-Z + _)]", new Permission[]{Permission.MANAGE_EMOTES}, true, 0);
+		super("Steal", new String[]{"steal"}, "Steals the specified image and adds it as an emoji", "[name][imageURL(A-Z + _)]", new Permission[]{Permission.MANAGE_EMOTES}, true, 0);
 	}
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		if(args.size() != 2 || !StringUtils.isURLValid(args.get(1)) || !args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))

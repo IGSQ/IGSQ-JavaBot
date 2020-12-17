@@ -8,8 +8,12 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GUIGenerator
 {
+	private static final List<GUIGenerator> guiList = new ArrayList<>();
 	private final EmbedGenerator embed;
 	private Message message = null;
 	private static final String NUMBER_CODEPOINT = "\u20E3";
@@ -22,7 +26,8 @@ public class GUIGenerator
 	}
 	
 	public Boolean confirmation(User user, long timeout)
-	{	
+	{
+		guiList.add(this);
 		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
 		
 		for(String selectedReaction : Common.TICK_REACTIONS) message.addReaction(selectedReaction).queue();
@@ -38,7 +43,8 @@ public class GUIGenerator
 		{
 			reactionEvent = null;
 		}
-		
+
+		event = reactionEvent;
 		if(reactionEvent != null)
 		{
 			User reactingUser = null;
@@ -80,12 +86,12 @@ public class GUIGenerator
 	}
 	
 	public String input(User user, long timeout)
-	{	
+	{
+		guiList.add(this);
 		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
 
 		MessageReceivedEvent messageEvent;
 		EventWaiter waiter = new EventWaiter();
-		event = null;
 
 		try
 		{
@@ -95,10 +101,11 @@ public class GUIGenerator
 		{
 			messageEvent = null;
 		}
-		
+
+		event = messageEvent;
 		if(messageEvent != null)
 		{
-			event = messageEvent;
+
 			return messageEvent.getMessage().getContentRaw();
 		}
 		else
@@ -109,8 +116,10 @@ public class GUIGenerator
 	
 	public int menu(User user, long timeout, int optionCount)
 	{
+		guiList.add(this);
 		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
 
+		if(optionCount > 10) optionCount = 10;
 		for(int i = 1; i <= optionCount; i++)
 		{
 			message.addReaction(i + NUMBER_CODEPOINT).queue();
@@ -118,7 +127,6 @@ public class GUIGenerator
 
 		final MessageReactionAddEvent reactionEvent;
 		EventWaiter waiter = new EventWaiter();
-		event = null;
 		try
 		{
 			reactionEvent = waiter.waitFor(MessageReactionAddEvent.class, event -> event.getUser().equals(user) && !event.getUser().isBot(), timeout);
@@ -128,10 +136,10 @@ public class GUIGenerator
 			return -1;
 		}
 
-
+		event = reactionEvent;
 		if(reactionEvent != null)
 		{
-			event = reactionEvent;
+
 			reactionEvent.retrieveUser().queue(reactingUser -> reactionEvent.getReaction().removeReaction(reactingUser).queue(null, error -> {}));
 
 			if(reactionEvent.getReactionEmote().isEmoji())
@@ -164,7 +172,18 @@ public class GUIGenerator
 			return -1;
 		}
 	}
-	
+
+	public void close()
+	{
+		message.delete().queue();
+	}
+	public static void closeAll()
+	{
+		for(GUIGenerator generator : guiList)
+		{
+			generator.close();
+		}
+	}
 	public EmbedGenerator getEmbed()
 	{
 		return embed;
@@ -173,7 +192,6 @@ public class GUIGenerator
 	{
 		return message;
 	}
-
 	public GenericEvent getEvent()
 	{
 		return event;

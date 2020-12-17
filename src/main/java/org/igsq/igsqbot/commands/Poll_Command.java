@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -17,11 +17,11 @@ public class Poll_Command extends Command
 {
 	public Poll_Command()
 	{
-		super("poll", new String[]{}, "Starts a poll for users to vote in.","[title]/[option1]/[option2]-20-",new Permission[]{}, false,0);
+		super("Poll", new String[]{"poll"}, "Starts a poll for users to vote in.","[title]/[option1]/[option2]-20-",new Permission[]{}, false,0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final StringBuilder options = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();

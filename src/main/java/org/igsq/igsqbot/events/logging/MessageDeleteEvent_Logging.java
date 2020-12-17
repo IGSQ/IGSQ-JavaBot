@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.logging;
+package org.igsq.igsqbot.events.logging;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.GuildChannel;

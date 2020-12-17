@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
@@ -22,11 +22,11 @@ public class Uwu_Command extends Command
 {
 	public Uwu_Command()
 	{
-		super("uwu", new String[]{"uwufy"}, "UwU's the specified sentence","[text]", new Permission[]{}, false,0);
+		super("UwU", new String[]{"uwu", "uwufy", "owo"}, "UwU's the specified sentence","[text]", new Permission[]{}, false,0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
 		final StringBuilder finalSentence = new StringBuilder();

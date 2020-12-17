@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -15,11 +15,11 @@ public class Avatar_Command extends Command
 {
 	public Avatar_Command()
 	{
-		super("avatar", new String[]{}, "Shows the avatar for the mentioned user(s)", "[user(s) -3-]" , new Permission[]{}, false, 0);
+		super("Avatar", new String[]{"avatar", "pfp", "avi"}, "Shows the avatar for the mentioned user(s)", "[user(s) -3-]" , new Permission[]{}, false, 0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final Message message = ctx.getMessage();
 		final MessageChannel channel = ctx.getChannel();

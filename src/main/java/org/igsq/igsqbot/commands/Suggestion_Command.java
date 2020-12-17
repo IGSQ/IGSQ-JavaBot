@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
@@ -21,11 +21,11 @@ public class Suggestion_Command extends Command
 {
     public Suggestion_Command()
     {
-        super("suggestion", new String[]{"suggest", "idea"}, "Suggests an idea in the designated suggestion channel","[topic]", new Permission[]{}, true, 0);
+        super("Suggestion", new String[]{"suggest", "suggestion", "idea"}, "Suggests an idea in the designated suggestion channel","[topic]", new Permission[]{}, true, 0);
     }
 
     @Override
-    public void execute(List<String> args, Context ctx)
+    public void execute(List<String> args, CommandContext ctx)
     {
         final Guild guild = ctx.getGuild();
         final User author = ctx.getAuthor();

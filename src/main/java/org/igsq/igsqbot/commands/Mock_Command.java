@@ -3,7 +3,7 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -16,10 +16,10 @@ public class Mock_Command extends Command
 {
 	public Mock_Command()
 	{
-		super("mock", new String[]{}, "Mocks the specified text", "[text]", new Permission[]{}, false, 0);
+		super("Mock", new String[]{"mock"}, "Mocks the specified text", "[text]", new Permission[]{}, false, 0);
 	}
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final StringBuilder mockText = new StringBuilder();

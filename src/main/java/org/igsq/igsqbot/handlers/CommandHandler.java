@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -66,39 +66,45 @@ public abstract class CommandHandler
 			final String content;
 			final String issuedCommand;
 			final Command cmd;
+
 			if(messageContent.startsWith(prefix))
 			{
 				content = messageContent.substring(prefix.length()).trim();
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				cmd = COMMANDS.get(issuedCommand);
+				cmd = COMMANDS.get(issuedCommand.toLowerCase());
 			}
 			else if(messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">"))
 			{
 				content = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				cmd = COMMANDS.get(issuedCommand);
+				cmd = COMMANDS.get(issuedCommand.toLowerCase());
 			}
 			else
 			{
 				return;
 			}
 
+			if(guild.getSelfMember().hasPermission(Permission.MESSAGE_MANAGE))
+			{
+				event.getMessage().delete().queue();
+			}
 			if(cmd == null)
 			{
 				EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
 				return;
 			}
-			if(!guild.getSelfMember().hasPermission((GuildChannel) channel, cmd.getRequiredPermissions())
+			else if(cmd.isDisabled())
+			{
+				EmbedUtils.sendDisabledError(channel, cmd);
+				return;
+			}
+			else if(!guild.getSelfMember().hasPermission((GuildChannel) channel, cmd.getRequiredPermissions())
 					|| !member.hasPermission((GuildChannel) channel, cmd.getRequiredPermissions()))
 			{
 				EmbedUtils.sendPermissionError(channel, cmd);
 				return;
 			}
-			if(guild.getSelfMember().hasPermission(Permission.MESSAGE_MANAGE))
-			{
-				event.getMessage().delete().queue();
-			}
-			commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
+			commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
 
 		}
 		else
@@ -110,13 +116,21 @@ public abstract class CommandHandler
 				final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 				final Command cmd = COMMANDS.get(issuedCommand);
 
-				if(cmd.isRequiresGuild())
+				if(cmd == null)
+				{
+					EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
+				}
+				else if(cmd.isDisabled())
+				{
+					EmbedUtils.sendDisabledError(channel, cmd);
+				}
+				else if(cmd.isRequiresGuild())
 				{
 					EmbedUtils.sendError(channel, "This command requires execution in a guild.");
 				}
 				else
 				{
-					commandExecutor.submit(() -> cmd.execute(args, new Context(event)));
+					commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
 				}
 			}
 

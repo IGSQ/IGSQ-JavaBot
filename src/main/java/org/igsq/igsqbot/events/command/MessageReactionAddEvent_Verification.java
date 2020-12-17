@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.events;
+package org.igsq.igsqbot.events.command;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;

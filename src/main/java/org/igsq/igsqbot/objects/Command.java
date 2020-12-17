@@ -13,6 +13,7 @@ public abstract class Command
 	private final int cooldown;
 	private final boolean requiresGuild;
 	private final String syntax;
+	private boolean disabled = false;
 
 	protected Command(final String invoke, final String[] aliases, final String description, final String syntax, final Permission[] requiredPermissions, boolean requiresGuild, int cooldown)
 	{
@@ -25,7 +26,7 @@ public abstract class Command
 		this.cooldown = cooldown;
 	}
 
-	public abstract void execute(final List<String> args, Context ctx);
+	public abstract void execute(final List<String> args, CommandContext ctx);
 
 	public String getInvoke()
 	{
@@ -60,5 +61,15 @@ public abstract class Command
 	public boolean isRequiresGuild()
 	{
 		return requiresGuild;
+	}
+
+	public boolean isDisabled()
+	{
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled)
+	{
+		this.disabled = disabled;
 	}
 }

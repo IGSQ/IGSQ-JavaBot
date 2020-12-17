@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.EventWaiter;
 import org.igsq.igsqbot.util.*;
@@ -23,11 +23,11 @@ public class Verification_Command extends Command
 
 	public Verification_Command()
 	{
-		super("verify", new String[]{"v", "accept"}, "Verifies the specified user into the server","[user]", new Permission[]{}, true, 0);
+		super("Verify", new String[]{"verify", "v", "accept"}, "Verifies the specified user into the server","[user]", new Permission[]{}, true, 0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final StringBuilder embedText = new StringBuilder();
 		final MessageChannel channel = ctx.getChannel();

@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -16,11 +16,11 @@ public class Modhelp_Command extends Command
 {
 	public Modhelp_Command()
 	{
-		super("modhelp", new String[]{}, "Shows the modhelp menu for this bot", "[none]",new Permission[]{Permission.MESSAGE_MANAGE}, false, 0);
+		super("Modhelp", new String[]{"modhelp"}, "Shows the modhelp menu for this bot", "[none]",new Permission[]{Permission.MESSAGE_MANAGE}, false, 0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final EmbedGenerator embed = ArrayUtils.MODPAGE_TEXT.get(0);

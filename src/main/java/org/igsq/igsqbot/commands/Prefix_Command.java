@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.YamlUtils;
@@ -16,10 +16,10 @@ public class Prefix_Command extends Command
 {
 	public Prefix_Command()
 	{
-		super("prefix", new String[]{}, "Sets / gets the prefix for the bot in the current server.", "[newPrefix -5-] | [reset] | [none] ", new Permission[]{}, true, 0);
+		super("Prefix", new String[]{"prefix"}, "Sets / gets the prefix for the bot in the current server.", "[newPrefix -5-] | [reset] | [none] ", new Permission[]{}, true, 0);
 	}
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final Guild guild = ctx.getGuild();

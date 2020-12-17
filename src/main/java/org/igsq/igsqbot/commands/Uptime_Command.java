@@ -3,7 +3,7 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -16,11 +16,11 @@ public class Uptime_Command extends Command
 {
 	public Uptime_Command()
 	{
-		super("uptime", new String[]{}, "Displays the bots uptime", "[none]", new Permission[]{}, false, 0);
+		super("Uptime", new String[]{"uptime"}, "Displays the bots uptime", "[none]", new Permission[]{}, false, 0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		if(!args.isEmpty())
 		{

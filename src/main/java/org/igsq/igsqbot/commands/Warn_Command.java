@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.GUIGenerator;
 import org.igsq.igsqbot.util.*;
@@ -18,11 +18,11 @@ public class Warn_Command extends Command
 {
 	public Warn_Command()
 	{
-		super("warn", new String[]{}, "Handles the user warning system","[user][reason] | [show|remove][user]", new Permission[]{}, true, 0);
+		super("Warn", new String[]{"warn"}, "Handles the user warning system","[user][reason] | [show|remove][user]", new Permission[]{}, true, 0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final User warnTarget;
 		final MessageChannel channel = ctx.getChannel();

@@ -5,8 +5,13 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.events.*;
-import org.igsq.igsqbot.logging.*;
+import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Help;
+import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Main;
+import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Report;
+import org.igsq.igsqbot.events.main.MessageDeleteEvent_Main;
+import org.igsq.igsqbot.events.main.MessageReceivedEvent_Main;
+import org.igsq.igsqbot.events.logging.*;
+import org.igsq.igsqbot.handlers.EventHandler;
 import org.igsq.igsqbot.minecraft.Main_Minecraft;
 import org.igsq.igsqbot.objects.MessageCache;
 import org.slf4j.Logger;
@@ -16,8 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 public class IGSQBot
 {
-	private static JDA jda;
 	private static final Logger LOGGER = LoggerFactory.getLogger(IGSQBot.class);
+	private static JDA jda;
 
 	public static void main(String[] args)
 	{
@@ -31,28 +36,9 @@ public class IGSQBot
 					.enableIntents(GatewayIntent.GUILD_MEMBERS)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
 
-					.setActivity(Activity.watching("everything"))
+					.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
+					.setEventManager(EventHandler.getEventManager())
 					.build().awaitReady();
-
-			jda.addEventListener(
-					new MessageReactionAddEvent_Main(),
-					new MessageDeleteEvent_Main(),
-					new MessageReceivedEvent_Main(),
-
-					new MessageReactionAddEvent_Help(),
-					new MessageReactionAddEvent_Report(),
-
-					new GuildMemberJoinEvent_Logging(),
-					new GuildMemberRemoveEvent_Logging(),
-
-					new GuildVoiceJoinEvent_Logging(),
-					new GuildVoiceLeaveEvent_Logging(),
-					new GuildVoiceMoveEvent_Logging(),
-
-					new MessageBulkDeleteEvent_Logging(),
-					new MessageDeleteEvent_Logging(),
-					new MessageUpdateEvent_Logging()
-			);
 
 			Common.scheduler.scheduleAtFixedRate(() ->
 			{
@@ -62,6 +48,7 @@ public class IGSQBot
 
 			Common.scheduler.scheduleAtFixedRate(MessageCache::cleanCaches, 0, 6,TimeUnit.HOURS);
 
+			EventHandler.setEvents();
 			Main_Minecraft.startMinecraft();
 			Database.startDatabase();
 		}

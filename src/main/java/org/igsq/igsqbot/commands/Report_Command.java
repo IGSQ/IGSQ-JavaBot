@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.*;
 
@@ -16,11 +16,11 @@ public class Report_Command extends Command
 {
 	public Report_Command()
 	{
-		super("report", new String[]{}, "Reports the specified member with the specified reason","[user][reason]",new Permission[]{}, true, 60);
+		super("Report", new String[]{"report"}, "Reports the specified member with the specified reason","[user][reason]",new Permission[]{}, true, 60);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final StringBuilder messageLog = new StringBuilder();

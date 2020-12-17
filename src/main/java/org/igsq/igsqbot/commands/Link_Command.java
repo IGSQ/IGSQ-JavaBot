@@ -7,7 +7,7 @@ import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.minecraft.Common_Minecraft;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -24,11 +24,11 @@ public class Link_Command extends Command
 
 	public Link_Command()
 	{
-		super("link", new String[]{"mclink", "minecraft"}, "Controls Minecraft links.","[add|remove][mcName] | [list]", new Permission[]{}, false,0);
+		super("Link", new String[]{"link", "mclink", "minecraft"}, "Controls Minecraft links.","[add|remove][mcName] | [list]", new Permission[]{}, false,0);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final String action;
 		this.args = args;

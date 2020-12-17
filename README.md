@@ -16,11 +16,14 @@
  - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [ ] Help / Modhelp
  - [ ] Implement .help to use the COMMANDS array for its information
- - [ ] Alias / Decline (within setup)
+ - [ ] Alias / Decline (within the setup command)
  - [ ] Fully implement the logger
- - [ ] Change cache to Hashmap(MessageID, Message)
- 
- - [ ] Rewrite the event handler
+ - [ ] Change cache to ExpiringMap(MessageID, Message)
+ - [ ] Move to InterfacedEventManager as to run event processing async
+ - [ ] Change EmbedUtils to new prefix system
+ - [ ] Change all command invokes to more proper names
+   
+ - [ ] Rewrite the event waiter
  - [ ] Translation
  - [ ] XP system
  - [ ] Implement slash commands when they release

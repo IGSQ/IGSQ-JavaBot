@@ -8,7 +8,7 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -22,11 +22,11 @@ public class Ping_Command extends Command
 {
 	public Ping_Command()
 	{
-		super("ping", new String[]{}, "Shows the bots current ping to Discord","[none]", new Permission[]{Permission.MESSAGE_MANAGE},false, 10);
+		super("Ping", new String[]{"ping", "latency"}, "Shows the bots current ping to Discord","[none]", new Permission[]{Permission.MESSAGE_MANAGE},false, 10);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final User author = ctx.getAuthor();
 		final MessageChannel channel = ctx.getChannel();

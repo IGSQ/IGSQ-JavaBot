@@ -31,7 +31,7 @@ public class EmbedUtils
 	public static void sendSyntaxError(MessageChannel channel, Command command)
 	{
 		new EmbedGenerator(channel)
-				.text("<:igsqCross:788476443885174834> The provided syntax was incorrect.\n`" + Common.DEFAULT_BOT_PREFIX + command.getInvoke() +  " " + command.getSyntax() + "`")
+				.text("<:igsqCross:788476443885174834> The provided syntax was incorrect.\n`" + Common.DEFAULT_BOT_PREFIX + command.getAliases()[0] +  " " + command.getSyntax() + "`")
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();
@@ -40,7 +40,7 @@ public class EmbedUtils
 	public static void sendPermissionError(MessageChannel channel, Command command)
 	{
 		new EmbedGenerator(channel)
-				.text("<:igsqCross:788476443885174834> A permission error occurred when attempting to execute command:`" + Common.DEFAULT_BOT_PREFIX + command.getInvoke() + "`")
+				.text("<:igsqCross:788476443885174834> A permission error occurred when attempting to execute command:`" + command.getAliases()[0] + "`")
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();
@@ -51,6 +51,15 @@ public class EmbedUtils
 		new EmbedGenerator(channel)
 				.text("<:igsqTick:788476500012695582> " + successText)
 				.color(Color.GREEN)
+				.footer(StringUtils.getTimestamp())
+				.sendTemporary();
+	}
+
+	public static void sendDisabledError(MessageChannel channel, Command command)
+	{
+		new EmbedGenerator(channel)
+				.text("<:igsqCross:788476443885174834> `" + command.getAliases()[0] + "` is currently disabled!")
+				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();
 	}

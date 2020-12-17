@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.logging;
+package org.igsq.igsqbot.events.logging;
 
 public class Main_Logging
 {

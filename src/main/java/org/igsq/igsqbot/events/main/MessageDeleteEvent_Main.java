@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.events;
+package org.igsq.igsqbot.events.main;
 
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

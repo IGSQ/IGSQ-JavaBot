@@ -4,11 +4,11 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class Context
+public class CommandContext
 {
 	private final MessageReceivedEvent event;
 
-	public Context(MessageReceivedEvent event)
+	public CommandContext(MessageReceivedEvent event)
 	{
 		this.event = event;
 	}

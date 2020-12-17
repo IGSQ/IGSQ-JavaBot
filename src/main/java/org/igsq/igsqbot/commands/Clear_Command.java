@@ -6,25 +6,23 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.Context;
+import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Clear_Command extends Command
 {
 	public Clear_Command()
 	{
-		super("clear", new String[]{"purge"}, "Clears the channel with the specified amount", "[amount -50-]", new Permission[]{Permission.MESSAGE_MANAGE}, true,5);
+		super("Clear", new String[]{"clear", "purge"}, "Clears the channel with the specified amount", "[amount -50-]", new Permission[]{Permission.MESSAGE_MANAGE}, true,5);
 	}
 
 	@Override
-	public void execute(List<String> args, Context ctx)
+	public void execute(List<String> args, CommandContext ctx)
 	{
 		final int amount;
 		final MessageChannel channel = ctx.getChannel();
