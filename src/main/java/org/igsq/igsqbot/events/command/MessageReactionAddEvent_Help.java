@@ -30,7 +30,7 @@ public class MessageReactionAddEvent_Help extends ListenerAdapter
 									{
 										event.getReaction().removeReaction(user).queue();
 
-										if(messageDataCache.getUsers().get(0).equals(user))
+										if(messageDataCache.getUsers().get("user").equals(user))
 										{
 											int page = messageDataCache.getPage();
 

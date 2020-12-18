@@ -55,7 +55,7 @@ public class MockCommand extends Command
 			}
 			catch(Exception exception)
 			{
-				EmbedUtils.sendError(channel, "An error occurred while loading the image");
+				EmbedUtils.sendError(channel, "An error occurred while loading the image.");
 			}
 		}
 	}

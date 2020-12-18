@@ -1,11 +1,15 @@
 package org.igsq.igsqbot.events.command;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.cache.MessageDataCache;
+import org.igsq.igsqbot.util.YamlUtils;
 
 import java.awt.*;
 
@@ -17,40 +21,42 @@ public class MessageReactionAddEvent_Report extends ListenerAdapter
 		if(!event.getReactionEmote().isEmoji()) return;
 		final String messageID = event.getMessageId();
 		final Guild guild = event.getGuild();
-		event.retrieveMessage().queue(
-				message ->
-						event.retrieveUser().queue(
-								user ->
-										event.retrieveMember().queue(
-												member ->
-												{
-													if(Yaml.getFieldBool(messageID + ".report.enabled", "internal") && !user.isBot())
-													{
-														guild.retrieveMemberById(Yaml.getFieldString(messageID + ".report.reporteduser", "internal")).queue(
-																reportedUser ->
-																{
-																	// Member reportingUser = event.getGuild().getMemberById(Yaml.getFieldInt(messageID + ".report.reportinguser", "internal"));
-																	MessageEmbed embed = message.getEmbeds().get(0);
+		final JDA jda = event.getJDA();
 
-																	if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && member.canInteract(reportedUser))
-																	{
-																		new EmbedGenerator(embed).footer("This was dealt with by " + user.getAsTag()).color(Color.GREEN).replace(message, true);
-																		Yaml.updateField(messageID + ".report", "internal", null);
-																	}
-																	else
-																	{
-																		new EmbedGenerator(embed)
-																				.color(Color.YELLOW)
-																				.footer(user.getAsTag() + ", you are not higher than " + reportedUser.getRoles().get(0).getName() + ".")
-																				.replace(message, 5000, embed);
-																		event.getReaction().removeReaction(user).queue();
-																	}
-																}
-														);
-													}
-												}
-										)
+		event.retrieveMessage().queue(
+			message ->
+				event.retrieveUser().queue(
+					user ->
+						event.retrieveMember().queue(
+							member ->
+							{
+								if(Yaml.getFieldBool(messageID + ".report.enabled", "internal") && !user.isBot())
+								{
+									final MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
+
+									if(messageDataCache != null)
+									{
+										Member reportedMember = messageDataCache.getMembers(guild).get("reporteduser");
+										MessageEmbed embed = message.getEmbeds().get(0);
+
+										if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && member.canInteract(reportedMember))
+										{
+											new EmbedGenerator(embed).footer("This was dealt with by " + user.getAsTag()).color(Color.GREEN).replace(message, true);
+											YamlUtils.clearField(messageID + ".report", "internal");
+										}
+										else
+										{
+											new EmbedGenerator(embed)
+													.color(Color.YELLOW)
+													.footer(user.getAsTag() + ", you are not higher than " + reportedMember.getRoles().get(0).getName() + ".")
+													.replace(message, 5000, embed);
+											event.getReaction().removeReaction(user).queue();
+										}
+									}
+								}
+							}
 						)
+					)
 		);
 	}
 }

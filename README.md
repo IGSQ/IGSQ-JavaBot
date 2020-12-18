@@ -16,19 +16,20 @@
  - [x] Change EmbedUtils to new prefix system (removed prefixes from errors)
  - [x] Move to InterfacedEventManager as to run event processing async
  - [x] Change cache to ExpiringMap(MessageID, Message)
-   
- - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
- - [ ] Help / Modhelp
+ - [x] GuildConfigCache#close - unneeded
+ - [x] Remove EventWaiter where possible in favour of MessageDataCache
+ - [x] Move all events.commands to MessageDataCache
+
+ - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
+ 
+ - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [ ] Alias / Decline (within the setup command)
  - [ ] Fully implement the logger
  - [ ] Condense events
  - [ ] Add VerificationCache to store settings
  - [ ] Remove raw Yaml links in place of caches / methods
  - [ ] Rework MessageCache to use hashmaps + refactor
- - [ ] Move all events.commands to MessageDataCache
- - [ ] GuildConfigCache#close
- - [ ] Remove EventWaiter where possible in favour of MessageDataCache
 
  - [ ] Rewrite the event waiter
  - [ ] Translation

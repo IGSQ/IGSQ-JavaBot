@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class MessageDataCache
 {
 	private static final Map<String, MessageDataCache> STORED_DATA;
-	private static final Logger LOGGER = LoggerFactory.getLogger(MessageDataCache.class);
 
 	static
 	{
@@ -115,25 +115,54 @@ public class MessageDataCache
 		}
 	}
 
-	public List<User> getUsers()
+	public Map<String, User> getUsers()
 	{
-		List<User> result = new ArrayList<>();
+		Map<String, User> result = new ConcurrentHashMap<>();
 		switch(type)
 		{
 			case HELP:
 			{
-				result.add(jda.getUserById(Yaml.getFieldString(messageId + ".help.user", "internal")));
+				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".help.user", "internal")));
 				break;
 			}
 			case REPORT:
 			{
-				result.add(jda.getUserById(Yaml.getFieldString(messageId + ".report.reporteduser", "internal")));
-				result.add(jda.getUserById(Yaml.getFieldString(messageId + ".report.reportinguser", "internal")));
+				result.put("reporteduser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reporteduser", "internal")));
+				result.put("reportinguser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reportinguser", "internal")));
 				break;
 			}
 			case MODHELP:
 			{
-				result.add(jda.getUserById(Yaml.getFieldString(messageId + ".modhelp.user", "internal")));
+				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".modhelp.user", "internal")));
+				break;
+			}
+			default:
+			{
+				return result;
+			}
+		}
+		return result;
+	}
+
+	public Map<String, String> getUserIds()
+	{
+		Map<String, String> result = new ConcurrentHashMap<>();
+		switch(type)
+		{
+			case HELP:
+			{
+				result.put("user", Yaml.getFieldString(messageId + ".help.user", "internal"));
+				break;
+			}
+			case REPORT:
+			{
+				result.put("reporteduser", Yaml.getFieldString(messageId + ".report.reporteduser", "internal"));
+				result.put("reportinguser", Yaml.getFieldString(messageId + ".report.reportinguser", "internal"));
+				break;
+			}
+			case MODHELP:
+			{
+				result.put("user", Yaml.getFieldString(messageId + ".modhelp.user", "internal"));
 				break;
 			}
 			default:
@@ -170,28 +199,28 @@ public class MessageDataCache
 		}
 	}
 
-	public List<Member> getMembers(Guild guild)
+	public Map<String, Member> getMembers(Guild guild)
 	{
-		List<Member> result = new ArrayList<>();
+		Map<String, Member> result = new ConcurrentHashMap<>();
 		switch(type)
 		{
 			case HELP:
 			{
-				result.add(guild.getMemberById(Yaml.getFieldString(messageId + ".help.user", "internal")));
+				result.put("user", guild.getMemberById(Yaml.getFieldString(messageId + ".help.user", "internal")));
 				break;
 			}
 			case REPORT:
 			{
-				result.add(guild.getMemberById(Yaml.getFieldString(messageId + ".report.reporteduser", "internal")));
-				result.add(guild.getMemberById(Yaml.getFieldString(messageId + ".report.reportinguser", "internal")));
+				result.put("reporteduser", guild.getMemberById(Yaml.getFieldString(messageId + ".report.reporteduser", "internal")));
+				result.put("reportinguser", guild.getMemberById(Yaml.getFieldString(messageId + ".report.reportinguser", "internal")));
 				break;
 			}
 			case MODHELP:
 			{
-				result.add(guild.getMemberById((Yaml.getFieldString(messageId + ".modhelp.user", "internal"))));
+				result.put("user", guild.getMemberById(Yaml.getFieldString(messageId + ".modhelp.user", "internal")));
 				break;
 			}
-			case DISABLED:
+			default:
 			{
 				return result;
 			}

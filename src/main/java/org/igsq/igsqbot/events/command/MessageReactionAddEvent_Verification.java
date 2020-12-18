@@ -14,6 +14,7 @@ import org.igsq.igsqbot.util.YamlUtils;
 import java.util.Arrays;
 import java.util.List;
 
+@Deprecated
 public class MessageReactionAddEvent_Verification extends ListenerAdapter
 {
 	@Override
