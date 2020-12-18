@@ -25,7 +25,7 @@ public class CommandUtils
 				String role = Yaml.getFieldString(id + ".references." + i + ".id", "verification");
 				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(","))
 				{
-					result.putIfAbsent(role, selectedAlias);
+					result.putIfAbsent(selectedAlias, role);
 				}
 			}
 			i++;
@@ -44,7 +44,7 @@ public class CommandUtils
 				String role = Yaml.getFieldString(id + ".references." + i + ".id", "verification");
 				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","))
 				{
-					result.putIfAbsent(role, selectedAlias);
+					result.putIfAbsent(selectedAlias, role);
 				}
 			}
 			i++;
@@ -77,30 +77,6 @@ public class CommandUtils
 		Yaml.updateField(id + ".references." + i + ".aliases", "verification", alias);
 		Yaml.updateField(id + ".references." + i + ".id", "verification", role);
 		Yaml.updateField(id + ".references." + i + ".name", "verification", alias);
-	}
-
-	public static int findReferenceForRole(String guild, String role)
-	{
-		int i = 0;
-		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
-		{
-			if(Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role))
-			{
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-
-	public static int findHighestReference(String guild)
-	{
-		int i = -1;
-		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
-		{
-			i++;
-		}
-		return i;
 	}
 
 	public static void insertDecline(String id, String role, String alias)
@@ -174,35 +150,6 @@ public class CommandUtils
 
 				Yaml.updateField(guild + ".references." + i + ".declined", "verification", dependedAliases.toString());
 				return true;
-			}
-			i++;
-		}
-		return false;
-	}
-
-	public static List<String> getRoles(String id)
-	{
-		int i = 0;
-		List<String> result = new ArrayList<>();
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
-		{
-			result.add(Yaml.getFieldString(id + ".references." + i + ".id", "verification"));
-			i++;
-		}
-		return result;
-	}
-
-	public static boolean isAliasExists(String guild, String alias)
-	{
-		int i = 0;
-		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".name", "verification"))
-		{
-			for(String selectedAlias : Yaml.getFieldString(guild + ".references." + i + ".aliases", "verification").split(","))
-			{
-				if(selectedAlias.equals(alias))
-				{
-					return true;
-				}
 			}
 			i++;
 		}

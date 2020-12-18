@@ -6,14 +6,15 @@ import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class MessageCache
 {
-	private static final List<MessageCache> MESSAGE_CACHES = new ArrayList<>();
+	private static final Map<String, MessageCache> MESSAGE_CACHES = new ConcurrentHashMap<>();
+
 	private final Map<String, Message> cachedMessages;
 	private final String guildId;
 
@@ -28,31 +29,25 @@ public class MessageCache
 				.build();
 	}
 
-	public static MessageCache getCache(String id)
+	public static MessageCache getCache(String guildId)
 	{
-		for(MessageCache selectedCache : MESSAGE_CACHES)
+		if(MESSAGE_CACHES.get(guildId) != null)
 		{
-			if(selectedCache.getID().equals(id))
-			{
-				return selectedCache;
-			}
+			return MESSAGE_CACHES.get(guildId);
 		}
-		MessageCache newCache = new MessageCache(id);
-		MESSAGE_CACHES.add(newCache);
+		MessageCache newCache = new MessageCache(guildId);
+		MESSAGE_CACHES.put(guildId, newCache);
 		return newCache;
 	}
 
 	public static MessageCache getCache(Guild guild)
 	{
-		for(MessageCache selectedCache : MESSAGE_CACHES)
+		if(MESSAGE_CACHES.get(guild.getId()) != null)
 		{
-			if(selectedCache.getID().equals(guild.getId()))
-			{
-				return selectedCache;
-			}
+			return MESSAGE_CACHES.get(guild.getId());
 		}
 		MessageCache newCache = new MessageCache(guild.getId());
-		MESSAGE_CACHES.add(newCache);
+		MESSAGE_CACHES.put(guild.getId(), newCache);
 		return newCache;
 	}
 
@@ -77,11 +72,11 @@ public class MessageCache
 		}
 	}
 
-	public Message get(String id)
+	public Message get(String messageId)
 	{
 		for(Map.Entry<String, Message> entry : cachedMessages.entrySet())
 		{
-			if(entry.getKey().equals(id))
+			if(entry.getKey().equals(messageId))
 			{
 				return entry.getValue();
 			}
@@ -89,9 +84,9 @@ public class MessageCache
 		return null;
 	}
 
-	public void remove(String id)
+	public void remove(String messageId)
 	{
-		cachedMessages.remove(id);
+		cachedMessages.remove(messageId);
 	}
 
 	public void remove(Message message)

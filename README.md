@@ -19,6 +19,8 @@
  - [x] GuildConfigCache#close - unneeded
  - [x] Remove EventWaiter where possible in favour of MessageDataCache
  - [x] Move all events.commands to MessageDataCache
+ - [x] Kill the callback hell
+ - [x] Rework MessageCache to use hashmaps + refactor
 
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
@@ -29,7 +31,7 @@
  - [ ] Condense events
  - [ ] Add VerificationCache to store settings
  - [ ] Remove raw Yaml links in place of caches / methods
- - [ ] Rework MessageCache to use hashmaps + refactor
+ - [ ] Use flatMaps where possible
 
  - [ ] Rewrite the event waiter
  - [ ] Translation
