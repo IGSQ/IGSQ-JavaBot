@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,6 @@ public class SyncMinecraft
 {
 	private static final Map<String, String> ranks = new HashMap<>();
 	private static final Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
-	private static JDA jda;
 	private static Guild guild;
 	private static Role verifiedRole = null;
 
@@ -31,8 +31,7 @@ public class SyncMinecraft
 
 	public static void startSync(JDA JDA)
 	{
-		jda = JDA;
-		guild = jda.getGuildById(Yaml.getFieldString("bot.server", "config"));
+		guild = JDA.getGuildById(Yaml.getFieldString("bot.server", "config"));
 	}
 
 	public static void sync()
@@ -89,24 +88,25 @@ public class SyncMinecraft
 		{
 			while(discord_accounts.next())
 			{
-				guild.retrieveMemberById(discord_accounts.getString(1)).queue(
+				final String currentId = discord_accounts.getString(1);
+				guild.retrieveMemberById(currentId).queue(
 						selectedMember ->
 						{
-							final String id = selectedMember.getId();
+							final String memberId = selectedMember.getId();
 
 							if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 							{
-								String uuid = CommonMinecraft.getUUIDFromID(id);
+								String uuid = CommonMinecraft.getUUIDFromID(memberId);
 
 								if(uuid != null)
 								{
 									Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
-									Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
+									Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + memberId + "';");
 								}
 
-								Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
+
 							}
-						}
+						}, error -> Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';")
 				);
 			}
 		}

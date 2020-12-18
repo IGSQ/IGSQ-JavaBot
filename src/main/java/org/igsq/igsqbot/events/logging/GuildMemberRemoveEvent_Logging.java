@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
@@ -16,7 +16,7 @@ public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{
-		final MessageChannel logChannel = GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getLogChannel();
+		final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
 		final User user = event.getUser();
 
 		event.getGuild().retrieveMember(user).queue(member ->

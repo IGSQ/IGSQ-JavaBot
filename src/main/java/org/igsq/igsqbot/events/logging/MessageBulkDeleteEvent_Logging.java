@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -17,7 +17,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 	@Override
 	public void onMessageBulkDelete(MessageBulkDeleteEvent event)
 	{
-		final MessageChannel logChannel = GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getLogChannel();
+		final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
 		MessageChannel channel = event.getChannel();
 		StringBuilder embedDescription = new StringBuilder();
 		MessageCache cache = MessageCache.getCache(event.getGuild());

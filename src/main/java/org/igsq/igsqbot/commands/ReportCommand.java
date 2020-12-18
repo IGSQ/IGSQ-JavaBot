@@ -7,7 +7,7 @@ import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.objects.cache.MessageDataCache;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -44,7 +44,7 @@ public class ReportCommand extends Command
 		if(reportedUser != null)
 		{
 			final Member reportedMember = UserUtils.getMemberFromUser(reportedUser, guild);
-			final GuildConfigCache config = GuildConfigCache.getCache(ctx.getGuild(), ctx.getJDA());
+			final GuildConfig config = new GuildConfig(ctx.getGuild(), ctx.getJDA());
 			final MessageChannel reportChannel = config.getReportChannel();
 			args.remove(0);
 

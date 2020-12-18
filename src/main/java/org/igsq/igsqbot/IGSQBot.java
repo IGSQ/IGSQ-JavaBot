@@ -40,13 +40,14 @@ public class IGSQBot
 				Yaml.loadFile("@all");
 			}, "yamlReload", TimeUnit.SECONDS, 30);
 
+			Database.startDatabase();
 			EventHandler.setEvents();
 			MainMinecraft.startMinecraft(jda);
-			Database.startDatabase();
+
 		}
 		catch(Exception exception)
 		{
-			LOGGER.error("Fatal exception occurred when the bot tried to start.", exception);
+			LOGGER.error("A fatal exception occurred when the bot tried to start.", exception);
 		}
 	}
 

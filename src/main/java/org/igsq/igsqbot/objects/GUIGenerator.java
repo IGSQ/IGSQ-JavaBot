@@ -25,12 +25,9 @@ public class GUIGenerator
 
 	}
 
-	public static void closeAll()
+	public static void close()
 	{
-		for(GUIGenerator generator : guiList)
-		{
-			generator.close();
-		}
+		guiList.forEach(GUIGenerator::delete);
 	}
 
 	public Boolean confirmation(User user, long timeout)
@@ -183,7 +180,7 @@ public class GUIGenerator
 		}
 	}
 
-	public void close()
+	public void delete()
 	{
 		message.delete().queue();
 	}

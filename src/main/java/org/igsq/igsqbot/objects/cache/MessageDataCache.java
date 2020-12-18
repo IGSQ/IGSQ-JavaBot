@@ -25,8 +25,8 @@ public class MessageDataCache
 	{
 		STORED_DATA = ExpiringMap.builder()
 				.maxSize(1000)
-				.expirationPolicy(ExpirationPolicy.CREATED)
-				.expiration(1, TimeUnit.HOURS)
+				.expirationPolicy(ExpirationPolicy.ACCESSED)
+				.expiration(30, TimeUnit.MINUTES)
 				.build();
 	}
 
@@ -62,7 +62,7 @@ public class MessageDataCache
 
 	public static void close()
 	{
-		STORED_DATA.forEach((key, value) -> YamlUtils.clearField(key, "internal"));
+		STORED_DATA.forEach((messageId, value) -> YamlUtils.clearField(messageId, "internal"));
 	}
 
 	public MessageType getType()

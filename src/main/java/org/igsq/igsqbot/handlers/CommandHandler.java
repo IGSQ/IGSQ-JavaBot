@@ -11,7 +11,7 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.*;
@@ -61,7 +61,7 @@ public abstract class CommandHandler
 		{
 			final JDA jda = event.getJDA();
 			final Guild guild = event.getGuild();
-			final String prefix = GuildConfigCache.getCache(guild, jda).getGuildPrefix();
+			final String prefix = new GuildConfig(guild, jda).getGuildPrefix();
 			final Member member = event.getMember();
 			final String selfID = IGSQBot.getJDA().getSelfUser().getId();
 			final String messageContent = event.getMessage().getContentRaw();

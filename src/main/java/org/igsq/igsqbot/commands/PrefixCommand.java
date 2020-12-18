@@ -8,7 +8,7 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class PrefixCommand extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final Guild guild = ctx.getGuild();
 		final JDA jda = ctx.getJDA();
-		final GuildConfigCache config = GuildConfigCache.getCache(guild, jda);
+		final GuildConfig config = new GuildConfig(guild, jda);
 		if(args.isEmpty())
 		{
 

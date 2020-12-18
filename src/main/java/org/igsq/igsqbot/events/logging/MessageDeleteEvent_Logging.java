@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -27,7 +27,7 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 			if(cache.isInCache(event.getMessageId()))
 			{
 				final Message message = cache.get(event.getMessageId());
-				final MessageChannel logChannel = GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getLogChannel();
+				final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
 				final MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
 

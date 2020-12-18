@@ -1,11 +1,9 @@
-package org.igsq.igsqbot.objects.cache;
+package org.igsq.igsqbot.objects;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.jodah.expiringmap.ExpirationPolicy;
-import net.jodah.expiringmap.ExpiringMap;
 import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.YamlUtils;
@@ -13,54 +11,23 @@ import org.igsq.igsqbot.util.YamlUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class GuildConfigCache
+public class GuildConfig
 {
-	private static final Map<String, GuildConfigCache> CONFIG_CACHE_MAP;
-
-	static
-	{
-		CONFIG_CACHE_MAP = ExpiringMap.builder()
-				.maxSize(1000)
-				.expirationPolicy(ExpirationPolicy.CREATED)
-				.expiration(10, TimeUnit.MINUTES)
-				.build();
-	}
-
 	private final String guildId;
 	private final JDA jda;
 
-	public GuildConfigCache(String guildId, JDA jda)
+	public GuildConfig(String guildId, JDA jda)
 	{
 		this.guildId = guildId;
 		this.jda = jda;
 	}
 
-	public static GuildConfigCache getCache(String guildId, JDA jda)
+	public GuildConfig(Guild guild, JDA jda)
 	{
-		if(CONFIG_CACHE_MAP.get(guildId) != null)
-		{
-			return CONFIG_CACHE_MAP.get(guildId);
-		}
-		else
-		{
-			return CONFIG_CACHE_MAP.computeIfAbsent(guildId, k -> new GuildConfigCache(guildId, jda));
-		}
-	}
-
-	public static GuildConfigCache getCache(Guild guild, JDA jda)
-	{
-		if(CONFIG_CACHE_MAP.get(guild.getId()) != null)
-		{
-			return CONFIG_CACHE_MAP.get(guild.getId());
-		}
-		else
-		{
-			return CONFIG_CACHE_MAP.computeIfAbsent(guild.getId(), k -> new GuildConfigCache(guild.getId(), jda));
-		}
+		this.guildId = guild.getId();
+		this.jda = jda;
 	}
 
 	public TextChannel getVerificationChannel()

@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.objects.EventWaiter;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.objects.cache.MessageCache;
 
 public class MessageReceivedEvent_Main extends ListenerAdapter
@@ -15,7 +15,7 @@ public class MessageReceivedEvent_Main extends ListenerAdapter
 	{
 		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot() && !EventWaiter.waitingOnThis(event))
 		{
-			if(!event.getMessage().getContentRaw().startsWith(GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getGuildPrefix()))
+			if(!event.getMessage().getContentRaw().startsWith(new GuildConfig(event.getGuild(), event.getJDA()).getGuildPrefix()))
 			{
 				MessageCache.getCache(event.getGuild()).set(event.getMessage());
 			}

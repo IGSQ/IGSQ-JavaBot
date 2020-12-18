@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
+import org.igsq.igsqbot.objects.Blacklist;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.GUIGenerator;
@@ -34,14 +35,16 @@ public class ShutdownCommand extends Command
 
 		ctx.getJDA().shutdown();
 		CommandHandler.shutdown();
-		GUIGenerator.closeAll();
+
+		GUIGenerator.close();
 		TaskHandler.close();
 		MessageDataCache.close();
+		Blacklist.close();
 
 		Yaml.saveFileChanges("@all");
 		Yaml.disregardAndCloseFile("@all");
 
-		LOGGER.warn("\nIGSQBot shutdown using shutdown command.\n    " +
+		LOGGER.warn("\nIGSQBot was shutdown using shutdown command.\n    " +
 				"-- Issued by: " + ctx.getAuthor().getAsTag() + "\n    " +
 				"-- In guild: " + ctx.getGuild().getName());
 		System.exit(0);

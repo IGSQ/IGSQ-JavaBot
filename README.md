@@ -21,17 +21,18 @@
  - [x] Move all events.commands to MessageDataCache
  - [x] Kill the callback hell
  - [x] Rework MessageCache to use hashmaps + refactor
+ - [x] Remove raw Yaml links in place of caches / methods
+ - [x] Fully implement the logger - needs review
+
 
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
- 
- - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [ ] Alias / Decline (within the setup command)
- - [ ] Fully implement the logger
- - [ ] Condense events
- - [ ] Add VerificationCache to store settings
- - [ ] Remove raw Yaml links in place of caches / methods
- - [ ] Use flatMaps where possible
+   
+
+ - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
+ - [ ] Finish verification
+
 
  - [ ] Rewrite the event waiter
  - [ ] Translation
@@ -42,7 +43,8 @@
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
  
-- [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
+ - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
+ - [x] discord_accounts table returning errors - fixed with additional error catching
 
 ## Building and Running
 

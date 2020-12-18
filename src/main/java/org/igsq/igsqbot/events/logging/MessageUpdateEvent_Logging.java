@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.objects.GuildConfig;
 import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -29,7 +29,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 			{
 				final Message newMessage = event.getMessage();
 				final Message oldMessage = cache.get(event.getMessageId());
-				final MessageChannel logChannel = GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getLogChannel();
+				final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
 				final MessageChannel channel = event.getChannel();
 				final String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
