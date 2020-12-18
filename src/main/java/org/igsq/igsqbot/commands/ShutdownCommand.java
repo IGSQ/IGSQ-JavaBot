@@ -7,6 +7,7 @@ import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.GUIGenerator;
+import org.igsq.igsqbot.objects.cache.MessageDataCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class ShutdownCommand extends Command
 		CommandHandler.shutdown();
 		GUIGenerator.closeAll();
 		TaskHandler.close();
+		MessageDataCache.close();
 
 		Yaml.saveFileChanges("@all");
 		Yaml.disregardAndCloseFile("@all");

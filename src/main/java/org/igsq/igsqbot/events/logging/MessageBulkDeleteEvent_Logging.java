@@ -1,12 +1,12 @@
 package org.igsq.igsqbot.events.logging;
 
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.cache.GuildConfigCache;
 import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -17,19 +17,10 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 	@Override
 	public void onMessageBulkDelete(MessageBulkDeleteEvent event)
 	{
-		GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
+		final MessageChannel logChannel = GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getLogChannel();
 		MessageChannel channel = event.getChannel();
 		StringBuilder embedDescription = new StringBuilder();
-		MessageCache cache;
-
-		if(!MessageCache.isGuildCached(event.getGuild().getId()))
-		{
-			cache = MessageCache.addAndReturnCache(event.getGuild().getId());
-		}
-		else
-		{
-			cache = MessageCache.getCache(event.getGuild().getId());
-		}
+		MessageCache cache = MessageCache.getCache(event.getGuild());
 
 		for(String selectedMessageID : event.getMessageIds())
 		{
@@ -38,7 +29,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 				Message selectedMessage = cache.get(selectedMessageID);
 				String content = selectedMessage.getContentRaw();
 
-				if(StringUtils.isCommand(content, event.getGuild().getId()))
+				if(StringUtils.isCommand(content, event.getGuild().getId(), event.getJDA()))
 				{
 					return;
 				}
@@ -62,7 +53,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 		}
 		if(logChannel != null)
 		{
-			new EmbedGenerator((MessageChannel) logChannel)
+			new EmbedGenerator(logChannel)
 					.title("Messages Deleted")
 					.text("**Channel**: " + StringUtils.getChannelAsMention(channel.getId())
 							+ "\n\n**Messages**: " + embedDescription.toString())

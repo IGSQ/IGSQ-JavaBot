@@ -59,16 +59,7 @@ public class ClearCommand extends Command
 					.color(Color.GREEN)
 					.sendTemporary(5000);
 
-			final MessageCache cache;
-
-			if(!MessageCache.isGuildCached(guild.getId()))
-			{
-				cache = MessageCache.addAndReturnCache(guild.getId());
-			}
-			else
-			{
-				cache = MessageCache.getCache(guild.getId());
-			}
+			final MessageCache cache = MessageCache.getCache(guild);
 
 			messages.stream().filter(cache::isInCache).forEach(cache::remove);
 		});

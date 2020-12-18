@@ -2,18 +2,18 @@ package org.igsq.igsqbot.objects.cache;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import org.apache.commons.collections4.map.PassiveExpiringMap;
+import net.jodah.expiringmap.ExpirationPolicy;
+import net.jodah.expiringmap.ExpiringMap;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class MessageCache
 {
-	private static final List<MessageCache> messageCaches = new ArrayList<>();
+	private static final List<MessageCache> MESSAGE_CACHES = new ArrayList<>();
 	private final Map<String, Message> cachedMessages;
 	private final String guildId;
 
@@ -21,9 +21,39 @@ public class MessageCache
 	{
 		this.guildId = guildId;
 
-		PassiveExpiringMap.ConstantTimeToLiveExpirationPolicy<String, Message> expirationPolicy =
-				new PassiveExpiringMap.ConstantTimeToLiveExpirationPolicy<>(24, TimeUnit.HOURS);
-		this.cachedMessages = new PassiveExpiringMap<>(expirationPolicy, new HashMap<>());
+		this.cachedMessages = ExpiringMap.builder()
+				.maxSize(1000)
+				.expirationPolicy(ExpirationPolicy.CREATED)
+				.expiration(6, TimeUnit.HOURS)
+				.build();
+	}
+
+	public static MessageCache getCache(String id)
+	{
+		for(MessageCache selectedCache : MESSAGE_CACHES)
+		{
+			if(selectedCache.getID().equals(id))
+			{
+				return selectedCache;
+			}
+		}
+		MessageCache newCache = new MessageCache(id);
+		MESSAGE_CACHES.add(newCache);
+		return newCache;
+	}
+
+	public static MessageCache getCache(Guild guild)
+	{
+		for(MessageCache selectedCache : MESSAGE_CACHES)
+		{
+			if(selectedCache.getID().equals(guild.getId()))
+			{
+				return selectedCache;
+			}
+		}
+		MessageCache newCache = new MessageCache(guild.getId());
+		MESSAGE_CACHES.add(newCache);
+		return newCache;
 	}
 
 	public void set(Message message)
@@ -114,62 +144,5 @@ public class MessageCache
 	public void flush()
 	{
 		cachedMessages.clear();
-	}
-
-
-	public static void cleanCaches()
-	{
-		for(MessageCache selectedCache : messageCaches)
-		{
-			selectedCache.clean();
-		}
-	}
-
-	public static MessageCache getCache(String id)
-	{
-		for(MessageCache selectedCache : messageCaches)
-		{
-			if(selectedCache.getID().equals(id))
-			{
-				return selectedCache;
-			}
-		}
-		return null;
-	}
-
-	public static MessageCache getCache(Guild guild)
-	{
-		for(MessageCache selectedCache : messageCaches)
-		{
-			if(selectedCache.getID().equals(guild.getId()))
-			{
-				return selectedCache;
-			}
-		}
-		return null;
-	}
-
-	public static boolean isGuildCached(String id)
-	{
-		for(MessageCache selectedCache : messageCaches)
-		{
-			if(selectedCache.getID().equals(id))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static void addCache(String guildId)
-	{
-		messageCaches.add(new MessageCache(guildId));
-	}
-
-	public static MessageCache addAndReturnCache(String id)
-	{
-		MessageCache cache = new MessageCache(id);
-		messageCaches.add(cache);
-		return cache;
 	}
 }

@@ -29,6 +29,25 @@ public class EventWaiter
 	private static final ConcurrentHashMap<Package<?>, Integer> eventList = new ConcurrentHashMap<>();
 
 	/**
+	 * Used to test if something is waiting on this event to happen
+	 *
+	 * @param event the current event
+	 * @param <T>   the event class
+	 * @return true if something has been waiting for this event
+	 */
+	public static <T extends GenericEvent> boolean waitingOnThis(T event)
+	{
+		for(Package<?> p : eventList.keySet())
+		{
+			if(p.tryFinish(event))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Waits for a specific event to happen, returns the event when detected
 	 *
 	 * @param eventClassToWait wait for events of this class
@@ -52,25 +71,6 @@ public class EventWaiter
 			return null;
 		}
 		return tPackage.getEvent();
-	}
-
-	/**
-	 * Used to test if something is waiting on this event to happen
-	 *
-	 * @param event the current event
-	 * @param <T>   the event class
-	 * @return true if something has been waiting for this event
-	 */
-	public static <T extends GenericEvent> boolean waitingOnThis(T event)
-	{
-		for(Package<?> p : eventList.keySet())
-		{
-			if(p.tryFinish(event))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**

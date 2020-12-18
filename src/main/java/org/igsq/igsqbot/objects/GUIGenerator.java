@@ -14,15 +14,23 @@ import java.util.List;
 public class GUIGenerator
 {
 	private static final List<GUIGenerator> guiList = new ArrayList<>();
+	private static final String NUMBER_CODEPOINT = "\u20E3";
 	private final EmbedGenerator embed;
 	private Message message = null;
-	private static final String NUMBER_CODEPOINT = "\u20E3";
 	private GenericEvent event;
 
 	public GUIGenerator(EmbedGenerator embed)
 	{
 		this.embed = embed;
 
+	}
+
+	public static void closeAll()
+	{
+		for(GUIGenerator generator : guiList)
+		{
+			generator.close();
+		}
 	}
 
 	public Boolean confirmation(User user, long timeout)
@@ -178,14 +186,6 @@ public class GUIGenerator
 	public void close()
 	{
 		message.delete().queue();
-	}
-
-	public static void closeAll()
-	{
-		for(GUIGenerator generator : guiList)
-		{
-			generator.close();
-		}
 	}
 
 	public EmbedGenerator getEmbed()

@@ -13,8 +13,8 @@ import java.awt.*;
 
 public class ErrorHandler
 {
-	private final Exception exception;
 	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
+	private final Exception exception;
 
 	public ErrorHandler(Exception exception)
 	{

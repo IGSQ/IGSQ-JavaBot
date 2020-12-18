@@ -1,14 +1,15 @@
 package org.igsq.igsqbot.events.logging;
 
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.cache.GuildConfigCache;
 import org.igsq.igsqbot.objects.cache.MessageCache;
+import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
@@ -22,27 +23,18 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 	{
 		if(event.getChannel().getType().equals(ChannelType.TEXT))
 		{
-			MessageCache cache;
-			if(!MessageCache.isGuildCached(event.getGuild().getId()))
-			{
-				MessageCache.addCache(event.getGuild().getId());
-				return;
-			}
-			else
-			{
-				cache = MessageCache.getCache(event.getGuild().getId());
-			}
+			MessageCache cache = MessageCache.getCache(event.getGuild().getId());
 
 			if(cache.isInCache(event.getMessage()))
 			{
-				Message newMessage = event.getMessage();
-				Message oldMessage = cache.get(event.getMessageId());
-				GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
-				MessageChannel channel = event.getChannel();
+				final Message newMessage = event.getMessage();
+				final Message oldMessage = cache.get(event.getMessageId());
+				final MessageChannel logChannel = GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getLogChannel();
+				final MessageChannel channel = event.getChannel();
+				final String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
-				String oldContent = oldMessage.getContentRaw();
 
-				if(StringUtils.isCommand(newMessage.getContentRaw(), event.getGuild().getId()))
+				if(StringUtils.isCommand(newMessage.getContentRaw(), event.getGuild().getId(), event.getJDA()))
 				{
 					return;
 				}
@@ -53,18 +45,15 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 
 				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
 				{
-					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
+					if(ArrayUtils.isValueInArray(Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","), channel.getId()))
 					{
-						if(selectedChannel.equals(channel.getId()))
-						{
-							return;
-						}
+						return;
 					}
 				}
 
 				if(logChannel != null)
 				{
-					new EmbedGenerator((MessageChannel) logChannel)
+					new EmbedGenerator(logChannel)
 							.title("Message Altered")
 							.text(
 									"**Author**: " + newMessage.getAuthor().getAsMention() +

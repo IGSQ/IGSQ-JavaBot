@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.igsq.igsqbot.handlers.EventHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.minecraft.MainMinecraft;
-import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +40,8 @@ public class IGSQBot
 				Yaml.loadFile("@all");
 			}, "yamlReload", TimeUnit.SECONDS, 30);
 
-			TaskHandler.addRepeatingTask(MessageCache::cleanCaches, "cleanMessageCache", TimeUnit.HOURS, 6);
-
 			EventHandler.setEvents();
-			MainMinecraft.startMinecraft();
+			MainMinecraft.startMinecraft(jda);
 			Database.startDatabase();
 		}
 		catch(Exception exception)

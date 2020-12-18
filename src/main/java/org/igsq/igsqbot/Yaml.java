@@ -9,11 +9,6 @@ import java.io.File;
 
 public class Yaml
 {
-	private Yaml()
-	{
-		// To override the default, public, constructor
-	}
-
 	/**
 	 * filenames is a String array of all of the fileNames to be created into {@link java.io.File}
 	 *
@@ -34,6 +29,10 @@ public class Yaml
 	 * @see java.io.File
 	 */
 	private static FileConfiguration[] configurations;
+	private Yaml()
+	{
+		// To override the default, public, constructor
+	}
 
 	/**
 	 * Creates all the files if they don't already exist. Creates instance of all files in {@link #fileNames}

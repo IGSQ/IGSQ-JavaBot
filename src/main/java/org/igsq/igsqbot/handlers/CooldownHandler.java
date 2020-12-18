@@ -7,12 +7,12 @@ import java.util.Map;
 
 public abstract class CooldownHandler
 {
+	private static final Map<Command, Map<Long, Long>> COOLDOWN_MAP = new HashMap<>(); // K = Command, V = Map<userId, Timestamp>
+
 	private CooldownHandler()
 	{
 		//Overrides the default, public, constructor
 	}
-
-	private static final Map<Command, Map<Long, Long>> COOLDOWN_MAP = new HashMap<>(); // K = Command, V = Map<userId, Timestamp>
 
 	public static void addCooldown(final long userID, final Command command)
 	{

@@ -30,7 +30,6 @@ public class WarnCommand extends Command
 		final Guild guild = ctx.getGuild();
 		final User author = ctx.getAuthor();
 
-
 		if(args.size() == 1 && UserUtils.isUserMention(args.get(0)))
 		{
 			args.remove(0);

@@ -3,6 +3,7 @@ package org.igsq.igsqbot.handlers;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -10,8 +11,8 @@ import org.igsq.igsqbot.Common;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
+import org.igsq.igsqbot.objects.cache.GuildConfigCache;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -20,13 +21,9 @@ import java.util.stream.Collectors;
 
 public abstract class CommandHandler
 {
-	private CommandHandler()
-	{
-		//Overrides the default, public, constructor
-	}
-
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
 	private static final Map<String, Command> COMMANDS = new HashMap<>();
+	public static final Map<String, Command> COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
 	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
 
@@ -47,7 +44,10 @@ public abstract class CommandHandler
 		}
 	}
 
-	public static final Map<String, Command> COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
+	private CommandHandler()
+	{
+		//Overrides the default, public, constructor
+	}
 
 	public static void handle(MessageReceivedEvent event)
 	{
@@ -59,8 +59,9 @@ public abstract class CommandHandler
 		if(event.getAuthor().isBot()) return;
 		if(channelType.equals(ChannelType.TEXT))
 		{
+			final JDA jda = event.getJDA();
 			final Guild guild = event.getGuild();
-			final String prefix = YamlUtils.getGuildPrefix(guild.getId());
+			final String prefix = GuildConfigCache.getCache(guild, jda).getGuildPrefix();
 			final Member member = event.getMember();
 			final String selfID = IGSQBot.getJDA().getSelfUser().getId();
 			final String messageContent = event.getMessage().getContentRaw();
@@ -150,7 +151,6 @@ public abstract class CommandHandler
 					commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
 				}
 			}
-
 		}
 	}
 

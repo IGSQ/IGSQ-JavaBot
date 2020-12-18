@@ -3,14 +3,20 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.util.*;
+import org.igsq.igsqbot.objects.cache.MessageDataCache;
+import org.igsq.igsqbot.objects.cache.GuildConfigCache;
+import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ReportCommand extends Command
 {
@@ -25,8 +31,8 @@ public class ReportCommand extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final StringBuilder messageLog = new StringBuilder();
 		final User author = ctx.getAuthor();
-		final JDA jda = ctx.getJDA();
 		final Guild guild = ctx.getGuild();
+		final JDA jda = ctx.getJDA();
 
 		if(args.size() != 2)
 		{
@@ -37,8 +43,9 @@ public class ReportCommand extends Command
 		final User reportedUser = UserUtils.getUserFromMention(args.get(0));
 		if(reportedUser != null)
 		{
-			Member reportedMember = UserUtils.getMemberFromUser(reportedUser, guild);
-			MessageChannel reportChannel = jda.getTextChannelById(Yaml.getFieldString(guild.getId() + ".reportchannel", "guild"));
+			final Member reportedMember = UserUtils.getMemberFromUser(reportedUser, guild);
+			final GuildConfigCache config = GuildConfigCache.getCache(ctx.getGuild(), ctx.getJDA());
+			final MessageChannel reportChannel = config.getReportChannel();
 			args.remove(0);
 
 			if(reportChannel == null)
@@ -50,8 +57,6 @@ public class ReportCommand extends Command
 			if(reportedUser.equals(author)) EmbedUtils.sendError(channel, "You can't report yourself!");
 			else if(reportedUser.isBot()) EmbedUtils.sendError(channel, "You may not report bots.");
 			else if(reportedMember.isOwner()) EmbedUtils.sendError(channel, "You may not report the owner.");
-			else if(YamlUtils.isFieldEmpty(guild.getId() + ".reportchannel", "guild"))
-				EmbedUtils.sendError(channel, "There is no report channel setup.");
 			else
 			{
 				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
@@ -76,9 +81,15 @@ public class ReportCommand extends Command
 						(
 								message ->
 								{
-									Yaml.updateField(message.getId() + ".report.reporteduser", "internal", reportedMember.getId());
-									Yaml.updateField(message.getId() + ".report.reportinguser", "internal", author.getId());
-									Yaml.updateField(message.getId() + ".report.enabled", "internal", true);
+									final MessageDataCache messageDataCache = new MessageDataCache(message.getId(), jda);
+									final Map<String, String> users = new ConcurrentHashMap<>();
+
+									users.put("reporteduser", reportedMember.getId());
+									users.put("reportinguser", author.getId());
+									messageDataCache.setType(MessageDataCache.MessageType.REPORT);
+									messageDataCache.setUsers(users);
+									messageDataCache.build();
+
 									message.addReaction("U+1F44D").queue();
 								}
 						);

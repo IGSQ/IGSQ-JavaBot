@@ -1,6 +1,8 @@
 package org.igsq.igsqbot.util;
 
+import net.dv8tion.jda.api.JDA;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.objects.cache.GuildConfigCache;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -105,9 +107,9 @@ public class StringUtils
 		}
 	}
 
-	public static boolean isCommand(String message, String guildId)
+	public static boolean isCommand(String message, String guildId, JDA jda)
 	{
-		return message.startsWith(YamlUtils.getGuildPrefix(guildId)) || message.startsWith("<@" + IGSQBot.getJDA().getSelfUser().getId() + ">") || message.startsWith("<@!" + IGSQBot.getJDA().getSelfUser().getId() + ">");
+		return message.startsWith(GuildConfigCache.getCache(guildId, jda).getGuildPrefix()) || message.startsWith("<@" + IGSQBot.getJDA().getSelfUser().getId() + ">") || message.startsWith("<@!" + IGSQBot.getJDA().getSelfUser().getId() + ">");
 	}
 
 }

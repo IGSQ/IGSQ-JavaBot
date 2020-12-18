@@ -1,13 +1,13 @@
 package org.igsq.igsqbot.events.logging;
 
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.cache.GuildConfigCache;
 import org.igsq.igsqbot.objects.cache.MessageCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -22,25 +22,16 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 	{
 		if(event.getChannelType().equals(ChannelType.TEXT))
 		{
-			MessageCache cache;
-			if(!MessageCache.isGuildCached(event.getGuild().getId()))
-			{
-				cache = MessageCache.addAndReturnCache(event.getGuild().getId());
-			}
-			else
-			{
-				cache = MessageCache.getCache(event.getGuild().getId());
-			}
-
+			final MessageCache cache = MessageCache.getCache(event.getGuild());
 
 			if(cache.isInCache(event.getMessageId()))
 			{
-				Message message = cache.get(event.getMessageId());
-				GuildChannel logChannel = YamlUtils.getLogChannel(event.getGuild().getId());
-				MessageChannel channel = event.getChannel();
+				final Message message = cache.get(event.getMessageId());
+				final MessageChannel logChannel = GuildConfigCache.getCache(event.getGuild(), event.getJDA()).getLogChannel();
+				final MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
 
-				if(StringUtils.isCommand(content, event.getGuild().getId()))
+				if(StringUtils.isCommand(content, event.getGuild().getId(), event.getJDA()))
 				{
 					return;
 				}
@@ -60,7 +51,7 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 
 				if(logChannel != null)
 				{
-					new EmbedGenerator((MessageChannel) logChannel)
+					new EmbedGenerator(logChannel)
 							.title("Message Deleted")
 							.text(
 									"**Author**: " + message.getAuthor().getAsMention() +

@@ -1,12 +1,16 @@
 package org.igsq.igsqbot.events.logging;
 
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.objects.cache.GuildConfigCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
-import org.igsq.igsqbot.util.YamlUtils;
+
 
 public class GuildVoiceJoinEvent_Logging extends ListenerAdapter
 {
@@ -14,7 +18,7 @@ public class GuildVoiceJoinEvent_Logging extends ListenerAdapter
 	public void onGuildVoiceJoin(GuildVoiceJoinEvent event)
 	{
 		final Guild guild = event.getGuild();
-		final GuildChannel logChannel = YamlUtils.getVoidLogChannel(guild.getId());
+		final MessageChannel logChannel = GuildConfigCache.getCache(guild, event.getJDA()).getLogChannel();
 		final VoiceChannel channel = event.getChannelJoined();
 		final Member member = event.getMember();
 

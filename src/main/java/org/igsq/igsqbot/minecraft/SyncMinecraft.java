@@ -1,10 +1,10 @@
 package org.igsq.igsqbot.minecraft;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
@@ -18,13 +18,21 @@ import java.util.Map;
 public class SyncMinecraft
 {
 	private static final Map<String, String> ranks = new HashMap<>();
-	private static final Guild guild = IGSQBot.getJDA().getGuildById(Yaml.getFieldString("BOT.server", "config"));
-	private static Role verifiedRole = null;
 	private static final Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
+	private static JDA jda;
+	private static Guild guild;
+	private static Role verifiedRole = null;
+
 
 	private SyncMinecraft()
 	{
 		//Overriding the default, public, constructor
+	}
+
+	public static void startSync(JDA JDA)
+	{
+		jda = JDA;
+		guild = jda.getGuildById(Yaml.getFieldString("bot.server", "config"));
 	}
 
 	public static void sync()

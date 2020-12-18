@@ -1,13 +1,13 @@
 package org.igsq.igsqbot.handlers;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class TaskHandler
 {
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private static final Map<String, ScheduledFuture<?>> TASK_MAP = new HashMap<>();
+	private static final List<UUID> UUID_LIST = new ArrayList<>();
 
 	private TaskHandler()
 	{
@@ -16,28 +16,40 @@ public class TaskHandler
 
 	public static ScheduledFuture<?> addTask(Runnable task, TimeUnit unit, long time)
 	{
-		String taskName = "" + System.currentTimeMillis();
+		String taskName = getTaskName();
 		TASK_MAP.putIfAbsent(taskName, scheduler.schedule(task, time, unit));
+		scheduleDeletion(taskName, time, unit);
 		return TASK_MAP.get(taskName);
 	}
 
 	public static ScheduledFuture<?> addTask(Runnable task, String taskName, TimeUnit unit, long time)
 	{
 		TASK_MAP.putIfAbsent(taskName, scheduler.schedule(task, time, unit));
+		scheduleDeletion(taskName, time, unit);
 		return TASK_MAP.get(taskName);
 	}
 
 	public static ScheduledFuture<?> addTask(Callable<?> task, TimeUnit unit, long time)
 	{
-		String taskName = "" + System.currentTimeMillis();
+		String taskName = getTaskName();
 		FutureTask<?> calledTask = new FutureTask<>(task);
 		TASK_MAP.putIfAbsent(taskName, scheduler.schedule(calledTask, time, unit));
+		scheduleDeletion(taskName, time, unit);
+		return TASK_MAP.get(taskName);
+	}
+
+	public static ScheduledFuture<?> addTask(Callable<?> task, String taskName, TimeUnit unit, long time)
+	{
+		FutureTask<?> calledTask = new FutureTask<>(task);
+		TASK_MAP.putIfAbsent(taskName, scheduler.schedule(calledTask, time, unit));
+		scheduleDeletion(taskName, time, unit);
 		return TASK_MAP.get(taskName);
 	}
 
 	public static ScheduledFuture<?> addRepeatingTask(Runnable task, String taskName, long initialDelay, TimeUnit unit, long period)
 	{
 		TASK_MAP.putIfAbsent(taskName, scheduler.scheduleAtFixedRate(task, initialDelay, period, unit));
+		scheduleDeletion(taskName, period + initialDelay, unit);
 		return TASK_MAP.get(taskName);
 	}
 
@@ -78,5 +90,24 @@ public class TaskHandler
 		{
 			task.cancel(false);
 		}
+	}
+
+	public static String getTaskName()
+	{
+		UUID uuid = UUID.randomUUID();
+		if(!UUID_LIST.contains(uuid))
+		{
+			UUID_LIST.add(uuid);
+			return uuid.toString();
+		}
+		else
+		{
+			return getTaskName();
+		}
+	}
+
+	private static void scheduleDeletion(String taskName, long time, TimeUnit unit)
+	{
+		scheduler.schedule(() -> TASK_MAP.remove(taskName), time, unit);
 	}
 }

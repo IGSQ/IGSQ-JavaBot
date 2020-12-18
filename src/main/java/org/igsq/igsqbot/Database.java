@@ -9,16 +9,15 @@ import java.util.concurrent.TimeUnit;
 
 public class Database
 {
-	private Database()
-	{
-
-	}
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
 	private static String url;
 	private static String user;
 	private static String password;
 	private static boolean isOnline;
-	private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
+	private Database()
+	{
+
+	}
 
 	public static void startDatabase()
 	{

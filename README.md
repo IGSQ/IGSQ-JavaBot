@@ -25,6 +25,10 @@
  - [ ] Condense events
  - [ ] Add VerificationCache to store settings
  - [ ] Remove raw Yaml links in place of caches / methods
+ - [ ] Rework MessageCache to use hashmaps + refactor
+ - [ ] Move all events.commands to MessageDataCache
+ - [ ] GuildConfigCache#close
+ - [ ] Remove EventWaiter where possible in favour of MessageDataCache
 
  - [ ] Rewrite the event waiter
  - [ ] Translation
