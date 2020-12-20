@@ -84,7 +84,7 @@ public class SyncMinecraft
 			LOGGER.warn("Minecraft cleaning stopped due to invalid discord_accounts table.");
 			return;
 		}
-		try
+		try //TODO: REWRITE THIS
 		{
 			while(discord_accounts.next())
 			{
@@ -94,7 +94,7 @@ public class SyncMinecraft
 						{
 							final String memberId = selectedMember.getId();
 
-							if(!guild.isMember(selectedMember.getUser()) || !(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
+							if(!(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 							{
 								String uuid = CommonMinecraft.getUUIDFromID(memberId);
 

@@ -11,10 +11,12 @@ import org.igsq.igsqbot.minecraft.MainMinecraft;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 public class IGSQBot
 {
+	public static final LocalDateTime START_TIMESTAMP = LocalDateTime.now();
 	private static final Logger LOGGER = LoggerFactory.getLogger(IGSQBot.class);
 	private static JDA jda;
 

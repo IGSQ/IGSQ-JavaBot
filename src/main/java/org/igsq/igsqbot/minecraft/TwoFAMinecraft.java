@@ -59,7 +59,7 @@ public class TwoFAMinecraft
 										}
 										Database.updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 									}, TimeUnit.SECONDS, 60);
-								}
+								}, error -> {}
 						);
 					}
 			);

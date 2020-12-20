@@ -24,12 +24,11 @@
  - [x] Remove raw Yaml links in place of caches / methods
  - [x] Fully implement the logger - needs review
  - [x] GUIGenerator further implementation (use callbacks / catch exceptions)
-
+ - [x] Catch 2FA DMs
 
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
- - [ ] Catch 2FA DMs
 
  - [ ] Finish verification
 
@@ -45,7 +44,7 @@
  
  - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
  - [x] discord_accounts table returning errors - fixed with additional error catching
-
+ - [ ] 2FA not functioning as intended
 ## Building and Running
 
 **In order to run this project, you need JDK 14 or higher.**

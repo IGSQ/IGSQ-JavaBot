@@ -33,13 +33,13 @@ public class ShutdownCommand extends Command
 			return;
 		}
 
-		ctx.getJDA().shutdown();
 		CommandHandler.shutdown();
-
 		GUIGenerator.close();
 		TaskHandler.close();
 		MessageDataCache.close();
 		Blacklist.close();
+
+		ctx.getJDA().shutdown();
 
 		Yaml.saveFileChanges("@all");
 		Yaml.disregardAndCloseFile("@all");

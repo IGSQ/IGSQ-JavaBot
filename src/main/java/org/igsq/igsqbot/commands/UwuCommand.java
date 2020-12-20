@@ -46,9 +46,8 @@ public class UwuCommand extends Command
 			{
 				switch(selectedChar)
 				{
-					case "r" -> finalSentence.append("w");
+					case "r", "l" -> finalSentence.append("w");
 					case "o" -> finalSentence.append("wo");
-					case "l" -> finalSentence.append("w");
 					case "a" -> finalSentence.append("aw");
 					case "i" -> finalSentence.append("iw");
 					default -> finalSentence.append(selectedChar);
