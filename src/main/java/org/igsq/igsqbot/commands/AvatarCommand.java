@@ -34,7 +34,7 @@ public class AvatarCommand extends Command
 			message.getMentionedMembers().forEach(member ->
 					new EmbedGenerator(channel)
 							.title(member.getUser().getAsTag() + "'s Avatar")
-							.image(member.getUser().getEffectiveAvatarUrl())
+							.image(member.getUser().getEffectiveAvatarUrl() + "?size=4096")
 							.color(EmbedUtils.IGSQ_PURPLE).send());
 
 		}
@@ -42,7 +42,7 @@ public class AvatarCommand extends Command
 		{
 			new EmbedGenerator(channel)
 					.title(author.getAsTag() + "'s Avatar")
-					.image(author.getAvatarUrl())
+					.image(author.getAvatarUrl() + "?size=4096")
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.send();
 		}

@@ -23,15 +23,14 @@
  - [x] Rework MessageCache to use hashmaps + refactor
  - [x] Remove raw Yaml links in place of caches / methods
  - [x] Fully implement the logger - needs review
+ - [x] GUIGenerator further implementation (use callbacks / catch exceptions)
 
 
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
  - [ ] Catch 2FA DMs
-   
 
- - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [ ] Finish verification
 
 

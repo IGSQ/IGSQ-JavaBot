@@ -6,11 +6,13 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * THIS CANNOT BE USED ON THE EVENT THREAD
+ */
 public class GUIGenerator
 {
 	private static final List<GUIGenerator> guiList = new ArrayList<>();
@@ -37,7 +39,7 @@ public class GUIGenerator
 
 		for(String selectedReaction : Common.TICK_REACTIONS) message.addReaction(selectedReaction).queue();
 
-		MessageReactionAddEvent reactionEvent;
+		final MessageReactionAddEvent reactionEvent;
 		EventWaiter waiter = new EventWaiter();
 
 		try
@@ -46,24 +48,14 @@ public class GUIGenerator
 		}
 		catch(Exception exception)
 		{
-			reactionEvent = null;
+			return null;
 		}
 
 		event = reactionEvent;
 		if(reactionEvent != null)
 		{
-			User reactingUser = null;
-			try
-			{
-				reactingUser = reactionEvent.retrieveUser().submit().get();
-			}
-			catch(Exception exception)
-			{
-				new ErrorHandler(exception);
-				return null;
-			}
+			reactionEvent.retrieveUser().queue(reactingUser -> reactionEvent.getReaction().removeReaction(reactingUser).queue(null,null));
 
-			reactionEvent.getReaction().removeReaction(reactingUser).queue();
 			if(reactionEvent.getReactionEmote().isEmoji())
 			{
 				if(reactionEvent.getReactionEmote().getAsCodepoints().equals("U+2705"))
@@ -145,9 +137,7 @@ public class GUIGenerator
 		if(reactionEvent != null)
 		{
 
-			reactionEvent.retrieveUser().queue(reactingUser -> reactionEvent.getReaction().removeReaction(reactingUser).queue(null, error ->
-			{
-			}));
+			reactionEvent.retrieveUser().queue(reactingUser -> reactionEvent.getReaction().removeReaction(reactingUser).queue(null,null));
 
 			if(reactionEvent.getReactionEmote().isEmoji())
 			{
