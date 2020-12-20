@@ -28,6 +28,7 @@
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
+ - [ ] Catch 2FA DMs
    
 
  - [ ] GUIGenerator further implementation (use callbacks / catch exceptions)
