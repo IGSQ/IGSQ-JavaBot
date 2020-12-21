@@ -23,9 +23,9 @@ public abstract class CommandHandler
 {
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
 	private static final Map<String, Command> COMMANDS = new HashMap<>();
-	public static final Map<String, Command> COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
 	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
+	public static final Map<String, Command> COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
 
 	static
 	{
@@ -154,7 +154,7 @@ public abstract class CommandHandler
 		}
 	}
 
-	public static void shutdown()
+	public static void close()
 	{
 		commandExecutor.shutdown();
 	}

@@ -33,7 +33,7 @@ public class ShutdownCommand extends Command
 			return;
 		}
 
-		CommandHandler.shutdown();
+		CommandHandler.close();
 		GUIGenerator.close();
 		TaskHandler.close();
 		MessageDataCache.close();

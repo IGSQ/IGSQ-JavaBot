@@ -2,15 +2,16 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.GUIGenerator;
 import org.igsq.igsqbot.util.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,104 +19,122 @@ public class WarnCommand extends Command
 {
 	public WarnCommand()
 	{
-		super("Warn", new String[]{"warn"}, "Handles the user warning system", "[user][reason] | [show|remove][user]", new Permission[]{}, true, 0);
+		super("Warn", new String[]{"warn"}, "Handles the user warning system", "[user][reason] | [show][user] | [remove][user][number]", new Permission[]{}, true, 0);
 	}
 
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final User warnTarget;
 		final MessageChannel channel = ctx.getChannel();
-		final String action;
 		final Guild guild = ctx.getGuild();
-		final User author = ctx.getAuthor();
-
-		if(args.size() == 1 && UserUtils.isUserMention(args.get(0)))
+		if(args.size() <= 1)
 		{
-			args.remove(0);
-			warnTarget = UserUtils.getUserFromMention(args.get(0));
-			if(warnTarget == null)
+			EmbedUtils.sendSyntaxError(channel, this);
+		}
+		else if(UserUtils.isUserMention(args.get(0)))
+		{
+			Member member = UserUtils.getMemberFromUser(UserUtils.getUserFromMention(args.get(0)), guild);
+			if(!UserUtils.getMemberFromUser(ctx.getAuthor(), guild).canInteract(member) || member.isOwner() || member.getUser().isBot())
 			{
-				EmbedUtils.sendSyntaxError(channel, this);
+				EmbedUtils.sendError(channel, "You cannot warn this user!");
 			}
 			else
 			{
-				addWarning(warnTarget, ArrayUtils.arrayCompile(args, " "), guild.getId(), channel);
+				args.remove(0);
+				addWarning(member, channel, ArrayUtils.arrayCompile(args, " "));
 			}
 		}
-		else if(args.size() > 1 && !UserUtils.isUserMention(args.get(0)))
+		else
 		{
-			action = args.get(0);
-			warnTarget = UserUtils.getUserFromMention(args.get(1));
-			if(warnTarget == null)
+			if(args.size() < 2)
 			{
 				EmbedUtils.sendSyntaxError(channel, this);
 				return;
 			}
 
-			if(action.equalsIgnoreCase("show") || action.equalsIgnoreCase("list"))
+			final Member member = UserUtils.getMemberFromUser(UserUtils.getUserFromMention(args.get(1)), guild);
+			switch(args.get(0).toLowerCase())
 			{
-				showWarning(warnTarget, channel, guild.getId());
+				case "show":
+					showWarning(member, channel);
+					break;
+				case "remove":
+					try
+					{
+						removeWarning(member, channel, Integer.parseInt(args.get(2)));
+					}
+					catch(Exception exception)
+					{
+						EmbedUtils.sendSyntaxError(channel, this);
+						new ErrorHandler(exception);
+					}
+					break;
+				default:
+					EmbedUtils.sendSyntaxError(channel, this);
 			}
-			else if(action.equalsIgnoreCase("remove"))
-			{
-				removeWarning(warnTarget, guild.getId(), channel, author);
-			}
-			else
-			{
-				EmbedUtils.sendSyntaxError(channel, this);
-			}
+		}
+	}
+
+	private void addWarning(Member member, MessageChannel channel, String reason)
+	{
+		Yaml.updateField(
+				member.getGuild().getId() + "." + member.getId() + ".warnings",
+				"punishment",
+
+				YamlUtils.getFieldAppended(
+						member.getGuild().getId() + "." + member.getId() + ".warnings",
+						"punishment",
+						"\n",
+						reason + " - " + StringUtils.getTimestamp()));
+		EmbedUtils.sendSuccess(channel, "Warned " + member.getAsMention() + " for reason: " + reason);
+	}
+
+	private void showWarning(Member member, MessageChannel channel)
+	{
+		EmbedGenerator embed = new EmbedGenerator(channel);
+		StringBuilder embedText = new StringBuilder();
+		int currentWarning = 1;
+		for(String selectedWarning : getWarnings(member))
+		{
+			embedText.append(currentWarning).append(": ").append(selectedWarning).append("\n");
+			currentWarning ++;
+		}
+
+		embed
+			.title("Warnings for " + member.getUser().getAsTag())
+			.text(embedText.length() == 0 ? "This user has no warnings" : embedText.toString())
+			.color(EmbedUtils.IGSQ_PURPLE)
+			.send();
+	}
+
+	private void removeWarning(Member member, MessageChannel channel, int number)
+	{
+		List<String> warnings = getWarnings(member);
+		number--;
+		if(number < 0 || number > warnings.size())
+		{
+			EmbedUtils.sendSyntaxError(channel, this);
+			return;
+		}
+		if(warnings.get(number) != null)
+		{
+			String removedWarning = warnings.remove(number);
+			Yaml.updateField(member.getGuild().getId() + "." + member.getId() + ".warnings",
+					"punishment",
+					ArrayUtils.arrayCompile(warnings, "\n"));
+			EmbedUtils.sendSuccess(channel, "Removed warning: " + removedWarning + " from user " + member.getAsMention());
+		}
+	}
+
+	private List<String> getWarnings(Member member)
+	{
+		if(YamlUtils.isFieldEmpty(member.getGuild().getId() + "." + member.getId() + ".warnings", "punishment"))
+		{
+			return new ArrayList<>();
 		}
 		else
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
-		}
-	}
-
-	private void addWarning(User user, String reason, String guildId, MessageChannel channel)
-	{
-		YamlUtils.fieldAppend(guildId + ".warnings." + user.getId(), "punishment", reason + " - " + StringUtils.getTimestamp(), ",");
-
-		EmbedUtils.sendSuccess(channel, "Warned " + user.getAsMention() + " for reason: " + reason);
-
-	}
-
-	private void showWarning(User user, MessageChannel channel, String guildId)
-	{
-		final EmbedGenerator embed = new EmbedGenerator(channel).title("Warnings for " + user.getAsTag());
-		final StringBuilder embedText = new StringBuilder();
-		for(String selectedWarning : Yaml.getFieldString(guildId + ".warnings." + user.getId(), "punishment").split(","))
-		{
-			embedText.append(selectedWarning).append("\n");
-		}
-		embed.text(embedText.length() > 0 ? embedText.toString() : "This user has no warnings.").footer(StringUtils.getTimestamp()).color(EmbedUtils.IGSQ_PURPLE).send();
-	}
-
-	private void removeWarning(User user, String guildId, MessageChannel channel, User author)
-	{
-		List<String> warnings = Arrays.asList(Yaml.getFieldString(guildId + ".warnings." + user.getId(), "punishment").split(","));
-
-		if(warnings.isEmpty())
-		{
-			EmbedUtils.sendError(channel, "That user has no warnings.");
-			return;
-		}
-		StringBuilder embedText = new StringBuilder();
-
-		for(int i = 1; i < warnings.size(); i++)
-		{
-			embedText.append(i).append(": ").append(warnings.get(i));
-		}
-		EmbedGenerator embed = new EmbedGenerator(channel).title("Select a warning to remove.").color(EmbedUtils.IGSQ_PURPLE).text(embedText.toString());
-		GUIGenerator gui = new GUIGenerator(embed);
-		int chosenWarning = gui.menu(author, 60000, warnings.size());
-
-		if(chosenWarning != -1)
-		{
-			warnings.remove(chosenWarning - 1);
-			Yaml.updateField(guildId + ".warnings." + user.getId(), "punishment", ArrayUtils.arrayCompile(warnings, ","));
-
-			EmbedUtils.sendSuccess(channel, "Removed warning: " + warnings.get(chosenWarning - 1));
+			return new ArrayList<>(Arrays.asList(Yaml.getFieldString(member.getGuild().getId() + "." + member.getId() + ".warnings", "punishment").split("\n")));
 		}
 	}
 }

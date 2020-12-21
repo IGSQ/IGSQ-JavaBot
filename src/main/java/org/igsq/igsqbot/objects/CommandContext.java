@@ -42,4 +42,9 @@ public class CommandContext
 	{
 		return event.getChannelType();
 	}
+
+	public MessageReceivedEvent getEvent()
+	{
+		return event;
+	}
 }

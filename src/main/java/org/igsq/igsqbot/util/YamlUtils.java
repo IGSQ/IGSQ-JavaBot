@@ -14,7 +14,7 @@ public class YamlUtils
 		return Yaml.getFieldString(path, filename) == null || Yaml.getFieldString(path, filename).isEmpty();
 	}
 
-	public static String fieldAppend(String path, String filename, String delimiter, Object data)
+	public static String getFieldAppended(String path, String filename, String delimiter, Object data)
 	{
 		if(isFieldEmpty(path, filename))
 		{

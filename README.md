@@ -43,6 +43,11 @@
  - [ ] Check verified role in LinkCommand
  - [ ] Check required tables in testDatabase
  - [ ] Redo user mention parsing
+ - [ ] Emote constants, success, failure
+ - [ ] Attempt to make my own ExpiringMap
+ - [ ] OnGuildRemove removing guild config
+ - [ ] ReactionRoles
+ - [ ] Muting
  - [ ] PREPARE FOR PR
 
 ### **Future work**
