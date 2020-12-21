@@ -15,9 +15,9 @@ public abstract class Command
 	private final String syntax;
 	private boolean disabled = false;
 
-	protected Command(final String invoke, final String[] aliases, final String description, final String syntax, final Permission[] requiredPermissions, boolean requiresGuild, int cooldown)
+	protected Command(final String name, final String[] aliases, final String description, final String syntax, final Permission[] requiredPermissions, boolean requiresGuild, int cooldown)
 	{
-		this.invoke = invoke;
+		this.invoke = name;
 		this.aliases = aliases;
 		this.description = description;
 		this.syntax = syntax;

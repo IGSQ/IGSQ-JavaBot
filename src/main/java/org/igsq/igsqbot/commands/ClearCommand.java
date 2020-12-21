@@ -46,7 +46,7 @@ public class ClearCommand extends Command
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
-		else if(CooldownHandler.isOnCooldown(author.getIdLong(), this))
+		else if(CooldownHandler.isOnCooldown(author.getId(), this))
 		{
 			return;
 		}

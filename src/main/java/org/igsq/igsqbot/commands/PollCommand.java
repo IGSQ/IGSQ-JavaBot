@@ -35,7 +35,7 @@ public class PollCommand extends Command
 		}
 
 		final List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
-		if(slashArgs.size() >= 3)
+		if(slashArgs.size() >= 3 && !CommandUtils.isArgsEmbedCompatible(args))
 		{
 			String topic = slashArgs.get(0);
 			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)

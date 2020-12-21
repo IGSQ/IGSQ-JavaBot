@@ -32,10 +32,6 @@ public class SyncMinecraft
 	public static void startSync(JDA JDA)
 	{
 		guild = JDA.getGuildById(Yaml.getFieldString("bot.server", "config"));
-	}
-
-	public static void sync()
-	{
 		if(guild == null)
 		{
 			TaskHandler.cancelTask("minecraftSync");
@@ -43,36 +39,42 @@ public class SyncMinecraft
 		}
 		else
 		{
-			verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
-			guild.loadMembers(selectedMember ->
-			{
-				if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
-				{
-					String username = selectedMember.getUser().getAsTag();
-					String nickname = selectedMember.getEffectiveName();
-					String id = selectedMember.getId();
-					String rank = getRank(selectedMember);
-
-					int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ? 1 : 0;
-					int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember) ? 1 : 0;
-					int developer = hasRole(Yaml.getFieldString("ranks.developer", "minecraft").split(" "), selectedMember) ? 1 : 0;
-					int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember) ? 1 : 0;
-					// int retired = hasRole(Yaml.getFieldString("ranks.retired", "minecraft").split(" "), selectedMember)?1:0;
-					int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember) ? 1 : 0;
-
-					boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
-
-					if(userExists)
-					{
-						Database.updateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
-					}
-					else
-					{
-						Database.updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
-					}
-				}
-			});
+			LOGGER.info("Guild link established for guild: " + guild.getName() + " , starting sync.");
 		}
+	}
+
+	public static void sync()
+	{
+		verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", "guild"));
+		guild.loadMembers(selectedMember ->
+		{
+			if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
+			{
+				String username = selectedMember.getUser().getAsTag();
+				String nickname = selectedMember.getEffectiveName();
+				String id = selectedMember.getId();
+				String rank = getRank(selectedMember);
+
+				int supporter = hasRole(Yaml.getFieldString("ranks.supporter", "minecraft").split(" "), selectedMember) ? 1 : 0;
+				int birthday = hasRole(Yaml.getFieldString("ranks.birthday", "minecraft").split(" "), selectedMember) ? 1 : 0;
+				int developer = hasRole(Yaml.getFieldString("ranks.developer", "minecraft").split(" "), selectedMember) ? 1 : 0;
+				int founder = hasRole(Yaml.getFieldString("ranks.founder", "minecraft").split(" "), selectedMember) ? 1 : 0;
+				// int retired = hasRole(Yaml.getFieldString("ranks.retired", "minecraft").split(" "), selectedMember)?1:0;
+				int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", "minecraft").split(" "), selectedMember) ? 1 : 0;
+
+				boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
+
+				if(userExists)
+				{
+					Database.updateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
+				}
+				else
+				{
+					Database.updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
+				}
+			}
+		});
+
 	}
 
 	public static void clean()
@@ -84,7 +86,7 @@ public class SyncMinecraft
 			LOGGER.warn("Minecraft cleaning stopped due to invalid discord_accounts table.");
 			return;
 		}
-		try //TODO: REWRITE THIS
+		try
 		{
 			while(discord_accounts.next())
 			{
@@ -103,10 +105,15 @@ public class SyncMinecraft
 									Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
 									Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + memberId + "';");
 								}
-
-
+								Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
 							}
-						}, error -> Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';")
+						},
+						error ->
+						{
+							Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(currentId) + "';");
+							Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
+							Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + currentId + "';");
+						}
 				);
 			}
 		}

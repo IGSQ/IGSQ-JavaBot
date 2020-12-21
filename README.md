@@ -6,6 +6,8 @@
 
 ## TODO
 **Features that are still to be implemented**
+
+### **COMPLETED**
  - [x] Verification Rewrite (to be reviewed)
  - [x] Per guild prefixing
  - [x] Project Refactor
@@ -25,16 +27,25 @@
  - [x] Fully implement the logger - needs review
  - [x] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [x] Catch 2FA DMs
+ - [x] Change CooldownHandler to use Strings vs Longs
 
+### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
 
+### **arynxd**
  - [ ] Finish verification
  - [ ] Remove raw Database calls
  - [ ] Use MessageChannel where possible
- - [ ] Change CooldownHandler to use Strings vs Longs
+ - [ ] Invite command
+ - [ ] Info command
+ - [ ] Check verified role in LinkCommand
+ - [ ] Check required tables in testDatabase
+ - [ ] Redo user mention parsing
+ - [ ] PREPARE FOR PR
 
+### **Future work**
  - [ ] Rewrite the event waiter
  - [ ] Translation
  - [ ] XP system
@@ -47,6 +58,7 @@
  - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
  - [x] discord_accounts table returning errors - fixed with additional error catching
  - [x] 2FA not functioning as intended - unintended feature
+
 ## Building and Running
 
 **In order to run this project, you need JDK 14 or higher.**

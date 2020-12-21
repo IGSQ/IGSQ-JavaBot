@@ -38,12 +38,12 @@ public class PingCommand extends Command
 			return;
 		}
 
-		if(CooldownHandler.isOnCooldown(author.getIdLong(), this))
+		if(CooldownHandler.isOnCooldown(author.getId(), this))
 		{
 			return;
 		}
 
-		CooldownHandler.addCooldown(author.getIdLong(), this);
+		CooldownHandler.addCooldown(author.getId(), this);
 		EmbedGenerator embed = new EmbedGenerator(channel)
 				.color(EmbedUtils.IGSQ_PURPLE)
 				.title("Pong!")

@@ -61,9 +61,8 @@ public class Database
 			}, TimeUnit.SECONDS, 3);
 			return resultTable;
 		}
-		catch(SQLException exception)
+		catch(Exception exception)
 		{
-			LOGGER.error("A database error occurred.", exception);
 			return null;
 		}
 	}
@@ -81,9 +80,9 @@ public class Database
 			commandAdapter.executeUpdate(sql);
 			connection.close();
 		}
-		catch(SQLException exception)
+		catch(Exception exception)
 		{
-			LOGGER.error("A database error occurred.", exception);
+
 		}
 	}
 
@@ -103,9 +102,8 @@ public class Database
 			connection.close();
 			return result;
 		}
-		catch(SQLException exception)
+		catch(Exception exception)
 		{
-			LOGGER.error("A database error occurred.", exception);
 			return -1;
 		}
 	}

@@ -29,7 +29,7 @@ public class TwoFAMinecraft
 			{
 				sendDirectMessage(selectedID);
 			}
-		}, "2faPending", 0, TimeUnit.SECONDS, 5);
+		}, "2faPending", 0, TimeUnit.SECONDS, 2);
 	}
 
 	private static void sendDirectMessage(String id)

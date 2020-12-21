@@ -7,14 +7,14 @@ import java.util.Map;
 
 public abstract class CooldownHandler
 {
-	private static final Map<Command, Map<Long, Long>> COOLDOWN_MAP = new HashMap<>(); // K = Command, V = Map<userId, Timestamp>
+	private static final Map<Command, Map<String, Long>> COOLDOWN_MAP = new HashMap<>(); // K = Command, V = Map<userId, Timestamp>
 
 	private CooldownHandler()
 	{
 		//Overrides the default, public, constructor
 	}
 
-	public static void addCooldown(final long userID, final Command command)
+	public static void addCooldown(String userID, Command command)
 	{
 		final int cooldown = command.getCooldown();
 		if(cooldown == 0)
@@ -24,9 +24,9 @@ public abstract class CooldownHandler
 		COOLDOWN_MAP.computeIfAbsent(command, k -> new HashMap<>()).put(userID, System.currentTimeMillis() + (command.getCooldown() * 1000L));
 	}
 
-	public static boolean isOnCooldown(final long userID, final Command command)
+	public static boolean isOnCooldown(String userID, Command command)
 	{
-		final Map<Long, Long> listEntry = COOLDOWN_MAP.get(command);
+		final Map<String, Long> listEntry = COOLDOWN_MAP.get(command);
 		if(listEntry == null)
 		{
 			return false;
@@ -35,7 +35,7 @@ public abstract class CooldownHandler
 		return lastUsed != 0 && System.currentTimeMillis() <= lastUsed;
 	}
 
-	public static long getCooldown(final long userID, final Command command)
+	public static long getCooldown(final String userID, final Command command)
 	{
 		return Math.abs((System.currentTimeMillis() - COOLDOWN_MAP.get(command).get(userID)) / 1000L);
 	}

@@ -39,8 +39,6 @@ public class SuggestionCommand extends Command
 		final TextChannel suggestionChannel = guild.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
 		if(suggestionChannel != null)
 		{
-			channel.sendMessage(suggestionChannel.getName());
-			suggestionChannel.sendMessage("hello world");
 			if(!UserUtils.basicPermCheck(guild.getSelfMember(), suggestionChannel))
 			{
 				EmbedUtils.sendPermissionError(channel, this);
