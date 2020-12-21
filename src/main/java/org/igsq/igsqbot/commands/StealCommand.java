@@ -8,6 +8,7 @@ import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.FileUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
@@ -25,6 +26,7 @@ public class StealCommand extends Command
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
+
 		if(args.size() != 2 || !StringUtils.isURLValid(args.get(1)) || !args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
@@ -35,27 +37,17 @@ public class StealCommand extends Command
 		}
 		else
 		{
-			Icon icon;
-			try
+			Icon icon = FileUtils.getIcon(args.get(1));
+			if(icon == null)
 			{
-				icon = Icon.from(new URL(args.get(1)).openStream());
-
+				EmbedUtils.sendError(channel, "The image / gif provided could not be loaded.");
 			}
-			catch(Exception exception)
+			else
 			{
-				new ErrorHandler(exception);
-				return;
+				ctx.getGuild().createEmote(args.get(0), icon).queue(
+						emote -> EmbedUtils.sendSuccess(channel, "Added emote " + emote.getAsMention() + " successfully!"),
+						error -> EmbedUtils.sendError(channel, "An error occurred while adding the emote."));
 			}
-			ctx.getGuild().createEmote(args.get(0), icon).queue(
-					emote ->
-					{
-						EmbedUtils.sendSuccess(channel, "Added emote " + emote.getAsMention() + " successfully!");
-					},
-					error ->
-					{
-						EmbedUtils.sendError(channel, "An error occurred while adding the emote.");
-						new ErrorHandler(new Exception(error));
-					});
 		}
 	}
 }

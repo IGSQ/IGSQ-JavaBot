@@ -63,7 +63,7 @@ public abstract class CommandHandler
 			final Guild guild = event.getGuild();
 			final String prefix = new GuildConfig(guild, jda).getGuildPrefix();
 			final Member member = event.getMember();
-			final String selfID = IGSQBot.getJDA().getSelfUser().getId();
+			final String selfID = jda.getSelfUser().getId();
 			final String messageContent = event.getMessage().getContentRaw();
 
 			final String content;

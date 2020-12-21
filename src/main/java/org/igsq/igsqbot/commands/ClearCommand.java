@@ -60,7 +60,6 @@ public class ClearCommand extends Command
 					.sendTemporary(5000);
 
 			final MessageCache cache = MessageCache.getCache(guild);
-
 			messages.stream().filter(cache::isInCache).forEach(cache::remove);
 		});
 	}

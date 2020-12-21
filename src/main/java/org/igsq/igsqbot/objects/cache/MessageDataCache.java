@@ -8,11 +8,7 @@ import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.YamlUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -62,7 +58,7 @@ public class MessageDataCache
 
 	public static void close()
 	{
-		STORED_DATA.forEach((messageId, value) -> YamlUtils.clearField(messageId, "internal"));
+		STORED_DATA.forEach((messageId, data) -> data.remove());
 	}
 
 	public MessageType getType()
@@ -256,6 +252,12 @@ public class MessageDataCache
 	public void build()
 	{
 		STORED_DATA.put(messageId, this);
+	}
+
+	public void remove()
+	{
+		YamlUtils.clearField(messageId, "internal");
+		STORED_DATA.remove(messageId);
 	}
 
 	public enum MessageType

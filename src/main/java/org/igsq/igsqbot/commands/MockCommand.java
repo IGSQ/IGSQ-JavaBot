@@ -7,6 +7,7 @@ import org.igsq.igsqbot.objects.CommandContext;
 import org.igsq.igsqbot.objects.EmbedGenerator;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.FileUtils;
 
 import java.io.InputStream;
 import java.util.List;
@@ -23,40 +24,46 @@ public class MockCommand extends Command
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
-		final StringBuilder mockText = new StringBuilder();
-		final Random random = new Random();
 
-		if(args.isEmpty() || CommandUtils.isCommandTooLarge(args))
+		if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
 		else
 		{
-			mockText.append('"');
-			args.forEach(word ->
-			{
-				for(String selectedChar : word.split(""))
-				{
-					mockText.append(random.nextBoolean() ? selectedChar.toUpperCase() : selectedChar.toLowerCase());
-				}
-				mockText.append(" ");
-			});
-			mockText.deleteCharAt(mockText.lastIndexOf(" "));
-			mockText.append('"');
-
 			EmbedGenerator embed = new EmbedGenerator(channel)
-					.title(mockText.toString())
+					.title(mockText(args))
 					.color(EmbedUtils.IGSQ_PURPLE)
 					.image("attachment://mock.jpg");
-			try
+
+			InputStream file = FileUtils.getResourceFile("mock.jpg", true);
+			if(file != null)
 			{
-				InputStream file = getClass().getClassLoader().getResource("mock.jpg").toURI().toURL().openStream();
 				channel.sendFile(file, "mock.jpg").embed(embed.getBuilder().build()).queue();
 			}
-			catch(Exception exception)
+			else
 			{
-				EmbedUtils.sendError(channel, "An error occurred while loading the image.");
+				EmbedUtils.sendError(channel, "An error occurred while loading the mock image.");
 			}
+
 		}
+	}
+
+	private String mockText(List<String> args)
+	{
+		StringBuilder mockText = new StringBuilder();
+		Random random = new Random();
+		mockText.append('"');
+		args.forEach(word ->
+		{
+			for(String selectedChar : word.split(""))
+			{
+				mockText.append(random.nextBoolean() ? selectedChar.toUpperCase() : selectedChar.toLowerCase());
+			}
+			mockText.append(" ");
+		});
+		mockText.deleteCharAt(mockText.lastIndexOf(" "));
+		mockText.append('"');
+		return mockText.toString();
 	}
 }

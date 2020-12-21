@@ -1,9 +1,12 @@
 package org.igsq.igsqbot.minecraft;
 
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CommonMinecraft
 {
@@ -78,5 +81,29 @@ public class CommonMinecraft
 			return null;
 		}
 		return null;
+	}
+
+	public static Map<String, String> fetchLinks(String discordId)
+	{
+		final Map<String, String> result = new ConcurrentHashMap<>();
+		final ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE id = '" + discordId + "';");
+
+		try
+		{
+			while(linked_accounts.next())
+			{
+				result.putIfAbsent(getNameFromUUID(linked_accounts.getString(2)), linked_accounts.getString(4));
+			}
+		}
+		catch(Exception exception)
+		{
+			new ErrorHandler(exception);
+		}
+		return result;
+	}
+
+	public static void removeLinkedAccount(String uuid)
+	{
+		Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';");
 	}
 }

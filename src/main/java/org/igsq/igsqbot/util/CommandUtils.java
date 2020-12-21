@@ -156,7 +156,7 @@ public class CommandUtils
 		return false;
 	}
 
-	public static boolean isCommandTooLarge(List<String> args)
+	public static boolean isArgsEmbedCompatible(List<String> args)
 	{
 		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList()).size() > EmbedUtils.CHARACTER_LIMIT;
 	}

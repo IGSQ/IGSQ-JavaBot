@@ -12,6 +12,8 @@ import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,7 @@ public class UwuCommand extends Command
 		final StringBuilder finalSentence = new StringBuilder();
 		final User author = ctx.getAuthor();
 
-		if(args.isEmpty() || CommandUtils.isCommandTooLarge(args))
+		if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}

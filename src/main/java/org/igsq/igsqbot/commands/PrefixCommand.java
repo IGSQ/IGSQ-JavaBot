@@ -27,6 +27,7 @@ public class PrefixCommand extends Command
 		final Guild guild = ctx.getGuild();
 		final JDA jda = ctx.getJDA();
 		final GuildConfig config = new GuildConfig(guild, jda);
+
 		if(args.isEmpty())
 		{
 

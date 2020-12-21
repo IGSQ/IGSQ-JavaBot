@@ -31,7 +31,9 @@
  - [ ] Alias / Decline (within the setup command)
 
  - [ ] Finish verification
-
+ - [ ] Remove raw Database calls
+ - [ ] Use MessageChannel where possible
+ - [ ] Change CooldownHandler to use Strings vs Longs
 
  - [ ] Rewrite the event waiter
  - [ ] Translation
@@ -44,7 +46,7 @@
  
  - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
  - [x] discord_accounts table returning errors - fixed with additional error catching
- - [ ] 2FA not functioning as intended
+ - [x] 2FA not functioning as intended - unintended feature
 ## Building and Running
 
 **In order to run this project, you need JDK 14 or higher.**

@@ -28,7 +28,7 @@ public class PollCommand extends Command
 		final User author = ctx.getAuthor();
 		final List<String> reactions = new ArrayList<>();
 
-		if(args.size() != 1 || CommandUtils.isCommandTooLarge(args))
+		if(args.size() != 1 || CommandUtils.isArgsEmbedCompatible(args))
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 			return;

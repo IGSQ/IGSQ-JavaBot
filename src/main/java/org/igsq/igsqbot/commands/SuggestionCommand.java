@@ -45,7 +45,7 @@ public class SuggestionCommand extends Command
 			{
 				EmbedUtils.sendPermissionError(channel, this);
 			}
-			else if(CommandUtils.isCommandTooLarge(args))
+			else if(CommandUtils.isArgsEmbedCompatible(args))
 			{
 				EmbedUtils.sendSyntaxError(channel, this);
 			}

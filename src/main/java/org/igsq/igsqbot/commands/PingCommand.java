@@ -42,8 +42,12 @@ public class PingCommand extends Command
 		{
 			return;
 		}
+
 		CooldownHandler.addCooldown(author.getIdLong(), this);
-		EmbedGenerator embed = new EmbedGenerator(channel).color(EmbedUtils.IGSQ_PURPLE).title("Pong!").footer(StringUtils.getTimestamp());
+		EmbedGenerator embed = new EmbedGenerator(channel)
+				.color(EmbedUtils.IGSQ_PURPLE)
+				.title("Pong!")
+				.footer(StringUtils.getTimestamp());
 
 		jda.getRestPing().queue(
 				time ->

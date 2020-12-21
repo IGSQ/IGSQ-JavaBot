@@ -30,82 +30,70 @@ public class LinkCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final String action;
+
 		this.args = args;
 		this.channel = ctx.getChannel();
 		this.author = ctx.getAuthor();
 
-		try
+		if(args.isEmpty())
 		{
-			action = args.get(0);
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
-		catch(Exception exception)
+		else
 		{
-			EmbedUtils.sendError(channel, "You entered an invalid action");
-			return;
-		}
+			switch(args.get(0).toLowerCase())
+			{
+				case "add":
+				case "new":
+					addLink();
+					break;
 
-		switch(action.toLowerCase())
-		{
-			case "add":
-			case "new":
-				addLink();
-				break;
+				case "remove":
+				case "delete":
+					removeLink();
+					break;
 
-			case "remove":
-			case "delete":
-				removeLink();
-				break;
+				case "show":
+				case "list":
+				case "pending":
+					showPending();
+					break;
 
-			case "show":
-			case "list":
-			case "pending":
-				showPending();
-				break;
-
-			default:
-				EmbedUtils.sendSyntaxError(channel, this);
+				default:
+					EmbedUtils.sendSyntaxError(channel, this);
+			}
 		}
 	}
 
 	private void showPending()
 	{
-		final ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE id = '" + author.getId() + "';");
 		final StringBuilder embedDescription = new StringBuilder();
-		String status;
-		try
+		CommonMinecraft.fetchLinks(author.getId()).forEach((name, state) ->
 		{
-			while(linked_accounts.next())
+			String status;
+			switch(state.toLowerCase())
 			{
-				ResultSet mc_accounts = Database.queryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + linked_accounts.getString(2) + "';");
-				if(mc_accounts.next())
-				{
-					switch(linked_accounts.getString(4).toLowerCase())
-					{
-						case "mwait":
-							status = "pending Minecraft confirmation.";
-							break;
-						case "dwait":
-							status = "pending Discord confirmation.";
-							break;
-						case "linked":
-							status = "linked!";
-							break;
-						default:
-							status = "status not found / invalid";
-							break;
-					}
-					embedDescription.append("**").append(mc_accounts.getString(1)).append("**: ").append(status).append("\n");
-				}
+				case "mwait":
+					status = "pending Minecraft confirmation.";
+					break;
+				case "dwait":
+					status = "pending Discord confirmation.";
+					break;
+				case "linked":
+					status = "linked!";
+					break;
+				default:
+					status = "status not found / invalid";
+					break;
 			}
-		}
-		catch(SQLException exception)
-		{
-			exception.printStackTrace();
-		}
+			embedDescription.append("**")
+					.append(name)
+					.append("**: ")
+					.append(status)
+					.append("\n");
+		});
 
-		if(embedDescription.length() == 0) embedDescription.append("No accounts pending");
-
+		if(embedDescription.length() == 0) embedDescription.append("No links found.");
 		new EmbedGenerator(channel)
 				.title("All links for " + author.getAsTag())
 				.text(embedDescription.toString())
@@ -115,98 +103,81 @@ public class LinkCommand extends Command
 
 	private void removeLink()
 	{
-		String mcAccount = "";
-		String id = "";
-		try
-		{
-			mcAccount = args.get(1);
-		}
-		catch(Exception exception)
+		if(args.size() != 2)
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
-			return;
 		}
-
-		try
+		else
 		{
-			String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
-			String username = CommonMinecraft.getNameFromUUID(uuid);
+			final String mcAccount = args.get(1);
+			final String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
+			final String username = CommonMinecraft.getNameFromUUID(uuid);
+			final String id = CommonMinecraft.getIDFromUUID(uuid);
 
 			if(username == null)
 			{
 				EmbedUtils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
 				return;
 			}
-
-			ResultSet linked_accounts = Database.queryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
-			if(linked_accounts.next())
+			if(id == null)
 			{
-				id = linked_accounts.getString(1);
-				if(id.equals(author.getId()))
-				{
-					Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';");
-					EmbedUtils.sendSuccess(channel, "Link removed for account: " + username);
-				}
-				else
-				{
-					EmbedUtils.sendError(channel, "That Minecraft account is not linked to your Discord.");
-				}
+				EmbedUtils.sendError(channel, "That Minecraft account is not linked, please link before trying to delink.");
+				return;
+			}
+
+			if(id.equals(author.getId()))
+			{
+				CommonMinecraft.removeLinkedAccount(uuid);
+				EmbedUtils.sendSuccess(channel, "Link removed for account: " + username);
 			}
 			else
 			{
-				EmbedUtils.sendError(channel, "That Minecraft account is not linked, please link before trying to delink.");
+				EmbedUtils.sendError(channel, "That Minecraft account is not linked to your Discord.");
 			}
-		}
-		catch(SQLException exception)
-		{
-			new ErrorHandler(exception);
 		}
 	}
 
 	private void addLink()
 	{
-		String mcAccount = "";
-		try
-		{
-			mcAccount = args.get(1);
-		}
-		catch(Exception exception)
+		if(args.size() != 2)
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
-			return;
-		}
-
-		String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
-		String username = CommonMinecraft.getNameFromUUID(uuid);
-		if(uuid != null)
-		{
-			boolean isWaiting = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'dwait';") > 0;
-			boolean isAlreadyLinked = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'linked';") > 0;
-			boolean isUsersAccount = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'linked';") > 0;
-
-			if(isUsersAccount)
-			{
-				EmbedUtils.sendError(channel, "There is already an account linked to that Minecraft username.");
-			}
-			else if(isAlreadyLinked)
-			{
-				EmbedUtils.sendError(channel, "There is already an account linked to your Discord, please delink first.");
-			}
-			else if(isWaiting)
-			{
-				Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
-				Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
-				EmbedUtils.sendSuccess(channel, "Link confirmed for account: " + username);
-			}
-			else
-			{
-				Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
-				EmbedUtils.sendSuccess(channel, "Link added for account: " + username);
-			}
 		}
 		else
 		{
-			EmbedUtils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
+			final String mcAccount = args.get(1);
+			final String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
+			final String username = CommonMinecraft.getNameFromUUID(uuid);
+			if(uuid != null)
+			{
+				boolean isWaiting = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'dwait';") > 0;
+				boolean isAlreadyLinked = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'linked';") > 0;
+				boolean isUsersAccount = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'linked';") > 0;
+
+				if(isUsersAccount)
+				{
+					EmbedUtils.sendError(channel, "There is already an account linked to that Minecraft username.");
+				}
+				else if(isAlreadyLinked)
+				{
+					EmbedUtils.sendError(channel, "There is already an account linked to your Discord, please delink first.");
+				}
+				else if(isWaiting)
+				{
+					Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
+					Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
+					EmbedUtils.sendSuccess(channel, "Link confirmed for account: " + username);
+				}
+				else
+				{
+					Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
+					EmbedUtils.sendSuccess(channel, "Link added for account: " + username);
+				}
+			}
+			else
+			{
+				EmbedUtils.sendError(channel, "That Minecraft account does not exists on our system, please ensure you have played on the server before attempting a link.");
+			}
 		}
 	}
 }
