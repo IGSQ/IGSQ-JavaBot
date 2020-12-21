@@ -46,7 +46,7 @@
  - [ ] Emote constants, success, failure
  - [ ] Attempt to make my own ExpiringMap
  - [ ] OnGuildRemove removing guild config
- - [ ] ReactionRoles
+ - [ ] ReactionRoles - to add: ReactionRole object with yaml
  - [ ] Muting
  - [ ] PREPARE FOR PR
 

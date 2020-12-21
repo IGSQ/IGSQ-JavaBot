@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
+import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.objects.Command;
 import org.igsq.igsqbot.objects.CommandContext;
 
@@ -16,6 +17,7 @@ public class TestCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		System.out.println(Permission.ADMINISTRATOR);
+
+		//Placeholder
 	}
 }
