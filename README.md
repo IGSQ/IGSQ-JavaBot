@@ -26,19 +26,23 @@
  - [x] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [x] Catch 2FA DMs
 
+
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
+
 
  - [ ] Finish verification
  - [ ] Remove raw Database calls
  - [ ] Use MessageChannel where possible
  - [ ] Change CooldownHandler to use Strings vs Longs
 
+
  - [ ] Rewrite the event waiter
  - [ ] Translation
  - [ ] XP system
  - [ ] Implement slash commands when they release
+ - [ ] OKHTTP API tools
 
 
 ## Known Issues
