@@ -24,8 +24,8 @@ public class MessageCache
 
 		this.cachedMessages = ExpiringMap.builder()
 				.maxSize(1000)
-				.expirationPolicy(ExpirationPolicy.CREATED)
-				.expiration(6, TimeUnit.HOURS)
+				.expirationPolicy(ExpirationPolicy.ACCESSED)
+				.expiration(3, TimeUnit.HOURS)
 				.build();
 	}
 

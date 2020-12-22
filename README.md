@@ -42,6 +42,9 @@
 
  - [ ] Check verified role in LinkCommand
  - [ ] Check required tables in testDatabase
+ - [ ] Catch empty bot.server option in syncminecraft
+ - [ ] Add Database#isOnline
+ - [ ] Custom message class
  
  - [ ] OnGuildRemove removing guild config
  - [ ] Redo Channel / Role / User parsing
