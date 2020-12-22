@@ -16,7 +16,7 @@ public class AvatarCommand extends Command
 {
 	public AvatarCommand()
 	{
-		super("Avatar", new String[]{"avatar", "pfp", "avi"}, "Shows the avatar for the mentioned user(s)", "[user(s) -3-]", new Permission[]{}, false, 0);
+		super("Avatar", new String[]{"avatar", "pfp", "avi"}, "Shows the avatar for the mentioned user(s)", "<user(s) -3->", new Permission[]{}, false, 0);
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class PrefixCommand extends Command
 {
 	public PrefixCommand()
 	{
-		super("Prefix", new String[]{"prefix"}, "Sets / gets the prefix for the bot in the current server.", "[newPrefix -5-] | [reset] | [none] ", new Permission[]{}, true, 0);
+		super("Prefix", new String[]{"prefix"}, "Sets / gets the prefix for the bot in the current server.", "<newPrefix -5-> | <reset> | <none> ", new Permission[]{}, true, 0);
 	}
 
 	@Override

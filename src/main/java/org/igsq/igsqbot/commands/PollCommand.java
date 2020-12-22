@@ -18,7 +18,7 @@ public class PollCommand extends Command
 {
 	public PollCommand()
 	{
-		super("Poll", new String[]{"poll"}, "Starts a poll for users to vote in.", "[title]/[option1]/[option2]-20-", new Permission[]{}, false, 0);
+		super("Poll", new String[]{"poll"}, "Starts a poll for users to vote in.", "[title]/[option1]/[option2]<-20->", new Permission[]{}, false, 0);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class ReactionRoleCommand extends Command
 {
 	public ReactionRoleCommand()
 	{
-		super("ReactionRoles", new String[]{"rr", "reactionroles", "reactionrole"}, "Controls reactionroles.", "[add|remove][messageID][channel][role][reaction]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
+		super("ReactionRole", new String[]{"reactionrole", "reactionroles", "rr"}, "Controls reactionroles.", "[add|remove][messageID][channel][role][reaction]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
 	}
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
