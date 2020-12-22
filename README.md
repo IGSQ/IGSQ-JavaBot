@@ -46,6 +46,7 @@
  - [ ] OnGuildRemove removing guild config
  - [ ] ReactionRoles - to add: ReactionRole object with yaml
  - [ ] Muting
+ - [ ] Setters for GuildConfig
  - [ ] PREPARE FOR PR
 
 ### **Future work**
