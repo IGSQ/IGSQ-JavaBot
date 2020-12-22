@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
@@ -27,7 +28,7 @@ public class ModhelpCommand extends Command
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final EmbedGenerator embed = ArrayUtils.MODPAGE_TEXT.get(0);
-		embed.setChannel(channel).color(EmbedUtils.IGSQ_PURPLE);
+		embed.setChannel(channel).color(Constants.IGSQ_PURPLE);
 		final User author = ctx.getAuthor();
 		final JDA jda = ctx.getJDA();
 		if(!args.isEmpty())

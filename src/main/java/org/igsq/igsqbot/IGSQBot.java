@@ -2,6 +2,7 @@ package org.igsq.igsqbot;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -45,6 +46,13 @@ public class IGSQBot
 			Database.startDatabase();
 			EventHandler.setEvents();
 			MainMinecraft.startMinecraft(jda);
+
+			LOGGER.info("IGSQBot started!");
+			LOGGER.info("Account:         " + jda.getSelfUser().getAsTag() + " / " + jda.getSelfUser().getId());
+			LOGGER.info("JDA Version:     " + JDAInfo.VERSION);
+			LOGGER.info("IGSQBot Version: " + Constants.VERSION);
+
+
 
 		}
 		catch(Exception exception)

@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Command
 {
-	private final String invoke;
+	private final String name;
 	private final String[] aliases;
 	private final String description;
 	private final Permission[] requiredPermissions;
@@ -17,7 +17,7 @@ public abstract class Command
 
 	protected Command(final String name, final String[] aliases, final String description, final String syntax, final Permission[] requiredPermissions, boolean requiresGuild, int cooldown)
 	{
-		this.invoke = name;
+		this.name = name;
 		this.aliases = aliases;
 		this.description = description;
 		this.syntax = syntax;
@@ -28,9 +28,9 @@ public abstract class Command
 
 	public abstract void execute(final List<String> args, CommandContext ctx);
 
-	public String getInvoke()
+	public String getName()
 	{
-		return invoke;
+		return name;
 	}
 
 	public String[] getAliases()

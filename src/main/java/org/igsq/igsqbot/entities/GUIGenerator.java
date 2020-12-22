@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class GUIGenerator
 		guiList.add(this);
 		message = embed.getChannel().sendMessage(embed.getBuilder().build()).complete();
 
-		for(String selectedReaction : Common.TICK_REACTIONS) message.addReaction(selectedReaction).queue();
+		for(String selectedReaction : Constants.TICK_REACTIONS) message.addReaction(selectedReaction).queue();
 
 		final MessageReactionAddEvent reactionEvent;
 		EventWaiter waiter = new EventWaiter();

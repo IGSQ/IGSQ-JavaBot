@@ -1,11 +1,11 @@
 package org.igsq.igsqbot.minecraft;
 
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.entities.EmbedGenerator;
-import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
 import java.sql.ResultSet;
@@ -43,7 +43,7 @@ public class TwoFAMinecraft
 					{
 						EmbedGenerator embed = new EmbedGenerator(channel)
 								.text("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
-								.color(EmbedUtils.IGSQ_PURPLE);
+								.color(Constants.IGSQ_PURPLE);
 
 						channel.sendMessage(embed.getBuilder().build()).queue(
 								message ->

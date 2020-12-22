@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
@@ -32,8 +32,8 @@ public class PrefixCommand extends Command
 		{
 
 			new EmbedGenerator(channel)
-					.text("The prefix for me is: " + (config.getGuildPrefix().equals(Common.DEFAULT_BOT_PREFIX) ? "`.` the default." : "`" + config.getGuildPrefix() + "` custom set."))
-					.color(EmbedUtils.IGSQ_PURPLE)
+					.text("The prefix for me is: " + (config.getGuildPrefix().equals(Constants.DEFAULT_BOT_PREFIX) ? "`.` the default." : "`" + config.getGuildPrefix() + "` custom set."))
+					.color(Constants.IGSQ_PURPLE)
 					.sendTemporary(30000);
 		}
 		else if(args.size() > 1 || args.get(0).length() > 5)

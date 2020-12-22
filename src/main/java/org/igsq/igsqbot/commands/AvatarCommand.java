@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
@@ -35,7 +36,7 @@ public class AvatarCommand extends Command
 					new EmbedGenerator(channel)
 							.title(member.getUser().getAsTag() + "'s Avatar")
 							.image(member.getUser().getEffectiveAvatarUrl() + "?size=4096")
-							.color(EmbedUtils.IGSQ_PURPLE).send());
+							.color(Constants.IGSQ_PURPLE).send());
 
 		}
 		else
@@ -43,7 +44,7 @@ public class AvatarCommand extends Command
 			new EmbedGenerator(channel)
 					.title(author.getAsTag() + "'s Avatar")
 					.image(author.getAvatarUrl() + "?size=4096")
-					.color(EmbedUtils.IGSQ_PURPLE)
+					.color(Constants.IGSQ_PURPLE)
 					.send();
 		}
 	}

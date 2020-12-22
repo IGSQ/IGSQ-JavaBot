@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.entities.Command;
@@ -94,7 +95,7 @@ public class LinkCommand extends Command
 		new EmbedGenerator(channel)
 				.title("All links for " + author.getAsTag())
 				.text(embedDescription.toString())
-				.color(EmbedUtils.IGSQ_PURPLE)
+				.color(Constants.IGSQ_PURPLE)
 				.send();
 	}
 

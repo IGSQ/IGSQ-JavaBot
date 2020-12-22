@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
@@ -33,7 +33,7 @@ public abstract class CommandHandler
 			for(final ClassInfo cls : result.getAllClasses())
 			{
 				final Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
-				COMMANDS.put(cmd.getInvoke(), cmd);
+				COMMANDS.put(cmd.getName(), cmd);
 				for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
 			}
 		}
@@ -126,7 +126,7 @@ public abstract class CommandHandler
 		}
 		else
 		{
-			final String prefix = Common.DEFAULT_BOT_PREFIX;
+			final String prefix = Constants.DEFAULT_BOT_PREFIX;
 			if(event.getMessage().getContentRaw().startsWith(prefix))
 			{
 				final String content = event.getMessage().getContentRaw().substring(prefix.length());

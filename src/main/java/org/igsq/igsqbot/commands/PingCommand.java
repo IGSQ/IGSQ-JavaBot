@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
@@ -45,7 +46,7 @@ public class PingCommand extends Command
 
 		CooldownHandler.addCooldown(author.getId(), this);
 		EmbedGenerator embed = new EmbedGenerator(channel)
-				.color(EmbedUtils.IGSQ_PURPLE)
+				.color(Constants.IGSQ_PURPLE)
 				.title("Pong!")
 				.footer(StringUtils.getTimestamp());
 
@@ -59,7 +60,7 @@ public class PingCommand extends Command
 											"**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms"
 													+ "\n\n**REST Average**: " + getAverageREST(jda) + "ms")
 
-											.color(EmbedUtils.IGSQ_PURPLE)
+											.color(Constants.IGSQ_PURPLE)
 											.title("Pong!")
 											.footer(StringUtils.getTimestamp())
 											.replace(message));

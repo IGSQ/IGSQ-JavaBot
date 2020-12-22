@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
@@ -56,7 +57,7 @@ public class UwuCommand extends Command
 			new EmbedGenerator(channel)
 					.text(finalSentence.toString())
 					.footer("This sentence was UwU'd by: " + author.getAsTag())
-					.color(EmbedUtils.IGSQ_PURPLE).send();
+					.color(Constants.IGSQ_PURPLE).send();
 		}
 	}
 }

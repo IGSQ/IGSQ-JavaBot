@@ -6,9 +6,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
 public class GuildVoiceMoveEvent_Logging extends ListenerAdapter
@@ -30,7 +30,7 @@ public class GuildVoiceMoveEvent_Logging extends ListenerAdapter
 							"**Old Channel**: " + oldChannel.getName() + "\n" +
 							"**New Channel**: " + newChannel.getName()
 					)
-					.color(EmbedUtils.IGSQ_PURPLE)
+					.color(Constants.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())
 					.send();
 		}

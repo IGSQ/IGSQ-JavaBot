@@ -2,6 +2,7 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
@@ -33,7 +34,7 @@ public class MockCommand extends Command
 		{
 			EmbedGenerator embed = new EmbedGenerator(channel)
 					.title(mockText(args))
-					.color(EmbedUtils.IGSQ_PURPLE)
+					.color(Constants.IGSQ_PURPLE)
 					.image("attachment://mock.jpg");
 
 			InputStream file = FileUtils.getResourceFile("mock.jpg", true);

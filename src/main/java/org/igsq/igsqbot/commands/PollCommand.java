@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
@@ -49,7 +50,7 @@ public class PollCommand extends Command
 					.element("Options:", options.toString())
 					.footer("Poll created by " + author.getAsTag())
 					.thumbnail(author.getAvatarUrl())
-					.color(EmbedUtils.IGSQ_PURPLE)
+					.color(Constants.IGSQ_PURPLE)
 					.reaction(reactions.toArray(new String[0]))
 					.send();
 		}

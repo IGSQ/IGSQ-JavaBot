@@ -28,6 +28,7 @@
  - [x] Change CooldownHandler to use Strings vs Longs
  - [x] ReactionRoles
  - [x] Setters for GuildConfig
+ - [x] Emote constants, success, failure
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
@@ -38,16 +39,18 @@
  - [ ] Finish verification
  - [ ] Remove raw Database calls
  - [ ] Use MessageChannel where possible
- - [ ] Invite command
- - [ ] Info command
+
  - [ ] Check verified role in LinkCommand
  - [ ] Check required tables in testDatabase
- - [ ] Redo user mention parsing
- - [ ] Emote constants, success, failure
- - [ ] Attempt to make my own ExpiringMap
+ 
  - [ ] OnGuildRemove removing guild config
- - [ ] Muting
  - [ ] Redo Channel / Role / User parsing
+ - [ ] Class#wipe for config classes - removes all config options
+ 
+ - [ ] Invite command
+ - [ ] Info command
+ - [ ] Muting
+   
  - [ ] PREPARE FOR PR
 
 ### **Future work**
@@ -55,6 +58,7 @@
  - [ ] Translation
  - [ ] XP system
  - [ ] Implement slash commands when they release
+ - [ ] Attempt to make my own ExpiringMap
 
 
 ## Known Issues

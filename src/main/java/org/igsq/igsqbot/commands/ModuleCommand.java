@@ -58,8 +58,8 @@ public class ModuleCommand extends Command
 		else
 		{
 			cmd.setDisabled(false);
-			EmbedUtils.sendSuccess(channel, "Enabled module: `" + cmd.getInvoke() + "`.");
-			LOGGER.warn("Module " + cmd.getInvoke() + " was enabled.");
+			EmbedUtils.sendSuccess(channel, "Enabled module: `" + cmd.getName() + "`.");
+			LOGGER.warn("Module " + cmd.getName() + " was enabled.");
 		}
 	}
 
@@ -73,8 +73,8 @@ public class ModuleCommand extends Command
 		else
 		{
 			cmd.setDisabled(true);
-			EmbedUtils.sendSuccess(channel, "Disabled module: `" + cmd.getInvoke() + "`.");
-			LOGGER.warn("Module " + cmd.getInvoke() + " was disabled.");
+			EmbedUtils.sendSuccess(channel, "Disabled module: `" + cmd.getName() + "`.");
+			LOGGER.warn("Module " + cmd.getName() + " was disabled.");
 		}
 	}
 }

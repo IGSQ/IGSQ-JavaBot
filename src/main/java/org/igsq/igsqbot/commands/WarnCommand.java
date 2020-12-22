@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.entities.Command;
@@ -103,7 +104,7 @@ public class WarnCommand extends Command
 		embed
 			.title("Warnings for " + member.getUser().getAsTag())
 			.text(embedText.length() == 0 ? "This user has no warnings" : embedText.toString())
-			.color(EmbedUtils.IGSQ_PURPLE)
+			.color(Constants.IGSQ_PURPLE)
 			.send();
 	}
 

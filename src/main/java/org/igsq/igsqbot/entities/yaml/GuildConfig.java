@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.igsq.igsqbot.Common;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -156,7 +156,7 @@ public class GuildConfig
 	{
 		if(YamlUtils.isFieldEmpty(guildId + ".prefix", "guild"))
 		{
-			return Common.DEFAULT_BOT_PREFIX;
+			return Constants.DEFAULT_BOT_PREFIX;
 		}
 		else
 		{

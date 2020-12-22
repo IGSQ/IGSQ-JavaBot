@@ -39,7 +39,7 @@ public class SyncMinecraft
 		}
 		else
 		{
-			LOGGER.info("Guild link established for guild: " + guild.getName() + ", starting sync.");
+			LOGGER.info("Guild link established with guild: " + guild.getName() + ", starting sync.");
 		}
 	}
 

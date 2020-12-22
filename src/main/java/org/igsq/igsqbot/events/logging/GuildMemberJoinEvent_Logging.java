@@ -5,9 +5,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
 import java.time.format.DateTimeFormatter;
@@ -27,7 +27,7 @@ public class GuildMemberJoinEvent_Logging extends ListenerAdapter
 					.title("Member Joined").text(
 					"**Member**: " + member.getAsMention() +
 							"\n**Joined On**: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
-					.color(EmbedUtils.IGSQ_PURPLE)
+					.color(Constants.IGSQ_PURPLE)
 					.footer("Logged on: " + StringUtils.getTimestamp())
 					.send();
 		}

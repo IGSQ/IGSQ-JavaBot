@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
@@ -31,7 +32,7 @@ public class UptimeCommand extends Command
 		final Duration uptime = Duration.between(IGSQBot.getStartTimestamp(), LocalDateTime.now());
 		new EmbedGenerator(ctx.getChannel())
 				.text("Uptime: " + uptime.toDays() + " days, " + uptime.toHours() + " hours, " + uptime.toSeconds() + " seconds.")
-				.color(EmbedUtils.IGSQ_PURPLE)
+				.color(Constants.IGSQ_PURPLE)
 				.footer(StringUtils.getTimestamp())
 				.send();
 	}

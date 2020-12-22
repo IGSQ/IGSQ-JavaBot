@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
@@ -52,7 +53,7 @@ public class SuggestionCommand extends Command
 				new EmbedGenerator((MessageChannel) suggestionChannel)
 						.title("Suggestion:")
 						.text(ArrayUtils.arrayCompile(args, " "))
-						.color(EmbedUtils.IGSQ_PURPLE)
+						.color(Constants.IGSQ_PURPLE)
 						.thumbnail(author.getAvatarUrl())
 						.footer("Suggestion by: " + UserUtils.getMemberFromUser(author, guild).getEffectiveName() + author.getDiscriminator())
 						.send();
