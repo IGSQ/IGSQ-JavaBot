@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 public abstract class CommandHandler
 {
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
-	private static final Map<String, Command> COMMANDS = new HashMap<>();
 	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
-	public static final Map<String, Command> COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
+	public static final Map<String, Command> COMMAND_MAP;
 
 	static
 	{
+		final Map<String, Command> COMMANDS = new HashMap<>();
 		try(final ScanResult result = CLASS_GRAPH.scan())
 		{
 			for(final ClassInfo cls : result.getAllClasses())
@@ -41,6 +41,7 @@ public abstract class CommandHandler
 		{
 			new ErrorHandler(exception);
 		}
+		COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
 	}
 
 	private CommandHandler()
@@ -75,7 +76,7 @@ public abstract class CommandHandler
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 				if(!issuedCommand.isEmpty())
 				{
-					cmd = COMMANDS.get(issuedCommand.toLowerCase());
+					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
 				}
 				else
 				{
@@ -89,7 +90,7 @@ public abstract class CommandHandler
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 				if(!issuedCommand.isEmpty())
 				{
-					cmd = COMMANDS.get(issuedCommand.toLowerCase());
+					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
 				}
 				else
 				{
@@ -131,7 +132,7 @@ public abstract class CommandHandler
 			{
 				final String content = event.getMessage().getContentRaw().substring(prefix.length());
 				final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				final Command cmd = COMMANDS.get(issuedCommand);
+				final Command cmd = COMMAND_MAP.get(issuedCommand);
 
 				if(cmd == null)
 				{
