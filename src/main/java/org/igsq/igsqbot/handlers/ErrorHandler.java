@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.YamlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,6 +6,7 @@ import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Report;
 import org.igsq.igsqbot.events.logging.*;
 import org.igsq.igsqbot.events.main.MessageDeleteEvent_Main;
 import org.igsq.igsqbot.events.main.MessageReactionAddEvent_Main;
+import org.igsq.igsqbot.events.main.MessageReactionRemoveEvent_Main;
 import org.igsq.igsqbot.events.main.MessageReceivedEvent_Main;
 
 public class EventHandler
@@ -27,6 +28,7 @@ public class EventHandler
 		eventManager.register(new MessageReactionAddEvent_Main());
 		eventManager.register(new MessageDeleteEvent_Main());
 		eventManager.register(new MessageReceivedEvent_Main());
+		eventManager.register(new MessageReactionRemoveEvent_Main());
 
 		eventManager.register(new MessageReactionAddEvent_Help());
 		eventManager.register(new MessageReactionAddEvent_Report());

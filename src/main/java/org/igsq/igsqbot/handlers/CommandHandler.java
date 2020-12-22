@@ -8,10 +8,9 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Common;
-import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.CommandContext;
-import org.igsq.igsqbot.objects.GuildConfig;
+import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.*;

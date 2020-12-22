@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.GuildConfig;
+import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 

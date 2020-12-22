@@ -26,6 +26,7 @@
  - [x] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [x] Catch 2FA DMs
  - [x] Change CooldownHandler to use Strings vs Longs
+ - [x] ReactionRoles - to add: ReactionRole object with yaml
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
@@ -44,8 +45,8 @@
  - [ ] Emote constants, success, failure
  - [ ] Attempt to make my own ExpiringMap
  - [ ] OnGuildRemove removing guild config
- - [ ] ReactionRoles - to add: ReactionRole object with yaml
  - [ ] Muting
+ - [ ] Redo Channel / Role / User parsing
  - [ ] PREPARE FOR PR
 
 ### **Future work**

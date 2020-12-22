@@ -4,15 +4,12 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.minecraft.CommonMinecraft;
-import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.CommandContext;
-import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class LinkCommand extends Command

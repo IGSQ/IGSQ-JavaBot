@@ -6,8 +6,8 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.objects.EmbedGenerator;
-import org.igsq.igsqbot.objects.cache.MessageDataCache;
+import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.util.YamlUtils;
 
 import java.awt.*;

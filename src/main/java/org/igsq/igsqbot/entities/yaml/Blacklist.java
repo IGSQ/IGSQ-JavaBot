@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.objects;
+package org.igsq.igsqbot.entities.yaml;
 
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;

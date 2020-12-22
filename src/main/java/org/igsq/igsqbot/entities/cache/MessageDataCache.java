@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.objects.cache;
+package org.igsq.igsqbot.entities.cache;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;

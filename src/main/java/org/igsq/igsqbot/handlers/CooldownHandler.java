@@ -1,6 +1,6 @@
 package org.igsq.igsqbot.handlers;
 
-import org.igsq.igsqbot.objects.Command;
+import org.igsq.igsqbot.entities.Command;
 
 import java.util.HashMap;
 import java.util.Map;

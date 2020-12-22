@@ -4,9 +4,9 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.CommandContext;
-import org.igsq.igsqbot.objects.EmbedGenerator;
+import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;

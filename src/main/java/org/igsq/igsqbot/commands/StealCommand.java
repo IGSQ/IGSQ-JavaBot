@@ -4,15 +4,13 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.objects.Command;
-import org.igsq.igsqbot.objects.CommandContext;
+import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.FileUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
-import java.net.URL;
 import java.util.List;
 
 public class StealCommand extends Command

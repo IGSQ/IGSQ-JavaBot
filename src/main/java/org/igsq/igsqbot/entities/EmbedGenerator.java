@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.objects;
+package org.igsq.igsqbot.entities;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -451,6 +451,10 @@ public class EmbedGenerator
 						{
 							if(channel instanceof TextChannel && ((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION))
 								for(String reaction : reactions) message.addReaction(reaction).queue();
+						},
+						error ->
+						{
+
 						}
 				);
 	}
@@ -479,6 +483,10 @@ public class EmbedGenerator
 						{
 							if(channel instanceof TextChannel && ((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION))
 								for(String reaction : reactions) message.addReaction(reaction).queue();
+						},
+						error ->
+						{
+
 						}
 				);
 	}
@@ -502,6 +510,10 @@ public class EmbedGenerator
 						{
 							if(channel instanceof TextChannel && ((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_ADD_REACTION))
 								for(String reaction : reactions) message.addReaction(reaction).queue();
+						},
+						error ->
+						{
+
 						}
 				);
 

@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.objects;
+package org.igsq.igsqbot.entities.yaml;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -11,6 +11,7 @@ import org.igsq.igsqbot.util.YamlUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GuildConfig
@@ -42,6 +43,11 @@ public class GuildConfig
 		}
 	}
 
+	public void setVerificationChannel(TextChannel channel)
+	{
+		Yaml.updateField(guildId + ".verificationchannel", "guild", channel.getId());
+	}
+
 	public TextChannel getReportChannel()
 	{
 		if(YamlUtils.isFieldEmpty(guildId + ".reportchannel", "guild"))
@@ -52,6 +58,11 @@ public class GuildConfig
 		{
 			return jda.getTextChannelById(Yaml.getFieldString(guildId + ".reportchannel", "guild"));
 		}
+	}
+
+	public void setReportChannel(TextChannel channel)
+	{
+		Yaml.updateField(guildId + ".reportchannel", "guild", channel.getId());
 	}
 
 	public TextChannel getWelcomeChannel()
@@ -66,6 +77,11 @@ public class GuildConfig
 		}
 	}
 
+	public void setWelcomeChannel(TextChannel channel)
+	{
+		Yaml.updateField(guildId + ".welcomechannel", "guild", channel.getId());
+	}
+
 	public TextChannel getLogChannel()
 	{
 		if(YamlUtils.isFieldEmpty(guildId + ".textlog", "guild"))
@@ -78,7 +94,12 @@ public class GuildConfig
 		}
 	}
 
-	public TextChannel getVoidLogChannel()
+	public void setLogChannel(TextChannel channel)
+	{
+		Yaml.updateField(guildId + ".textlog", "guild", channel.getId());
+	}
+
+	public TextChannel getVoiceLogChannel()
 	{
 		if(YamlUtils.isFieldEmpty(guildId + ".voicelog", "guild"))
 		{
@@ -90,6 +111,11 @@ public class GuildConfig
 		}
 	}
 
+	public void setVoiceLogChannel(TextChannel channel)
+	{
+		Yaml.updateField(guildId + ".voicelog", "guild", channel.getId());
+	}
+
 	public List<Role> getServerJoinRoles()
 	{
 		if(YamlUtils.isFieldEmpty(guildId + ".serverjoinroles", "guild"))
@@ -98,8 +124,15 @@ public class GuildConfig
 		}
 		else
 		{
-			return Arrays.stream(Yaml.getFieldString(guildId + ".serverjoinroles", "guild").split(" ")).map(jda::getRoleById).collect(Collectors.toList());
+			return Arrays.stream(Yaml.getFieldString(guildId + ".serverjoinroles", "guild").split(" ")).map(jda::getRoleById).filter(Objects::nonNull).collect(Collectors.toList());
 		}
+	}
+
+	public void setServerJoinRoles(List<Role> roles)
+	{
+		StringBuilder roleString = new StringBuilder();
+		roles.forEach(role -> roleString.append(role.getId()).append(" "));
+		Yaml.updateField(guildId + ".serverjoinroles", "guild", roleString.toString());
 	}
 
 	public Role getVerifiedRole()
@@ -112,6 +145,11 @@ public class GuildConfig
 		{
 			return jda.getRoleById(Yaml.getFieldString(guildId + ".verifiedrole", "guild"));
 		}
+
+	}
+	public void setVerifiedRole(Role role)
+	{
+		Yaml.updateField(guildId + ".verifiedrole", "guild", role.getId());
 	}
 
 	public String getGuildPrefix()

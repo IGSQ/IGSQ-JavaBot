@@ -24,7 +24,6 @@ public class YamlUtils
 		{
 			String onFile = Yaml.getFieldString(path, filename);
 
-			onFile = onFile.strip();
 			while(onFile.startsWith(delimiter))
 			{
 				onFile = onFile.substring(0, 1);
