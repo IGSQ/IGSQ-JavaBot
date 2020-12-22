@@ -65,12 +65,6 @@
              <artifactId>expiringmap</artifactId>
              <version>0.5.9</version>
         </dependency>
-
-         <dependency>
-             <groupId>org.apache.groovy</groupId>
-             <artifactId>groovy-jsr223</artifactId>
-             <version>4.0.0-alpha-2</version>
-         </dependency>
     </dependencies>
 
     <build>

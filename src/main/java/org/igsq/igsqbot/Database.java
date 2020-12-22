@@ -14,9 +14,10 @@ public class Database
 	private static String user;
 	private static String password;
 	private static boolean isOnline;
+
 	private Database()
 	{
-
+		//Overrides the default, public, constructor
 	}
 
 	public static void startDatabase()

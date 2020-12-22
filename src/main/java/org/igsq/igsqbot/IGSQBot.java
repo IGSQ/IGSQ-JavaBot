@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class IGSQBot
 {
-	public static final LocalDateTime START_TIMESTAMP = LocalDateTime.now();
+	private static final LocalDateTime START_TIMESTAMP = LocalDateTime.now();
 	private static final Logger LOGGER = LoggerFactory.getLogger(IGSQBot.class);
 	private static JDA jda;
 
@@ -56,5 +56,10 @@ public class IGSQBot
 	public static JDA getJDA()
 	{
 		return jda;
+	}
+
+	public static LocalDateTime getStartTimestamp()
+	{
+		return START_TIMESTAMP;
 	}
 }

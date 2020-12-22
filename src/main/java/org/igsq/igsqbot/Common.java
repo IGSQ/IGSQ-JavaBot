@@ -10,6 +10,6 @@ public class Common
 
 	private Common()
 	{
-		//Overrides the default, public constructor
+		//Overrides the default, public, constructor
 	}
 }
