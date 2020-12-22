@@ -51,6 +51,7 @@ public class IGSQBot
 			LOGGER.info("Account:         " + jda.getSelfUser().getAsTag() + " / " + jda.getSelfUser().getId());
 			LOGGER.info("JDA Version:     " + JDAInfo.VERSION);
 			LOGGER.info("IGSQBot Version: " + Constants.VERSION);
+			LOGGER.info("Java Version:    " + System.getProperty("java.version"));
 
 
 
