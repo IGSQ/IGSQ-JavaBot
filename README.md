@@ -26,7 +26,8 @@
  - [x] GUIGenerator further implementation (use callbacks / catch exceptions)
  - [x] Catch 2FA DMs
  - [x] Change CooldownHandler to use Strings vs Longs
- - [x] ReactionRoles - to add: ReactionRole object with yaml
+ - [x] ReactionRoles
+ - [x] Setters for GuildConfig
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
