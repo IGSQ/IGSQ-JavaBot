@@ -6,7 +6,6 @@
 **Features that are still to be implemented**
 
 ### **COMPLETED**
- - [x] Verification Rewrite (to be reviewed)
  - [x] Per guild prefixing
  - [x] Project Refactor
  - [x] Move from Arrays to ArrayLists and Deprecate ArrayUtils#append / ArrayUtils#depend
