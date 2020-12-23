@@ -3,6 +3,8 @@ package org.igsq.igsqbot.util;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.yaml.Filename;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,5 +58,20 @@ public class CommandUtils
 	public static boolean isArgsEmbedCompatible(List<String> args)
 	{
 		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList()).size() > EmbedUtils.CHARACTER_LIMIT;
+	}
+
+	public static LocalTime parseTime(String arg)
+	{
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
+		LocalTime time;
+		try
+		{
+			time = LocalTime.parse(arg, dateTimeFormatter);
+		}
+		catch(Exception exception)
+		{
+			return null;
+		}
+		return time;
 	}
 }

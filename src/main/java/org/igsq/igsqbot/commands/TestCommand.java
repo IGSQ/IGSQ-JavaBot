@@ -16,7 +16,6 @@ public class TestCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-
-		//Placeholder
+		//PLACEHOLDER
 	}
 }

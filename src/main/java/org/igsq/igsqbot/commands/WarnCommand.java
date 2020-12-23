@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.yaml.Punishment;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
@@ -79,64 +80,35 @@ public class WarnCommand extends Command
 
 	private void addWarning(Member member, MessageChannel channel, String reason)
 	{
-		Yaml.updateField(
-				member.getGuild().getId() + "." + member.getId() + ".warnings",
-				Filename.PUNISHMENT,
-
-				YamlUtils.getFieldAppended(
-						member.getGuild().getId() + "." + member.getId() + ".warnings",
-						Filename.PUNISHMENT,
-						"\n",
-						reason + " - " + StringUtils.getTimestamp()));
+		Punishment punishment = new Punishment(member);
+		punishment.addWarning(reason);
 		EmbedUtils.sendSuccess(channel, "Warned " + member.getAsMention() + " for reason: " + reason);
 	}
 
 	private void showWarning(Member member, MessageChannel channel)
 	{
 		EmbedGenerator embed = new EmbedGenerator(channel);
-		StringBuilder embedText = new StringBuilder();
-		int currentWarning = 1;
-		for(String selectedWarning : getWarnings(member))
-		{
-			embedText.append(currentWarning).append(": ").append(selectedWarning).append("\n");
-			currentWarning ++;
-		}
+		Punishment punishment = new Punishment(member);
+		String embedText = punishment.compileWarnings();
 
 		embed
 			.title("Warnings for " + member.getUser().getAsTag())
-			.text(embedText.length() == 0 ? "This user has no warnings" : embedText.toString())
+			.text(embedText.length() == 0 ? "This user has no warnings" : embedText)
 			.color(Constants.IGSQ_PURPLE)
 			.send();
 	}
 
 	private void removeWarning(Member member, MessageChannel channel, int number)
 	{
-		List<String> warnings = getWarnings(member);
-		number--;
-		if(number < 0 || number > warnings.size())
+		Punishment punishment = new Punishment(member);
+		String removedWarning = punishment.removeWarning(--number);
+		if(removedWarning != null)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
-			return;
-		}
-		if(warnings.get(number) != null)
-		{
-			String removedWarning = warnings.remove(number);
-			Yaml.updateField(member.getGuild().getId() + "." + member.getId() + ".warnings",
-					Filename.PUNISHMENT,
-					ArrayUtils.arrayCompile(warnings, "\n"));
 			EmbedUtils.sendSuccess(channel, "Removed warning: " + removedWarning + " from user " + member.getAsMention());
-		}
-	}
-
-	private List<String> getWarnings(Member member)
-	{
-		if(YamlUtils.isFieldEmpty(member.getGuild().getId() + "." + member.getId() + ".warnings", Filename.PUNISHMENT))
-		{
-			return new ArrayList<>();
 		}
 		else
 		{
-			return new ArrayList<>(Arrays.asList(Yaml.getFieldString(member.getGuild().getId() + "." + member.getId() + ".warnings", Filename.PUNISHMENT).split("\n")));
+			EmbedUtils.sendSyntaxError(channel, this);
 		}
 	}
 }
