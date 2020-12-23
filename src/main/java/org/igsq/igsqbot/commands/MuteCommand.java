@@ -7,11 +7,8 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -21,7 +18,6 @@ public class MuteCommand extends Command
 	{
 		super("Mute", new String[]{"mute"}, "Mutes the specified user.", "[user][duration]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
 	}
-	private static final Logger LOGGER = LoggerFactory.getLogger(MuteCommand.class);
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -33,28 +29,16 @@ public class MuteCommand extends Command
 		else
 		{
 			Member member = ctx.getMessage().getMentionedMembers().get(0);
-			LocalTime time = CommandUtils.parseTime(args.get(1));
-			LocalTime now = LocalTime.now();
+			LocalDateTime muteTime = CommandUtils.parseTime(args.get(1));
 
-			if(time == null)
+			if(muteTime == null)
 			{
-				EmbedUtils.sendError(channel, "Invalid time entered.");
+				EmbedUtils.sendError(channel, "Invalid time entered, specify the time as: EXAMPLE HERE");
 			}
 			else
 			{
-				Duration duration = Duration.between(now, time);
-
-				if(duration.isNegative())
-				{
-					EmbedUtils.sendError(channel, "Enter a time in the future.");
-				}
-				if(duration.toHours() > 20)
-				{
-					EmbedUtils.sendError(channel, "Maximum duration exceeded.");
-				}
+				EmbedUtils.sendSuccess(channel, "Member " + member.getAsMention() + " muted until " + muteTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 			}
-
-
 		}
 	}
 }

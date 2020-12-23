@@ -3,6 +3,7 @@ package org.igsq.igsqbot.util;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.yaml.Filename;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -60,18 +61,29 @@ public class CommandUtils
 		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList()).size() > EmbedUtils.CHARACTER_LIMIT;
 	}
 
-	public static LocalTime parseTime(String arg)
+	public static LocalDateTime parseTime(String arg)
 	{
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
-		LocalTime time;
-		try
-		{
-			time = LocalTime.parse(arg, dateTimeFormatter);
-		}
-		catch(Exception exception)
+		if(arg.length() > 3 || !arg.matches("([0-9][0-9][mhdMHD])"))
 		{
 			return null;
 		}
-		return time;
+
+		String unit = arg.substring(arg.length() - 1);
+		String quantity = arg.substring(0, arg.length() - 1);
+		LocalDateTime result = LocalDateTime.now();
+
+		switch(unit.toLowerCase())
+		{
+			case "m":
+				result = result.plusMinutes(Long.parseLong(quantity));
+				break;
+			case "h":
+				result = result.plusHours(Long.parseLong(quantity));
+				break;
+			case "d":
+				result = result.plusDays(Long.parseLong(quantity));
+				break;
+		}
+		return result;
 	}
 }
