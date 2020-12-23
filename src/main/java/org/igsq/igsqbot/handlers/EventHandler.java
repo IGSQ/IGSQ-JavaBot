@@ -4,10 +4,7 @@ import net.dv8tion.jda.api.hooks.InterfacedEventManager;
 import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Report;
 import org.igsq.igsqbot.events.logging.*;
-import org.igsq.igsqbot.events.main.MessageDeleteEvent_Main;
-import org.igsq.igsqbot.events.main.MessageReactionAddEvent_Main;
-import org.igsq.igsqbot.events.main.MessageReactionRemoveEvent_Main;
-import org.igsq.igsqbot.events.main.MessageReceivedEvent_Main;
+import org.igsq.igsqbot.events.main.*;
 
 public class EventHandler
 {
@@ -23,12 +20,15 @@ public class EventHandler
 		return eventManager;
 	}
 
-	public static void setEvents()
+	public static void registerEvents()
 	{
 		eventManager.register(new MessageReactionAddEvent_Main());
 		eventManager.register(new MessageDeleteEvent_Main());
 		eventManager.register(new MessageReceivedEvent_Main());
 		eventManager.register(new MessageReactionRemoveEvent_Main());
+
+		eventManager.register(new GuildLeaveEvent_Main());
+		eventManager.register(new UnavailableGuildLeaveEvent_Main());
 
 		eventManager.register(new MessageReactionAddEvent_Help());
 		eventManager.register(new MessageReactionAddEvent_Report());

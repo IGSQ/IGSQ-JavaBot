@@ -47,7 +47,7 @@ public class TwoFAMinecraft
 
 						channel.sendMessage(embed.getBuilder().build()).queue(
 								message ->
-								{
+								{ //TODO: Maybe optimise this
 									Database.updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 
 									TaskHandler.addTask(() ->

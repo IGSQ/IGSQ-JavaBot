@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.EventHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.minecraft.MainMinecraft;
@@ -24,12 +25,12 @@ public class IGSQBot
 	public static void main(String[] args)
 	{
 		Yaml.createFiles();
-		Yaml.loadFile("@all");
+		Yaml.loadFile(Filename.ALL);
 		Yaml.applyDefault();
 
 		try
 		{
-			jda = JDABuilder.createDefault(Yaml.getFieldString("bot.token", "config"))
+			jda = JDABuilder.createDefault(Yaml.getFieldString("bot.token", Filename.CONFIG))
 					.enableIntents(GatewayIntent.GUILD_MEMBERS)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
 
@@ -39,12 +40,12 @@ public class IGSQBot
 
 			TaskHandler.addRepeatingTask(() ->
 			{
-				Yaml.saveFileChanges("@all");
-				Yaml.loadFile("@all");
+				Yaml.saveFileChanges(Filename.ALL);
+				Yaml.loadFile(Filename.ALL);
 			}, "yamlReload", TimeUnit.SECONDS, 30);
 
 			Database.startDatabase();
-			EventHandler.setEvents();
+			EventHandler.registerEvents();
 			MainMinecraft.startMinecraft(jda);
 
 			LOGGER.info("IGSQBot started!");

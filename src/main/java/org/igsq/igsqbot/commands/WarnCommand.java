@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
@@ -80,11 +81,11 @@ public class WarnCommand extends Command
 	{
 		Yaml.updateField(
 				member.getGuild().getId() + "." + member.getId() + ".warnings",
-				"punishment",
+				Filename.PUNISHMENT,
 
 				YamlUtils.getFieldAppended(
 						member.getGuild().getId() + "." + member.getId() + ".warnings",
-						"punishment",
+						Filename.PUNISHMENT,
 						"\n",
 						reason + " - " + StringUtils.getTimestamp()));
 		EmbedUtils.sendSuccess(channel, "Warned " + member.getAsMention() + " for reason: " + reason);
@@ -121,7 +122,7 @@ public class WarnCommand extends Command
 		{
 			String removedWarning = warnings.remove(number);
 			Yaml.updateField(member.getGuild().getId() + "." + member.getId() + ".warnings",
-					"punishment",
+					Filename.PUNISHMENT,
 					ArrayUtils.arrayCompile(warnings, "\n"));
 			EmbedUtils.sendSuccess(channel, "Removed warning: " + removedWarning + " from user " + member.getAsMention());
 		}
@@ -129,13 +130,13 @@ public class WarnCommand extends Command
 
 	private List<String> getWarnings(Member member)
 	{
-		if(YamlUtils.isFieldEmpty(member.getGuild().getId() + "." + member.getId() + ".warnings", "punishment"))
+		if(YamlUtils.isFieldEmpty(member.getGuild().getId() + "." + member.getId() + ".warnings", Filename.PUNISHMENT))
 		{
 			return new ArrayList<>();
 		}
 		else
 		{
-			return new ArrayList<>(Arrays.asList(Yaml.getFieldString(member.getGuild().getId() + "." + member.getId() + ".warnings", "punishment").split("\n")));
+			return new ArrayList<>(Arrays.asList(Yaml.getFieldString(member.getGuild().getId() + "." + member.getId() + ".warnings", Filename.PUNISHMENT).split("\n")));
 		}
 	}
 }

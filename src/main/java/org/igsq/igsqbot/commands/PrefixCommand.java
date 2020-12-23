@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;
@@ -47,8 +48,11 @@ public class PrefixCommand extends Command
 		}
 		else
 		{
-			config.setGuildPrefix(args.get(0));
-			EmbedUtils.sendSuccess(channel, "My new prefix is `" + args.get(0) + "`");
+			if(!ArrayUtils.isValueInArray(new String[]{" "}, args.get(0)))
+			{
+				config.setGuildPrefix(args.get(0));
+				EmbedUtils.sendSuccess(channel, "My new prefix is `" + args.get(0) + "`");
+			}
 		}
 	}
 }

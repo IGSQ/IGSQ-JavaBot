@@ -7,7 +7,9 @@ import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.util.ArrayUtils;
@@ -28,7 +30,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 			if(cache.isInCache(event.getMessage()))
 			{
 				final Message newMessage = event.getMessage();
-				final Message oldMessage = cache.get(event.getMessageId());
+				final CachedMessage oldMessage = cache.get(event.getMessageId());
 				final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
 				final MessageChannel channel = event.getChannel();
 				final String oldContent = oldMessage.getContentRaw();
@@ -43,9 +45,9 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 				if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 				if(oldContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 
-				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", Filename.GUILD))
 				{
-					if(ArrayUtils.isValueInArray(Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","), channel.getId()))
+					if(ArrayUtils.isValueInArray(Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", Filename.GUILD).split(","), channel.getId()))
 					{
 						return;
 					}
@@ -65,7 +67,7 @@ public class MessageUpdateEvent_Logging extends ListenerAdapter
 							.footer("Logged on: " + StringUtils.getTimestamp())
 							.send();
 				}
-				cache.update(oldMessage, newMessage);
+				cache.update(oldMessage, new CachedMessage(newMessage));
 			}
 		}
 	}

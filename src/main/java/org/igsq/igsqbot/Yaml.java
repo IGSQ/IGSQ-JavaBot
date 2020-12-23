@@ -1,5 +1,6 @@
 package org.igsq.igsqbot;
 
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
@@ -10,12 +11,12 @@ import java.io.File;
 public class Yaml
 {
 	/**
-	 * filenames is a String array of all of the fileNames to be created into {@link java.io.File}
+	 * filenames is a String array of all of the FILE_NAMES to be created into {@link java.io.File}
 	 *
 	 * @apiNote Used in {@link #createFiles()} to instantiate the filenames.
 	 * @see java.io.File
 	 */
-	private static final String[] fileNames = {"config", "internal", "guild", "verification", "minecraft", "punishment"};
+	private static final Filename[] FILE_NAMES = Filename.values();
 	/**
 	 * files is a {@link java.io.File File} array of all of the files that can be used.
 	 *
@@ -35,7 +36,7 @@ public class Yaml
 	}
 
 	/**
-	 * Creates all the files if they don't already exist. Creates instance of all files in {@link #fileNames}
+	 * Creates all the files if they don't already exist. Creates instance of all files in {@link #FILE_NAMES}
 	 *
 	 * @apiNote also creates default {@link #configurations}
 	 * @see java.io.File
@@ -50,11 +51,11 @@ public class Yaml
 			{
 				folder.mkdir();
 			}
-			files = new File[fileNames.length];
-			configurations = new YamlConfiguration[fileNames.length];
-			for(int i = 0; i < fileNames.length; i++)
+			files = new File[FILE_NAMES.length];
+			configurations = new YamlConfiguration[FILE_NAMES.length];
+			for(int i = 0; i < FILE_NAMES.length; i++)
 			{
-				files[i] = new File(folder, fileNames[i] + ".yml");
+				files[i] = new File(folder, FILE_NAMES[i] + ".yml");
 				files[i].createNewFile();
 			}
 		}
@@ -65,11 +66,11 @@ public class Yaml
 
 	}
 
-	public static void addFieldDefault(String path, String fileName, Object data)
+	public static void addFieldDefault(String path, Filename fileName, Object data)
 	{
-		for(int i = 0; i < fileNames.length; i++)
+		for(int i = 0; i < FILE_NAMES.length; i++)
 		{
-			if(fileNames[i].equalsIgnoreCase(fileName))
+			if(FILE_NAMES[i].equals(fileName))
 			{
 				configurations[i].addDefault(path, data);
 				break;
@@ -77,11 +78,11 @@ public class Yaml
 		}
 	}
 
-	public static String getFieldString(String path, String fileName)
+	public static String getFieldString(String path, Filename fileName)
 	{
-		for(int i = 0; i < fileNames.length; i++)
+		for(int i = 0; i < FILE_NAMES.length; i++)
 		{
-			if(fileNames[i].equalsIgnoreCase(fileName))
+			if(FILE_NAMES[i].equals(fileName))
 			{
 				return configurations[i].getString(path);
 			}
@@ -89,11 +90,11 @@ public class Yaml
 		return "";
 	}
 
-	public static Boolean getFieldBool(String path, String fileName)
+	public static Boolean getFieldBool(String path, Filename fileName)
 	{
-		for(int i = 0; i < fileNames.length; i++)
+		for(int i = 0; i < FILE_NAMES.length; i++)
 		{
-			if(fileNames[i].equalsIgnoreCase(fileName))
+			if(FILE_NAMES[i].equals(fileName))
 			{
 				return configurations[i].getBoolean(path);
 			}
@@ -101,11 +102,11 @@ public class Yaml
 		return false;
 	}
 
-	public static int getFieldInt(String path, String fileName)
+	public static int getFieldInt(String path, Filename fileName)
 	{
-		for(int i = 0; i < fileNames.length; i++)
+		for(int i = 0; i < FILE_NAMES.length; i++)
 		{
-			if(fileNames[i].equalsIgnoreCase(fileName))
+			if(FILE_NAMES[i].equals(fileName))
 			{
 				return configurations[i].getInt(path);
 			}
@@ -113,11 +114,11 @@ public class Yaml
 		return -1;
 	}
 
-	public static void updateField(String path, String fileName, Object data)
+	public static void updateField(String path, Filename fileName, Object data)
 	{
-		for(int i = 0; i < fileNames.length; i++)
+		for(int i = 0; i < FILE_NAMES.length; i++)
 		{
-			if(fileNames[i].equalsIgnoreCase(fileName))
+			if(FILE_NAMES[i].equals(fileName))
 			{
 				configurations[i].set(path, data);
 				break;
@@ -125,18 +126,18 @@ public class Yaml
 		}
 	}
 
-	public static void loadFile(String fileName)
+	public static void loadFile(Filename fileName)
 	{
 		try
 		{
-			for(int i = 0; i < fileNames.length; i++)
+			for(int i = 0; i < FILE_NAMES.length; i++)
 			{
-				if(fileName.equalsIgnoreCase("@all"))
+				if(fileName.equals(Filename.ALL))
 				{
 					configurations[i] = new YamlConfiguration();
 					configurations[i].load(files[i]);
 				}
-				else if(fileNames[i].equalsIgnoreCase(fileName))
+				else if(FILE_NAMES[i].equals(fileName))
 				{
 					configurations[i] = new YamlConfiguration();
 					configurations[i].load(files[i]);
@@ -150,17 +151,17 @@ public class Yaml
 		}
 	}
 
-	public static void saveFileChanges(String fileName)
+	public static void saveFileChanges(Filename fileName)
 	{
 		try
 		{
-			for(int i = 0; i < fileNames.length; i++)
+			for(int i = 0; i < FILE_NAMES.length; i++)
 			{
-				if(fileName.equalsIgnoreCase("@all"))
+				if(fileName.equals(Filename.ALL))
 				{
 					configurations[i].save(files[i]);
 				}
-				else if(fileNames[i].equalsIgnoreCase(fileName))
+				else if(FILE_NAMES[i].equals(fileName))
 				{
 					configurations[i].save(files[i]);
 					break;
@@ -173,16 +174,16 @@ public class Yaml
 		}
 	}
 
-	public static void disregardAndCloseFile(String fileName)
+	public static void disregardAndCloseFile(Filename fileName)
 	{
-		for(int i = 0; i < fileNames.length; i++)
+		for(int i = 0; i < FILE_NAMES.length; i++)
 		{
-			if(fileName.equalsIgnoreCase("@all"))
+			if(fileName.equals(Filename.ALL))
 			{
 				configurations[i] = null;
 				files[i] = null;
 			}
-			else if(fileNames[i].equalsIgnoreCase(fileName))
+			else if(FILE_NAMES[i].equals(fileName))
 			{
 				configurations[i] = null;
 				files[i] = null;
@@ -193,40 +194,40 @@ public class Yaml
 
 	public static void applyDefault()
 	{
-		addFieldDefault("mysql", "config", true);
-		addFieldDefault("mysql.username", "config", "username");
-		addFieldDefault("mysql.password", "config", "password");
-		addFieldDefault("mysql.database", "config", "jdbc:mysql://localhost:3306/database?useSSL=false");
+		addFieldDefault("mysql", Filename.CONFIG, true);
+		addFieldDefault("mysql.username", Filename.CONFIG, "username");
+		addFieldDefault("mysql.password", Filename.CONFIG, "password");
+		addFieldDefault("mysql.database", Filename.CONFIG, "jdbc:mysql://localhost:3306/database?useSSL=false");
 
-		addFieldDefault("bot.token", "config", "token");
-		addFieldDefault("bot.server", "config", "");
-		addFieldDefault("bot.error", "config", "");
+		addFieldDefault("bot.token", Filename.CONFIG, "token");
+		addFieldDefault("bot.server", Filename.CONFIG, "");
+		addFieldDefault("bot.error", Filename.CONFIG, "");
 
-		addFieldDefault("ranks.default", "minecraft", "");
+		addFieldDefault("ranks.default", Filename.MINECRAFT , "");
 
-		addFieldDefault("ranks.rising", "minecraft", "");
-		addFieldDefault("ranks.flying", "minecraft", "");
-		addFieldDefault("ranks.soaring", "minecraft", "");
+		addFieldDefault("ranks.rising", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.flying", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.soaring", Filename.MINECRAFT, "");
 
-		addFieldDefault("ranks.epic", "minecraft", "");
-		addFieldDefault("ranks.epic2", "minecraft", "");
-		addFieldDefault("ranks.epic3", "minecraft", "");
+		addFieldDefault("ranks.epic", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.epic2", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.epic3", Filename.MINECRAFT, "");
 
-		addFieldDefault("ranks.elite", "minecraft", "");
-		addFieldDefault("ranks.elite2", "minecraft", "");
-		addFieldDefault("ranks.elite3", "minecraft", "");
+		addFieldDefault("ranks.elite", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.elite2", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.elite3", Filename.MINECRAFT, "");
 
-		addFieldDefault("ranks.mod", "minecraft", "");
-		addFieldDefault("ranks.mod2", "minecraft", "");
-		addFieldDefault("ranks.mod3", "minecraft", "");
+		addFieldDefault("ranks.mod", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.mod2", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.mod3", Filename.MINECRAFT, "");
 
-		addFieldDefault("ranks.council", "minecraft", "");
+		addFieldDefault("ranks.council", Filename.MINECRAFT, "");
 
-		addFieldDefault("ranks.birthday", "minecraft", "");
-		addFieldDefault("ranks.nitroboost", "minecraft", "");
-		addFieldDefault("ranks.founder", "minecraft", "");
-		addFieldDefault("ranks.retired", "minecraft", "");
-		addFieldDefault("ranks.developer", "minecraft", "");
+		addFieldDefault("ranks.birthday", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.nitroboost", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.founder", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.retired", Filename.MINECRAFT, "");
+		addFieldDefault("ranks.developer", Filename.MINECRAFT, "");
 
 		for(FileConfiguration configuration : configurations) configuration.options().copyDefaults(true);
 	}

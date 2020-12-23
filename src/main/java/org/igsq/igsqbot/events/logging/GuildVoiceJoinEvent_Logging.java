@@ -24,7 +24,7 @@ public class GuildVoiceJoinEvent_Logging extends ListenerAdapter
 
 		if(logChannel != null)
 		{
-			new EmbedGenerator((MessageChannel) logChannel)
+			new EmbedGenerator(logChannel)
 					.title("Member Joined VC")
 					.text("**Member**: " + member.getAsMention() + "\n" +
 							"**Channel**: " + channel.getName())

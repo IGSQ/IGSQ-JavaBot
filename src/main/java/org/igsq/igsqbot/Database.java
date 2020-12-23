@@ -1,5 +1,6 @@
 package org.igsq.igsqbot;
 
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,9 @@ public class Database
 
 	public static void startDatabase()
 	{
-		url = Yaml.getFieldString("mysql.database", "config");
-		user = Yaml.getFieldString("mysql.username", "config");
-		password = Yaml.getFieldString("mysql.password", "config");
+		url = Yaml.getFieldString("mysql.database", Filename.CONFIG);
+		user = Yaml.getFieldString("mysql.username", Filename.CONFIG);
+		password = Yaml.getFieldString("mysql.password", Filename.CONFIG);
 		if(testDatabase())
 		{
 			isOnline = true;
@@ -109,12 +110,17 @@ public class Database
 		}
 	}
 
-	public static Boolean testDatabase()
+	public static boolean testDatabase()
 	{
 		try
 		{
 			Connection connection = DriverManager.getConnection(url, user, password);
 			Statement commandAdapter = connection.createStatement();
+			commandAdapter.execute("SELECT * FROM discord_2fa");
+			commandAdapter.execute("SELECT * FROM discord_accounts");
+			commandAdapter.execute("SELECT * FROM linked_accounts");
+			commandAdapter.execute("SELECT * FROM mc_accounts");
+
 			commandAdapter.executeUpdate("CREATE TABLE IF NOT EXISTS test_database(number int PRIMARY KEY AUTO_INCREMENT,test VARCHAR(36));");
 			commandAdapter.executeUpdate("DROP TABLE test_database;");
 			connection.close();
@@ -124,5 +130,10 @@ public class Database
 		{
 			return false;
 		}
+	}
+
+	public static boolean isOnline()
+	{
+		return isOnline;
 	}
 }

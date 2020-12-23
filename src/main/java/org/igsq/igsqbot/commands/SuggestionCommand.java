@@ -10,6 +10,7 @@ import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -37,7 +38,7 @@ public class SuggestionCommand extends Command
 			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
-		final TextChannel suggestionChannel = guild.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", "guild"));
+		final TextChannel suggestionChannel = guild.getTextChannelById(Yaml.getFieldString(guild.getId() + ".suggestionchannel", Filename.GUILD));
 		if(suggestionChannel != null)
 		{
 			if(!UserUtils.basicPermCheck(guild.getSelfMember(), suggestionChannel))

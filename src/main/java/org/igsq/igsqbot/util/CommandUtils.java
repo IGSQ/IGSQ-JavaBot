@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.yaml.Filename;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,12 +19,12 @@ public class CommandUtils
 	{
 		int i = 0;
 		Map<String, String> result = new HashMap<>();
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", Filename.VERIFICATION))
 		{
-			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
+			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
 			{
-				String role = Yaml.getFieldString(id + ".references." + i + ".id", "verification");
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", "verification").split(","))
+				String role = Yaml.getFieldString(id + ".references." + i + ".id", Filename.VERIFICATION);
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", Filename.VERIFICATION).split(","))
 				{
 					result.putIfAbsent(selectedAlias, role);
 				}
@@ -37,12 +38,12 @@ public class CommandUtils
 	{
 		int i = 0;
 		Map<String, String> result = new HashMap<>();
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", "verification"))
+		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", Filename.VERIFICATION))
 		{
-			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
+			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
 			{
-				String role = Yaml.getFieldString(id + ".references." + i + ".id", "verification");
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","))
+				String role = Yaml.getFieldString(id + ".references." + i + ".id", Filename.VERIFICATION);
+				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", Filename.VERIFICATION).split(","))
 				{
 					result.putIfAbsent(selectedAlias, role);
 				}
@@ -50,110 +51,6 @@ public class CommandUtils
 			i++;
 		}
 		return result;
-	}
-
-	public static void insertAlias(String id, String role, String alias)
-	{
-		int i = 0;
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
-		{
-			if((Yaml.getFieldString(id + ".references." + i + ".id", "verification").equals(role)))
-			{
-				if(YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !ArrayUtils.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
-				{
-					if(YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", "verification"))
-					{
-						Yaml.updateField(id + ".references." + i + ".aliases", "verification", alias);
-					}
-					else
-					{
-						Yaml.updateField(id + ".references." + i + ".aliases", "verification", Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") + "," + alias);
-					}
-					return;
-				}
-			}
-			i++;
-		}
-		Yaml.updateField(id + ".references." + i + ".aliases", "verification", alias);
-		Yaml.updateField(id + ".references." + i + ".id", "verification", role);
-		Yaml.updateField(id + ".references." + i + ".name", "verification", alias);
-	}
-
-	public static void insertDecline(String id, String role, String alias)
-	{
-		int i = 0;
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".id", "verification"))
-		{
-			if((Yaml.getFieldString(id + ".references." + i + ".id", "verification").equals(role)))
-			{
-				if(YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification") || !ArrayUtils.isValueInArray(Yaml.getFieldString(id + ".references." + i + ".declined", "verification").split(","), alias))
-				{
-					if(YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", "verification"))
-					{
-						Yaml.updateField(id + ".references." + i + ".declined", "verification", alias);
-					}
-					else
-					{
-						Yaml.updateField(id + ".references." + i + ".declined", "verification", Yaml.getFieldString(id + ".references." + i + ".aliases", "verification") + "," + alias);
-					}
-					return;
-				}
-			}
-			i++;
-		}
-		Yaml.updateField(id + ".references." + i + ".declined", "verification", alias);
-		Yaml.updateField(id + ".references." + i + ".id", "verification", role);
-		Yaml.updateField(id + ".references." + i + ".name", "verification", alias);
-	}
-
-	public static boolean removeAlias(String guild, String role, String alias)
-	{
-		int i = 0;
-		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
-		{
-			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
-			{
-				String[] aliases = Yaml.getFieldString(guild + ".references." + i + ".aliases", "verification").split(",");
-				StringBuilder dependedAliases = new StringBuilder();
-				for(String selectedAlias : aliases)
-				{
-					if(!selectedAlias.equals(alias))
-					{
-						dependedAliases.append(",").append(selectedAlias);
-					}
-				}
-
-				Yaml.updateField(guild + ".references." + i + ".aliases", "verification", dependedAliases.toString());
-				return true;
-			}
-			i++;
-		}
-		return false;
-	}
-
-	public static boolean removeDecline(String guild, String role, String alias)
-	{
-		int i = 0;
-		while(!YamlUtils.isFieldEmpty(guild + ".references." + i + ".id", "verification"))
-		{
-			if((Yaml.getFieldString(guild + ".references." + i + ".id", "verification").equals(role)))
-			{
-				String[] aliases = Yaml.getFieldString(guild + ".references." + i + ".declined", "verification").split(",");
-				StringBuilder dependedAliases = new StringBuilder();
-				for(String selectedAlias : aliases)
-				{
-					if(!selectedAlias.equals(alias))
-					{
-						dependedAliases.append(",").append(selectedAlias);
-					}
-				}
-
-				Yaml.updateField(guild + ".references." + i + ".declined", "verification", dependedAliases.toString());
-				return true;
-			}
-			i++;
-		}
-		return false;
 	}
 
 	public static boolean isArgsEmbedCompatible(List<String> args)

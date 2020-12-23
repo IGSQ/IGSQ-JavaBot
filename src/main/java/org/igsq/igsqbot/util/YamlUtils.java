@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.yaml.Filename;
 
 public class YamlUtils
 {
@@ -9,12 +10,12 @@ public class YamlUtils
 		//Overrides the default, public constructor
 	}
 
-	public static boolean isFieldEmpty(String path, String filename)
+	public static boolean isFieldEmpty(String path, Filename filename)
 	{
 		return Yaml.getFieldString(path, filename) == null || Yaml.getFieldString(path, filename).isEmpty();
 	}
 
-	public static String getFieldAppended(String path, String filename, String delimiter, Object data)
+	public static String getFieldAppended(String path, Filename filename, String delimiter, Object data)
 	{
 		if(isFieldEmpty(path, filename))
 		{
@@ -40,7 +41,7 @@ public class YamlUtils
 		}
 	}
 
-	public static void clearField(String path, String filename)
+	public static void clearField(String path, Filename filename)
 	{
 		Yaml.updateField(path, filename, null);
 	}

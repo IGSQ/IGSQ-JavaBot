@@ -2,6 +2,7 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.entities.yaml.Blacklist;
@@ -41,8 +42,8 @@ public class ShutdownCommand extends Command
 
 		ctx.getJDA().shutdown();
 
-		Yaml.saveFileChanges("@all");
-		Yaml.disregardAndCloseFile("@all");
+		Yaml.saveFileChanges(Filename.ALL);
+		Yaml.disregardAndCloseFile(Filename.ALL);
 
 		LOGGER.warn("\nIGSQBot was shutdown using shutdown command.\n    " +
 				"-- Issued by: " + ctx.getAuthor().getAsTag() + "\n    " +

@@ -26,24 +26,24 @@ public class ReactionRole
 
 	public void setReaction(String emoji, String roleId)
 	{
-		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, "guild", YamlUtils.getFieldAppended(guildId + ".reactionroles." + channelId + "." + messageId, "guild", " ", roleId + "/" + emoji));
+		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD, YamlUtils.getFieldAppended(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD, " ", roleId + "/" + emoji));
 	}
 
 	public void setReaction(Emote emote, String roleId)
 	{
-		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, "guild", YamlUtils.getFieldAppended(guildId + ".reactionroles." + channelId + "." + messageId, "guild", " ", roleId + "/" + emote.getId()));
+		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD, YamlUtils.getFieldAppended(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD, " ", roleId + "/" + emote.getId()));
 	}
 
 	public List<String> getReaction(String roleId)
 	{
 		List<String> result = new ArrayList<>();
-		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, "guild"))
+		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD))
 		{
 			return result;
 		}
 		else
 		{
-			Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, "guild").split(" "))
+			Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD).split(" "))
 					.filter(roleId::contains)
 					.map(role -> role.split("/")[1])
 					.forEach(result::add);
@@ -54,13 +54,13 @@ public class ReactionRole
 	public List<Role> getRoles(String emoteId, Guild guild)
 	{
 		List<Role> result = new ArrayList<>();
-		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, "guild"))
+		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD))
 		{
 			return result;
 		}
 		else
 		{
-			Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, "guild").split(" "))
+			Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD).split(" "))
 					.filter(pair -> pair.contains(emoteId))
 					.map(pair -> pair.split("/")[0])
 					.map(guild::getRoleById)
@@ -73,29 +73,29 @@ public class ReactionRole
 	public void removeReaction(String emoji, String roleId)
 	{
 		StringBuilder dependedString = new StringBuilder();
-		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, "guild").split(" "))
+		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD).split(" "))
 				.filter(pair -> !pair.matches(roleId + "/" + emoji))
 				.forEach(dependedString::append);
-		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, "guild", dependedString.toString());
+		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD, dependedString.toString());
 	}
 
 	public void removeReaction(Emote emote, String roleId)
 	{
 		StringBuilder dependedString = new StringBuilder();
-		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, "guild").split(" "))
+		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD).split(" "))
 				.filter(pair -> !pair.matches(roleId + "/" + emote.getId()))
 				.forEach(dependedString::append);
-		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, "guild", dependedString.toString());
+		Yaml.updateField(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD, dependedString.toString());
 	}
 
 	public boolean isEmojiMapped(String emoji)
 	{
-		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, "guild"))
+		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD))
 		{
 			return false;
 		}
 		List<String> matches = new ArrayList<>();
-		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, "guild").split(" "))
+		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD).split(" "))
 				.map(pair -> pair.split("/")[1])
 				.filter(emoji::matches)
 				.forEach(matches::add);
@@ -105,13 +105,13 @@ public class ReactionRole
 
 	public boolean isEmoteMapped(Emote emote)
 	{
-		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, "guild"))
+		if(YamlUtils.isFieldEmpty(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD))
 		{
 			return false;
 		}
 
 		List<String> matches = new ArrayList<>();
-		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, "guild").split(" "))
+		Arrays.stream(Yaml.getFieldString(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD).split(" "))
 				.map(pair -> pair.split("/")[1])
 				.filter(emote.getId()::matches)
 				.forEach(matches::add);

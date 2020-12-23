@@ -3,6 +3,7 @@ package org.igsq.igsqbot.events.main;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.entities.EventWaiter;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
@@ -17,7 +18,7 @@ public class MessageReceivedEvent_Main extends ListenerAdapter
 		{
 			if(!event.getMessage().getContentRaw().startsWith(new GuildConfig(event.getGuild(), event.getJDA()).getGuildPrefix()))
 			{
-				MessageCache.getCache(event.getGuild()).set(event.getMessage());
+				MessageCache.getCache(event.getGuild()).set(new CachedMessage(event.getMessage()));
 			}
 		}
 		CommandHandler.handle(event);

@@ -1,13 +1,14 @@
 package org.igsq.igsqbot.events.logging;
 
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.util.StringUtils;
@@ -26,7 +27,7 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 
 			if(cache.isInCache(event.getMessageId()))
 			{
-				final Message message = cache.get(event.getMessageId());
+				final CachedMessage message = cache.get(event.getMessageId());
 				final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
 				final MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
@@ -38,9 +39,9 @@ public class MessageDeleteEvent_Logging extends ListenerAdapter
 				if(message.getAuthor().isBot()) return;
 				if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
 
-				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", Filename.GUILD))
 				{
-					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
+					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", Filename.GUILD).split(","))
 					{
 						if(selectedChannel.equals(channel.getId()))
 						{

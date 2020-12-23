@@ -15,7 +15,7 @@ public class MessageCache
 {
 	private static final Map<String, MessageCache> MESSAGE_CACHES = new ConcurrentHashMap<>();
 
-	private final Map<String, Message> cachedMessages;
+	private final Map<String, CachedMessage> cachedMessages;
 	private final String guildId;
 
 	public MessageCache(String guildId)
@@ -51,7 +51,7 @@ public class MessageCache
 		return newCache;
 	}
 
-	public void set(Message message)
+	public void set(CachedMessage message)
 	{
 		if(cachedMessages.size() >= 1000)
 		{
@@ -60,9 +60,9 @@ public class MessageCache
 		cachedMessages.putIfAbsent(message.getId(), message);
 	}
 
-	public void set(List<Message> messages)
+	public void set(List<CachedMessage> messages)
 	{
-		for(Message selectedMessage : messages)
+		for(CachedMessage selectedMessage : messages)
 		{
 			if(cachedMessages.size() >= 1000)
 			{
@@ -72,9 +72,9 @@ public class MessageCache
 		}
 	}
 
-	public Message get(String messageId)
+	public CachedMessage get(String messageId)
 	{
-		for(Map.Entry<String, Message> entry : cachedMessages.entrySet())
+		for(Map.Entry<String, CachedMessage> entry : cachedMessages.entrySet())
 		{
 			if(entry.getKey().equals(messageId))
 			{
@@ -87,6 +87,11 @@ public class MessageCache
 	public void remove(String messageId)
 	{
 		cachedMessages.remove(messageId);
+	}
+
+	public void remove(CachedMessage message)
+	{
+		cachedMessages.remove(message.getId());
 	}
 
 	public void remove(Message message)
@@ -109,13 +114,13 @@ public class MessageCache
 		return cachedMessages.containsKey(message.getId());
 	}
 
-	public void update(Message oldMessage, Message newMessage)
+	public void update(CachedMessage oldMessage, CachedMessage newMessage)
 	{
 		cachedMessages.remove(oldMessage.getId());
 		set(newMessage);
 	}
 
-	public void update(String oldMessageID, Message newMessage)
+	public void update(String oldMessageID, CachedMessage newMessage)
 	{
 		cachedMessages.remove(oldMessageID);
 		set(newMessage);
@@ -126,7 +131,7 @@ public class MessageCache
 		return guildId;
 	}
 
-	public Map<String, Message> getCachedMessages()
+	public Map<String, CachedMessage> getCachedMessages()
 	{
 		return cachedMessages;
 	}

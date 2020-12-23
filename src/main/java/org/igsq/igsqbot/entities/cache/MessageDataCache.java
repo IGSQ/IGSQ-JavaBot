@@ -7,8 +7,10 @@ import net.dv8tion.jda.api.entities.User;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 
+import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -63,15 +65,15 @@ public class MessageDataCache
 
 	public MessageType getType()
 	{
-		if(Yaml.getFieldBool(messageId + ".report.enabled", "internal"))
+		if(Yaml.getFieldBool(messageId + ".report.enabled", Filename.INTERNAL))
 		{
 			type = MessageType.REPORT;
 		}
-		else if(Yaml.getFieldBool(messageId + ".help.enabled", "internal"))
+		else if(Yaml.getFieldBool(messageId + ".help.enabled", Filename.INTERNAL))
 		{
 			type = MessageType.HELP;
 		}
-		else if(Yaml.getFieldBool(messageId + ".modhelp.enabled", "internal"))
+		else if(Yaml.getFieldBool(messageId + ".modhelp.enabled", Filename.INTERNAL))
 		{
 			type = MessageType.MODHELP;
 		}
@@ -88,20 +90,20 @@ public class MessageDataCache
 		{
 			case HELP:
 			{
-				Yaml.updateField(messageId + ".help.enabled", "internal", true);
+				Yaml.updateField(messageId + ".help.enabled", Filename.INTERNAL, true);
 				this.type = MessageType.HELP;
 				break;
 			}
 			case REPORT:
 			{
-				Yaml.updateField(messageId + ".report.enabled", "internal", true);
-				Yaml.updateField(messageId + ".report.enabled", "internal", true);
+				Yaml.updateField(messageId + ".report.enabled", Filename.INTERNAL, true);
+				Yaml.updateField(messageId + ".report.enabled", Filename.INTERNAL, true);
 				this.type = MessageType.REPORT;
 				break;
 			}
 			case MODHELP:
 			{
-				Yaml.updateField(messageId + ".modhelp.enabled", "internal", true);
+				Yaml.updateField(messageId + ".modhelp.enabled", Filename.INTERNAL, true);
 				this.type = MessageType.MODHELP;
 				break;
 			}
@@ -118,18 +120,18 @@ public class MessageDataCache
 		{
 			case HELP:
 			{
-				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".help.user", "internal")));
+				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".help.user", Filename.INTERNAL)));
 				break;
 			}
 			case REPORT:
 			{
-				result.put("reporteduser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reporteduser", "internal")));
-				result.put("reportinguser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reportinguser", "internal")));
+				result.put("reporteduser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reporteduser", Filename.INTERNAL)));
+				result.put("reportinguser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reportinguser", Filename.INTERNAL)));
 				break;
 			}
 			case MODHELP:
 			{
-				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".modhelp.user", "internal")));
+				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL)));
 				break;
 			}
 			default:
@@ -147,18 +149,18 @@ public class MessageDataCache
 		{
 			case HELP:
 			{
-				result.put("user", Yaml.getFieldString(messageId + ".help.user", "internal"));
+				result.put("user", Yaml.getFieldString(messageId + ".help.user", Filename.INTERNAL));
 				break;
 			}
 			case REPORT:
 			{
-				result.put("reporteduser", Yaml.getFieldString(messageId + ".report.reporteduser", "internal"));
-				result.put("reportinguser", Yaml.getFieldString(messageId + ".report.reportinguser", "internal"));
+				result.put("reporteduser", Yaml.getFieldString(messageId + ".report.reporteduser", Filename.INTERNAL));
+				result.put("reportinguser", Yaml.getFieldString(messageId + ".report.reportinguser", Filename.INTERNAL));
 				break;
 			}
 			case MODHELP:
 			{
-				result.put("user", Yaml.getFieldString(messageId + ".modhelp.user", "internal"));
+				result.put("user", Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL));
 				break;
 			}
 			default:
@@ -175,18 +177,18 @@ public class MessageDataCache
 		{
 			case HELP:
 			{
-				Yaml.updateField(messageId + ".help.user", "internal", userIds.get("user"));
+				Yaml.updateField(messageId + ".help.user", Filename.INTERNAL, userIds.get("user"));
 				break;
 			}
 			case REPORT:
 			{
-				Yaml.updateField(messageId + ".report.reporteduser", "internal", userIds.get("reporteduser"));
-				Yaml.updateField(messageId + ".report.reportinguser", "internal", userIds.get("reportinguser"));
+				Yaml.updateField(messageId + ".report.reporteduser", Filename.INTERNAL, userIds.get("reporteduser"));
+				Yaml.updateField(messageId + ".report.reportinguser", Filename.INTERNAL, userIds.get("reportinguser"));
 				break;
 			}
 			case MODHELP:
 			{
-				Yaml.updateField(messageId + ".modhelp.user", "internal", userIds.get("user"));
+				Yaml.updateField(messageId + ".modhelp.user", Filename.INTERNAL, userIds.get("user"));
 				break;
 			}
 			default:
@@ -202,18 +204,18 @@ public class MessageDataCache
 		{
 			case HELP:
 			{
-				result.put("user", guild.getMemberById(Yaml.getFieldString(messageId + ".help.user", "internal")));
+				result.put("user", guild.getMemberById(Yaml.getFieldString(messageId + ".help.user", Filename.INTERNAL)));
 				break;
 			}
 			case REPORT:
 			{
-				result.put("reporteduser", guild.getMemberById(Yaml.getFieldString(messageId + ".report.reporteduser", "internal")));
-				result.put("reportinguser", guild.getMemberById(Yaml.getFieldString(messageId + ".report.reportinguser", "internal")));
+				result.put("reporteduser", guild.getMemberById(Yaml.getFieldString(messageId + ".report.reporteduser", Filename.INTERNAL)));
+				result.put("reportinguser", guild.getMemberById(Yaml.getFieldString(messageId + ".report.reportinguser", Filename.INTERNAL)));
 				break;
 			}
 			case MODHELP:
 			{
-				result.put("user", guild.getMemberById(Yaml.getFieldString(messageId + ".modhelp.user", "internal")));
+				result.put("user", guild.getMemberById(Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL)));
 				break;
 			}
 			default:
@@ -228,7 +230,7 @@ public class MessageDataCache
 	{
 		if(type.equals(MessageType.HELP))
 		{
-			return Yaml.getFieldInt(messageId + ".help.page", "internal");
+			return Yaml.getFieldInt(messageId + ".help.page", Filename.INTERNAL);
 		}
 		else
 		{
@@ -240,7 +242,7 @@ public class MessageDataCache
 	{
 		if(type.equals(MessageType.HELP))
 		{
-			Yaml.updateField(messageId + ".help.page", "internal", page);
+			Yaml.updateField(messageId + ".help.page", Filename.INTERNAL, page);
 		}
 	}
 
@@ -256,7 +258,7 @@ public class MessageDataCache
 
 	public void remove()
 	{
-		YamlUtils.clearField(messageId, "internal");
+		YamlUtils.clearField(messageId, Filename.INTERNAL);
 		STORED_DATA.remove(messageId);
 	}
 

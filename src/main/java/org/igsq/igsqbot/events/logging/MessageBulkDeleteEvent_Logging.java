@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.cache.CachedMessage;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.util.StringUtils;
@@ -26,7 +28,7 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 		{
 			if(cache.isInCache(selectedMessageID))
 			{
-				Message selectedMessage = cache.get(selectedMessageID);
+				CachedMessage selectedMessage = cache.get(selectedMessageID);
 				String content = selectedMessage.getContentRaw();
 
 				if(StringUtils.isCommand(content, event.getGuild().getId(), event.getJDA()))
@@ -36,9 +38,9 @@ public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
 				if(selectedMessage.getAuthor().isBot()) continue;
 				if(content.length() >= 50) content = content.substring(0, 20) + " **...**";
 
-				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", "guild"))
+				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", Filename.GUILD))
 				{
-					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", "guild").split(","))
+					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", Filename.GUILD).split(","))
 					{
 						if(selectedChannel.equals(channel.getId()))
 						{

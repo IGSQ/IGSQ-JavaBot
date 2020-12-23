@@ -2,9 +2,11 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
@@ -28,14 +30,18 @@ public class LinkCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-
 		this.args = args;
 		this.channel = ctx.getChannel();
 		this.author = ctx.getAuthor();
 
+		Role verifiedRole = new GuildConfig(ctx.getGuild(), ctx.getJDA()).getVerifiedRole();
 		if(args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
+		}
+		else if(verifiedRole != null)
+		{
+			EmbedUtils.sendPermissionError(channel, this);
 		}
 		else
 		{
@@ -162,7 +168,7 @@ public class LinkCommand extends Command
 				}
 				else if(isWaiting)
 				{
-					Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
+					Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';"); //TODO: Maybe optimise this
 					Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
 					EmbedUtils.sendSuccess(channel, "Link confirmed for account: " + username);
 				}

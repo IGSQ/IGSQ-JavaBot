@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.requests.RestAction;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 
 import java.awt.*;
@@ -37,7 +38,7 @@ public class MessageReactionAddEvent_Report extends ListenerAdapter
 					User user= (User) results.get(1);
 					Member member = (Member) results.get(2);
 
-					if(Yaml.getFieldBool(messageID + ".report.enabled", "internal") && !user.isBot())
+					if(Yaml.getFieldBool(messageID + ".report.enabled", Filename.INTERNAL) && !user.isBot())
 					{
 						final MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
 
@@ -49,7 +50,7 @@ public class MessageReactionAddEvent_Report extends ListenerAdapter
 							if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && member.canInteract(reportedMember))
 							{
 								new EmbedGenerator(embed).footer("This was dealt with by " + user.getAsTag()).color(Color.GREEN).replace(message, true);
-								YamlUtils.clearField(messageID + ".report", "internal");
+								YamlUtils.clearField(messageID + ".report", Filename.INTERNAL);
 							}
 							else
 							{

@@ -29,6 +29,16 @@
  - [x] ReactionRoles
  - [x] Setters for GuildConfig
  - [x] Emote constants, success, failure
+ - [x] Check verified role in LinkCommand
+ - [x] Class#wipe for config classes - removes all config options
+ - [x] Remove raw Database calls (Marked with TODO)
+ - [x] Add Database#isOnline
+ - [x] Catch empty bot.server option in SyncMinecraft
+ - [x] Use MessageChannel where possible - only remaining on in CommandHandler (Required)
+ - [x] Custom message class (also added user class)
+ - [x] OnGuildRemove removing guild config (+ unavailableGuild)
+ - [x] Filename Enum
+ - [x] Check required tables in testDatabase
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
@@ -37,18 +47,9 @@
 
 ### **arynxd**
  - [ ] Finish verification
- - [ ] Remove raw Database calls
- - [ ] Use MessageChannel where possible
 
- - [ ] Check verified role in LinkCommand
- - [ ] Check required tables in testDatabase
- - [ ] Catch empty bot.server option in syncminecraft
- - [ ] Add Database#isOnline
- - [ ] Custom message class
- 
- - [ ] OnGuildRemove removing guild config
  - [ ] Redo Channel / Role / User parsing
- - [ ] Class#wipe for config classes - removes all config options
+ - [ ] ReactionRole#clear for a message
  
  - [ ] Invite command
  - [ ] Info command
@@ -62,6 +63,7 @@
  - [ ] XP system
  - [ ] Implement slash commands when they release
  - [ ] Attempt to make my own ExpiringMap
+ - [ ] Complex args parser
 
 
 ## Known Issues

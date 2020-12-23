@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,19 +26,19 @@ public class ErrorHandler
 
 	private void reportError()
 	{
-		if(YamlUtils.isFieldEmpty("bot.error", "config"))
+		if(YamlUtils.isFieldEmpty("bot.error", Filename.CONFIG))
 		{
 			LOGGER.error("An exception occurred.", exception);
 		}
 		else
 		{
-			GuildChannel errorChannel = IGSQBot.getJDA().getGuildChannelById(Yaml.getFieldString("bot.error", "config"));
+			MessageChannel errorChannel = IGSQBot.getJDA().getTextChannelById(Yaml.getFieldString("bot.error", Filename.CONFIG));//TODO: Make this a method
 			if(errorChannel == null)
 			{
 				LOGGER.error("An exception occurred.", exception);
 				return;
 			}
-			EmbedGenerator embed = new EmbedGenerator((MessageChannel) errorChannel)
+			EmbedGenerator embed = new EmbedGenerator(errorChannel)
 					.color(Color.RED)
 					.title("Unhandled Exception");
 

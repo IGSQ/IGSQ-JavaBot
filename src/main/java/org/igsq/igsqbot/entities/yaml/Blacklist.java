@@ -36,11 +36,11 @@ public class Blacklist
 	{
 		if(isFirstEntry())
 		{
-			Yaml.updateField(name + ".blacklist", "internal", data);
+			Yaml.updateField(name + ".blacklist", Filename.INTERNAL, data);
 		}
 		else
 		{
-			Yaml.updateField(name + ".blacklist", "internal", data + delimiter);
+			Yaml.updateField(name + ".blacklist", Filename.INTERNAL, data + delimiter);
 		}
 		return this;
 	}
@@ -49,7 +49,7 @@ public class Blacklist
 	{
 		List<String> onFile = get();
 		onFile.remove(data);
-		Yaml.updateField(name + ".blacklist", "internal", ArrayUtils.arrayCompile(onFile, delimiter));
+		Yaml.updateField(name + ".blacklist", Filename.INTERNAL, ArrayUtils.arrayCompile(onFile, delimiter));
 		return this;
 	}
 
@@ -57,17 +57,17 @@ public class Blacklist
 	{
 		List<String> onFile = get();
 		onFile.remove(position);
-		Yaml.updateField(name + ".blacklist", "internal", ArrayUtils.arrayCompile(onFile, delimiter));
+		Yaml.updateField(name + ".blacklist", Filename.INTERNAL, ArrayUtils.arrayCompile(onFile, delimiter));
 		return this;
 	}
 
 	public List<String> get()
 	{
-		return Arrays.asList(Yaml.getFieldString(name + ".blacklist", "internal").split(delimiter));
+		return Arrays.asList(Yaml.getFieldString(name + ".blacklist", Filename.INTERNAL).split(delimiter));
 	}
 	private boolean isFirstEntry()
 	{
-		return YamlUtils.isFieldEmpty(name + ".blacklist", "internal");
+		return YamlUtils.isFieldEmpty(name + ".blacklist", Filename.INTERNAL);
 	}
 
 	private UUID getName()
@@ -85,6 +85,6 @@ public class Blacklist
 
 	public static void close()
 	{
-		BLACKLIST_MAP.keySet().forEach(uuid -> YamlUtils.clearField(uuid + ".blacklist", "internal"));
+		BLACKLIST_MAP.keySet().forEach(uuid -> YamlUtils.clearField(uuid + ".blacklist", Filename.INTERNAL));
 	}
 }

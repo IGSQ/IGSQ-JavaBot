@@ -10,11 +10,13 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -441,7 +443,7 @@ public class EmbedGenerator
 	 */
 	public void replace(Message activeMessage)
 	{
-		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal")) return;
+		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", Filename.INTERNAL)) return;
 		if(embed.isEmpty()) return;
 		if(channel instanceof TextChannel && !((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE))
 			return;
@@ -473,7 +475,7 @@ public class EmbedGenerator
 			replace(activeMessage);
 			return;
 		}
-		Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
+		Yaml.updateField(activeMessage.getId() + ".changepending", Filename.INTERNAL, false);
 		if(embed.isEmpty()) return;
 		if(channel instanceof TextChannel && !((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE))
 			return;
@@ -500,7 +502,7 @@ public class EmbedGenerator
 	 */
 	public void replace(Message activeMessage, long delay, MessageEmbed oldEmbed)
 	{
-		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal")) return;
+		if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", Filename.INTERNAL)) return;
 		if(embed.isEmpty()) return;
 		if(channel instanceof TextChannel && !((TextChannel) channel).getGuild().getSelfMember().hasPermission(Permission.MESSAGE_WRITE))
 			return;
@@ -517,10 +519,10 @@ public class EmbedGenerator
 						}
 				);
 
-		Yaml.updateField(activeMessage.getId() + ".changepending", "internal", true);
+		Yaml.updateField(activeMessage.getId() + ".changepending", Filename.INTERNAL, true);
 		TaskHandler.addTask(() ->
 		{
-			if(oldEmbed.equals(activeMessage.getEmbeds().get(0)) && Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
+			if(oldEmbed.equals(activeMessage.getEmbeds().get(0)) && Yaml.getFieldBool(activeMessage.getId() + ".changepending", Filename.INTERNAL))
 			{
 				activeMessage.editMessage(oldEmbed).queue();
 			}
@@ -528,9 +530,9 @@ public class EmbedGenerator
 
 		TaskHandler.addTask(() ->
 		{
-			if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", "internal"))
+			if(Yaml.getFieldBool(activeMessage.getId() + ".changepending", Filename.INTERNAL))
 			{
-				Yaml.updateField(activeMessage.getId() + ".changepending", "internal", false);
+				Yaml.updateField(activeMessage.getId() + ".changepending", Filename.INTERNAL, false);
 			}
 		}, TimeUnit.MILLISECONDS, delay);
 	}
