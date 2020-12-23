@@ -63,7 +63,7 @@ public class CommandUtils
 
 	public static LocalDateTime parseTime(String arg)
 	{
-		if(arg.length() > 3 || !arg.matches("([0-9][0-9][mhdMHD])"))
+		if(arg.length() > 3 || arg.isEmpty() || !arg.matches("([0-9][mhdMHD]|[0-9][0-9][mhdMHD])"))
 		{
 			return null;
 		}

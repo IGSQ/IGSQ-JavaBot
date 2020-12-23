@@ -4,8 +4,13 @@ import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Yaml
@@ -16,7 +21,11 @@ public class Yaml
 	 * @apiNote Used in {@link #createFiles()} to instantiate the filenames.
 	 * @see java.io.File
 	 */
-	private static final Filename[] FILE_NAMES = Filename.values();
+	private static final List<Filename> FILE_NAMES = Arrays.stream(Filename.values()).collect(Collectors.toList());
+	static
+	{
+		FILE_NAMES.remove(Filename.ALL);
+	}
 	/**
 	 * files is a {@link java.io.File File} array of all of the files that can be used.
 	 *
@@ -34,6 +43,7 @@ public class Yaml
 	{
 		// To override the default, public, constructor
 	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(Yaml.class);
 
 	/**
 	 * Creates all the files if they don't already exist. Creates instance of all files in {@link #FILE_NAMES}
@@ -51,11 +61,11 @@ public class Yaml
 			{
 				folder.mkdir();
 			}
-			files = new File[FILE_NAMES.length];
-			configurations = new YamlConfiguration[FILE_NAMES.length];
-			for(int i = 0; i < FILE_NAMES.length; i++)
+			files = new File[FILE_NAMES.size()];
+			configurations = new YamlConfiguration[FILE_NAMES.size()];
+			for(int i = 0; i < FILE_NAMES.size(); i++)
 			{
-				files[i] = new File(folder, FILE_NAMES[i] + ".yml");
+				files[i] = new File(folder, FILE_NAMES.get(i) + ".yml");
 				files[i].createNewFile();
 			}
 		}
@@ -68,9 +78,9 @@ public class Yaml
 
 	public static void addFieldDefault(String path, Filename fileName, Object data)
 	{
-		for(int i = 0; i < FILE_NAMES.length; i++)
+		for(int i = 0; i < FILE_NAMES.size(); i++)
 		{
-			if(FILE_NAMES[i].equals(fileName))
+			if(FILE_NAMES.get(i).equals(fileName))
 			{
 				configurations[i].addDefault(path, data);
 				break;
@@ -80,9 +90,9 @@ public class Yaml
 
 	public static String getFieldString(String path, Filename fileName)
 	{
-		for(int i = 0; i < FILE_NAMES.length; i++)
+		for(int i = 0; i < FILE_NAMES.size(); i++)
 		{
-			if(FILE_NAMES[i].equals(fileName))
+			if(FILE_NAMES.get(i).equals(fileName))
 			{
 				return configurations[i].getString(path);
 			}
@@ -92,9 +102,9 @@ public class Yaml
 
 	public static Boolean getFieldBool(String path, Filename fileName)
 	{
-		for(int i = 0; i < FILE_NAMES.length; i++)
+		for(int i = 0; i < FILE_NAMES.size(); i++)
 		{
-			if(FILE_NAMES[i].equals(fileName))
+			if(FILE_NAMES.get(i).equals(fileName))
 			{
 				return configurations[i].getBoolean(path);
 			}
@@ -104,9 +114,9 @@ public class Yaml
 
 	public static int getFieldInt(String path, Filename fileName)
 	{
-		for(int i = 0; i < FILE_NAMES.length; i++)
+		for(int i = 0; i < FILE_NAMES.size(); i++)
 		{
-			if(FILE_NAMES[i].equals(fileName))
+			if(FILE_NAMES.get(i).equals(fileName))
 			{
 				return configurations[i].getInt(path);
 			}
@@ -116,9 +126,9 @@ public class Yaml
 
 	public static void updateField(String path, Filename fileName, Object data)
 	{
-		for(int i = 0; i < FILE_NAMES.length; i++)
+		for(int i = 0; i < FILE_NAMES.size(); i++)
 		{
-			if(FILE_NAMES[i].equals(fileName))
+			if(FILE_NAMES.get(i).equals(fileName))
 			{
 				configurations[i].set(path, data);
 				break;
@@ -130,14 +140,14 @@ public class Yaml
 	{
 		try
 		{
-			for(int i = 0; i < FILE_NAMES.length; i++)
+			for(int i = 0; i < FILE_NAMES.size(); i++)
 			{
 				if(fileName.equals(Filename.ALL))
 				{
 					configurations[i] = new YamlConfiguration();
 					configurations[i].load(files[i]);
 				}
-				else if(FILE_NAMES[i].equals(fileName))
+				else if(FILE_NAMES.get(i).equals(fileName))
 				{
 					configurations[i] = new YamlConfiguration();
 					configurations[i].load(files[i]);
@@ -147,7 +157,7 @@ public class Yaml
 		}
 		catch(Exception exception)
 		{
-			new ErrorHandler(exception);
+			LOGGER.error("An unexpected error occurred.", exception);
 		}
 	}
 
@@ -155,13 +165,13 @@ public class Yaml
 	{
 		try
 		{
-			for(int i = 0; i < FILE_NAMES.length; i++)
+			for(int i = 0; i < FILE_NAMES.size(); i++)
 			{
 				if(fileName.equals(Filename.ALL))
 				{
 					configurations[i].save(files[i]);
 				}
-				else if(FILE_NAMES[i].equals(fileName))
+				else if(FILE_NAMES.get(i).equals(fileName))
 				{
 					configurations[i].save(files[i]);
 					break;
@@ -176,14 +186,14 @@ public class Yaml
 
 	public static void disregardAndCloseFile(Filename fileName)
 	{
-		for(int i = 0; i < FILE_NAMES.length; i++)
+		for(int i = 0; i < FILE_NAMES.size(); i++)
 		{
 			if(fileName.equals(Filename.ALL))
 			{
 				configurations[i] = null;
 				files[i] = null;
 			}
-			else if(FILE_NAMES[i].equals(fileName))
+			else if(FILE_NAMES.get(i).equals(fileName))
 			{
 				configurations[i] = null;
 				files[i] = null;

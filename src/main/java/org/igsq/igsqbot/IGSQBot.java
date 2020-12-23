@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.yaml.Punishment;
 import org.igsq.igsqbot.handlers.EventHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.minecraft.MainMinecraft;
@@ -42,7 +43,10 @@ public class IGSQBot
 			{
 				Yaml.saveFileChanges(Filename.ALL);
 				Yaml.loadFile(Filename.ALL);
+				Punishment.checkMutes(jda);
 			}, "yamlReload", TimeUnit.SECONDS, 30);
+
+			TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(jda), "muteCheck", TimeUnit.MINUTES, 1);
 
 			Database.startDatabase();
 			EventHandler.registerEvents();
