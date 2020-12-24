@@ -11,7 +11,7 @@ import org.igsq.igsqbot.util.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 
-public class GuildMemberRemoveEvent_Logging extends ListenerAdapter
+public class GuildMemberRemove_Logging extends ListenerAdapter
 {
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)

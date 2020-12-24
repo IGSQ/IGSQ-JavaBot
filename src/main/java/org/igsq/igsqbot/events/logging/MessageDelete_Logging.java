@@ -16,7 +16,7 @@ import org.igsq.igsqbot.util.YamlUtils;
 
 import java.time.format.DateTimeFormatter;
 
-public class MessageDeleteEvent_Logging extends ListenerAdapter
+public class MessageDelete_Logging extends ListenerAdapter
 {
 	@Override
 	public void onMessageDelete(MessageDeleteEvent event)

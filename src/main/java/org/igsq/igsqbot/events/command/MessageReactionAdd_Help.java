@@ -14,7 +14,7 @@ import org.igsq.igsqbot.util.ArrayUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageReactionAddEvent_Help extends ListenerAdapter
+public class MessageReactionAdd_Help extends ListenerAdapter
 {
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)

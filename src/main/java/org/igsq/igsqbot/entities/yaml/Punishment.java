@@ -1,7 +1,9 @@
 package org.igsq.igsqbot.entities.yaml;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -88,9 +90,10 @@ public class Punishment
 		return compiledWarnings.toString();
 	}
 
-	public boolean addMute(String epochUntilUnmute)
+	public boolean addMute(String epochUntilUnmute, Guild guild, Member member)
 	{
 		Map<String, String> mutes = new ConcurrentHashMap<>();
+		List<Role> roles = member.getRoles();
 		Arrays.stream(Yaml.getFieldString(guildId + ".mutes", Filename.PUNISHMENT).split(" "))
 				.forEach(pair -> mutes.putIfAbsent(pair.split("/")[0], pair.split("/")[1]));
 
@@ -99,13 +102,44 @@ public class Punishment
 			StringBuilder muteBuilder = new StringBuilder();
 			mutes.put(memberId, epochUntilUnmute);
 			mutes.forEach((id, time) -> muteBuilder.append(id).append("/").append(time).append(" "));
+
 			Yaml.updateField(guildId + ".mutes", Filename.PUNISHMENT, muteBuilder.toString());
+			roles.forEach(role -> guild.removeRoleFromMember(member, role).queue(null, error -> roles.remove(role)));
+			if(storeRoles(roles))
+			{
+				removeRoles(roles, guild, member);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	private boolean storeRoles(List<Role> roles)
+	{
+		if(YamlUtils.isFieldEmpty(guildId + "." + memberId + ".storedroles", Filename.PUNISHMENT))
+		{
+			StringBuilder roleBuilder = new StringBuilder();
+			roles.forEach(role -> roleBuilder.append(role.getId()).append("/"));
+			Yaml.updateField(guildId + "." + memberId + ".storedroles", Filename.PUNISHMENT, roleBuilder.toString());
 			return true;
 		}
 		else
 		{
 			return false;
 		}
+	}
+
+	private void removeRoles(List<Role> roles, Guild guild, Member member)
+	{
+		roles.forEach(role -> guild.removeRoleFromMember(member, role).queue(null, null));
 	}
 
 	public void removeMute()
@@ -120,6 +154,7 @@ public class Punishment
 			mutes.remove(memberId);
 			mutes.forEach((id, time) -> muteBuilder.append(id).append("/").append(time).append(" "));
 			Yaml.updateField(guildId + ".mutes", Filename.PUNISHMENT, muteBuilder.toString());
+			YamlUtils.clearField(guildId + "." + memberId + ".storedroles", Filename.PUNISHMENT);
 		}
 	}
 

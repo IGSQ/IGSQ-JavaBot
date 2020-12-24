@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
@@ -26,6 +27,7 @@ public class MuteCommand extends Command
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
+		final Guild guild = ctx.getGuild();
 
 		if(args.size() != 2 || ctx.getMessage().getMentionedMembers().isEmpty())
 		{
@@ -43,7 +45,7 @@ public class MuteCommand extends Command
 			}
 			else
 			{
-				if(punishment.addMute("" + muteTime.toEpochSecond(OffsetDateTime.now().getOffset())))
+				if(punishment.addMute("" + muteTime.toEpochSecond(OffsetDateTime.now().getOffset()), guild, member))
 				{
 					EmbedUtils.sendSuccess(channel, "Member " + member.getAsMention() + " muted until " + muteTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 				}

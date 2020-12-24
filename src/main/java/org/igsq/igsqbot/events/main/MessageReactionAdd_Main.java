@@ -9,7 +9,7 @@ import org.igsq.igsqbot.entities.yaml.ReactionRole;
 
 import java.util.List;
 
-public class MessageReactionAddEvent_Main extends ListenerAdapter
+public class MessageReactionAdd_Main extends ListenerAdapter
 {
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)

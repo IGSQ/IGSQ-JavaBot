@@ -12,7 +12,7 @@ import org.igsq.igsqbot.util.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 
-public class GuildMemberJoinEvent_Logging extends ListenerAdapter
+public class GuildMemberJoin_Logging extends ListenerAdapter
 {
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event)

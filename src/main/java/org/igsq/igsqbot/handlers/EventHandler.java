@@ -1,8 +1,8 @@
 package org.igsq.igsqbot.handlers;
 
 import net.dv8tion.jda.api.hooks.InterfacedEventManager;
-import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Help;
-import org.igsq.igsqbot.events.command.MessageReactionAddEvent_Report;
+import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
+import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.*;
 import org.igsq.igsqbot.events.main.*;
 
@@ -22,26 +22,26 @@ public class EventHandler
 
 	public static void registerEvents()
 	{
-		eventManager.register(new MessageReactionAddEvent_Main());
-		eventManager.register(new MessageDeleteEvent_Main());
-		eventManager.register(new MessageReceivedEvent_Main());
-		eventManager.register(new MessageReactionRemoveEvent_Main());
+		eventManager.register(new MessageReactionAdd_Main());
+		eventManager.register(new MessageDelete_Main());
+		eventManager.register(new MessageReceived_Main());
+		eventManager.register(new MessageReactionRemove_Main());
 
-		eventManager.register(new GuildLeaveEvent_Main());
-		eventManager.register(new UnavailableGuildLeaveEvent_Main());
+		eventManager.register(new GuildLeave_Main());
+		eventManager.register(new UnavailableGuildLeave_Main());
 
-		eventManager.register(new MessageReactionAddEvent_Help());
-		eventManager.register(new MessageReactionAddEvent_Report());
+		eventManager.register(new MessageReactionAdd_Help());
+		eventManager.register(new MessageReactionAdd_Report());
 
-		eventManager.register(new GuildMemberJoinEvent_Logging());
-		eventManager.register(new GuildMemberRemoveEvent_Logging());
+		eventManager.register(new GuildMemberJoin_Logging());
+		eventManager.register(new GuildMemberRemove_Logging());
 
-		eventManager.register(new GuildVoiceJoinEvent_Logging());
-		eventManager.register(new GuildVoiceLeaveEvent_Logging());
-		eventManager.register(new GuildVoiceMoveEvent_Logging());
+		eventManager.register(new GuildVoiceJoin_Logging());
+		eventManager.register(new GuildVoiceLeave_Logging());
+		eventManager.register(new GuildVoiceMove_Logging());
 
-		eventManager.register(new MessageBulkDeleteEvent_Logging());
-		eventManager.register(new MessageDeleteEvent_Logging());
-		eventManager.register(new MessageUpdateEvent_Logging());
+		eventManager.register(new MessageBulkDelete_Logging());
+		eventManager.register(new MessageDelete_Logging());
+		eventManager.register(new MessageUpdate_Logging());
 	}
 }

@@ -9,7 +9,7 @@ import org.igsq.igsqbot.entities.EventWaiter;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 
-public class MessageReceivedEvent_Main extends ListenerAdapter
+public class MessageReceived_Main extends ListenerAdapter
 {
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event)

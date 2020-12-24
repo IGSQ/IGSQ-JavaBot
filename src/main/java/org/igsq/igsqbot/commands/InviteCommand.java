@@ -8,7 +8,6 @@ import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,7 @@ public class InviteCommand extends Command
 						invites.forEach(invite -> invite.expand().queue(
 								expandedInvite ->
 								{
-									if(!expandedInvite.isTemporary() && expandedInvite.getMaxUses() == 0 && chosenInvite.get() == null)
+									if(expandedInvite.getMaxUses() == 0 && chosenInvite.get() == null)
 									{
 										chosenInvite.set(expandedInvite);
 									}
@@ -50,7 +49,7 @@ public class InviteCommand extends Command
 
 						if(chosenInvite.get() == null)
 						{
-							createInvite(guild).queue(newInvite -> EmbedUtils.sendSuccess(channel, "Created new invite: " + newInvite.getUrl()));
+							EmbedUtils.sendError(channel, "No invites found.");
 						}
 						else
 						{
@@ -60,11 +59,5 @@ public class InviteCommand extends Command
 
 			);
 		}
-	}
-
-	private InviteAction createInvite(Guild guild)
-	{
-		List<GuildChannel> channels = guild.getChannels().stream().filter(channel -> !channel.getType().equals(ChannelType.CATEGORY)).collect(Collectors.toList());
-		return channels.get(0).createInvite().setMaxUses(0).setMaxAge(0);
 	}
 }

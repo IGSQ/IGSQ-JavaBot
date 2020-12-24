@@ -11,7 +11,7 @@ import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.StringUtils;
 
-public class GuildVoiceMoveEvent_Logging extends ListenerAdapter
+public class GuildVoiceMove_Logging extends ListenerAdapter
 {
 	@Override
 	public void onGuildVoiceMove(GuildVoiceMoveEvent event)

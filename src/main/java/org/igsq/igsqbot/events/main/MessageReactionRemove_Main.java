@@ -10,7 +10,7 @@ import org.igsq.igsqbot.entities.yaml.ReactionRole;
 
 import java.util.List;
 
-public class MessageReactionRemoveEvent_Main extends ListenerAdapter
+public class MessageReactionRemove_Main extends ListenerAdapter
 {
 	@Override
 	public void onMessageReactionRemove(MessageReactionRemoveEvent event)

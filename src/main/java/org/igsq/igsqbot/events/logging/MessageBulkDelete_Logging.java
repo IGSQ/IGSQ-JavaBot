@@ -14,7 +14,7 @@ import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
-public class MessageBulkDeleteEvent_Logging extends ListenerAdapter
+public class MessageBulkDelete_Logging extends ListenerAdapter
 {
 	@Override
 	public void onMessageBulkDelete(MessageBulkDeleteEvent event)

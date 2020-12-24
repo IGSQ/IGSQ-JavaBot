@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageReactionAddEvent_Report extends ListenerAdapter
+public class MessageReactionAdd_Report extends ListenerAdapter
 {
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)

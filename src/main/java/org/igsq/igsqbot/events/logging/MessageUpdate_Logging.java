@@ -18,7 +18,7 @@ import org.igsq.igsqbot.util.YamlUtils;
 
 import java.time.format.DateTimeFormatter;
 
-public class MessageUpdateEvent_Logging extends ListenerAdapter
+public class MessageUpdate_Logging extends ListenerAdapter
 {
 	@Override
 	public void onMessageUpdate(MessageUpdateEvent event)

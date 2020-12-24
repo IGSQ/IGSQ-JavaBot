@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 
-public class GuildLeaveEvent_Main extends ListenerAdapter
+public class GuildLeave_Main extends ListenerAdapter
 {
 	@Override
 	public void onGuildLeave(GuildLeaveEvent event)
