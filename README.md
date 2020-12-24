@@ -40,6 +40,7 @@
  - [x] Check required tables in testDatabase
  - [x] Invite command
  - [x] Refactor events to not include 'Event'
+ - [x] Switched to shardmanager
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
