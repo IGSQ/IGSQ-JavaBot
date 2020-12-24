@@ -31,7 +31,6 @@ public class PrefixCommand extends Command
 
 		if(args.isEmpty())
 		{
-
 			new EmbedGenerator(channel)
 					.text("The prefix for me is: " + (config.getGuildPrefix().equals(Constants.DEFAULT_BOT_PREFIX) ? "`.` the default." : "`" + config.getGuildPrefix() + "` custom set."))
 					.color(Constants.IGSQ_PURPLE)
