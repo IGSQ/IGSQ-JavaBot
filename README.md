@@ -53,6 +53,7 @@
  
  - [ ] Info command
  - [ ] Muting
+ - [ ] Refactor events to not include 'Event'
    
  - [ ] PREPARE FOR PR
 
