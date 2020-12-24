@@ -107,9 +107,4 @@ public class StringUtils
 		}
 	}
 
-	public static boolean isCommand(String message, String guildId, JDA jda)
-	{
-		return message.startsWith(new GuildConfig(guildId, jda).getGuildPrefix()) || message.startsWith("<@" + IGSQBot.getJDA().getSelfUser().getId() + ">") || message.startsWith("<@!" + IGSQBot.getJDA().getSelfUser().getId() + ">");
-	}
-
 }

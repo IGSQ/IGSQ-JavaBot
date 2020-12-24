@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -158,9 +159,9 @@ public class Punishment
 		}
 	}
 
-	public static void checkMutes(JDA jda)
+	public static void checkMutes(ShardManager shardManager)
 	{
-		jda.getGuilds().forEach(guild ->
+		shardManager.getGuilds().forEach(guild ->
 		{
 			if(!YamlUtils.isFieldEmpty(guild.getId() + ".mutes", Filename.PUNISHMENT))
 			{

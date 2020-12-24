@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -36,7 +37,7 @@ public class MessageUpdate_Logging extends ListenerAdapter
 				final String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
 
-				if(StringUtils.isCommand(newMessage.getContentRaw(), event.getGuild().getId(), event.getJDA()))
+				if(CommandUtils.isValidCommand(newMessage.getContentRaw(), event.getGuild().getId(), event.getJDA()))
 				{
 					return;
 				}

@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.events.logging;
 
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,6 +10,7 @@ import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.cache.MessageCache;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -31,7 +31,7 @@ public class MessageBulkDelete_Logging extends ListenerAdapter
 				CachedMessage selectedMessage = cache.get(selectedMessageID);
 				String content = selectedMessage.getContentRaw();
 
-				if(StringUtils.isCommand(content, event.getGuild().getId(), event.getJDA()))
+				if(CommandUtils.isValidCommand(content, event.getGuild().getId(), event.getJDA()))
 				{
 					return;
 				}

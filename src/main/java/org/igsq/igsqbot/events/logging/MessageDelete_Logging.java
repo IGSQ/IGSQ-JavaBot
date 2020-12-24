@@ -11,6 +11,7 @@ import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.cache.MessageCache;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -32,7 +33,7 @@ public class MessageDelete_Logging extends ListenerAdapter
 				final MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
 
-				if(StringUtils.isCommand(content, event.getGuild().getId(), event.getJDA()))
+				if(CommandUtils.isValidCommand(content, event.getGuild().getId(), event.getJDA()))
 				{
 					return;
 				}

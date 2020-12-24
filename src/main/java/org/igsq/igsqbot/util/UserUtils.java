@@ -68,7 +68,7 @@ public class UserUtils
 		User user = null;
 		try
 		{
-			user = IGSQBot.getJDA().retrieveUserById(id).complete();
+			user = IGSQBot.getShardManager().retrieveUserById(id).complete();
 		}
 		catch(Exception exception)
 		{

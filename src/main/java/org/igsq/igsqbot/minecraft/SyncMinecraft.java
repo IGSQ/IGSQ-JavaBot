@@ -1,9 +1,9 @@
 package org.igsq.igsqbot.minecraft;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.yaml.Filename;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class SyncMinecraft
 		//Overriding the default, public, constructor
 	}
 
-	public static void startSync(JDA JDA)
+	public static void startSync(ShardManager shardManager)
 	{
 		if(YamlUtils.isFieldEmpty("bot.server", Filename.CONFIG))
 		{
@@ -45,7 +44,7 @@ public class SyncMinecraft
 		}
 		else
 		{
-			guild = JDA.getGuildById(Yaml.getFieldString("bot.server", Filename.CONFIG));
+			guild = shardManager.getGuildById(Yaml.getFieldString("bot.server", Filename.CONFIG));
 			if(guild == null)
 			{
 				TaskHandler.cancelTask("minecraftSync");
