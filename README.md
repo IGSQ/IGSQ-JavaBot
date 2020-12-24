@@ -39,6 +39,7 @@
  - [x] Filename Enum
  - [x] Check required tables in testDatabase
  - [x] Invite command
+ - [x] Refactor events to not include 'Event'
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
@@ -53,7 +54,6 @@
  
  - [ ] Info command
  - [ ] Muting
- - [ ] Refactor events to not include 'Event'
    
  - [ ] PREPARE FOR PR
 
