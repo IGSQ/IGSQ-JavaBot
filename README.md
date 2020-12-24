@@ -38,6 +38,7 @@
  - [x] OnGuildRemove removing guild config (+ unavailableGuild)
  - [x] Filename Enum
  - [x] Check required tables in testDatabase
+ - [x] Invite command
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
@@ -50,7 +51,6 @@
  - [ ] Redo Channel / Role / User parsing
  - [ ] ReactionRole#clear for a message
  
- - [ ] Invite command
  - [ ] Info command
  - [ ] Muting
    
