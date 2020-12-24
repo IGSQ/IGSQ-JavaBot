@@ -1,14 +1,16 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.requests.restaction.InviteAction;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class InviteCommand extends Command
 {
@@ -32,28 +34,37 @@ public class InviteCommand extends Command
 		}
 		else
 		{
-			AtomicBoolean isFound = new AtomicBoolean(false);
 			guild.retrieveInvites().queue(
 					invites ->
 					{
+						AtomicReference<Invite> chosenInvite = new AtomicReference<>();
 						invites.forEach(invite -> invite.expand().queue(
 								expandedInvite ->
 								{
-									if(!expandedInvite.isTemporary() && expandedInvite.getMaxUses() == 0 && !isFound.get())
+									if(!expandedInvite.isTemporary() && expandedInvite.getMaxUses() == 0 && chosenInvite.get() == null)
 									{
-										EmbedUtils.sendSuccess(channel, "Invite found: " + expandedInvite.getUrl());
-										isFound.set(true);
+										chosenInvite.set(expandedInvite);
 									}
 								}
 						));
 
-						if(!isFound.get())
+						if(chosenInvite.get() == null)
 						{
-							EmbedUtils.sendError(channel, "No invites found.");
+							createInvite(guild).queue(newInvite -> EmbedUtils.sendSuccess(channel, "Created new invite: " + newInvite.getUrl()));
+						}
+						else
+						{
+							EmbedUtils.sendSuccess(channel, "Invite found: " + chosenInvite.get().getUrl());
 						}
 					}
 
 			);
 		}
+	}
+
+	private InviteAction createInvite(Guild guild)
+	{
+		List<GuildChannel> channels = guild.getChannels().stream().filter(channel -> !channel.getType().equals(ChannelType.CATEGORY)).collect(Collectors.toList());
+		return channels.get(0).createInvite().setMaxUses(0).setMaxAge(0);
 	}
 }
