@@ -164,9 +164,7 @@ public class Punishment
 				{
 					guild.addRoleToMember(memberId, fetchedRole).queue();
 				}
-
 			});
-
 		}
 	}
 

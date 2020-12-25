@@ -31,7 +31,7 @@ public class UptimeCommand extends Command
 
 		final Duration uptime = Duration.between(IGSQBot.getStartTimestamp(), LocalDateTime.now());
 		new EmbedGenerator(ctx.getChannel())
-				.text("Uptime: " + uptime.toDays() + " days, " + uptime.toHours() + " hours, " + uptime.toSeconds() + " seconds.")
+				.text("Uptime: " + uptime.toDaysPart() + " days, " + uptime.toHoursPart() + " hours, " + uptime.toSecondsPart() + " seconds.")
 				.color(Constants.IGSQ_PURPLE)
 				.footer(StringUtils.getTimestamp())
 				.send();
