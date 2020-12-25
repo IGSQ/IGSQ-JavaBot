@@ -117,13 +117,13 @@ public abstract class CommandHandler
 				return;
 			}
 			else if(!guild.getSelfMember().hasPermission((GuildChannel) channel, cmd.getRequiredPermissions())
-					|| !member.hasPermission((GuildChannel) channel, cmd.getRequiredPermissions()))
+					|| (member != null && !member.hasPermission((GuildChannel) channel, cmd.getRequiredPermissions())))
 			{
 				EmbedUtils.sendPermissionError(channel, cmd);
 				return;
 			}
-			commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
 
+			commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
 		}
 		else
 		{

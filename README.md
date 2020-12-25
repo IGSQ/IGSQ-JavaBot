@@ -41,6 +41,7 @@
  - [x] Invite command
  - [x] Refactor events to not include 'Event'
  - [x] Switched to shardmanager
+ - [x] ReactionRole#clear for a message
 
 ### **TeaEyes**
  - [ ] Help / Modhelp - added functionality, still needs content
@@ -51,12 +52,12 @@
  - [ ] Finish verification
 
  - [ ] Redo Channel / Role / User parsing
- - [ ] ReactionRole#clear for a message
  
  - [ ] Info command
  - [ ] Muting
+ - [ ] YamlUtils#getArray
    
- - [ ] PREPARE FOR PR
+ - [ ] **PREPARE FOR PR**
 
 ### **Future work**
  - [ ] Rewrite the event waiter
@@ -65,6 +66,7 @@
  - [ ] Implement slash commands when they release
  - [ ] Attempt to make my own ExpiringMap
  - [ ] Complex args parser
+ - [ ] Add developer permissions check
 
 
 ## Known Issues

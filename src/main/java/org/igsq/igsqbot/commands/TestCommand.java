@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public class TestCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		//PLACEHOLDER
+		new ErrorHandler(new UnsupportedOperationException("THIS IS A TEST EXCEPTION"));
 	}
 }

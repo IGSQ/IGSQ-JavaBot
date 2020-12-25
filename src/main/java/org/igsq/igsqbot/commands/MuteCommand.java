@@ -21,6 +21,7 @@ public class MuteCommand extends Command
 	{
 		super("Mute", new String[]{"mute"}, "Mutes the specified user.", "[user][duration]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
 	}
+
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{

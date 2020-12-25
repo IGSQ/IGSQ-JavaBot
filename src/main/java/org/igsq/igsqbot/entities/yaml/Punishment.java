@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.entities.yaml;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -9,6 +8,8 @@ import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,9 +96,11 @@ public class Punishment
 	{
 		Map<String, String> mutes = new ConcurrentHashMap<>();
 		List<Role> roles = member.getRoles();
-		Arrays.stream(Yaml.getFieldString(guildId + ".mutes", Filename.PUNISHMENT).split(" "))
-				.forEach(pair -> mutes.putIfAbsent(pair.split("/")[0], pair.split("/")[1]));
-
+		if(!YamlUtils.isFieldEmpty(guildId + ".mutes", Filename.PUNISHMENT))
+		{
+			Arrays.stream(Yaml.getFieldString(guildId + ".mutes", Filename.PUNISHMENT).split(" "))
+					.forEach(pair -> mutes.putIfAbsent(pair.split("/")[0], pair.split("/")[1]));
+		}
 		if(mutes.get(memberId) == null)
 		{
 			StringBuilder muteBuilder = new StringBuilder();
@@ -105,10 +108,10 @@ public class Punishment
 			mutes.forEach((id, time) -> muteBuilder.append(id).append("/").append(time).append(" "));
 
 			Yaml.updateField(guildId + ".mutes", Filename.PUNISHMENT, muteBuilder.toString());
-			roles.forEach(role -> guild.removeRoleFromMember(member, role).queue(null, error -> roles.remove(role)));
 			if(storeRoles(roles))
 			{
-				removeRoles(roles, guild, member);
+				roles.clear();
+				guild.modifyMemberRoles(member, roles).queue();
 				return true;
 			}
 			else
@@ -125,6 +128,7 @@ public class Punishment
 
 	private boolean storeRoles(List<Role> roles)
 	{
+		if(roles.isEmpty()) return false;
 		if(YamlUtils.isFieldEmpty(guildId + "." + memberId + ".storedroles", Filename.PUNISHMENT))
 		{
 			StringBuilder roleBuilder = new StringBuilder();
@@ -138,13 +142,9 @@ public class Punishment
 		}
 	}
 
-	private void removeRoles(List<Role> roles, Guild guild, Member member)
+	public void removeMute(Guild guild)
 	{
-		roles.forEach(role -> guild.removeRoleFromMember(member, role).queue(null, null));
-	}
-
-	public void removeMute()
-	{
+		if(YamlUtils.isFieldEmpty(guildId + ".mutes", Filename.PUNISHMENT)) return;
 		Map<String, String> mutes = new ConcurrentHashMap<>();
 		Arrays.stream(Yaml.getFieldString(guildId + ".mutes", Filename.PUNISHMENT).split(" "))
 				.forEach(pair -> mutes.putIfAbsent(pair.split("/")[0], pair.split("/")[1]));
@@ -156,6 +156,17 @@ public class Punishment
 			mutes.forEach((id, time) -> muteBuilder.append(id).append("/").append(time).append(" "));
 			Yaml.updateField(guildId + ".mutes", Filename.PUNISHMENT, muteBuilder.toString());
 			YamlUtils.clearField(guildId + "." + memberId + ".storedroles", Filename.PUNISHMENT);
+
+			Arrays.stream(Yaml.getFieldString(guildId + "." + memberId + ".storedroles", Filename.PUNISHMENT).split("/")).forEach(role ->
+			{
+				Role fetchedRole = guild.getRoleById(role);
+				if(fetchedRole != null)
+				{
+					guild.addRoleToMember(memberId, fetchedRole).queue();
+				}
+
+			});
+
 		}
 	}
 
@@ -168,9 +179,9 @@ public class Punishment
 				Arrays.stream(Yaml.getFieldString(guild.getId() + ".mutes", Filename.PUNISHMENT).split(" "))
 						.forEach(pair ->
 						{
-							if(Long.parseLong(pair.split("/")[1]) > System.currentTimeMillis())
+							if(Long.parseLong(pair.split("/")[1].strip()) <= System.currentTimeMillis())
 							{
-								new Punishment(pair.split("/")[0], pair.split("/")[1]).removeMute();
+								new Punishment(pair.split("/")[0], guild.getId()).removeMute(guild);
 							}
 						});
 			}

@@ -42,8 +42,8 @@ public class PrefixCommand extends Command
 		}
 		else if(args.get(0).equalsIgnoreCase("reset"))
 		{
-			EmbedUtils.sendSuccess(channel, "Reset my prefix to `.`");
-			config.setGuildPrefix(".");
+			EmbedUtils.sendSuccess(channel, "Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
+			config.setGuildPrefix(Constants.DEFAULT_BOT_PREFIX);
 		}
 		else
 		{

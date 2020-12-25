@@ -77,10 +77,9 @@ public class IGSQBot
 					}
 				});
 
-			TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(shardManager), "muteCheck", TimeUnit.MINUTES, 1);
-			MainMinecraft.startMinecraft(shardManager);
 			Database.startDatabase();
-
+			TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(shardManager), "muteCheck", TimeUnit.SECONDS, 30);
+			MainMinecraft.startMinecraft(shardManager);
 
 			LOGGER.info("IGSQBot started!");
 			LOGGER.info("Account:         " + SelfUser.getAsTag() + " / " + SelfUser.getId());

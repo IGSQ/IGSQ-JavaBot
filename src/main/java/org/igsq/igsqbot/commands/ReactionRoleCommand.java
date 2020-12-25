@@ -14,7 +14,7 @@ public class ReactionRoleCommand extends Command
 {
 	public ReactionRoleCommand()
 	{
-		super("ReactionRole", new String[]{"reactionrole", "reactionroles", "rr"}, "Controls reactionroles.", "[add|remove][messageID][channel][role][reaction]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
+		super("ReactionRole", new String[]{"reactionrole", "reactionroles", "rr"}, "Controls reactionroles.", "[add|remove|clear][messageID][channel][role][reaction]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
 	}
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
@@ -101,6 +101,11 @@ public class ReactionRoleCommand extends Command
 								{
 									EmbedUtils.sendError(channel, "That emote / emoji is already mapped to a role.");
 								}
+								break;
+							case "clear":
+								rr.clear();
+								reactionMessage.clearReactions().queue(success -> EmbedUtils.sendSuccess(channel, "Removed all reactionroles."), error -> EmbedUtils.sendError(channel, "An error occurred while removing the reaction role."));
+
 								break;
 							default:
 								EmbedUtils.sendSyntaxError(channel, this);

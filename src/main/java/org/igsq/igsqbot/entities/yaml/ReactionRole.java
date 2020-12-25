@@ -15,7 +15,6 @@ public class ReactionRole
 	private final String guildId;
 	private final String channelId;
 	private final String messageId;
-	private static final Logger LOGGER = LoggerFactory.getLogger(ReactionRole.class);
 
 	public ReactionRole(String guildId, String channelId, String messageId)
 	{
@@ -117,6 +116,11 @@ public class ReactionRole
 				.forEach(matches::add);
 
 		return !matches.isEmpty();
+	}
+
+	public void clear()
+	{
+		YamlUtils.clearField(guildId + ".reactionroles." + channelId + "." + messageId, Filename.GUILD);
 	}
 
 	public String getMessageId()
