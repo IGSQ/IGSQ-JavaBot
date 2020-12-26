@@ -57,6 +57,7 @@
  - [ ] Info command
  - [ ] Muting
  - [ ] YamlUtils#getArray
+ - [ ] config.yml wrapper 
    
  - [ ] **PREPARE FOR PR**
 
