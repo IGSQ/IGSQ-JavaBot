@@ -70,6 +70,7 @@ public class IGSQBot
 					try
 					{
 						shard.awaitReady();
+						LOGGER.info("Shard " + shard.getShardInfo().getShardId() + " has loaded.");
 					}
 					catch(Exception exception)
 					{

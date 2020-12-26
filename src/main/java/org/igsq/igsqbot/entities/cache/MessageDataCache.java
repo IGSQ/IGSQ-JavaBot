@@ -3,6 +3,7 @@ package org.igsq.igsqbot.entities.cache;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
@@ -217,6 +218,48 @@ public class MessageDataCache
 			{
 			}
 		}
+	}
+
+	public void setRoles(Map<String, String> roles)
+	{
+		switch(type)
+		{
+			case HELP:
+			case REPORT:
+			case MODHELP:
+			{
+				break;
+			}
+			case VERIFICATION:
+				Yaml.updateField(messageId + ".verification.guessedroles", Filename.INTERNAL, roles.get("guess"));
+				Yaml.updateField(messageId + ".verification.matchedroles", Filename.INTERNAL, roles.get("match"));
+				break;
+			default:
+			{
+			}
+		}
+	}
+
+	public Map<String, Role> getRoles(Guild guild)
+	{
+		Map<String, Role> result = new ConcurrentHashMap<>();
+		switch(type)
+		{
+			case HELP:
+			case MODHELP:
+			case REPORT:
+			{
+				break;
+			}
+			case VERIFICATION:
+
+				break;
+			default:
+			{
+				return result;
+			}
+		}
+		return result;
 	}
 
 	public Map<String, Member> getMembers(Guild guild)

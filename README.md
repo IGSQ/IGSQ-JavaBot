@@ -56,6 +56,7 @@ None
  - [ ] Muting
  - [ ] YamlUtils#getArray
  - [ ] config.yml wrapper 
+ - [ ] Throw unsuportedoperation if datacache is used before type setting
    
  - [ ] **PREPARE FOR PR**
 

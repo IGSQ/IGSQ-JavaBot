@@ -45,51 +45,13 @@ public class PingCommand extends Command
 		}
 
 		CooldownHandler.addCooldown(author.getId(), this);
-		EmbedGenerator embed = new EmbedGenerator(channel)
-				.color(Constants.IGSQ_PURPLE)
-				.title("Pong!")
-				.footer(StringUtils.getTimestamp());
 
 		jda.getRestPing().queue(
-				time ->
-				{
-					embed.text("**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms");
-					channel.sendMessage(embed.getBuilder().build()).queue(
-							message ->
-									new EmbedGenerator().text(
-											"**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms"
-													+ "\n\n**REST Average**: " + getAverageREST(jda) + "ms")
-
-											.color(Constants.IGSQ_PURPLE)
-											.title("Pong!")
-											.footer(StringUtils.getTimestamp())
-											.replace(message));
-				}
+				time -> new EmbedGenerator(channel).title("Pong!")
+								.color(Constants.IGSQ_PURPLE)
+								.footer(StringUtils.getTimestamp())
+								.text("**Shard ID**: " + jda.getShardInfo().getShardId() + "\n**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
+								.send()
 		);
-	}
-
-	private String getAverageREST(JDA jda)
-	{
-		AtomicLong averagePing = new AtomicLong();
-
-		ScheduledFuture<?> retrieveTask = TaskHandler.addRepeatingTask(() -> jda.getRestPing().queueAfter(5, TimeUnit.SECONDS, averagePing::addAndGet), TimeUnit.SECONDS, 30);
-		ScheduledFuture<?> stopTask = TaskHandler.addTask(() -> retrieveTask.cancel(false), TimeUnit.SECONDS, 30);
-
-		try
-		{
-			while(!stopTask.isDone())
-			{
-				synchronized(this)
-				{
-					wait(100);
-				}
-			}
-			return "" + averagePing.get();
-		}
-		catch(Exception exception)
-		{
-			new ErrorHandler(exception);
-			return "An error occurred while collecting the averages.";
-		}
 	}
 }
