@@ -44,9 +44,7 @@
  - [x] ReactionRole#clear for a message
 
 ### **TeaEyes**
- - [ ] Help / Modhelp - added functionality, still needs content
- - [ ] Implement .help to use the COMMANDS array for its information
- - [ ] Alias / Decline (within the setup command)
+None
 
 ### **arynxd**
  - [ ] Finish verification
@@ -69,6 +67,14 @@
  - [ ] Attempt to make my own ExpiringMap
  - [ ] Complex args parser
  - [ ] Add developer permissions check
+ - [ ] Change command to implement eventlistener for easier event adding
+ - [ ] Make help command register certain commands based on api availability
+ - [ ] Catch different exceptions during login
+ - [ ] Move commandHandler functionality to command as to allow for registering of commands directly
+ - [ ] Restarting of the bot
+ - [ ] Move command functionality to abstract methods versus constructor calls for increased adaptability
+ - [ ] Remove statics and use getInstance()
+ 
 
 
 ## Known Issues
