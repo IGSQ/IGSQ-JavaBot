@@ -50,13 +50,14 @@ None
  - [ ] Finish verification
  - [ ] Reactionevent / roles into the yaml
 
- - [ ] Redo Channel / Role / User parsing
+ - [ ] Redo Channel / Role / User parsing - into CommandContext
  
  - [ ] Info command
  - [ ] Muting
  - [ ] YamlUtils#getArray
  - [ ] config.yml wrapper 
  - [ ] Throw unsuportedoperation if datacache is used before type setting
+ - [ ] InstanceOf checks within command mapping
    
  - [ ] **PREPARE FOR PR**
 
