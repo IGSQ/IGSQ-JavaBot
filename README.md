@@ -50,6 +50,7 @@
 
 ### **arynxd**
  - [ ] Finish verification
+ - [ ] Reactionevent / roles into the yaml
 
  - [ ] Redo Channel / Role / User parsing
  

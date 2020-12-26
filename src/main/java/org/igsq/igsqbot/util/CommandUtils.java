@@ -7,9 +7,10 @@ import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CommandUtils
@@ -30,9 +31,12 @@ public class CommandUtils
 			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
 			{
 				String role = Yaml.getFieldString(id + ".references." + i + ".id", Filename.VERIFICATION);
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", Filename.VERIFICATION).split(","))
+				if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
 				{
-					result.putIfAbsent(selectedAlias, role);
+					for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", Filename.VERIFICATION).split(","))
+					{
+						result.putIfAbsent(selectedAlias, role);
+					}
 				}
 			}
 			i++;
@@ -49,9 +53,12 @@ public class CommandUtils
 			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
 			{
 				String role = Yaml.getFieldString(id + ".references." + i + ".id", Filename.VERIFICATION);
-				for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", Filename.VERIFICATION).split(","))
+				if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", Filename.VERIFICATION))
 				{
-					result.putIfAbsent(selectedAlias, role);
+					for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", Filename.VERIFICATION).split(","))
+					{
+						result.putIfAbsent(selectedAlias, role);
+					}
 				}
 			}
 			i++;

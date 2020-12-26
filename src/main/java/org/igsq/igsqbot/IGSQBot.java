@@ -40,6 +40,7 @@ public class IGSQBot
 
 					.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
 					.setAutoReconnect(true)
+					.setShardsTotal(-1)
 					.addEventListeners(
 							new MessageReactionAdd_Main(),
 							new MessageDelete_Main(),
@@ -62,7 +63,6 @@ public class IGSQBot
 							new MessageBulkDelete_Logging(),
 							new MessageDelete_Logging(),
 							new MessageUpdate_Logging())
-					.setShardsTotal(-1)
 					.build();
 
 				shardManager.getShards().forEach(shard ->

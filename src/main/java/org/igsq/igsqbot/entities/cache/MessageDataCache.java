@@ -77,6 +77,10 @@ public class MessageDataCache
 		{
 			type = MessageType.MODHELP;
 		}
+		else if(Yaml.getFieldBool(messageId + ".verification.enabled", Filename.INTERNAL))
+		{
+			type = MessageType.VERIFICATION;
+		}
 		else
 		{
 			type = MessageType.DISABLED;
@@ -107,6 +111,12 @@ public class MessageDataCache
 				this.type = MessageType.MODHELP;
 				break;
 			}
+			case VERIFICATION:
+			{
+				Yaml.updateField(messageId + ".verification.enabled", Filename.INTERNAL, true);
+				this.type = MessageType.VERIFICATION;
+				break;
+			}
 			default:
 			{
 			}
@@ -134,6 +144,10 @@ public class MessageDataCache
 				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL)));
 				break;
 			}
+			case VERIFICATION:
+				result.put("author", jda.getUserById(Yaml.getFieldString(messageId + ".verification.author", Filename.INTERNAL)));
+				result.put("target", jda.getUserById(Yaml.getFieldString(messageId + ".verification.target", Filename.INTERNAL)));
+				break;
 			default:
 			{
 				return result;
@@ -163,6 +177,10 @@ public class MessageDataCache
 				result.put("user", Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL));
 				break;
 			}
+			case VERIFICATION:
+				result.put("author", Yaml.getFieldString(messageId + ".verification.author", Filename.INTERNAL));
+				result.put("target", Yaml.getFieldString(messageId + ".verification.target", Filename.INTERNAL));
+				break;
 			default:
 			{
 				return result;
@@ -191,6 +209,10 @@ public class MessageDataCache
 				Yaml.updateField(messageId + ".modhelp.user", Filename.INTERNAL, userIds.get("user"));
 				break;
 			}
+			case VERIFICATION:
+				Yaml.updateField(messageId + ".verification.author", Filename.INTERNAL, userIds.get("author"));
+				Yaml.updateField(messageId + ".verification.target", Filename.INTERNAL, userIds.get("target"));
+				break;
 			default:
 			{
 			}
@@ -267,6 +289,7 @@ public class MessageDataCache
 		REPORT,
 		HELP,
 		MODHELP,
+		VERIFICATION,
 		DISABLED;
 	}
 }

@@ -1,22 +1,19 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
-import org.igsq.igsqbot.util.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VerificationCommand extends Command
@@ -25,55 +22,72 @@ public class VerificationCommand extends Command
 	{
 		super("Verify", new String[]{"verify", "v", "accept"}, "Verifies the specified user into the server", "[user]", new Permission[]{}, true, 0);
 	}
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerificationCommand.class);
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
 		final Guild guild = ctx.getGuild();
-		final User verificationTarget;
 		final List<String> messageContent = new ArrayList<>();
 		final StringBuilder embedText = new StringBuilder();
+		final Message message = ctx.getMessage();
 
-		try
-		{
-			verificationTarget = UserUtils.getUserFromMention(args.get(0));
-		}
-		catch(Exception exception)
-		{
-			EmbedUtils.sendSyntaxError(channel, this);
-			return;
-		}
-
-		if(args.size() != 1)
+		if(args.size() != 1 || message.getMentionedMembers().isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
-
-		channel.getHistory().retrievePast(10).queue(messages ->
-				messages.stream().filter(message -> message.getAuthor().equals(verificationTarget)).forEach(message -> messageContent.addAll(Arrays.asList(message.getContentRaw().split(" ")))));
-
-		final Map<String, String> roleMap = CommandUtils.getAliases(guild.getId());
-
-		final Map<String, String> matches = intersectMaps(findMatches(messageContent, roleMap), CommandUtils.getDeclined(guild.getId()));
-		final Map<String, String> similar = findSimilar(messageContent, roleMap, matches);
-
-		matches.values().stream().map(guild::getRoleById).forEach(role ->
-				embedText.append("Detected Role: ")
-						.append(role.getAsMention())
-						.append(" (Matched)\n"));
-
-		embedText.append("\n");
-		similar.forEach((alias, roleId) ->
+		else
 		{
-			final Role role = guild.getRoleById(roleId);
-			embedText.append("Detected Role: ")
-					.append(role.getAsMention())
-					.append(" (Guess)\n");
-		});
+			final Member verificationTarget = message.getMentionedMembers().get(0);
 
-		new EmbedGenerator(channel).text(embedText.toString()).send();
+			channel.getHistory().retrievePast(10).queue(messages ->
+			{
+				messages.stream()
+						.filter(channelMessage -> channelMessage.getAuthor().equals(verificationTarget.getUser()))
+						.forEach(channelMessage -> messageContent.addAll(Arrays.asList(channelMessage.getContentRaw().split(" "))));
 
+				final Map<String, String> roleMap = CommandUtils.getAliases(guild.getId());
+
+				final Map<String, String> matches = intersectMaps(findMatches(messageContent, roleMap), CommandUtils.getDeclined(guild.getId()));
+				final Map<String, String> similar = findSimilar(messageContent, roleMap, matches);
+
+				matches.values().stream().map(guild::getRoleById).filter(Objects::nonNull).forEach(role ->
+						embedText.append("Detected Role: ")
+								.append(role.getAsMention())
+								.append(" (Matched)\n"));
+
+				embedText.append("\n");
+				similar.forEach((alias, roleId) ->
+				{
+					final Role role = guild.getRoleById(roleId);
+					if(role != null)
+					{
+						embedText.append("Detected Role: ")
+								.append(role.getAsMention())
+								.append(" (Guess)\n");
+					}
+				});
+
+				channel.sendMessage(new EmbedGenerator(channel)
+						.title("Verification for: " + verificationTarget.getUser().getAsTag())
+						.text(embedText.length() == 0 ? "No roles found for this user." : embedText.toString())
+						.getBuilder().build()).queue(
+								verificationMessage ->
+								{
+									Constants.THUMB_REACTIONS.forEach(reaction -> verificationMessage.addReaction(reaction).queue());
+									final MessageDataCache dataCache = new MessageDataCache(verificationMessage.getId(), ctx.getJDA());
+									final Map<String, String> users = new ConcurrentHashMap<>();
+
+									users.put("author", ctx.getAuthor().getId());
+									users.put("target", verificationTarget.getId());
+
+									dataCache.setType(MessageDataCache.MessageType.VERIFICATION);
+									dataCache.setUsers(users);
+									dataCache.build();
+								}
+				);
+			});
+		}
 	}
 
 	private Map<String, String> findMatches(List<String> words, Map<String, String> aliases)
@@ -81,7 +95,7 @@ public class VerificationCommand extends Command
 		Map<String, String> result = new ConcurrentHashMap<>();
 		aliases.keySet().stream().filter(words::contains).forEach(alias -> result.putIfAbsent(alias, aliases.get(alias)));
 		return result;
-	}
+}
 
 	private Map<String, String> intersectMaps(Map<String, String> map, Map<String, String> anotherMap)
 	{
