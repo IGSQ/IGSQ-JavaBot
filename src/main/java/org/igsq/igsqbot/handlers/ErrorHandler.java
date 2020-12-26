@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.cache.BotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class ErrorHandler
 		}
 		else
 		{
-			MessageChannel errorChannel = IGSQBot.getShardManager().getTextChannelById(Yaml.getFieldString("bot.error", Filename.CONFIG));//TODO: Make this a method
+			MessageChannel errorChannel = IGSQBot.getShardManager().getTextChannelById(new BotConfig().getErrorChannel());
 			if(errorChannel == null)
 			{
 				LOGGER.error("An exception occurred.", exception);

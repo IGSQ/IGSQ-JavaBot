@@ -12,17 +12,14 @@ import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HelpCommand extends Command
 {
-	public HelpCommand()
-	{
-		super("Help", new String[]{"help", "?", "howto", "commands"}, "Shows the help menu for this bot", "[none]", new Permission[]{}, false, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -57,5 +54,47 @@ public class HelpCommand extends Command
 							}
 					);
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Help";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("help", "?", "howto", "commands");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Shows the help menu for this bot";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[none]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

@@ -8,8 +8,6 @@ import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;

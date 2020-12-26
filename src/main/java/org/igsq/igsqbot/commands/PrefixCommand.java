@@ -12,15 +12,11 @@ import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PrefixCommand extends Command
 {
-	public PrefixCommand()
-	{
-		super("Prefix", new String[]{"prefix"}, "Sets / gets the prefix for the bot in the current server.", "<newPrefix -5-> | <reset> | <none> ", new Permission[]{}, true, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -53,5 +49,47 @@ public class PrefixCommand extends Command
 				EmbedUtils.sendSuccess(channel, "My new prefix is `" + args.get(0) + "`");
 			}
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Prefix";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("prefix");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Sets / gets the prefix for the bot in the current server.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "<newPrefix {5}> | <reset> | <none> ";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.singletonList(Permission.ADMINISTRATOR);
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

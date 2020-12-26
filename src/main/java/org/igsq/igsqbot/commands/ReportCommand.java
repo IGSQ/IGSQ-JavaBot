@@ -14,17 +14,13 @@ import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ReportCommand extends Command
 {
-	public ReportCommand()
-	{
-		super("Report", new String[]{"report"}, "Reports the specified member with the specified reason", "[user][reason]", new Permission[]{}, true, 60);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -97,5 +93,47 @@ public class ReportCommand extends Command
 			}
 		}
 		else EmbedUtils.sendError(channel, "Could not find the user " + args.get(0) + ".");
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Report";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("report");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Reports the specified member with the specified reason";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[user] [reason]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 60;
 	}
 }

@@ -2,24 +2,21 @@ package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ModuleCommand extends Command
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModuleCommand.class);
-
-	public ModuleCommand()
-	{
-		super("Module", new String[]{"module", "command"}, "Disables / Enables the specified module.", "[enable|disable] [module]", new Permission[]{Permission.ADMINISTRATOR}, false, 0);
-	}
 
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
@@ -29,7 +26,7 @@ public class ModuleCommand extends Command
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
-		else if(ArrayUtils.isValueInArray(this.getAliases(), args.get(1).toLowerCase()))
+		else if(ArrayUtils.isValueInArray(this.getAliases().toArray(), args.get(1).toLowerCase()))
 		{
 			EmbedUtils.sendError(channel, "You cannot disable that command.");
 		}
@@ -46,6 +43,48 @@ public class ModuleCommand extends Command
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
 
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Module";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("module", "command");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Disables / Enables the specified module.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[enable|disable] [module]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.singletonList(Permission.ADMINISTRATOR);
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 
 	private void enableModule(String moduleName, MessageChannel channel)

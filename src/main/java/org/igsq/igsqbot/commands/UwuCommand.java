@@ -15,16 +15,12 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UwuCommand extends Command
 {
-	public UwuCommand()
-	{
-		super("UwU", new String[]{"uwu", "uwufy", "owo"}, "UwU's the specified sentence", "[text]", new Permission[]{}, false, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -59,5 +55,47 @@ public class UwuCommand extends Command
 					.footer("This sentence was UwU'd by: " + author.getAsTag())
 					.color(Constants.IGSQ_PURPLE).send();
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "UwU";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("uwu", "uwufy", "owo");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "UwU's the specified sentence";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[text]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

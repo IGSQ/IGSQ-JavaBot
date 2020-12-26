@@ -1,11 +1,16 @@
 package org.igsq.igsqbot;
 
+import org.igsq.igsqbot.entities.cache.BotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Database
@@ -23,9 +28,11 @@ public class Database
 
 	public static void startDatabase()
 	{
-		url = Yaml.getFieldString("mysql.database", Filename.CONFIG);
-		user = Yaml.getFieldString("mysql.username", Filename.CONFIG);
-		password = Yaml.getFieldString("mysql.password", Filename.CONFIG);
+		Map<String, String> credentials = new BotConfig().getSQL();
+		url = credentials.get("database");
+		user = credentials.get("username");
+		password = credentials.get("password");
+
 		if(testDatabase())
 		{
 			isOnline = true;

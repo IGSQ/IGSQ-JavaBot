@@ -10,19 +10,12 @@ import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VerificationCommand extends Command
 {
-	public VerificationCommand()
-	{
-		super("Verify", new String[]{"verify", "v", "accept"}, "Verifies the specified user into the server", "[user]", new Permission[]{}, true, 0);
-	}
-	private static final Logger LOGGER = LoggerFactory.getLogger(VerificationCommand.class);
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -51,10 +44,19 @@ public class VerificationCommand extends Command
 				final Map<String, String> matches = intersectMaps(findMatches(messageContent, roleMap), CommandUtils.getDeclined(guild.getId()));
 				final Map<String, String> similar = findSimilar(messageContent, roleMap, matches);
 
+				final StringBuilder matchBuilder = new StringBuilder();
+				final StringBuilder similarBuilder = new StringBuilder();
+
 				matches.values().stream().map(guild::getRoleById).filter(Objects::nonNull).forEach(role ->
-						embedText.append("Detected Role: ")
-								.append(role.getAsMention())
-								.append(" (Matched)\n"));
+						{
+							embedText.append("Detected Role: ")
+									.append(role.getAsMention())
+									.append(" (Matched)\n");
+
+							matchBuilder.append(role.getId()).append("/");
+						});
+
+
 
 				embedText.append("\n");
 				similar.forEach((alias, roleId) ->
@@ -65,6 +67,7 @@ public class VerificationCommand extends Command
 						embedText.append("Detected Role: ")
 								.append(role.getAsMention())
 								.append(" (Guess)\n");
+						similarBuilder.append(role.getId()).append("/");
 					}
 				});
 
@@ -75,19 +78,67 @@ public class VerificationCommand extends Command
 								verificationMessage ->
 								{
 									Constants.THUMB_REACTIONS.forEach(reaction -> verificationMessage.addReaction(reaction).queue());
-									final MessageDataCache dataCache = new MessageDataCache(verificationMessage.getId(), ctx.getJDA());
+
+									final MessageDataCache dataCache = MessageDataCache.getMessageData(verificationMessage.getId(), ctx.getJDA());
 									final Map<String, String> users = new ConcurrentHashMap<>();
+									final Map<String, String> roles = new ConcurrentHashMap<>();
 
 									users.put("author", ctx.getAuthor().getId());
 									users.put("target", verificationTarget.getId());
 
+									roles.put("match", matchBuilder.toString());
+									roles.put("guess", similarBuilder.toString());
+
 									dataCache.setType(MessageDataCache.MessageType.VERIFICATION);
 									dataCache.setUsers(users);
+									dataCache.setRoles(roles);
 									dataCache.build();
 								}
 				);
 			});
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Verify";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("verify", "v", "accept");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Verifies the specified user into the server";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[user]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 
 	private Map<String, String> findMatches(List<String> words, Map<String, String> aliases)

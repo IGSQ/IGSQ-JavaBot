@@ -6,70 +6,31 @@ import java.util.List;
 
 public abstract class Command
 {
-	private final String name;
-	private final String[] aliases;
-	private final String description;
-	private final Permission[] requiredPermissions;
-	private final int cooldown;
-	private final boolean requiresGuild;
-	private final String syntax;
-	private boolean disabled = false;
-
-	protected Command(final String name, final String[] aliases, final String description, final String syntax, final Permission[] requiredPermissions, boolean requiresGuild, int cooldown)
-	{
-		this.name = name;
-		this.aliases = aliases;
-		this.description = description;
-		this.syntax = syntax;
-		this.requiredPermissions = requiredPermissions;
-		this.requiresGuild = requiresGuild;
-		this.cooldown = cooldown;
-	}
+	private boolean isDisabled = false;
 
 	public abstract void execute(final List<String> args, CommandContext ctx);
 
-	public String getName()
+	public abstract String getName();
+
+	public abstract List<String> getAliases();
+
+	public abstract String getDescription();
+
+	public abstract String getSyntax();
+
+	public abstract List<Permission> getPermissions();
+
+	public abstract boolean isRequiresGuild();
+
+	public abstract int getCooldown();
+
+	public boolean getDisabled()
 	{
-		return name;
+		return isDisabled;
 	}
 
-	public String[] getAliases()
+	public void setDisabled(boolean state)
 	{
-		return aliases;
-	}
-
-	public String getDescription()
-	{
-		return description;
-	}
-
-	public Permission[] getRequiredPermissions()
-	{
-		return requiredPermissions;
-	}
-
-	public int getCooldown()
-	{
-		return cooldown;
-	}
-
-	public String getSyntax()
-	{
-		return syntax;
-	}
-
-	public boolean isRequiresGuild()
-	{
-		return requiresGuild;
-	}
-
-	public boolean isDisabled()
-	{
-		return disabled;
-	}
-
-	public void setDisabled(boolean disabled)
-	{
-		this.disabled = disabled;
+		isDisabled = state;
 	}
 }

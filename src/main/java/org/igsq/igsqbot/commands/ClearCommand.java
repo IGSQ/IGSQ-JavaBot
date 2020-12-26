@@ -4,23 +4,20 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.MessageCache;
+import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ClearCommand extends Command
 {
-	public ClearCommand()
-	{
-		super("Clear", new String[]{"clear", "purge"}, "Clears the channel with the specified amount", "[amount -50-]", new Permission[]{Permission.MESSAGE_MANAGE}, true, 5);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -62,5 +59,47 @@ public class ClearCommand extends Command
 			final MessageCache cache = MessageCache.getCache(guild);
 			messages.stream().filter(cache::isInCache).forEach(cache::remove);
 		});
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Clear";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("clear", "purge");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Clears the channel with the specified amount";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[amount {50}]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.singletonList(Permission.MESSAGE_MANAGE);
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 10;
 	}
 }

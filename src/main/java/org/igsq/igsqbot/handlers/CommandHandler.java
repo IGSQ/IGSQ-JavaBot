@@ -32,9 +32,12 @@ public abstract class CommandHandler
 		{
 			for(final ClassInfo cls : result.getAllClasses())
 			{
-				final Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
-				COMMANDS.put(cmd.getName(), cmd);
-				for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
+				if(cls.loadClass().isInstance(Command.class))
+				{
+					final Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
+					COMMANDS.put(cmd.getName(), cmd);
+					for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
+				}
 			}
 		}
 		catch(Exception exception)
@@ -111,13 +114,13 @@ public abstract class CommandHandler
 				EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
 				return;
 			}
-			else if(cmd.isDisabled())
+			else if(cmd.getDisabled())
 			{
 				EmbedUtils.sendDisabledError(channel, cmd);
 				return;
 			}
-			else if(!guild.getSelfMember().hasPermission((GuildChannel) channel, cmd.getRequiredPermissions())
-					|| (member != null && !member.hasPermission((GuildChannel) channel, cmd.getRequiredPermissions())))
+			else if(!guild.getSelfMember().hasPermission((GuildChannel) channel, cmd.getPermissions())
+					|| (member != null && !member.hasPermission((GuildChannel) channel, cmd.getPermissions())))
 			{
 				EmbedUtils.sendPermissionError(channel, cmd);
 				return;
@@ -138,7 +141,7 @@ public abstract class CommandHandler
 				{
 					EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
 				}
-				else if(cmd.isDisabled())
+				else if(cmd.getDisabled())
 				{
 					EmbedUtils.sendDisabledError(channel, cmd);
 				}

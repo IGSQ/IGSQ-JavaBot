@@ -10,14 +10,12 @@ import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AvatarCommand extends Command
 {
-	public AvatarCommand()
-	{
-		super("Avatar", new String[]{"avatar", "pfp", "avi"}, "Shows the avatar for the mentioned user(s)", "<user(s) -3->", new Permission[]{}, false, 0);
-	}
 
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
@@ -47,6 +45,48 @@ public class AvatarCommand extends Command
 					.color(Constants.IGSQ_PURPLE)
 					.send();
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Avatar";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("avatar", "avi", "pfp");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Shows the avatar for the specified user(s).";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "<users {3}>";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }
 

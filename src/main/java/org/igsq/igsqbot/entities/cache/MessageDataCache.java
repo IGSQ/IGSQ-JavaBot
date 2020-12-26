@@ -11,7 +11,6 @@ import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 
-import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -47,15 +46,7 @@ public class MessageDataCache
 		}
 		else
 		{
-			MessageDataCache newData = new MessageDataCache(messageId, jda);
-			if(!newData.getType().equals(MessageType.DISABLED))
-			{
-				return newData;
-			}
-			else
-			{
-				return null;
-			}
+			return new MessageDataCache(messageId, jda);
 		}
 	}
 
@@ -126,6 +117,10 @@ public class MessageDataCache
 
 	public Map<String, User> getUsers()
 	{
+		if(type == null)
+		{
+			throw new UnsupportedOperationException("You must set the type before getting users");
+		}
 		Map<String, User> result = new ConcurrentHashMap<>();
 		switch(type)
 		{
@@ -159,6 +154,10 @@ public class MessageDataCache
 
 	public Map<String, String> getUserIds()
 	{
+		if(type == null)
+		{
+			throw new UnsupportedOperationException("You must set the type before getting users");
+		}
 		Map<String, String> result = new ConcurrentHashMap<>();
 		switch(type)
 		{
@@ -192,6 +191,10 @@ public class MessageDataCache
 
 	public void setUsers(Map<String, String> userIds)
 	{
+		if(type == null)
+		{
+				throw new UnsupportedOperationException("You must set the type before setting users");
+		}
 		switch(type)
 		{
 			case HELP:
@@ -222,6 +225,10 @@ public class MessageDataCache
 
 	public void setRoles(Map<String, String> roles)
 	{
+		if(type == null)
+		{
+			throw new UnsupportedOperationException("You must set the type before setting roles");
+		}
 		switch(type)
 		{
 			case HELP:
@@ -242,6 +249,10 @@ public class MessageDataCache
 
 	public Map<String, Role> getRoles(Guild guild)
 	{
+		if(type == null)
+		{
+			throw new UnsupportedOperationException("You must set the type before getting roles");
+		}
 		Map<String, Role> result = new ConcurrentHashMap<>();
 		switch(type)
 		{
@@ -264,6 +275,10 @@ public class MessageDataCache
 
 	public Map<String, Member> getMembers(Guild guild)
 	{
+		if(type == null)
+		{
+			throw new UnsupportedOperationException("You must set the type before setting members");
+		}
 		Map<String, Member> result = new ConcurrentHashMap<>();
 		switch(type)
 		{
@@ -293,19 +308,23 @@ public class MessageDataCache
 
 	public int getPage()
 	{
-		if(type.equals(MessageType.HELP))
+		if(type == null || !type.equals(MessageType.HELP))
 		{
-			return Yaml.getFieldInt(messageId + ".help.page", Filename.INTERNAL);
+			throw new UnsupportedOperationException("The type must be HELP to get the page.");
 		}
 		else
 		{
-			return -1;
+			return Yaml.getFieldInt(messageId + ".help.page", Filename.INTERNAL);
 		}
 	}
 
 	public void setPage(int page)
 	{
-		if(type.equals(MessageType.HELP))
+		if(type == null || !type.equals(MessageType.HELP))
+		{
+			throw new UnsupportedOperationException("The type must be HELP to set the page.");
+		}
+		else
 		{
 			Yaml.updateField(messageId + ".help.page", Filename.INTERNAL, page);
 		}

@@ -42,24 +42,29 @@
  - [x] Refactor events to not include 'Event'
  - [x] Switched to shardmanager
  - [x] ReactionRole#clear for a message
+ - [x] Throw unsuportedoperation if datacache is used before type setting
+ - [x] InstanceOf checks within command mapping
+ - [x] Move Command functionality to abstract methods versus constructor calls for increased adaptability
+ - [x] config.yml wrapper
+ - [x] Catch different exceptions during login
 
 ### **TeaEyes**
-None
+None!
 
 ### **arynxd**
  - [ ] Finish verification
- - [ ] Reactionevent / roles into the yaml
+ - [ ] Reactionevent / ~~roles into the yaml~~
+ - [ ] Help / Modhelp - added functionality, still needs content
+ - [ ] Implement .help to use the COMMANDS array for its information
+ - [ ] Alias / Decline (within the setup command)
+ - [ ] Catch invalid emojis in RR (regex) ('/[^\w$\x{0080}-\x{FFFF}]+/u')
 
  - [ ] Redo Channel / Role / User parsing - into CommandContext
- 
- - [ ] Info command
+
  - [ ] Muting
- - [ ] YamlUtils#getArray
- - [ ] config.yml wrapper 
- - [ ] Throw unsuportedoperation if datacache is used before type setting
- - [ ] InstanceOf checks within command mapping
+ - [ ] Yaml array object / functionality
    
- - [ ] **PREPARE FOR PR**
+ - [ ] **PREPARE FOR PR!!!**
 
 ### **Future work**
  - [ ] Rewrite the event waiter
@@ -68,16 +73,13 @@ None
  - [ ] Implement slash commands when they release
  - [ ] Attempt to make my own ExpiringMap
  - [ ] Complex args parser
- - [ ] Add developer permissions check
+ - [ ] Add developer permissions check (extend existing enum)
  - [ ] Change command to implement eventlistener for easier event adding
  - [ ] Make help command register certain commands based on api availability
- - [ ] Catch different exceptions during login
  - [ ] Move commandHandler functionality to command as to allow for registering of commands directly
  - [ ] Restarting of the bot
- - [ ] Move command functionality to abstract methods versus constructor calls for increased adaptability
  - [ ] Remove statics and use getInstance()
- 
-
+ - [ ] Info command
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
@@ -111,3 +113,11 @@ pause
 This project implements an error handler which is dependent on
 the config option `bot.error` within the `config` YML file, without this set to a valid channel ID, which the bot can write into, 
 the handler will default to console only logging.
+
+**Syntax**
+
+[] - REQUIRED
+
+<> - OPTIONAL
+
+{} - MAX AMOUNT

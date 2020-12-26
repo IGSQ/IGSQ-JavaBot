@@ -6,26 +6,22 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LinkCommand extends Command
 {
-
 	private List<String> args;
 	private MessageChannel channel;
 	private User author;
-
-	public LinkCommand()
-	{
-		super("Link", new String[]{"link", "mclink", "minecraft"}, "Controls Minecraft links.", "[add|remove][mcName] | [list]", new Permission[]{}, false, 0);
-	}
 
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
@@ -67,6 +63,48 @@ public class LinkCommand extends Command
 					EmbedUtils.sendSyntaxError(channel, this);
 			}
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Link";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("link", "mclink", "minecraft");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Controls Minecraft links.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[add|remove][mcName] | [list]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 
 	private void showPending()

@@ -8,14 +8,12 @@ import org.igsq.igsqbot.entities.yaml.ReactionRole;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ReactionRoleCommand extends Command
 {
-	public ReactionRoleCommand()
-	{
-		super("ReactionRole", new String[]{"reactionrole", "reactionroles", "rr"}, "Controls reactionroles.", "[add|remove|clear][messageID][channel][role][reaction]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
-	}
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -23,6 +21,7 @@ public class ReactionRoleCommand extends Command
 		final Message message = ctx.getMessage();
 		final Guild guild = ctx.getGuild();
 		final User author = ctx.getAuthor();
+
 		if(args.size() != 5 || message.getMentionedRoles().isEmpty() || message.getMentionedChannels().isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
@@ -116,6 +115,48 @@ public class ReactionRoleCommand extends Command
 					error -> EmbedUtils.sendError(channel, "The specified message ID was invalid.")
 			);
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "ReactionRole";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("reactionrole", "reactionroles", "rr");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Controls reactionroles.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[add|remove|clear] [messageID] [channel] [role] [reaction]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.singletonList(Permission.ADMINISTRATOR);
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }
 

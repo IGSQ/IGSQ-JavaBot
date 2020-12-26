@@ -5,27 +5,19 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.handlers.CooldownHandler;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class PingCommand extends Command
 {
-	public PingCommand()
-	{
-		super("Ping", new String[]{"ping", "latency"}, "Shows the bots current ping to Discord", "[none]", new Permission[]{Permission.MESSAGE_MANAGE}, false, 10);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -53,5 +45,47 @@ public class PingCommand extends Command
 								.text("**Shard ID**: " + jda.getShardInfo().getShardId() + "\n**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
 								.send()
 		);
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Ping";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("ping", "latency");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Shows the bots current ping to Discord";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[none]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

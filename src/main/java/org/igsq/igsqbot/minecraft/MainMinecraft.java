@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.minecraft;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.igsq.igsqbot.handlers.TaskHandler;
 

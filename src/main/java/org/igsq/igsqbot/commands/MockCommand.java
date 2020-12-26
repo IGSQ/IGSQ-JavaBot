@@ -11,16 +11,12 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.FileUtils;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class MockCommand extends Command
 {
-	public MockCommand()
-	{
-		super("Mock", new String[]{"mock"}, "Mocks the specified text", "[text]", new Permission[]{}, false, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -48,6 +44,48 @@ public class MockCommand extends Command
 			}
 
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Mock";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("mock");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Mocks the specified text";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[text]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 
 	private String mockText(List<String> args)

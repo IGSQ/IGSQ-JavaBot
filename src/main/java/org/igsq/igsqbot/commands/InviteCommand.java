@@ -1,22 +1,20 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.requests.restaction.InviteAction;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Invite;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class InviteCommand extends Command
 {
-	public InviteCommand()
-	{
-		super("Invite", new String[]{"invite", "inv"}, "Shows the best invite for the guild, or makes a new one.", "[none]", new Permission[]{}, true, 0);
-	}
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -59,5 +57,47 @@ public class InviteCommand extends Command
 
 			);
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Invite";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("invite", "inv");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Shows the best invite for the guild.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[none]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

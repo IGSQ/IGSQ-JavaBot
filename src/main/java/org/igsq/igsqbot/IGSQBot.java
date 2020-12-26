@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.igsq.igsqbot.entities.cache.BotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.Punishment;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
@@ -17,6 +18,7 @@ import org.igsq.igsqbot.minecraft.MainMinecraft;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -32,9 +34,10 @@ public class IGSQBot
 		Yaml.loadFile(Filename.ALL);
 		Yaml.applyDefault();
 
+		final BotConfig botConfig = new BotConfig();
 		try
 		{
-			shardManager = DefaultShardManagerBuilder.createDefault(Yaml.getFieldString("bot.token", Filename.CONFIG))
+			shardManager = DefaultShardManagerBuilder.createDefault(botConfig.getToken())
 					.enableIntents(GatewayIntent.GUILD_MEMBERS)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
 
@@ -95,9 +98,13 @@ public class IGSQBot
 				Yaml.loadFile(Filename.ALL);
 			}, "yamlReload", TimeUnit.SECONDS, 30);
 		}
-		catch(Exception exception)
+		catch (IllegalArgumentException e)
 		{
-			LOGGER.error("A fatal exception occurred when the bot tried to start.", exception);
+			LOGGER.error("No login details provided! Please provide a tToken in the config.yml.");
+		}
+		catch (LoginException e)
+		{
+			LOGGER.error("The provided token was invalid, please ensure you put a valid token in config.yml");
 		}
 	}
 

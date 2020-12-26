@@ -12,15 +12,11 @@ import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PollCommand extends Command
 {
-	public PollCommand()
-	{
-		super("Poll", new String[]{"poll"}, "Starts a poll for users to vote in.", "[title]/[option1]/[option2]<-20->", new Permission[]{}, false, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -58,5 +54,47 @@ public class PollCommand extends Command
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Poll";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("poll");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Starts a poll for users to vote in.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[title]/[option1]/[option2]{20}";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

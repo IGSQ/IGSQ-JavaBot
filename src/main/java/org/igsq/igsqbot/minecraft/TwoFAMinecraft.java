@@ -3,9 +3,9 @@ package org.igsq.igsqbot.minecraft;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.UserUtils;
 
 import java.sql.ResultSet;

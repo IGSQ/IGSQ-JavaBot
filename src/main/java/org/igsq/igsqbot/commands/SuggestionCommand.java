@@ -16,16 +16,13 @@ import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
 public class SuggestionCommand extends Command
 {
-	public SuggestionCommand()
-	{
-		super("Suggestion", new String[]{"suggest", "suggestion", "idea"}, "Suggests an idea in the designated suggestion channel", "[topic]", new Permission[]{}, true, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -64,5 +61,47 @@ public class SuggestionCommand extends Command
 		{
 			EmbedUtils.sendError(channel, "There is no setup suggestion Channel");
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Suggestion";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Arrays.asList("suggest", "suggestion", "idea");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Suggests an idea in the designated suggestion channel.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[topic]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

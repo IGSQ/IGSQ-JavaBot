@@ -11,15 +11,11 @@ import org.igsq.igsqbot.util.FileUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class StealCommand extends Command
 {
-	public StealCommand()
-	{
-		super("Steal", new String[]{"steal"}, "Steals the specified image and adds it as an emoji", "[name][imageURL(A-Z + _)]", new Permission[]{Permission.MANAGE_EMOTES}, true, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -47,5 +43,47 @@ public class StealCommand extends Command
 						error -> EmbedUtils.sendError(channel, "An error occurred while adding the emote."));
 			}
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Steal";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("steal");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Steals the specified image and adds it as an emoji.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[name{A-Z + _}] [imageURL]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.singletonList(Permission.MANAGE_EMOTES);
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

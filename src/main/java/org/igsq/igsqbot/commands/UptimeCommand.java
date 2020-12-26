@@ -11,15 +11,11 @@ import org.igsq.igsqbot.util.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 public class UptimeCommand extends Command
 {
-	public UptimeCommand()
-	{
-		super("Uptime", new String[]{"uptime"}, "Displays the bots uptime", "[none]", new Permission[]{}, false, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -35,5 +31,47 @@ public class UptimeCommand extends Command
 				.color(Constants.IGSQ_PURPLE)
 				.footer(StringUtils.getTimestamp())
 				.send();
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Uptime";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("uptime");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Displays the bots uptime";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[none]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return false;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

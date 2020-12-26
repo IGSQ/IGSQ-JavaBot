@@ -12,17 +12,13 @@ import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ModhelpCommand extends Command
 {
-	public ModhelpCommand()
-	{
-		super("Modhelp", new String[]{"modhelp"}, "Shows the modhelp menu for this bot", "[none]", new Permission[]{Permission.MESSAGE_MANAGE}, false, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -55,5 +51,47 @@ public class ModhelpCommand extends Command
 							}
 					);
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Modhelp";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("modhelp");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Shows the modhelp menu for this bot";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[none]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.singletonList(Permission.MESSAGE_MANAGE);
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 0;
 	}
 }

@@ -13,15 +13,11 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 public class MuteCommand extends Command
 {
-	public MuteCommand()
-	{
-		super("Mute", new String[]{"mute"}, "Mutes the specified user.", "[user][duration]", new Permission[]{Permission.ADMINISTRATOR}, true, 0);
-	}
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -54,5 +50,47 @@ public class MuteCommand extends Command
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Mute";
+	}
+
+	@Override
+	public List<String> getAliases()
+	{
+		return Collections.singletonList("mute");
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Mutes the specified user.";
+	}
+
+	@Override
+	public String getSyntax()
+	{
+		return "[user][duration]";
+	}
+
+	@Override
+	public List<Permission> getPermissions()
+	{
+		return Collections.singletonList(Permission.KICK_MEMBERS);
+	}
+
+	@Override
+	public boolean isRequiresGuild()
+	{
+		return true;
+	}
+
+	@Override
+	public int getCooldown()
+	{
+		return 60;
 	}
 }
