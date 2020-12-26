@@ -63,6 +63,7 @@ None!
 
  - [ ] Muting
  - [ ] Yaml array object / functionality
+ - [ ] Change command#getPermission to command#canExecute, will implement various perm checks (maybe permcheck class)
    
  - [ ] **PREPARE FOR PR!!!**
 
