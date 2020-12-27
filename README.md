@@ -47,6 +47,10 @@
  - [x] Move Command functionality to abstract methods versus constructor calls for increased adaptability
  - [x] config.yml wrapper
  - [x] Catch different exceptions during login
+ - [x] Catch invalid emojis in RR (regex) ('/[^\w$\x{0080}-\x{FFFF}]+/u')
+ - [x] Change command#getPermission to command#canExecute, will implement various perm checks (maybe permcheck class)
+ - [x] Condensed events
+ - [x] Add developer permissions check (extend existing enum)
 
 ### **TeaEyes**
 None!
@@ -54,16 +58,16 @@ None!
 ### **arynxd**
  - [ ] Finish verification
  - [ ] Reactionevent / ~~roles into the yaml~~
+ 
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
- - [ ] Catch invalid emojis in RR (regex) ('/[^\w$\x{0080}-\x{FFFF}]+/u')
+ - [ ] Make help command register certain commands based on api availability
 
- - [ ] Redo Channel / Role / User parsing - into CommandContext
+ - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext
 
- - [ ] Muting
+ - [ ] Muting (needs deb
  - [ ] Yaml array object / functionality
- - [ ] Change command#getPermission to command#canExecute, will implement various perm checks (maybe permcheck class)
    
  - [ ] **PREPARE FOR PR!!!**
 
@@ -74,10 +78,6 @@ None!
  - [ ] Implement slash commands when they release
  - [ ] Attempt to make my own ExpiringMap
  - [ ] Complex args parser
- - [ ] Add developer permissions check (extend existing enum)
- - [ ] Change command to implement eventlistener for easier event adding
- - [ ] Make help command register certain commands based on api availability
- - [ ] Move commandHandler functionality to command as to allow for registering of commands directly
  - [ ] Restarting of the bot
  - [ ] Remove statics and use getInstance()
  - [ ] Info command
