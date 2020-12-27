@@ -62,7 +62,7 @@ None!
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
- - [ ] Make help command register certain commands based on api availability
+ - [ ] ~~Make help command register certain commands~~(got the list, just need to pass it to helpcommand) based on api availability
 
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext
 

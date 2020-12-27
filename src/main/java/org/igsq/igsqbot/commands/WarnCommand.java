@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -29,15 +30,22 @@ public class WarnCommand extends Command
 		}
 		else if(UserUtils.isUserMention(args.get(0)))
 		{
-			Member member = UserUtils.getMemberFromUser(UserUtils.getUserFromMention(args.get(0)), guild);
-			if(!UserUtils.getMemberFromUser(ctx.getAuthor(), guild).canInteract(member) || member.isOwner() || member.getUser().isBot())
+			if(UserUtils.getMemberFromUser(ctx.getAuthor(), guild).hasPermission(Permission.MESSAGE_MANAGE))
 			{
-				EmbedUtils.sendError(channel, "You cannot warn this user!");
+				EmbedUtils.sendPermissionError(channel, this);
 			}
 			else
 			{
-				args.remove(0);
-				addWarning(member, channel, ArrayUtils.arrayCompile(args, " "));
+				Member member = UserUtils.getMemberFromUser(UserUtils.getUserFromMention(args.get(0)), guild);
+				if(!UserUtils.getMemberFromUser(ctx.getAuthor(), guild).canInteract(member) || member.isOwner() || member.getUser().isBot())
+				{
+					EmbedUtils.sendError(channel, "You cannot warn this user!");
+				}
+				else
+				{
+					args.remove(0);
+					addWarning(member, channel, ArrayUtils.arrayCompile(args, " "));
+				}
 			}
 		}
 		else
@@ -55,14 +63,20 @@ public class WarnCommand extends Command
 					showWarning(member, channel);
 					break;
 				case "remove":
-					try
+					if(UserUtils.getMemberFromUser(ctx.getAuthor(), guild).hasPermission(Permission.MESSAGE_MANAGE))
 					{
-						removeWarning(member, channel, Integer.parseInt(args.get(2)));
+						EmbedUtils.sendPermissionError(channel, this);
 					}
-					catch(Exception exception)
+					else
 					{
-						EmbedUtils.sendSyntaxError(channel, this);
-						new ErrorHandler(exception);
+						try
+						{
+							removeWarning(member, channel, Integer.parseInt(args.get(2)));
+						}
+						catch(Exception exception)
+						{
+							EmbedUtils.sendSyntaxError(channel, this);
+						}
 					}
 					break;
 				default:
@@ -98,7 +112,7 @@ public class WarnCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return true; //TODO: add differing perm checks
+		return true;
 	}
 
 	@Override

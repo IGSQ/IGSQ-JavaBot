@@ -12,7 +12,6 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class PingCommand extends Command

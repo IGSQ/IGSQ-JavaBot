@@ -1,9 +1,9 @@
 package org.igsq.igsqbot.commands;
 
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ModuleCommand extends Command
@@ -72,7 +71,7 @@ public class ModuleCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return ctx.hasPermission(Collections.singletonList(Permission.ADMINISTRATOR));
+		return new BotConfig().getPrivilegedUsers().contains(ctx.getAuthor().getId());
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public class ModuleCommand extends Command
 
 	private void enableModule(String moduleName, MessageChannel channel)
 	{
-		Command cmd = CommandHandler.COMMAND_MAP.get(moduleName);
+		Command cmd = CommandHandler.getCommandMap().get(moduleName);
 		if(cmd == null)
 		{
 			EmbedUtils.sendError(channel, "The specified module: `" + moduleName + "` was not found");
@@ -104,7 +103,7 @@ public class ModuleCommand extends Command
 
 	private void disableModule(String moduleName, MessageChannel channel)
 	{
-		Command cmd = CommandHandler.COMMAND_MAP.get(moduleName);
+		Command cmd = CommandHandler.getCommandMap().get(moduleName);
 		if(cmd == null)
 		{
 			EmbedUtils.sendError(channel, "The specified module: `" + moduleName + "` was not found");

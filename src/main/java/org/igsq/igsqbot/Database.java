@@ -25,7 +25,7 @@ public class Database
 		//Overrides the default, public, constructor
 	}
 
-	public static void startDatabase()
+	public static boolean startDatabase()
 	{
 		Map<String, String> credentials = new BotConfig().getSQL();
 		url = credentials.get("database");
@@ -43,6 +43,7 @@ public class Database
 					"incorrect credentials, or a networking error. Database functionality disabled.");
 			isOnline = false;
 		}
+		return isOnline;
 	}
 
 	public static ResultSet queryCommand(String sql)

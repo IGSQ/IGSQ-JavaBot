@@ -14,11 +14,10 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UwuCommand extends Command
+public class UwUCommand extends Command
 {
 	@Override
 	public void execute(List<String> args, CommandContext ctx)

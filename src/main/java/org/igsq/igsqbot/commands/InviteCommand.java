@@ -9,7 +9,6 @@ import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 

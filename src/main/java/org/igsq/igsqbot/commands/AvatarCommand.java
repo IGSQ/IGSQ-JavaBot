@@ -10,7 +10,6 @@ import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class AvatarCommand extends Command

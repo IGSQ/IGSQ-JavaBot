@@ -1,11 +1,10 @@
 package org.igsq.igsqbot.handlers;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ScanResult;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
@@ -20,38 +19,37 @@ import java.util.stream.Collectors;
 
 public abstract class CommandHandler
 {
-	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
-	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
-	public static final Map<String, Command> COMMAND_MAP;
-
-	static
-	{
-		final Map<String, Command> COMMANDS = new HashMap<>();
-		try(final ScanResult result = CLASS_GRAPH.scan())
-		{
-			for(final ClassInfo cls : result.getAllClasses())
-			{
-				final Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
-				COMMANDS.put(cmd.getName(), cmd);
-				for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
-			}
-		}
-		catch(Exception exception)
-		{
-			new ErrorHandler(exception);
-			System.exit(1);
-		}
-		COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
-	}
+	private static Map<String, Command> commandMap;
 
 	private CommandHandler()
 	{
 		//Overrides the default, public, constructor
 	}
 
+	public static void setCommandMap(List<Command> commands)
+	{
+		final Map<String, Command> COMMANDS = new HashMap<>();
+		for(Command cmd : commands)
+		{
+			COMMANDS.put(cmd.getName(), cmd);
+			for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
+		}
+		commandMap = Collections.unmodifiableMap(COMMANDS);
+	}
+
+	public static Map<String, Command> getCommandMap()
+	{
+		return commandMap;
+	}
+
 	public static void handle(MessageReceivedEvent event)
 	{
+		if(commandMap.isEmpty())
+		{
+			throw new UnsupportedOperationException("Commands cannot be handled with an empty map.");
+		}
+
 		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split(" ")).collect(Collectors.toList());
 		final ChannelType channelType = event.getChannelType();
 		final MessageChannel channel = event.getChannel();
@@ -63,7 +61,6 @@ public abstract class CommandHandler
 			final JDA jda = event.getJDA();
 			final Guild guild = event.getGuild();
 			final String prefix = new GuildConfig(guild, jda).getGuildPrefix();
-			final Member member = event.getMember();
 			final String selfID = jda.getSelfUser().getId();
 			final String messageContent = event.getMessage().getContentRaw();
 
@@ -77,7 +74,7 @@ public abstract class CommandHandler
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 				if(!issuedCommand.isEmpty())
 				{
-					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
+					cmd = commandMap.get(issuedCommand.toLowerCase());
 				}
 				else
 				{
@@ -91,7 +88,7 @@ public abstract class CommandHandler
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 				if(!issuedCommand.isEmpty())
 				{
-					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
+					cmd = commandMap.get(issuedCommand.toLowerCase());
 				}
 				else
 				{
@@ -105,7 +102,7 @@ public abstract class CommandHandler
 
 			if(guild.getSelfMember().hasPermission(Permission.MESSAGE_MANAGE))
 			{
-				event.getMessage().delete().queue();
+				event.getMessage().delete().queue(null, null);
 			}
 			if(cmd == null)
 			{
@@ -132,7 +129,7 @@ public abstract class CommandHandler
 			{
 				final String content = event.getMessage().getContentRaw().substring(prefix.length());
 				final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				final Command cmd = COMMAND_MAP.get(issuedCommand);
+				final Command cmd = commandMap.get(issuedCommand);
 
 				if(cmd == null)
 				{

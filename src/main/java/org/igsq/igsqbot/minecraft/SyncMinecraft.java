@@ -78,13 +78,13 @@ public class SyncMinecraft
 
 				boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
 
-				if(userExists) //TODO: Make a method for this
+				if(userExists)
 				{
-					Database.updateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
+					CommonMinecraft.updateUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
 				}
 				else
 				{
-					Database.updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
+					CommonMinecraft.addNewUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
 				}
 			}
 		});

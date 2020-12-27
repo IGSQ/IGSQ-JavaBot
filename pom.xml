@@ -48,12 +48,6 @@
 		    <version>1.7.1</version>
 		</dependency>
 
-		<dependency>
-		    <groupId>io.github.classgraph</groupId>
-		    <artifactId>classgraph</artifactId>
-		    <version>4.8.98</version>
-		</dependency>
-
         <dependency>
              <groupId>ch.qos.logback</groupId>
              <artifactId>logback-classic</artifactId>

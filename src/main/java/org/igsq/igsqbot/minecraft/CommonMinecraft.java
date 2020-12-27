@@ -106,4 +106,16 @@ public class CommonMinecraft
 	{
 		Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';");
 	}
+
+	public static void updateUser(String id, String username, String nickname, String rank
+			, int supporter, int birthday, int developer, int founder, int nitroboost)
+	{
+		Database.updateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
+	}
+
+	public static void addNewUser(String id, String username, String nickname, String rank
+			, int supporter, int birthday, int developer, int founder, int nitroboost)
+	{
+		Database.updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
+	}
 }

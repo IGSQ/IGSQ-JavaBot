@@ -13,7 +13,6 @@ import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class LinkCommand extends Command
@@ -205,7 +204,7 @@ public class LinkCommand extends Command
 				}
 				else if(isWaiting)
 				{
-					Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';"); //TODO: Maybe optimise this
+					Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
 					Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
 					EmbedUtils.sendSuccess(channel, "Link confirmed for account: " + username);
 				}

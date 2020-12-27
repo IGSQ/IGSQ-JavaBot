@@ -1,12 +1,9 @@
 package org.igsq.igsqbot.entities.yaml;
 
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.util.YamlUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BotConfig
@@ -37,6 +34,13 @@ public class BotConfig
 
 	public List<String> getPrivilegedUsers()
 	{
-		return new ArrayList<>(Arrays.asList(Yaml.getFieldString("bot.privileged", Filename.CONFIG).split("/")));
+		if(YamlUtils.isFieldEmpty("bot.privileged", Filename.CONFIG))
+		{
+			return Collections.emptyList();
+		}
+		else
+		{
+			return new ArrayList<>(Arrays.asList(Yaml.getFieldString("bot.privileged", Filename.CONFIG).split("/")));
+		}
 	}
 }
