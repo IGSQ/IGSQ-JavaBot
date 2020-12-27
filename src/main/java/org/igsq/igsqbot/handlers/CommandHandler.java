@@ -51,12 +51,11 @@ public abstract class CommandHandler
 		}
 
 		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split(" ")).collect(Collectors.toList());
-		final ChannelType channelType = event.getChannelType();
 		final MessageChannel channel = event.getChannel();
 		args.remove(0);
 
-		if(event.getAuthor().isBot()) return;
-		if(channelType.equals(ChannelType.TEXT))
+		if(event.getAuthor().isBot() || event.isWebhookMessage()) return;
+		if(event.isFromGuild())
 		{
 			final JDA jda = event.getJDA();
 			final Guild guild = event.getGuild();

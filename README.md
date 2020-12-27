@@ -58,8 +58,7 @@ None!
 ### **arynxd**
  - [ ] Finish verification
  - [ ] Reactionevent / ~~roles into the yaml~~\
- - [ ] Catch webhooks in commandhandler
- 
+
  - [ ] Help / Modhelp - added functionality, still needs content
  - [ ] Implement .help to use the COMMANDS array for its information
  - [ ] Alias / Decline (within the setup command)
