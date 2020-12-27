@@ -1,8 +1,11 @@
 package org.igsq.igsqbot.entities;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.util.List;
 
 public class CommandContext
 {
@@ -46,5 +49,10 @@ public class CommandContext
 	public MessageReceivedEvent getEvent()
 	{
 		return event;
+	}
+
+	public boolean hasPermission(List<Permission> permissions)
+	{
+		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
 	}
 }

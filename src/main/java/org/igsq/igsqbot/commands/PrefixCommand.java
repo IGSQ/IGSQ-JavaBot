@@ -76,9 +76,9 @@ public class PrefixCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.singletonList(Permission.ADMINISTRATOR);
+		return ctx.hasPermission(Collections.singletonList(Permission.ADMINISTRATOR));
 	}
 
 	@Override

@@ -84,9 +84,9 @@ public class InviteCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.emptyList();
+		return true;
 	}
 
 	@Override

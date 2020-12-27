@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
@@ -120,9 +119,9 @@ public class ReportCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.emptyList();
+		return true;
 	}
 
 	@Override

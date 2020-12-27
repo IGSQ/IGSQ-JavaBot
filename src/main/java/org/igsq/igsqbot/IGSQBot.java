@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.entities.cache.BotConfig;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.Punishment;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
@@ -45,27 +45,17 @@ public class IGSQBot
 					.setAutoReconnect(true)
 					.setShardsTotal(-1)
 					.addEventListeners(
-							new MessageReactionAdd_Main(),
-							new MessageDelete_Main(),
-							new MessageReceived_Main(),
-							new MessageReactionRemove_Main(),
+							new MessageEventsMain(),
+							new GuildEventsMain(),
 
-							new GuildLeave_Main(),
-							new UnavailableGuildLeave_Main(),
+							new VoiceEventsLogging(),
+							new MessageEventsLogging(),
+							new MemberEventsLogging(),
 
 							new MessageReactionAdd_Help(),
-							new MessageReactionAdd_Report(),
+							new MessageReactionAdd_Report()
+							)
 
-							new GuildMemberJoin_Logging(),
-							new GuildMemberRemove_Logging(),
-
-							new GuildVoiceJoin_Logging(),
-							new GuildVoiceLeave_Logging(),
-							new GuildVoiceMove_Logging(),
-
-							new MessageBulkDelete_Logging(),
-							new MessageDelete_Logging(),
-							new MessageUpdate_Logging())
 					.build();
 
 				shardManager.getShards().forEach(shard ->
@@ -77,7 +67,7 @@ public class IGSQBot
 					}
 					catch(Exception exception)
 					{
-						LOGGER.info("A shard was interrupted during startup.");
+						LOGGER.info("Shard " + shard.getShardInfo().getShardId() + " was interrupted during load.");
 					}
 				});
 
@@ -98,11 +88,11 @@ public class IGSQBot
 				Yaml.loadFile(Filename.ALL);
 			}, "yamlReload", TimeUnit.SECONDS, 30);
 		}
-		catch (IllegalArgumentException e)
+		catch (IllegalArgumentException exception)
 		{
-			LOGGER.error("No login details provided! Please provide a tToken in the config.yml.");
+			LOGGER.error("No login details provided! Please provide a token in the config.yml.");
 		}
-		catch (LoginException e)
+		catch (LoginException exception)
 		{
 			LOGGER.error("The provided token was invalid, please ensure you put a valid token in config.yml");
 		}

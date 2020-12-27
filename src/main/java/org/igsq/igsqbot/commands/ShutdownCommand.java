@@ -1,12 +1,12 @@
 package org.igsq.igsqbot.commands;
 
-import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.GUIGenerator;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.entities.yaml.Blacklist;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
@@ -72,9 +72,9 @@ public class ShutdownCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return null;
+		return new BotConfig().getPrivilegedUsers().contains(ctx.getAuthor().getId());
 	}
 
 	@Override

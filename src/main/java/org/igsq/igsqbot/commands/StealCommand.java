@@ -70,9 +70,9 @@ public class StealCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.singletonList(Permission.MANAGE_EMOTES);
+		return ctx.hasPermission(Collections.singletonList(Permission.MANAGE_EMOTES));
 	}
 
 	@Override

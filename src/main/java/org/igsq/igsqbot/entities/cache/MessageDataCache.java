@@ -11,7 +11,9 @@ import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -247,13 +249,13 @@ public class MessageDataCache
 		}
 	}
 
-	public Map<String, Role> getRoles(Guild guild)
+	public Map<Role, String> getRoles(Guild guild)
 	{
 		if(type == null)
 		{
 			throw new UnsupportedOperationException("You must set the type before getting roles");
 		}
-		Map<String, Role> result = new ConcurrentHashMap<>();
+		Map<Role, String> result = new ConcurrentHashMap<>();
 		switch(type)
 		{
 			case HELP:
@@ -263,7 +265,17 @@ public class MessageDataCache
 				break;
 			}
 			case VERIFICATION:
+				Arrays.stream(Yaml.getFieldString(messageId + ".verification.guessedroles", Filename.INTERNAL)
+						.split("/"))
+						.map(guild::getRoleById)
+						.filter(Objects::nonNull)
+						.forEach(role -> result.put(role, "guess"));
 
+				Arrays.stream(Yaml.getFieldString(messageId + ".verification.matchedroles", Filename.INTERNAL)
+						.split("/"))
+						.map(guild::getRoleById)
+						.filter(Objects::nonNull)
+						.forEach(role -> result.put(role, "match"));
 				break;
 			default:
 			{

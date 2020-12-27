@@ -77,9 +77,9 @@ public class MuteCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.singletonList(Permission.KICK_MEMBERS);
+		return ctx.hasPermission(Collections.singletonList(Permission.KICK_MEMBERS));
 	}
 
 	@Override

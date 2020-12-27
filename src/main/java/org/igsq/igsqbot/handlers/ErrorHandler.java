@@ -2,9 +2,8 @@ package org.igsq.igsqbot.handlers;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.EmbedGenerator;
-import org.igsq.igsqbot.entities.cache.BotConfig;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 import org.slf4j.Logger;

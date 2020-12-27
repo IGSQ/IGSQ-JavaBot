@@ -32,17 +32,15 @@ public abstract class CommandHandler
 		{
 			for(final ClassInfo cls : result.getAllClasses())
 			{
-				if(cls.loadClass().isInstance(Command.class))
-				{
-					final Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
-					COMMANDS.put(cmd.getName(), cmd);
-					for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
-				}
+				final Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
+				COMMANDS.put(cmd.getName(), cmd);
+				for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
 			}
 		}
 		catch(Exception exception)
 		{
 			new ErrorHandler(exception);
+			System.exit(1);
 		}
 		COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
 	}
@@ -119,8 +117,7 @@ public abstract class CommandHandler
 				EmbedUtils.sendDisabledError(channel, cmd);
 				return;
 			}
-			else if(!guild.getSelfMember().hasPermission((GuildChannel) channel, cmd.getPermissions())
-					|| (member != null && !member.hasPermission((GuildChannel) channel, cmd.getPermissions())))
+			else if(!cmd.canExecute(new CommandContext(event)))
 			{
 				EmbedUtils.sendPermissionError(channel, cmd);
 				return;

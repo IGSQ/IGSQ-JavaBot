@@ -210,8 +210,9 @@ public class Yaml
 		addFieldDefault("mysql.database", Filename.CONFIG, "jdbc:mysql://localhost:3306/database?useSSL=false");
 
 		addFieldDefault("bot.token", Filename.CONFIG, "token");
-		addFieldDefault("bot.server", Filename.CONFIG, "");
-		addFieldDefault("bot.error", Filename.CONFIG, "");
+		addFieldDefault("bot.server", Filename.CONFIG, "homeServer");
+		addFieldDefault("bot.error", Filename.CONFIG, "errorChannel");
+		addFieldDefault("bot.privileged", Filename.CONFIG, "none");
 
 		addFieldDefault("ranks.default", Filename.MINECRAFT , "");
 

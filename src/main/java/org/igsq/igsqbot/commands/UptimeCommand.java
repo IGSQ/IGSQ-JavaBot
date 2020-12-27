@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.commands;
 
-import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
@@ -58,9 +57,9 @@ public class UptimeCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.emptyList();
+		return true;
 	}
 
 	@Override

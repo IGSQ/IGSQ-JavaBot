@@ -1,7 +1,6 @@
 package org.igsq.igsqbot;
 
-import org.igsq.igsqbot.entities.cache.BotConfig;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

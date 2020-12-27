@@ -1,8 +1,8 @@
 package org.igsq.igsqbot.commands;
 
-import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.util.Collections;
@@ -41,9 +41,9 @@ public class TestCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.singletonList(Permission.ADMINISTRATOR);
+		return new BotConfig().getPrivilegedUsers().contains(ctx.getAuthor().getId());
 	}
 
 	@Override

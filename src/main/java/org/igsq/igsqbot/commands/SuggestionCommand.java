@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.commands;
 
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -88,9 +87,9 @@ public class SuggestionCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.emptyList();
+		return true;
 	}
 
 	@Override

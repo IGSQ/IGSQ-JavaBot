@@ -1,8 +1,11 @@
-package org.igsq.igsqbot.entities.cache;
+package org.igsq.igsqbot.entities.yaml;
 
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.yaml.Filename;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,5 +33,10 @@ public class BotConfig
 		result.put("password", Yaml.getFieldString("mysql.password", Filename.CONFIG));
 		result.put("database", Yaml.getFieldString("mysql.database", Filename.CONFIG));
 		return result;
+	}
+
+	public List<String> getPrivilegedUsers()
+	{
+		return new ArrayList<>(Arrays.asList(Yaml.getFieldString("bot.privileged", Filename.CONFIG).split("/")));
 	}
 }

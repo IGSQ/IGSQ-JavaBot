@@ -39,7 +39,7 @@ public class EmbedUtils
 	public static void sendPermissionError(MessageChannel channel, Command command)
 	{
 		new EmbedGenerator(channel)
-				.text(Constants.FAILURE + " A permission error occurred when attempting to execute command:`" + command.getAliases().get(0)  + "`")
+				.text(Constants.FAILURE + " A permission error occurred when attempting to execute command:`" + command.getAliases().get(0) + "`")
 				.color(Color.RED)
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();

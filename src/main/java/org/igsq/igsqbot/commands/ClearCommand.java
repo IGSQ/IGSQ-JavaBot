@@ -86,9 +86,9 @@ public class ClearCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.singletonList(Permission.MESSAGE_MANAGE);
+		return ctx.hasPermission(Collections.singletonList(Permission.MESSAGE_MANAGE));
 	}
 
 	@Override

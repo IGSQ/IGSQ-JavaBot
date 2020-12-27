@@ -1,7 +1,5 @@
 package org.igsq.igsqbot.entities;
 
-import net.dv8tion.jda.api.Permission;
-
 import java.util.List;
 
 public abstract class Command
@@ -18,7 +16,7 @@ public abstract class Command
 
 	public abstract String getSyntax();
 
-	public abstract List<Permission> getPermissions();
+	public abstract boolean canExecute(CommandContext ctx);
 
 	public abstract boolean isRequiresGuild();
 

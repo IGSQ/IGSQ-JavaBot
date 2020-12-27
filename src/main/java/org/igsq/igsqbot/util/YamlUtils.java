@@ -27,7 +27,7 @@ public class YamlUtils
 
 			while(onFile.startsWith(delimiter))
 			{
-				onFile = onFile.substring(0, 1);
+				onFile = onFile.substring(0, delimiter.length());
 			}
 
 			if(onFile.endsWith(delimiter))

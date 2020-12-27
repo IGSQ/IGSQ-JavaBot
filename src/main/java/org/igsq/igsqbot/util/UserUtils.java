@@ -112,9 +112,4 @@ public class UserUtils
 	{
 		return user.hasPermission(channel, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_READ, Permission.VIEW_CHANNEL);
 	}
-
-	public static String getRoleAsMention(String id)
-	{
-		return "<@&" + id + ">";
-	}
 }

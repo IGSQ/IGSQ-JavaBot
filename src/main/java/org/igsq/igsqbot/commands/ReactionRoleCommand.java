@@ -47,6 +47,12 @@ public class ReactionRoleCommand extends Command
 				emote = null;
 			}
 
+			if(emoji != null && !emoji.matches("/[^\\w$\\x{0080}-\\x{FFFF}]+/u"))
+			{
+				EmbedUtils.sendSyntaxError(channel, this);
+				return;
+			}
+
 			if(!UserUtils.getMemberFromUser(author, guild).canInteract(role))
 			{
 				EmbedUtils.sendPermissionError(channel, this);
@@ -142,9 +148,9 @@ public class ReactionRoleCommand extends Command
 	}
 
 	@Override
-	public List<Permission> getPermissions()
+	public boolean canExecute(CommandContext ctx)
 	{
-		return Collections.singletonList(Permission.ADMINISTRATOR);
+		return ctx.hasPermission(Collections.singletonList(Permission.ADMINISTRATOR));
 	}
 
 	@Override
