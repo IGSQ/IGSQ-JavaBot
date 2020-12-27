@@ -66,7 +66,7 @@ None!
 
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext
 
- - [ ] Muting (needs deb
+ - [ ] Muting (needs debugged)
  - [ ] Yaml array object / functionality
    
  - [ ] **PREPARE FOR PR!!!**
