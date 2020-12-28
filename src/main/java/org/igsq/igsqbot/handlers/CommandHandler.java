@@ -6,6 +6,7 @@ import io.github.classgraph.ScanResult;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
@@ -20,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public abstract class CommandHandler
+public class CommandHandler
 {
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
 	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
@@ -59,102 +60,85 @@ public abstract class CommandHandler
 
 	public static void handle(MessageReceivedEvent event)
 	{
-		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split(" ")).collect(Collectors.toList());
-		final MessageChannel channel = event.getChannel();
-		args.remove(0);
+		if(event.getAuthor().isBot() || event.isWebhookMessage())
+		{
+			return;
+		}
 
-		if(event.getAuthor().isBot() || event.isWebhookMessage()) return;
+		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split(" ")).collect(Collectors.toList());
+		final String messageContent = event.getMessage().getContentRaw();
+		final JDA jda = event.getJDA();
+		final MessageChannel channel = event.getChannel();
+		final String selfID = jda.getSelfUser().getId();
+		final String commandText;
+		final String content;
+		final Command cmd;
+
+		final boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
+		final String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
+
 		if(event.isFromGuild())
 		{
-			final JDA jda = event.getJDA();
 			final Guild guild = event.getGuild();
-			final String prefix = new GuildConfig(guild, jda).getGuildPrefix();
-			final String selfID = jda.getSelfUser().getId();
-			final String messageContent = event.getMessage().getContentRaw();
-
-			final String content;
-			final String issuedCommand;
-			final Command cmd;
-
-			if(messageContent.startsWith(prefix))
+			if(startsWithId)
 			{
-				content = messageContent.substring(prefix.length()).trim();
-				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				if(!issuedCommand.isEmpty())
-				{
-					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
-				}
-				else
-				{
-					return;
-				}
-
+				content = idTrimmed;
 			}
-			else if(messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">"))
+			else if(messageContent.startsWith(new GuildConfig(guild.getId(), jda).getGuildPrefix()))
 			{
-				content = messageContent.substring(messageContent.indexOf(">") + 1).trim();
-				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				if(!issuedCommand.isEmpty())
+				final String prefix  = new GuildConfig(guild.getId(), jda).getGuildPrefix();
+				content = messageContent.substring(prefix.length()).trim();
+				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 				{
-					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
-				}
-				else
-				{
-					return;
+					event.getMessage().delete().queue(null, error -> {});
 				}
 			}
 			else
 			{
 				return;
 			}
-
-			if(guild.getSelfMember().hasPermission(Permission.MESSAGE_MANAGE))
+		}
+		else
+		{
+			final String prefix  = Constants.DEFAULT_BOT_PREFIX;
+			if(startsWithId)
 			{
-				event.getMessage().delete().queue(null, null);
+				content = idTrimmed;
 			}
+			else if(messageContent.startsWith(prefix))
+			{
+				content = messageContent.substring(prefix.length()).trim();
+			}
+			else
+			{
+				return;
+			}
+		}
+
+		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
+		if(!commandText.isEmpty())
+		{
+			cmd = COMMAND_MAP.get(commandText.toLowerCase());
 			if(cmd == null)
 			{
-				EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
-				return;
+				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.");
 			}
 			else if(cmd.isDisabled())
 			{
 				EmbedUtils.sendDisabledError(channel, cmd);
-				return;
+			}
+			else if(cmd.isGuildOnly() && !event.isFromGuild())
+			{
+				EmbedUtils.sendError(channel, "This command requires execution in a server.");
 			}
 			else if(!cmd.canExecute(new CommandContext(event)))
 			{
 				EmbedUtils.sendExecutionError(channel, cmd);
-				return;
 			}
-
-			commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
-		}
-		else
-		{
-			final String prefix = Constants.DEFAULT_BOT_PREFIX;
-			if(event.getMessage().getContentRaw().startsWith(prefix))
+			else
 			{
-				final String content = event.getMessage().getContentRaw().substring(prefix.length());
-				final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				final Command cmd = COMMAND_MAP.get(issuedCommand);
-
-				if(cmd == null)
-				{
-					EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
-				}
-				else if(cmd.isDisabled())
-				{
-					EmbedUtils.sendDisabledError(channel, cmd);
-				}
-				else if(cmd.isGuildOnly())
-				{
-					EmbedUtils.sendError(channel, "This command requires execution in a guild.");
-				}
-				else
-				{
-					commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
-				}
+				args.remove(0);
+				commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
 			}
 		}
 	}
