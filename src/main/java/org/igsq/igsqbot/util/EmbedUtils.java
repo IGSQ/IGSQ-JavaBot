@@ -62,4 +62,13 @@ public class EmbedUtils
 				.footer(StringUtils.getTimestamp())
 				.sendTemporary();
 	}
+
+	public static void sendExecutionError(MessageChannel channel, Command command)
+	{
+		new EmbedGenerator(channel)
+				.text(Constants.FAILURE + " `" + command.getName() + "` could not be executed, this could be due to a permission error.")
+				.color(Color.RED)
+				.footer(StringUtils.getTimestamp())
+				.sendTemporary();
+	}
 }

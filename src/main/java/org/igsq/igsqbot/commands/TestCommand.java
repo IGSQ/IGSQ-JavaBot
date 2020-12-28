@@ -4,6 +4,7 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Collections;
 import java.util.List;

@@ -9,11 +9,6 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.Database;
-import org.igsq.igsqbot.commands.LinkCommand;
-import org.igsq.igsqbot.commands.ModuleCommand;
-import org.igsq.igsqbot.commands.ShutdownCommand;
-import org.igsq.igsqbot.commands.TestCommand;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.yaml.BotConfig;
@@ -40,7 +35,6 @@ public abstract class CommandHandler
 	static
 	{
 		Map<String, Command> COMMANDS = new HashMap<>();
-		BotConfig botConfig = new BotConfig();
 		try(ScanResult result = CLASS_GRAPH.scan())
 		{
 			for(ClassInfo cls : result.getAllClasses())
@@ -54,33 +48,6 @@ public abstract class CommandHandler
 		{
 			new ErrorHandler(exception);
 			System.exit(1);
-		}
-
-		if(!Database.isOnline())
-		{
-			for(String alias : new LinkCommand().getAliases())
-			{
-				COMMANDS.remove(alias);
-			}
-			COMMANDS.remove(new LinkCommand().getName());
-		}
-		if(botConfig.getPrivilegedUsers().isEmpty())
-		{
-			for(String alias : new ShutdownCommand().getAliases())
-			{
-				COMMANDS.remove(alias);
-			}
-			COMMANDS.remove(new ShutdownCommand().getName());
-			for(String alias : new ModuleCommand().getAliases())
-			{
-				COMMANDS.remove(alias);
-			}
-			COMMANDS.remove(new ModuleCommand().getName());
-			for(String alias : new TestCommand().getAliases())
-			{
-				COMMANDS.remove(alias);
-			}
-			COMMANDS.remove(new TestCommand().getName());
 		}
 		COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
 	}
@@ -157,7 +124,7 @@ public abstract class CommandHandler
 			}
 			else if(!cmd.canExecute(new CommandContext(event)))
 			{
-				EmbedUtils.sendPermissionError(channel, cmd);
+				EmbedUtils.sendExecutionError(channel, cmd);
 				return;
 			}
 

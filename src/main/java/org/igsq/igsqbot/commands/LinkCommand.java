@@ -8,6 +8,7 @@ import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -90,7 +91,7 @@ public class LinkCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return true;
+		return Database.isOnline();
 	}
 
 	@Override
