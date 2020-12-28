@@ -80,7 +80,7 @@ None!
  - [ ] Complex args parser
  - [ ] Restarting of the bot
  - [ ] Remove statics and use getInstance()
- - [ ] Info command
+ - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo)
  - [ ] Consider switch usage (replace with elif)
 
 ## Known Issues
