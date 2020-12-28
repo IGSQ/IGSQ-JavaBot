@@ -5,7 +5,7 @@ import java.util.concurrent.*;
 
 public class TaskHandler
 {
-	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
 	private static final Map<String, ScheduledFuture<?>> TASK_MAP = new HashMap<>();
 	private static final List<UUID> UUID_LIST = new ArrayList<>();
 

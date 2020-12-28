@@ -1,5 +1,6 @@
 package org.igsq.igsqbot;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -35,6 +36,7 @@ public class IGSQBot
 	private static final LocalDateTime START_TIMESTAMP = LocalDateTime.now();
 	private static final Logger LOGGER = LoggerFactory.getLogger(IGSQBot.class);
 	private static ShardManager shardManager;
+	private static int readyShardID;
 
 	public static void main(String[] args)
 	{
@@ -52,6 +54,7 @@ public class IGSQBot
 					.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
 					.setAutoReconnect(true)
 					.setShardsTotal(-1)
+					.setBulkDeleteSplittingEnabled(false)
 					.addEventListeners(
 							new MessageEventsMain(),
 							new GuildEventsMain(),
@@ -66,19 +69,7 @@ public class IGSQBot
 
 					.build();
 
-				shardManager.getShards().forEach(shard ->
-				{
-					try
-					{
-						shard.awaitReady();
-						LOGGER.info("Shard " + shard.getShardInfo().getShardId() + " has loaded."); //TODO: note the ID thats ready for use in SelfUser
-					}
-					catch(Exception exception)
-					{
-						LOGGER.info("Shard " + shard.getShardInfo().getShardId() + " was interrupted during load.");
-					}
-				});
-
+			readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
 
 			final List<Command> commandList = new ArrayList<>();
 			commandList.add(new AvatarCommand());
@@ -137,6 +128,10 @@ public class IGSQBot
 		{
 			LOGGER.error("The provided token was invalid, please ensure you put a valid token in config.yml");
 		}
+		catch(Exception exception)
+		{
+			LOGGER.error("An unexpected exception occurred", exception);
+		}
 	}
 
 	public static LocalDateTime getStartTimestamp()
@@ -149,6 +144,11 @@ public class IGSQBot
 		return shardManager;
 	}
 
+	public static int getReadyShardID()
+	{
+		return readyShardID;
+	}
+
 	public static class SelfUser
 	{
 		private SelfUser()
@@ -156,8 +156,8 @@ public class IGSQBot
 			//Overrides the default, public, constructor
 		}
 
-		private static final String id = IGSQBot.shardManager.getShardById(0).getSelfUser().getId();
-		private static final String tag = IGSQBot.shardManager.getShardById(0).getSelfUser().getAsTag();
+		private static final String id = IGSQBot.shardManager.getShardById(IGSQBot.getReadyShardID()).getSelfUser().getId();
+		private static final String tag = IGSQBot.shardManager.getShardById(IGSQBot.getReadyShardID()).getSelfUser().getAsTag();
 
 		public static String getId()
 		{
