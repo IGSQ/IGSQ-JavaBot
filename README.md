@@ -81,6 +81,7 @@ None!
  - [ ] Restarting of the bot
  - [ ] Remove statics and use getInstance()
  - [ ] Info command
+ - [ ] Consider switch usage (replace with elif)
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
