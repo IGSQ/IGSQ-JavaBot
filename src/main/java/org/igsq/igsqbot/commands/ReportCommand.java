@@ -29,16 +29,14 @@ public class ReportCommand extends Command
 		final Guild guild = ctx.getGuild();
 		final JDA jda = ctx.getJDA();
 
-		if(args.size() != 2)
+		if(args.size() != 2 || ctx.getMessage().getMentionedMembers().isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
 
-		final User reportedUser = UserUtils.getUserFromMention(args.get(0));
-		if(reportedUser != null)
-		{
-			final Member reportedMember = UserUtils.getMemberFromUser(reportedUser, guild);
+			final Member reportedMember = ctx.getMessage().getMentionedMembers().get(0);
+			final User reportedUser = reportedMember.getUser();
 			final GuildConfig config = new GuildConfig(ctx.getGuild(), ctx.getJDA());
 			final MessageChannel reportChannel = config.getReportChannel();
 			args.remove(0);
@@ -70,7 +68,7 @@ public class ReportCommand extends Command
 						.element("Channel:", StringUtils.getChannelAsMention(channel.getId()))
 						.element("Message Log:", messageLog.toString())
 						.color(reportedMember.getColor())
-						.footer("This report is unhandled and can only be dealt by members higher than " + UserUtils.getMemberFromUser(author, guild).getRoles().get(0).getName());
+						.footer("This report is unhandled and can only be dealt by members higher than " + ctx.getMember().getRoles().get(0).getName());
 
 				reportChannel.sendMessage(embed.getBuilder().build()).queue
 						(
@@ -89,9 +87,8 @@ public class ReportCommand extends Command
 								}
 						);
 
+
 			}
-		}
-		else EmbedUtils.sendError(channel, "Could not find the user " + args.get(0) + ".");
 	}
 
 	@Override

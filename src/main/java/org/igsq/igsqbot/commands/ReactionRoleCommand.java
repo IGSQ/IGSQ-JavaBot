@@ -53,7 +53,7 @@ public class ReactionRoleCommand extends Command
 				return;
 			}
 
-			if(!UserUtils.getMemberFromUser(author, guild).canInteract(role))
+			if(!ctx.getMember().canInteract(role))
 			{
 				EmbedUtils.sendPermissionError(channel, this);
 				return;

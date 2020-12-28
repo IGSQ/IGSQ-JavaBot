@@ -4,8 +4,11 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.requests.RestAction;
 
+import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 
 public class CommandContext
 {
@@ -28,7 +31,15 @@ public class CommandContext
 
 	public Guild getGuild()
 	{
-		return event.getGuild();
+		if(event.isFromGuild())
+		{
+			return event.getGuild();
+		}
+		else
+		{
+			return null;
+		}
+
 	}
 
 	public User getAuthor()
@@ -50,6 +61,17 @@ public class CommandContext
 	{
 		return event;
 	}
+
+	/**
+	 * This member will not be null, due to previous checks
+	 * @return the member for this context
+	 */
+	@Nonnull
+	public Member getMember()
+	{
+		return Objects.requireNonNull(event.getMember());
+	}
+
 
 	public boolean hasPermission(List<Permission> permissions)
 	{

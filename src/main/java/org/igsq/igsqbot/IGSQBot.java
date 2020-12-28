@@ -55,9 +55,11 @@ public class IGSQBot
 					.addEventListeners(
 							new MessageEventsMain(),
 							new GuildEventsMain(),
+
 							new VoiceEventsLogging(),
 							new MessageEventsLogging(),
 							new MemberEventsLogging(),
+
 							new MessageReactionAdd_Help(),
 							new MessageReactionAdd_Report()
 							)
@@ -69,7 +71,7 @@ public class IGSQBot
 					try
 					{
 						shard.awaitReady();
-						LOGGER.info("Shard " + shard.getShardInfo().getShardId() + " has loaded.");
+						LOGGER.info("Shard " + shard.getShardInfo().getShardId() + " has loaded."); //TODO: note the ID thats ready for use in SelfUser
 					}
 					catch(Exception exception)
 					{
@@ -137,14 +139,14 @@ public class IGSQBot
 		}
 	}
 
-	public static ShardManager getShardManager()
-	{
-		return shardManager;
-	}
-
 	public static LocalDateTime getStartTimestamp()
 	{
 		return START_TIMESTAMP;
+	}
+
+	public static ShardManager getShardManager()
+	{
+		return shardManager;
 	}
 
 	public static class SelfUser

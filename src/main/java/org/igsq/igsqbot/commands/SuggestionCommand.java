@@ -51,7 +51,7 @@ public class SuggestionCommand extends Command
 						.text(ArrayUtils.arrayCompile(args, " "))
 						.color(Constants.IGSQ_PURPLE)
 						.thumbnail(author.getAvatarUrl())
-						.footer("Suggestion by: " + UserUtils.getMemberFromUser(author, guild).getEffectiveName() + author.getDiscriminator())
+						.footer("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator())
 						.send();
 			}
 		}

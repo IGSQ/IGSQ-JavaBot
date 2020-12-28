@@ -3,6 +3,7 @@ package org.igsq.igsqbot.minecraft;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
@@ -34,36 +35,35 @@ public class TwoFAMinecraft
 
 	private static void sendDirectMessage(String id)
 	{
-		User user = UserUtils.getUserFromMention(id);
-		if(user != null)
-		{
-			String code = generateCode();
-			user.openPrivateChannel().queue(
-					channel ->
-					{
-						EmbedGenerator embed = new EmbedGenerator(channel)
-								.text("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
-								.color(Constants.IGSQ_PURPLE);
+		String code = generateCode();
+		IGSQBot.getShardManager().retrieveUserById(id)
+				.flatMap(User::openPrivateChannel)
+				.queue(
+						channel ->
+						{
+							EmbedGenerator embed = new EmbedGenerator(channel)
+									.text("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
+									.color(Constants.IGSQ_PURPLE);
 
-						channel.sendMessage(embed.getBuilder().build()).queue(
-								message ->
-								{
-									Database.updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
-
-									TaskHandler.addTask(() ->
+							channel.sendMessage(embed.getBuilder().build()).queue(
+									message ->
 									{
-										new EmbedGenerator(message.getEmbeds().get(0)).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message.").replace(message);
-										if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
+										Database.updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+
+										TaskHandler.addTask(() ->
 										{
-											Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
-										}
-										Database.updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
-									}, TimeUnit.SECONDS, 60);
-								}, error -> {}
-						);
-					}
-			);
-		}
+											new EmbedGenerator(message.getEmbeds().get(0)).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message.").replace(message);
+											if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
+											{
+												Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+											}
+											Database.updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+										}, TimeUnit.SECONDS, 60);
+									}, error -> {}
+							);
+						}
+
+				);
 	}
 
 	private static String generateCode()

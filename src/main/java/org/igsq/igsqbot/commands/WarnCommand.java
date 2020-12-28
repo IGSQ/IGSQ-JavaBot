@@ -23,28 +23,28 @@ public class WarnCommand extends Command
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
-		final Guild guild = ctx.getGuild();
-		if(args.size() <= 1)
+		final Member member = ctx.getMember();
+		if(args.size() <= 1 || ctx.getMessage().getMentionedMembers().isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 		}
 		else if(UserUtils.isUserMention(args.get(0)))
 		{
-			if(UserUtils.getMemberFromUser(ctx.getAuthor(), guild).hasPermission(Permission.MESSAGE_MANAGE))
+			if(member.hasPermission(Permission.MESSAGE_MANAGE))
 			{
 				EmbedUtils.sendPermissionError(channel, this);
 			}
 			else
 			{
-				Member member = UserUtils.getMemberFromUser(UserUtils.getUserFromMention(args.get(0)), guild);
-				if(!UserUtils.getMemberFromUser(ctx.getAuthor(), guild).canInteract(member) || member.isOwner() || member.getUser().isBot())
+				final Member targetMember = ctx.getMessage().getMentionedMembers().get(0);
+				if(!member.canInteract(targetMember) || targetMember.isOwner() || targetMember.getUser().isBot())
 				{
 					EmbedUtils.sendError(channel, "You cannot warn this user!");
 				}
 				else
 				{
 					args.remove(0);
-					addWarning(member, channel, ArrayUtils.arrayCompile(args, " "));
+					addWarning(targetMember, channel, ArrayUtils.arrayCompile(args, " "));
 				}
 			}
 		}
@@ -56,14 +56,14 @@ public class WarnCommand extends Command
 				return;
 			}
 
-			final Member member = UserUtils.getMemberFromUser(UserUtils.getUserFromMention(args.get(1)), guild);
+			final Member targetMember = ctx.getMessage().getMentionedMembers().get(0);
 			switch(args.get(0).toLowerCase())
 			{
 				case "show":
-					showWarning(member, channel);
+					showWarning(targetMember, channel);
 					break;
 				case "remove":
-					if(UserUtils.getMemberFromUser(ctx.getAuthor(), guild).hasPermission(Permission.MESSAGE_MANAGE))
+					if(!member.hasPermission(Permission.MESSAGE_MANAGE))
 					{
 						EmbedUtils.sendPermissionError(channel, this);
 					}

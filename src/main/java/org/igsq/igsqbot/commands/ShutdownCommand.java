@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
@@ -41,9 +42,16 @@ public class ShutdownCommand extends Command
 		Yaml.saveFileChanges(Filename.ALL);
 		Yaml.disregardAndCloseFile(Filename.ALL);
 
-		LOGGER.warn("\nIGSQBot was shutdown using shutdown command.\n    " +
-				"-- Issued by: " + ctx.getAuthor().getAsTag() + "\n    " +
-				"-- In guild: " + ctx.getGuild().getName());
+		LOGGER.warn("IGSQBot was shutdown using shutdown command.");
+		LOGGER.warn("-- Issued by: " + ctx.getAuthor().getAsTag());
+		if(ctx.getGuild() != null)
+		{
+			LOGGER.warn("-- In guild: " + ctx.getGuild().getName());
+		}
+		else
+		{
+			LOGGER.warn("-- In guild: " + "Shutdown in DMs.");
+		}
 		System.exit(0);
 	}
 
