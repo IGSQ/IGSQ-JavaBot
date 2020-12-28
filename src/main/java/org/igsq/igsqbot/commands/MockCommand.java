@@ -32,7 +32,7 @@ public class MockCommand extends Command
 					.color(Constants.IGSQ_PURPLE)
 					.image("attachment://mock.jpg");
 
-			InputStream file = FileUtils.getResourceFile("mock.jpg", true);
+			InputStream file = FileUtils.getResourceFile("mock.jpg");
 			if(file != null)
 			{
 				channel.sendFile(file, "mock.jpg").embed(embed.getBuilder().build()).queue();

@@ -1,6 +1,5 @@
 package org.igsq.igsqbot;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -43,6 +42,11 @@ public class IGSQBot
 		Yaml.createFiles();
 		Yaml.loadFile(Filename.ALL);
 		Yaml.applyDefault();
+
+		JSON.createFiles();
+		JSON.loadFile(Filename.ALL);
+		JSON.applyDefaults();
+
 
 		final BotConfig botConfig = new BotConfig();
 		try

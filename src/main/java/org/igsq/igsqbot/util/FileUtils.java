@@ -13,7 +13,7 @@ public class FileUtils
 		//Overrides the default, public, constructor
 	}
 
-	public static InputStream getResourceFile(String fileName, boolean shouldRetry)
+	public static InputStream getResourceFile(String fileName)
 	{
 		InputStream file;
 		try
@@ -22,7 +22,7 @@ public class FileUtils
 		}
 		catch(Exception exception)
 		{
-			return shouldRetry ? getResourceFile(fileName, shouldRetry) : null;
+			return null;
 		}
 		return file;
 	}
@@ -37,7 +37,6 @@ public class FileUtils
 		}
 		catch(Exception exception)
 		{
-			new ErrorHandler(exception);
 			return null;
 		}
 		return icon;
