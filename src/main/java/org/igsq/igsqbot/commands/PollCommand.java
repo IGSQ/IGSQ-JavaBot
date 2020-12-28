@@ -29,7 +29,6 @@ public class PollCommand extends Command
 			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
-
 		final List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
 		if(slashArgs.size() >= 3 && !CommandUtils.isArgsEmbedCompatible(args))
 		{
@@ -86,7 +85,7 @@ public class PollCommand extends Command
 	}
 
 	@Override
-	public boolean isRequiresGuild()
+	public boolean isGuildOnly()
 	{
 		return false;
 	}

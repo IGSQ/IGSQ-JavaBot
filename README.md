@@ -82,7 +82,8 @@ None!
  - [ ] Remove statics and use getInstance()
  - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo)
  - [ ] Consider switch usage (replace with elif)
- - [ ] Consider Exception catching (replace with specifics)
+ - [ ] Consider Exception catching (replace with specifics)\
+ - [ ] Consider final usage
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**

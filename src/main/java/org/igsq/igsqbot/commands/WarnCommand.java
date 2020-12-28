@@ -116,7 +116,7 @@ public class WarnCommand extends Command
 	}
 
 	@Override
-	public boolean isRequiresGuild()
+	public boolean isGuildOnly()
 	{
 		return true;
 	}

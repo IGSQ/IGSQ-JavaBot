@@ -82,7 +82,7 @@ public class PrefixCommand extends Command
 	}
 
 	@Override
-	public boolean isRequiresGuild()
+	public boolean isGuildOnly()
 	{
 		return true;
 	}

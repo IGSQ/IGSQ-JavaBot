@@ -43,9 +43,9 @@ public class IGSQBot
 		Yaml.loadFile(Filename.ALL);
 		Yaml.applyDefault();
 
-		JSON.createFiles();
-		JSON.loadFile(Filename.ALL);
-		JSON.applyDefaults();
+//		JSON.createFiles();
+//		JSON.loadFile(Filename.ALL);
+//		JSON.applyDefaults();
 
 
 		final BotConfig botConfig = new BotConfig();
@@ -75,38 +75,7 @@ public class IGSQBot
 
 			readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
 
-			final List<Command> commandList = new ArrayList<>();
-			commandList.add(new AvatarCommand());
-			commandList.add(new ClearCommand());
-			commandList.add(new HelpCommand());
-			commandList.add(new InviteCommand());
-			commandList.add(new MockCommand());
-			commandList.add(new ModhelpCommand());
-			commandList.add(new MuteCommand());
-			commandList.add(new PingCommand());
-			commandList.add(new PollCommand());
-			commandList.add(new PrefixCommand());
-			commandList.add(new ReactionRoleCommand());
-			commandList.add(new ReportCommand());
-			commandList.add(new StealCommand());
-			commandList.add(new SuggestionCommand());
-			commandList.add(new UptimeCommand());
-			commandList.add(new UwUCommand());
-			commandList.add(new VerificationCommand());
-			commandList.add(new WarnCommand());
-
-			if(!botConfig.getPrivilegedUsers().isEmpty())
-			{
-				commandList.add(new ModuleCommand());
-				commandList.add(new ShutdownCommand());
-				commandList.add(new TestCommand());
-			}
-			if(Database.startDatabase())
-			{
-				commandList.add(new LinkCommand());
-			}
-
-			CommandHandler.setCommandMap(commandList);
+			Database.startDatabase();
 			TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(shardManager), "muteCheck", TimeUnit.SECONDS, 30);
 			MainMinecraft.startMinecraft(shardManager);
 

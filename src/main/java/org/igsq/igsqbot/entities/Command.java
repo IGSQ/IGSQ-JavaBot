@@ -18,11 +18,11 @@ public abstract class Command
 
 	public abstract boolean canExecute(CommandContext ctx);
 
-	public abstract boolean isRequiresGuild();
+	public abstract boolean isGuildOnly();
 
 	public abstract int getCooldown();
 
-	public boolean getDisabled()
+	public boolean isDisabled()
 	{
 		return isDisabled;
 	}

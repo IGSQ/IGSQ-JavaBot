@@ -86,7 +86,7 @@ public class UwUCommand extends Command
 	}
 
 	@Override
-	public boolean isRequiresGuild()
+	public boolean isGuildOnly()
 	{
 		return false;
 	}

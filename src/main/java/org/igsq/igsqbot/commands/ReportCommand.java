@@ -64,7 +64,7 @@ public class ReportCommand extends Command
 				EmbedGenerator embed = new EmbedGenerator(reportChannel)
 						.title("New report by: " + author.getAsTag())
 						.element("Reporting user:", reportedMember.getAsMention())
-						.element("Description:", ArrayUtils.arrayCompile(args, " "))
+						.element("Description:", String.join(" ", args))
 						.element("Channel:", StringUtils.getChannelAsMention(channel.getId()))
 						.element("Message Log:", messageLog.toString())
 						.color(reportedMember.getColor())
@@ -122,7 +122,7 @@ public class ReportCommand extends Command
 	}
 
 	@Override
-	public boolean isRequiresGuild()
+	public boolean isGuildOnly()
 	{
 		return true;
 	}

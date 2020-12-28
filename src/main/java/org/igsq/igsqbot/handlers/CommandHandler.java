@@ -1,14 +1,22 @@
 package org.igsq.igsqbot.handlers;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.commands.LinkCommand;
+import org.igsq.igsqbot.commands.ModuleCommand;
+import org.igsq.igsqbot.commands.ShutdownCommand;
+import org.igsq.igsqbot.commands.TestCommand;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -19,37 +27,71 @@ import java.util.stream.Collectors;
 
 public abstract class CommandHandler
 {
+	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
+	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
 	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
-	private static Map<String, Command> commandMap;
+	public static final Map<String, Command> COMMAND_MAP;
 
 	private CommandHandler()
 	{
 		//Overrides the default, public, constructor
 	}
 
-	public static void setCommandMap(List<Command> commands)
+	static
 	{
-		final Map<String, Command> COMMANDS = new HashMap<>();
-		for(Command cmd : commands)
+		Map<String, Command> COMMANDS = new HashMap<>();
+		BotConfig botConfig = new BotConfig();
+		try(ScanResult result = CLASS_GRAPH.scan())
 		{
-			COMMANDS.put(cmd.getName(), cmd);
-			for(final String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
+			for(ClassInfo cls : result.getAllClasses())
+			{
+				Command cmd = (Command) cls.loadClass().getDeclaredConstructor().newInstance();
+				COMMANDS.put(cmd.getName(), cmd);
+				for(String alias : cmd.getAliases()) COMMANDS.put(alias, cmd);
+			}
 		}
-		commandMap = Collections.unmodifiableMap(COMMANDS);
+		catch(Exception exception)
+		{
+			new ErrorHandler(exception);
+			System.exit(1);
+		}
+
+		if(!Database.isOnline())
+		{
+			for(String alias : new LinkCommand().getAliases())
+			{
+				COMMANDS.remove(alias);
+			}
+			COMMANDS.remove(new LinkCommand().getName());
+		}
+		if(botConfig.getPrivilegedUsers().isEmpty())
+		{
+			for(String alias : new ShutdownCommand().getAliases())
+			{
+				COMMANDS.remove(alias);
+			}
+			COMMANDS.remove(new ShutdownCommand().getName());
+			for(String alias : new ModuleCommand().getAliases())
+			{
+				COMMANDS.remove(alias);
+			}
+			COMMANDS.remove(new ModuleCommand().getName());
+			for(String alias : new TestCommand().getAliases())
+			{
+				COMMANDS.remove(alias);
+			}
+			COMMANDS.remove(new TestCommand().getName());
+		}
+		COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
 	}
 
 	public static Map<String, Command> getCommandMap()
 	{
-		return commandMap;
+		return COMMAND_MAP;
 	}
 
 	public static void handle(MessageReceivedEvent event)
 	{
-		if(commandMap.isEmpty())
-		{
-			throw new UnsupportedOperationException("Commands cannot be handled with an empty map.");
-		}
-
 		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split(" ")).collect(Collectors.toList());
 		final MessageChannel channel = event.getChannel();
 		args.remove(0);
@@ -73,7 +115,7 @@ public abstract class CommandHandler
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 				if(!issuedCommand.isEmpty())
 				{
-					cmd = commandMap.get(issuedCommand.toLowerCase());
+					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
 				}
 				else
 				{
@@ -87,7 +129,7 @@ public abstract class CommandHandler
 				issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 				if(!issuedCommand.isEmpty())
 				{
-					cmd = commandMap.get(issuedCommand.toLowerCase());
+					cmd = COMMAND_MAP.get(issuedCommand.toLowerCase());
 				}
 				else
 				{
@@ -108,7 +150,7 @@ public abstract class CommandHandler
 				EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
 				return;
 			}
-			else if(cmd.getDisabled())
+			else if(cmd.isDisabled())
 			{
 				EmbedUtils.sendDisabledError(channel, cmd);
 				return;
@@ -128,17 +170,17 @@ public abstract class CommandHandler
 			{
 				final String content = event.getMessage().getContentRaw().substring(prefix.length());
 				final String issuedCommand = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-				final Command cmd = commandMap.get(issuedCommand);
+				final Command cmd = COMMAND_MAP.get(issuedCommand);
 
 				if(cmd == null)
 				{
 					EmbedUtils.sendError(channel, "The command `" + issuedCommand + "` was not found.");
 				}
-				else if(cmd.getDisabled())
+				else if(cmd.isDisabled())
 				{
 					EmbedUtils.sendDisabledError(channel, cmd);
 				}
-				else if(cmd.isRequiresGuild())
+				else if(cmd.isGuildOnly())
 				{
 					EmbedUtils.sendError(channel, "This command requires execution in a guild.");
 				}

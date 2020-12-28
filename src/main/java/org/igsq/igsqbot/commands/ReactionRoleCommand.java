@@ -20,7 +20,6 @@ public class ReactionRoleCommand extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final Message message = ctx.getMessage();
 		final Guild guild = ctx.getGuild();
-		final User author = ctx.getAuthor();
 
 		if(args.size() != 5 || message.getMentionedRoles().isEmpty() || message.getMentionedChannels().isEmpty())
 		{
@@ -154,7 +153,7 @@ public class ReactionRoleCommand extends Command
 	}
 
 	@Override
-	public boolean isRequiresGuild()
+	public boolean isGuildOnly()
 	{
 		return true;
 	}

@@ -75,7 +75,7 @@ public class ModuleCommand extends Command
 	}
 
 	@Override
-	public boolean isRequiresGuild()
+	public boolean isGuildOnly()
 	{
 		return false;
 	}
