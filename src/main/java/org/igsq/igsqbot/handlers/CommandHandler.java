@@ -65,7 +65,7 @@ public class CommandHandler
 			return;
 		}
 
-		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split("\\s")).collect(Collectors.toList());
+		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split("\\s+")).collect(Collectors.toList());
 		final String messageContent = event.getMessage().getContentRaw();
 		final JDA jda = event.getJDA();
 		final MessageChannel channel = event.getChannel();
