@@ -10,9 +10,9 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.commands.HelpCommand;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -51,6 +51,7 @@ public class CommandHandler
 			System.exit(1);
 		}
 		COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
+		HelpCommand.generatePages();
 	}
 
 	public static Map<String, Command> getCommandMap()
@@ -75,12 +76,13 @@ public class CommandHandler
 		final Command cmd;
 
 		final boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
+		final boolean startWithIdSpaced =  messageContent.startsWith("<@" + selfID + "> ")|| messageContent.startsWith("<@!" + selfID + "> ");
 		final String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 
 		if(event.isFromGuild())
 		{
 			final Guild guild = event.getGuild();
-			if(startsWithId)
+			if(startsWithId || startWithIdSpaced)
 			{
 				content = idTrimmed;
 			}
@@ -101,7 +103,7 @@ public class CommandHandler
 		else
 		{
 			final String prefix  = Constants.DEFAULT_BOT_PREFIX;
-			if(startsWithId)
+			if(startsWithId || startWithIdSpaced)
 			{
 				content = idTrimmed;
 			}
@@ -138,6 +140,10 @@ public class CommandHandler
 			else
 			{
 				args.remove(0);
+				if(startWithIdSpaced)
+				{
+					args.remove(0);
+				}
 				commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
 			}
 		}

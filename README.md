@@ -51,18 +51,16 @@
  - [x] Change command#getPermission to command#canExecute, will implement various perm checks (maybe permcheck class)
  - [x] Condensed events
  - [x] Add developer permissions check (extend existing enum)
+ - [x] Help command
 
 ### **TeaEyes**
 None!
 
 ### **arynxd**
  - [ ] Finish verification
- - [ ] Reactionevent / ~~roles into the yaml~~\
-
- - [ ] Help / Modhelp - added functionality, still needs content
- - [ ] Implement .help to use the COMMANDS array for its information
+ - [ ] Reactionevent / ~~roles into the yaml~~
+   
  - [ ] Alias / Decline (within the setup command)
- - [ ] ~~Make help command register certain commands~~(got the list, just need to pass it to helpcommand) based on api availability
 
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
  
@@ -101,7 +99,7 @@ None!
  - [ ] Consider switch usage (replace with elif)
  - [ ] Consider Exception catching (replace with specifics)\
  - [ ] Consider final usage
- - [ ] Rewrite EmbedGenerator
+ - [ ] Remove EmbedGenerator
  - [ ] Investigate caffeine > expiringmap
 
 ## Known Issues

@@ -1,15 +1,12 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
-import org.igsq.igsqbot.entities.yaml.BotConfig;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -29,37 +26,18 @@ public class LinkCommand extends Command
 		this.channel = ctx.getChannel();
 		this.author = ctx.getAuthor();
 
-		Role verifiedRole = new GuildConfig(ctx.getGuild(), ctx.getJDA()).getVerifiedRole();
 		if(args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
-		}
-		else if(verifiedRole != null)
-		{
-			EmbedUtils.sendPermissionError(channel, this);
 		}
 		else
 		{
 			switch(args.get(0).toLowerCase())
 			{
-				case "add":
-				case "new":
-					addLink();
-					break;
-
-				case "remove":
-				case "delete":
-					removeLink();
-					break;
-
-				case "show":
-				case "list":
-				case "pending":
-					showPending();
-					break;
-
-				default:
-					EmbedUtils.sendSyntaxError(channel, this);
+				case "add", "new" -> addLink();
+				case "remove", "delete" -> removeLink();
+				case "show", "list", "pending" -> showPending();
+				default -> EmbedUtils.sendSyntaxError(channel, this);
 			}
 		}
 	}

@@ -1,16 +1,17 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
-import org.igsq.igsqbot.util.UserUtils;
 
 import java.awt.*;
 import java.util.Collections;
@@ -26,7 +27,6 @@ public class ReportCommand extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final StringBuilder messageLog = new StringBuilder();
 		final User author = ctx.getAuthor();
-		final Guild guild = ctx.getGuild();
 		final JDA jda = ctx.getJDA();
 
 		if(args.size() != 2 || ctx.getMessage().getMentionedMembers().isEmpty())

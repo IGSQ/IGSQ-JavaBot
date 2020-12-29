@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.entities.Icon;
-import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.io.InputStream;
 import java.net.URL;

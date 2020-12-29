@@ -7,7 +7,6 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
-import org.igsq.igsqbot.util.UserUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;

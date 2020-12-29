@@ -6,7 +6,6 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.yaml.ReactionRole;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.igsq.igsqbot.util.UserUtils;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -6,8 +6,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.commands.*;
-import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.yaml.BotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.Punishment;
@@ -18,7 +16,6 @@ import org.igsq.igsqbot.events.logging.MessageEventsLogging;
 import org.igsq.igsqbot.events.logging.VoiceEventsLogging;
 import org.igsq.igsqbot.events.main.GuildEventsMain;
 import org.igsq.igsqbot.events.main.MessageEventsMain;
-import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.minecraft.MainMinecraft;
 import org.slf4j.Logger;
@@ -26,8 +23,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class IGSQBot

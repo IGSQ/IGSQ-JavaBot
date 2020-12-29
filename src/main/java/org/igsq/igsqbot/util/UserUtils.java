@@ -1,9 +1,8 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
-import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.handlers.ErrorHandler;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public class UserUtils
 {
