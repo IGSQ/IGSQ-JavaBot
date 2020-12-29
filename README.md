@@ -64,7 +64,25 @@ None!
  - [ ] Alias / Decline (within the setup command)
  - [ ] ~~Make help command register certain commands~~(got the list, just need to pass it to helpcommand) based on api availability
 
- - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext
+ - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
+ 
+ 
+    public static long parseSnowflake(String input)
+    {
+        Checks.notEmpty(input, "ID");
+        try
+        {
+            if (!input.startsWith("-")) // if not negative -> parse unsigned
+                return Long.parseUnsignedLong(input);
+            else // if negative -> parse normal
+                return Long.parseLong(input);
+        }
+        catch (NumberFormatException ex)
+        {
+            throw new NumberFormatException(
+                String.format("The specified ID is not a valid snowflake (%s). Expecting a valid long value!", input));
+        }
+    }
 
  - [ ] Muting (needs debugged)
  - [ ] Yaml array object / functionality
