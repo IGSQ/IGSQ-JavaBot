@@ -76,7 +76,6 @@ None!
  - [ ] Translation
  - [ ] XP system
  - [ ] Implement slash commands when they release
- - [ ] Attempt to make my own ExpiringMap
  - [ ] Complex args parser
  - [ ] Restarting of the bot
  - [ ] Remove statics and use getInstance()
@@ -84,6 +83,7 @@ None!
  - [ ] Consider switch usage (replace with elif)
  - [ ] Consider Exception catching (replace with specifics)\
  - [ ] Consider final usage
+ - [ ] Investigate caffeine > expiringmap
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
