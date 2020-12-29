@@ -17,7 +17,7 @@ dependencies
     implementation('net.dv8tion:JDA:4.2.0_224')
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation('me.carleslc.Simple-YAML:Simple-Yaml:1.7.2')
-    implementation('com.jayway.jsonpath:json-path:2.4.0')
+    implementation('com.google.code.gson:gson:2.8.6')
     implementation('io.github.classgraph:classgraph:4.8.98')
     implementation('net.jodah:expiringmap:0.5.9')
     implementation('mysql:mysql-connector-java:8.0.22')

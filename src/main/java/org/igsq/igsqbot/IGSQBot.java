@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.entities.yaml.BotConfig;
+import org.igsq.igsqbot.entities.json.JSONBotConfig;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.entities.yaml.Punishment;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
@@ -46,66 +46,72 @@ public class IGSQBot
 		Yaml.loadFile(Filename.ALL);
 		Yaml.applyDefault();
 
-//		JSON.createFiles();
-//		JSON.loadFile(Filename.ALL);
-//		JSON.applyDefaults();
+		JSON.createFiles();
+		JSON.applyDefaults();
 
+		final JSONBotConfig jsonBotConfig = (JSONBotConfig) JSON.get(JSONBotConfig.class, Filename.CONFIG);
 
-		final BotConfig botConfig = new BotConfig();
-		try
+		if(jsonBotConfig != null)
 		{
-			shardManager = DefaultShardManagerBuilder.createDefault(botConfig.getToken())
-					.enableIntents(GatewayIntent.GUILD_MEMBERS)
-					.setMemberCachePolicy(MemberCachePolicy.ALL)
-
-					.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
-					.setAutoReconnect(true)
-					.setShardsTotal(-1)
-					.addEventListeners(
-							new MessageEventsMain(),
-							new GuildEventsMain(),
-
-							new VoiceEventsLogging(),
-							new MessageEventsLogging(),
-							new MemberEventsLogging(),
-
-							new MessageReactionAdd_Help(),
-							new MessageReactionAdd_Report()
-					)
-
-					.build();
-
-			readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
-
-			Database.startDatabase();
-			TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(shardManager), "muteCheck", TimeUnit.SECONDS, 30);
-			MainMinecraft.startMinecraft(shardManager);
-
-			instance.logger.info("IGSQBot started!");
-			instance.logger.info("Account:         " + SelfUser.getAsTag() + " / " + SelfUser.getId());
-			instance.logger.info("Total Shards:    " + shardManager.getShardsRunning());
-			instance.logger.info("JDA Version:     " + JDAInfo.VERSION);
-			instance.logger.info("IGSQBot Version: " + Constants.VERSION);
-			instance.logger.info("Java Version:    " + System.getProperty("java.version"));
-
-			TaskHandler.addRepeatingTask(() ->
+			try
 			{
-				Yaml.saveFileChanges(Filename.ALL);
-				Yaml.loadFile(Filename.ALL);
-			}, "yamlReload", TimeUnit.SECONDS, 30);
-		}
+				shardManager = DefaultShardManagerBuilder.createDefault(jsonBotConfig.getToken())
+						.enableIntents(GatewayIntent.GUILD_MEMBERS)
+						.setMemberCachePolicy(MemberCachePolicy.ALL)
 
-		catch (IllegalArgumentException exception)
-		{
-			instance.logger.error("No login details provided! Please provide a token in the config.yml.");
+						.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
+						.setAutoReconnect(true)
+						.setShardsTotal(-1)
+						.addEventListeners(
+								new MessageEventsMain(),
+								new GuildEventsMain(),
+
+								new VoiceEventsLogging(),
+								new MessageEventsLogging(),
+								new MemberEventsLogging(),
+
+								new MessageReactionAdd_Help(),
+								new MessageReactionAdd_Report()
+						)
+
+						.build();
+
+				readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
+
+				Database.startDatabase();
+				TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(shardManager), "muteCheck", TimeUnit.SECONDS, 30);
+				MainMinecraft.startMinecraft(shardManager);
+
+				instance.logger.info("IGSQBot started!");
+				instance.logger.info("Account:         " + SelfUser.getAsTag() + " / " + SelfUser.getId());
+				instance.logger.info("Total Shards:    " + shardManager.getShardsRunning());
+				instance.logger.info("JDA Version:     " + JDAInfo.VERSION);
+				instance.logger.info("IGSQBot Version: " + Constants.VERSION);
+				instance.logger.info("Java Version:    " + System.getProperty("java.version"));
+
+				TaskHandler.addRepeatingTask(() ->
+				{
+					Yaml.saveFileChanges(Filename.ALL);
+					Yaml.loadFile(Filename.ALL);
+				}, "yamlReload", TimeUnit.SECONDS, 30);
+			}
+
+			catch (IllegalArgumentException exception)
+			{
+				instance.logger.error("No login details provided! Please provide a token in the config.yml.");
+			}
+			catch (LoginException exception)
+			{
+				instance.logger.error("The provided token was invalid, please ensure you put a valid token in config.yml");
+			}
+			catch(Exception exception)
+			{
+				instance.logger.error("An unexpected exception occurred", exception);
+			}
 		}
-		catch (LoginException exception)
+		else
 		{
-			instance.logger.error("The provided token was invalid, please ensure you put a valid token in config.yml");
-		}
-		catch(Exception exception)
-		{
-			instance.logger.error("An unexpected exception occurred", exception);
+			instance.logger.error("An error occurred when loading the config file.");
 		}
 	}
 
