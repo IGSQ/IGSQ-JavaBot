@@ -17,5 +17,6 @@ data/
 /target/
 
 #gradle
-.gradle
+.gradle/
 build/
+gradle/
