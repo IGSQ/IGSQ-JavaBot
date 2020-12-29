@@ -130,12 +130,6 @@ pause
 ```
 
 ## Developer Notes
-**Error Handling**
-
-This project implements an error handler which is dependent on
-the config option `bot.error` within the `config` YML file, without this set to a valid channel ID, which the bot can write into, 
-the handler will default to console only logging.
-
 **Syntax**
 
 [] - REQUIRED
