@@ -52,6 +52,9 @@
  - [x] Condensed events
  - [x] Add developer permissions check (extend existing enum)
  - [x] Help command
+ - [x] Remove EmbedGenerator in favour of JDAs EmbedBuilder
+ - [x] Created new EmbedUtils to compensate for missing functionality
+ - [x] Investigate caffeine > expiringmap (unneeded for now)
 
 ### **TeaEyes**
 None!
@@ -83,7 +86,6 @@ None!
     }
 
  - [ ] Muting (needs debugged)
- - [ ] Yaml array object / functionality
    
  - [ ] **PREPARE FOR PR!!!**
 
@@ -99,8 +101,7 @@ None!
  - [ ] Consider switch usage (replace with elif)
  - [ ] Consider Exception catching (replace with specifics)\
  - [ ] Consider final usage
- - [ ] Remove EmbedGenerator
- - [ ] Investigate caffeine > expiringmap
+ - [ ] Yaml array object / functionality
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**

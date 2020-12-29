@@ -1,14 +1,15 @@
 package org.igsq.igsqbot.events.command;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
 import java.awt.*;
@@ -49,15 +50,15 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 
 							if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && member.canInteract(reportedMember))
 							{
-								new EmbedGenerator(embed).footer("This was dealt with by " + user.getAsTag()).color(Color.GREEN).replace(message, true);
+								EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+										.setFooter("This was dealt with by " + user.getAsTag())
+										.setColor(Color.GREEN), true);
 								YamlUtils.clearField(messageID + ".report", Filename.INTERNAL);
 							}
 							else
 							{
-								new EmbedGenerator(embed)
-										.color(Color.YELLOW)
-										.footer(user.getAsTag() + ", you are not higher than " + reportedMember.getRoles().get(0).getName() + ".")
-										.replace(message, 5000, embed);
+								EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+										.setFooter(user.getAsTag() + ", you are not higher than " + reportedMember.getRoles().get(0).getName() + "."), 5000);
 								event.getReaction().removeReaction(user).queue();
 							}
 						}

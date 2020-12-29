@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -8,13 +9,13 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.Filename;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,13 +47,14 @@ public class SuggestionCommand extends Command
 			}
 			else
 			{
-				new EmbedGenerator((MessageChannel) suggestionChannel)
-						.title("Suggestion:")
-						.text(ArrayUtils.arrayCompile(args, " "))
-						.color(Constants.IGSQ_PURPLE)
-						.thumbnail(author.getAvatarUrl())
-						.footer("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator())
-						.send();
+				suggestionChannel.sendMessage(new EmbedBuilder()
+						.setTitle("Suggestion:")
+						.setDescription(ArrayUtils.arrayCompile(args, " "))
+						.setColor(Constants.IGSQ_PURPLE)
+						.setThumbnail(author.getAvatarUrl())
+						.setFooter("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator())
+						.setTimestamp(Instant.now())
+						.build()).queue();
 			}
 		}
 		else

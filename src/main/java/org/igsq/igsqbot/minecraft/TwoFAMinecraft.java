@@ -1,12 +1,13 @@
 package org.igsq.igsqbot.minecraft;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -35,23 +36,22 @@ public class TwoFAMinecraft
 	private static void sendDirectMessage(String id)
 	{
 		String code = generateCode();
-		IGSQBot.getShardManager().retrieveUserById(id)
+		IGSQBot.getInstance().getShardManager().retrieveUserById(id)
 				.flatMap(User::openPrivateChannel)
 				.queue(
 						channel ->
 						{
-							EmbedGenerator embed = new EmbedGenerator(channel)
-									.text("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
-									.color(Constants.IGSQ_PURPLE);
-
-							channel.sendMessage(embed.getBuilder().build()).queue(
+							channel.sendMessage(new EmbedBuilder()
+									.setDescription("Here is your Minecraft 2FA Code: `" + code + "`\n If you did not request this code, please ignore this message.")
+									.setColor(Constants.IGSQ_PURPLE)
+									.build()).queue(
 									message ->
 									{
 										Database.updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 
 										TaskHandler.addTask(() ->
 										{
-											new EmbedGenerator(message.getEmbeds().get(0)).text("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message.").replace(message);
+											EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0)).setDescription("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message."), true);
 											if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
 											{
 												Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");

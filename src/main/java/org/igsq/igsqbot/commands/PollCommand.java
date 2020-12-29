@@ -1,11 +1,11 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -38,15 +38,14 @@ public class PollCommand extends Command
 				options.append(slashArgs.get(i)).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n\n");
 				reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i - 1));
 			}
-			new EmbedGenerator(channel)
-					.title("Poll:")
-					.text(topic)
-					.element("Options:", options.toString())
-					.footer("Poll created by " + author.getAsTag())
-					.thumbnail(author.getAvatarUrl())
-					.color(Constants.IGSQ_PURPLE)
-					.reaction(reactions.toArray(new String[0]))
-					.send();
+
+			channel.sendMessage(new EmbedBuilder()
+					.setTitle("Poll:")
+					.setDescription(topic)
+					.addField("Options:", options.toString(), false)
+					.setThumbnail(author.getEffectiveAvatarUrl())
+					.setColor(Constants.IGSQ_PURPLE)
+					.build()).queue(message -> reactions.forEach(reaction -> message.addReaction(reaction).queue()));
 		}
 		else
 		{

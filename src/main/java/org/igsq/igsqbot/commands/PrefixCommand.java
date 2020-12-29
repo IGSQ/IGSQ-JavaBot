@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -7,7 +8,6 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -27,10 +27,9 @@ public class PrefixCommand extends Command
 
 		if(args.isEmpty())
 		{
-			new EmbedGenerator(channel)
-					.text("The prefix for me is: " + (config.getGuildPrefix().equals(Constants.DEFAULT_BOT_PREFIX) ? "`.` the default." : "`" + config.getGuildPrefix() + "` custom set."))
-					.color(Constants.IGSQ_PURPLE)
-					.sendTemporary(30000);
+			EmbedUtils.sendDeletingEmbed(channel, new EmbedBuilder()
+					.setDescription("The prefix for me is: " + (config.getGuildPrefix().equals(Constants.DEFAULT_BOT_PREFIX) ? "`.` the default." : "`" + config.getGuildPrefix() + "` custom set."))
+					.setColor(Constants.IGSQ_PURPLE), 30000);
 		}
 		else if(args.size() > 1 || args.get(0).length() > 5)
 		{

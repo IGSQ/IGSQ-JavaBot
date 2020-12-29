@@ -3,7 +3,6 @@ package org.igsq.igsqbot.commands;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.GUIGenerator;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.entities.yaml.Blacklist;
 import org.igsq.igsqbot.entities.yaml.BotConfig;
@@ -31,7 +30,6 @@ public class ShutdownCommand extends Command
 		}
 
 		CommandHandler.close();
-		GUIGenerator.close();
 		TaskHandler.close();
 		MessageDataCache.close();
 		Blacklist.close();

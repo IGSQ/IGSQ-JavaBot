@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.events.logging;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -9,9 +10,9 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.util.StringUtils;
+
+import java.time.Instant;
 
 public class VoiceEventsLogging extends ListenerAdapter
 {
@@ -26,15 +27,14 @@ public class VoiceEventsLogging extends ListenerAdapter
 
 		if(logChannel != null)
 		{
-			new EmbedGenerator(logChannel)
-					.title("Member Moved VC")
-					.text("**Member**: " + member.getAsMention() + "\n" +
+			logChannel.sendMessage(new EmbedBuilder()
+					.setTitle("Member Moved VC")
+					.setDescription("**Member**: " + member.getAsMention() + "\n" +
 							"**Old Channel**: " + oldChannel.getName() + "\n" +
-							"**New Channel**: " + newChannel.getName()
-					)
-					.color(Constants.IGSQ_PURPLE)
-					.footer("Logged on: " + StringUtils.getTimestamp())
-					.send();
+							"**New Channel**: " + newChannel.getName())
+					.setColor(Constants.IGSQ_PURPLE)
+					.setTimestamp(Instant.now())
+					.build()).queue();
 		}
 	}
 
@@ -48,13 +48,13 @@ public class VoiceEventsLogging extends ListenerAdapter
 
 		if(logChannel != null)
 		{
-			new EmbedGenerator(logChannel)
-					.title("Member Left VC")
-					.text("**Member**: " + member.getAsMention() + "\n" +
+			logChannel.sendMessage(new EmbedBuilder()
+					.setTitle("Member Left VC")
+					.setDescription("**Member**: " + member.getAsMention() + "\n" +
 							"**Channel**: " + channel.getName())
-					.color(Constants.IGSQ_PURPLE)
-					.footer("Logged on: " + StringUtils.getTimestamp())
-					.send();
+					.setColor(Constants.IGSQ_PURPLE)
+					.setTimestamp(Instant.now())
+					.build()).queue();
 		}
 	}
 
@@ -69,13 +69,13 @@ public class VoiceEventsLogging extends ListenerAdapter
 
 		if(logChannel != null)
 		{
-			new EmbedGenerator(logChannel)
-					.title("Member Joined VC")
-					.text("**Member**: " + member.getAsMention() + "\n" +
+			logChannel.sendMessage(new EmbedBuilder()
+					.setTitle("Member Joined VC")
+					.setDescription("**Member**: " + member.getAsMention() + "\n" +
 							"**Channel**: " + channel.getName())
-					.color(Constants.IGSQ_PURPLE)
-					.footer("Logged on: " + StringUtils.getTimestamp())
-					.send();
+					.setColor(Constants.IGSQ_PURPLE)
+					.setTimestamp(Instant.now())
+					.build()).queue();
 		}
 	}
 }

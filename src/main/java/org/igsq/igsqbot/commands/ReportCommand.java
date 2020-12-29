@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -7,13 +8,12 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
-import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class ReportCommand extends Command
 
 			if(reportChannel == null)
 			{
-				new EmbedGenerator(channel).text("There is no report channel setup").color(Color.RED).sendTemporary();
+				EmbedUtils.sendError(channel, "There is no report channel setup");
 				return;
 			}
 
@@ -61,16 +61,16 @@ public class ReportCommand extends Command
 				}
 
 				if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
-				EmbedGenerator embed = new EmbedGenerator(reportChannel)
-						.title("New report by: " + author.getAsTag())
-						.element("Reporting user:", reportedMember.getAsMention())
-						.element("Description:", String.join(" ", args))
-						.element("Channel:", StringUtils.getChannelAsMention(channel.getId()))
-						.element("Message Log:", messageLog.toString())
-						.color(reportedMember.getColor())
-						.footer("This report is unhandled and can only be dealt by members higher than " + ctx.getMember().getRoles().get(0).getName());
 
-				reportChannel.sendMessage(embed.getBuilder().build()).queue
+				reportChannel.sendMessage(new EmbedBuilder()
+						.setTitle("New report by: " + author.getAsTag())
+						.addField("Reporting user:", reportedMember.getAsMention(), false)
+						.addField("Description:", ArrayUtils.arrayCompile(args, " "), false)
+						.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
+						.addField("Message Log:", messageLog.toString(), false)
+						.setColor(reportedMember.getColor())
+						.setFooter("This report is unhandled and can only be dealt by members higher than " + reportedMember.getRoles().get(0).getName())
+						.build()).queue
 						(
 								message ->
 								{
@@ -86,8 +86,6 @@ public class ReportCommand extends Command
 									message.addReaction("U+1F44D").queue();
 								}
 						);
-
-
 			}
 	}
 

@@ -1,12 +1,12 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.minecraft.CommonMinecraft;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -113,11 +113,11 @@ public class LinkCommand extends Command
 		});
 
 		if(embedDescription.length() == 0) embedDescription.append("No links found.");
-		new EmbedGenerator(channel)
-				.title("All links for " + author.getAsTag())
-				.text(embedDescription.toString())
-				.color(Constants.IGSQ_PURPLE)
-				.send();
+		channel.sendMessage(new EmbedBuilder()
+				.setTitle("All links for " + author.getAsTag())
+				.setDescription(embedDescription.toString())
+				.setColor(Constants.IGSQ_PURPLE)
+				.build()).queue();
 	}
 
 	private void removeLink()

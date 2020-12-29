@@ -27,12 +27,20 @@ import java.util.concurrent.TimeUnit;
 
 public class IGSQBot
 {
-	private static final LocalDateTime START_TIMESTAMP = LocalDateTime.now();
-	private static final Logger LOGGER = LoggerFactory.getLogger(IGSQBot.class);
-	private static ShardManager shardManager;
-	private static int readyShardID;
+	private static IGSQBot instance;
+
+	private final LocalDateTime startTimestamp = LocalDateTime.now();
+	private final Logger logger = LoggerFactory.getLogger(IGSQBot.class);
+	private int readyShardID;
+	private ShardManager shardManager;
 
 	public static void main(String[] args)
+	{
+		instance = new IGSQBot();
+		instance.start();
+	}
+
+	private void start()
 	{
 		Yaml.createFiles();
 		Yaml.loadFile(Filename.ALL);
@@ -53,7 +61,6 @@ public class IGSQBot
 					.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
 					.setAutoReconnect(true)
 					.setShardsTotal(-1)
-					.setBulkDeleteSplittingEnabled(false)
 					.addEventListeners(
 							new MessageEventsMain(),
 							new GuildEventsMain(),
@@ -64,7 +71,7 @@ public class IGSQBot
 
 							new MessageReactionAdd_Help(),
 							new MessageReactionAdd_Report()
-							)
+					)
 
 					.build();
 
@@ -74,12 +81,12 @@ public class IGSQBot
 			TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(shardManager), "muteCheck", TimeUnit.SECONDS, 30);
 			MainMinecraft.startMinecraft(shardManager);
 
-			LOGGER.info("IGSQBot started!");
-			LOGGER.info("Account:         " + SelfUser.getAsTag() + " / " + SelfUser.getId());
-			LOGGER.info("Total Shards:    " + shardManager.getShardsRunning());
-			LOGGER.info("JDA Version:     " + JDAInfo.VERSION);
-			LOGGER.info("IGSQBot Version: " + Constants.VERSION);
-			LOGGER.info("Java Version:    " + System.getProperty("java.version"));
+			instance.logger.info("IGSQBot started!");
+			instance.logger.info("Account:         " + SelfUser.getAsTag() + " / " + SelfUser.getId());
+			instance.logger.info("Total Shards:    " + shardManager.getShardsRunning());
+			instance.logger.info("JDA Version:     " + JDAInfo.VERSION);
+			instance.logger.info("IGSQBot Version: " + Constants.VERSION);
+			instance.logger.info("Java Version:    " + System.getProperty("java.version"));
 
 			TaskHandler.addRepeatingTask(() ->
 			{
@@ -90,31 +97,37 @@ public class IGSQBot
 
 		catch (IllegalArgumentException exception)
 		{
-			LOGGER.error("No login details provided! Please provide a token in the config.yml.");
+			instance.logger.error("No login details provided! Please provide a token in the config.yml.");
 		}
 		catch (LoginException exception)
 		{
-			LOGGER.error("The provided token was invalid, please ensure you put a valid token in config.yml");
+			instance.logger.error("The provided token was invalid, please ensure you put a valid token in config.yml");
 		}
 		catch(Exception exception)
 		{
-			LOGGER.error("An unexpected exception occurred", exception);
+			instance.logger.error("An unexpected exception occurred", exception);
 		}
 	}
 
-	public static LocalDateTime getStartTimestamp()
+
+	public LocalDateTime getStartTimestamp()
 	{
-		return START_TIMESTAMP;
+		return startTimestamp;
 	}
 
-	public static ShardManager getShardManager()
+	public ShardManager getShardManager()
 	{
 		return shardManager;
 	}
 
-	public static int getReadyShardID()
+	public int getReadyShardID()
 	{
 		return readyShardID;
+	}
+
+	public static IGSQBot getInstance()
+	{
+		return instance;
 	}
 
 	public static class SelfUser
@@ -123,9 +136,8 @@ public class IGSQBot
 		{
 			//Overrides the default, public, constructor
 		}
-
-		private static final String id = IGSQBot.shardManager.getShardById(IGSQBot.getReadyShardID()).getSelfUser().getId();
-		private static final String tag = IGSQBot.shardManager.getShardById(IGSQBot.getReadyShardID()).getSelfUser().getAsTag();
+		private static final String id = IGSQBot.getInstance().getShardManager().getShardById(IGSQBot.getInstance().getReadyShardID()).getSelfUser().getId();
+		private static final String tag = IGSQBot.getInstance().getShardManager().getShardById(IGSQBot.getInstance().getReadyShardID()).getSelfUser().getAsTag();
 
 		public static String getId()
 		{

@@ -1,16 +1,16 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.igsq.igsqbot.util.StringUtils;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,13 +35,12 @@ public class PingCommand extends Command
 		}
 
 		CooldownHandler.addCooldown(author.getId(), this);
-
 		jda.getRestPing().queue(
-				time -> new EmbedGenerator(channel).title("Pong!")
-								.color(Constants.IGSQ_PURPLE)
-								.footer(StringUtils.getTimestamp())
-								.text("**Shard ID**: " + jda.getShardInfo().getShardId() + "\n**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
-								.send()
+				time -> channel.sendMessage(new EmbedBuilder()
+						.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId() + "\n**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
+						.setColor(Constants.IGSQ_PURPLE)
+						.setTimestamp(Instant.now())
+						.build()).queue()
 		);
 	}
 

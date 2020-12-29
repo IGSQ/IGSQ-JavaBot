@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.events.logging;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -7,10 +8,9 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.util.StringUtils;
 
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 public class MemberEventsLogging extends ListenerAdapter
@@ -26,14 +26,13 @@ public class MemberEventsLogging extends ListenerAdapter
 			final String timeJoined = member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 			if(logChannel != null && !user.isBot())
 			{
-				new EmbedGenerator(logChannel)
-						.title("Member Left")
-						.text(
-								"**Member**: " + member.getAsMention() +
-										"\n**Joined On**: " + timeJoined)
-						.color(Constants.IGSQ_PURPLE)
-						.footer("Logged on: " + StringUtils.getTimestamp())
-						.send();
+				logChannel.sendMessage(new EmbedBuilder()
+						.setTitle("Member Left")
+						.setDescription("**Member**: " + member.getAsMention() +
+								"\n**Joined On**: " + timeJoined)
+						.setColor(Constants.IGSQ_PURPLE)
+						.setTimestamp(Instant.now())
+						.build()).queue();
 			}
 		});
 	}
@@ -47,13 +46,13 @@ public class MemberEventsLogging extends ListenerAdapter
 
 		if(logChannel != null && !user.isBot())
 		{
-			new EmbedGenerator(logChannel)
-					.title("Member Joined").text(
-					"**Member**: " + member.getAsMention() +
+			logChannel.sendMessage(new EmbedBuilder()
+					.setTitle("Member Joined")
+					.setDescription("**Member**: " + member.getAsMention() +
 							"\n**Joined On**: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
-					.color(Constants.IGSQ_PURPLE)
-					.footer("Logged on: " + StringUtils.getTimestamp())
-					.send();
+					.setColor(Constants.IGSQ_PURPLE)
+					.setTimestamp(Instant.now())
+					.build()).queue();
 		}
 	}
 }

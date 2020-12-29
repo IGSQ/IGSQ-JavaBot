@@ -6,12 +6,10 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,11 +49,7 @@ public class ClearCommand extends Command
 		channel.getIterableHistory().takeAsync(amount).thenAccept(messages ->
 		{
 			channel.purgeMessages(messages);
-			new EmbedGenerator(channel)
-					.text("Deleted " + (messages.size()) + " messages")
-					.color(Color.GREEN)
-					.sendTemporary(5000);
-
+			EmbedUtils.sendSuccess(channel, "Deleted " + (messages.size()) + " messages");
 			final MessageCache cache = MessageCache.getCache(guild);
 			messages.stream().filter(cache::isInCache).forEach(cache::remove);
 		});

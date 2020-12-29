@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -7,7 +8,6 @@ import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -48,10 +48,12 @@ public class UwUCommand extends Command
 					default -> finalSentence.append(selectedChar);
 				}
 			}
-			new EmbedGenerator(channel)
-					.text(finalSentence.toString())
-					.footer("This sentence was UwU'd by: " + author.getAsTag())
-					.color(Constants.IGSQ_PURPLE).send();
+
+			channel.sendMessage(new EmbedBuilder()
+					.setDescription(finalSentence.toString())
+					.setColor(Constants.IGSQ_PURPLE)
+					.setFooter("This sentence was UwU'd by: " + author.getAsTag())
+					.build()).queue();
 		}
 	}
 

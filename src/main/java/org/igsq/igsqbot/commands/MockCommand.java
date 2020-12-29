@@ -1,10 +1,10 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.FileUtils;
@@ -27,21 +27,19 @@ public class MockCommand extends Command
 		}
 		else
 		{
-			EmbedGenerator embed = new EmbedGenerator(channel)
-					.title(mockText(args))
-					.color(Constants.IGSQ_PURPLE)
-					.image("attachment://mock.jpg");
-
 			InputStream file = FileUtils.getResourceFile("mock.jpg");
 			if(file != null)
 			{
-				channel.sendFile(file, "mock.jpg").embed(embed.getBuilder().build()).queue();
+				channel.sendFile(file, "mock.jpg").embed(new EmbedBuilder()
+						.setTitle(mockText(args))
+						.setColor(Constants.IGSQ_PURPLE)
+						.setImage("attachment://mock.jpg")
+						.build()).queue();
 			}
 			else
 			{
 				EmbedUtils.sendError(channel, "An error occurred while loading the mock image.");
 			}
-
 		}
 	}
 

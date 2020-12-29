@@ -1,12 +1,12 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.yaml.Punishment;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -134,15 +134,13 @@ public class WarnCommand extends Command
 
 	private void showWarning(Member member, MessageChannel channel)
 	{
-		EmbedGenerator embed = new EmbedGenerator(channel);
 		Punishment punishment = new Punishment(member);
 		String embedText = punishment.compileWarnings();
-
-		embed
-			.title("Warnings for " + member.getUser().getAsTag())
-			.text(embedText.length() == 0 ? "This user has no warnings" : embedText)
-			.color(Constants.IGSQ_PURPLE)
-			.send();
+		channel.sendMessage(new EmbedBuilder()
+				.setTitle("Warnings for " + member.getUser().getAsTag())
+				.setDescription(embedText.length() == 0 ? "This user has no warnings" : embedText)
+				.setColor(Constants.IGSQ_PURPLE)
+				.build()).queue();
 	}
 
 	private void removeWarning(Member member, MessageChannel channel, int number)

@@ -1,15 +1,14 @@
 package org.igsq.igsqbot.events.logging;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.entities.yaml.Filename;
@@ -19,6 +18,7 @@ import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 public class MessageEventsLogging extends ListenerAdapter
@@ -58,17 +58,16 @@ public class MessageEventsLogging extends ListenerAdapter
 
 				if(logChannel != null)
 				{
-					new EmbedGenerator(logChannel)
-							.title("Message Altered")
-							.text(
-									"**Author**: " + newMessage.getAuthor().getAsMention() +
-											"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
-											"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
-											"\n\n**Message Content Before**: " + oldContent +
-											"\n**Message Content After**: " + newContent)
-							.color(Constants.IGSQ_PURPLE)
-							.footer("Logged on: " + StringUtils.getTimestamp())
-							.send();
+					logChannel.sendMessage(new EmbedBuilder()
+							.setTitle("Message Altered")
+							.setDescription("**Author**: " + newMessage.getAuthor().getAsMention() +
+									"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
+									"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+									"\n\n**Message Content Before**: " + oldContent +
+									"\n**Message Content After**: " + newContent)
+							.setColor(Constants.IGSQ_PURPLE)
+							.setTimestamp(Instant.now())
+							.build()).queue();
 				}
 				cache.update(oldMessage, new CachedMessage(newMessage));
 			}
@@ -109,68 +108,18 @@ public class MessageEventsLogging extends ListenerAdapter
 
 				if(logChannel != null)
 				{
-					new EmbedGenerator(logChannel)
-							.title("Message Deleted")
-							.text(
-									"**Author**: " + message.getAuthor().getAsMention() +
-											"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
-											"\n**Sent On**: " + message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
-											"\n\n**Message Content**: " + content)
-							.color(Constants.IGSQ_PURPLE)
-							.footer("Logged on: " + StringUtils.getTimestamp())
-							.send();
+					logChannel.sendMessage(new EmbedBuilder()
+							.setTitle("Message Deleted")
+							.setDescription("**Author**: " + message.getAuthor().getAsMention() +
+									"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
+									"\n**Sent On**: " + message.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+									"\n\n**Message Content**: " + content)
+							.setColor(Constants.IGSQ_PURPLE)
+							.setTimestamp(Instant.now())
+							.build()).queue();
 				}
 				cache.remove(message);
 			}
-		}
-	}
-
-	@Override
-	public void onMessageBulkDelete(MessageBulkDeleteEvent event)
-	{
-		final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
-		MessageChannel channel = event.getChannel();
-		StringBuilder embedDescription = new StringBuilder();
-		MessageCache cache = MessageCache.getCache(event.getGuild());
-
-		for(String selectedMessageID : event.getMessageIds())
-		{
-			if(cache.isInCache(selectedMessageID))
-			{
-				CachedMessage selectedMessage = cache.get(selectedMessageID);
-				String content = selectedMessage.getContentRaw();
-
-				if(CommandUtils.isValidCommand(content, event.getGuild().getId(), event.getJDA()))
-				{
-					return;
-				}
-				if(selectedMessage.getAuthor().isBot()) continue;
-				if(content.length() >= 50) content = content.substring(0, 20) + " **...**";
-
-				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", Filename.GUILD))
-				{
-					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", Filename.GUILD).split(","))
-					{
-						if(selectedChannel.equals(channel.getId()))
-						{
-							return;
-						}
-					}
-				}
-
-				embedDescription.append(selectedMessage.getAuthor().getAsMention()).append(" --> ").append(content).append("\n");
-				cache.remove(selectedMessage);
-			}
-		}
-		if(logChannel != null)
-		{
-			new EmbedGenerator(logChannel)
-					.title("Messages Deleted")
-					.text("**Channel**: " + StringUtils.getChannelAsMention(channel.getId())
-							+ "\n\n**Messages**: " + embedDescription.toString())
-					.color(Constants.IGSQ_PURPLE)
-					.footer("Logged on: " + StringUtils.getTimestamp())
-					.send();
 		}
 	}
 }

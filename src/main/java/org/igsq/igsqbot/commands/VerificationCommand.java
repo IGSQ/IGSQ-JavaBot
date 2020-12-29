@@ -1,10 +1,10 @@
 package org.igsq.igsqbot.commands;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.EmbedGenerator;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -70,10 +70,10 @@ public class VerificationCommand extends Command
 					}
 				});
 
-				channel.sendMessage(new EmbedGenerator(channel)
-						.title("Verification for: " + verificationTarget.getUser().getAsTag())
-						.text(embedText.length() == 0 ? "No roles found for this user." : embedText.toString())
-						.getBuilder().build()).queue(
+				channel.sendMessage(new EmbedBuilder()
+						.setTitle("Verification for: " + verificationTarget.getUser().getAsTag())
+						.setDescription(embedText.length() == 0 ? "No roles found for this user." : embedText.toString())
+						.build()).queue(
 								verificationMessage ->
 								{
 									Constants.THUMB_REACTIONS.forEach(reaction -> verificationMessage.addReaction(reaction).queue());
