@@ -84,6 +84,7 @@ None!
  - [ ] Consider switch usage (replace with elif)
  - [ ] Consider Exception catching (replace with specifics)\
  - [ ] Consider final usage
+ - [ ] Rewrite EmbedGenerator
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**

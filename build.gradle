@@ -1,0 +1,27 @@
+plugins
+{
+    id'java'
+    id'application'
+    id'com.github.johnrengelman.shadow' version '6.0.0'
+}
+mainClassName = 'org.igsq.igsqbot.IGSQBot'
+version '0.0.1'
+sourceCompatibility = 14
+repositories
+{
+    jcenter()
+    maven { url 'https://jitpack.io' }
+}
+dependencies
+{
+    implementation('net.dv8tion:JDA:4.2.0_224')
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation('me.carleslc.Simple-YAML:Simple-Yaml:1.7.2')
+    implementation('com.jayway.jsonpath:json-path:2.4.0')
+    implementation('io.github.classgraph:classgraph:4.8.98')
+    implementation('net.jodah:expiringmap:0.5.9')
+    implementation('mysql:mysql-connector-java:8.0.22')
+}
+
+
+compileJava.options.encoding = 'UTF-8'

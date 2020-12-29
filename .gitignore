@@ -15,3 +15,7 @@ data/
 
 #maven folder
 /target/
+
+#gradle
+.gradle
+build/
