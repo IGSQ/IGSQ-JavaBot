@@ -11,7 +11,7 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;

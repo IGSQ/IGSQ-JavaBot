@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.entities.yaml;
+package org.igsq.igsqbot.entities.json;
 
 public enum Filename
 {

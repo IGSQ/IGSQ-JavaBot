@@ -3,9 +3,10 @@ package org.igsq.igsqbot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import org.igsq.igsqbot.entities.json.IJSON;
-import org.igsq.igsqbot.entities.json.JSONBotConfig;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.IJson;
+import org.igsq.igsqbot.entities.json.JsonBotConfig;
+import org.igsq.igsqbot.entities.json.JsonMinecraft;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.io.File;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class JSON
+public class Json
 {
-	private JSON()
+	private Json()
 	{
 		//Overrides the default, public, constructor
 	}
@@ -67,7 +68,7 @@ public class JSON
 		}
 	}
 
-	public static void updateFile(IJSON json, Filename filename)
+	public static void updateFile(IJson json, Filename filename)
 	{
 		try
 		{
@@ -82,7 +83,7 @@ public class JSON
 		}
 	}
 
-	public static Object get(Class<?> type, Filename filename)
+	public static <T> T get(Class<T> type, Filename filename)
 	{
 		try
 		{
@@ -102,17 +103,24 @@ public class JSON
 			JsonObject onFile = new Gson().fromJson(new FileReader(FOLDER + "/" + filename + ".json"), JsonObject.class);
 			JsonObject fileAppended = new JsonObject();
 
-			onFile.entrySet().forEach(entry ->  fileAppended.add(entry.getKey(), entry.getValue()));
-			json.entrySet().forEach(entry ->
+			if(onFile != null)
 			{
-				if(!onFile.has(entry.getKey()))
+				onFile.entrySet().forEach(entry ->  fileAppended.add(entry.getKey(), entry.getValue()));
+				json.entrySet().forEach(entry ->
 				{
-					fileAppended.add(entry.getKey(), entry.getValue());
+					if(!onFile.has(entry.getKey()))
+					{
+						fileAppended.add(entry.getKey(), entry.getValue());
+					}
+				});
+				if(!fileAppended.toString().equals(""))
+				{
+					updateFile(fileAppended, filename);
 				}
-			});
-			if(!fileAppended.toString().equals(""))
+			}
+			else
 			{
-				updateFile(fileAppended, filename);
+				updateFile(json, filename);
 			}
 		}
 		catch(Exception exception)
@@ -123,6 +131,7 @@ public class JSON
 
 	public static void applyDefaults()
 	{
-		addDefault(new JSONBotConfig().toJson(), Filename.CONFIG);
+		addDefault(new JsonBotConfig().toJson(), Filename.CONFIG);
+		addDefault(new JsonMinecraft().toJson(), Filename.MINECRAFT);
 	}
 }

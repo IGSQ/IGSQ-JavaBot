@@ -1,6 +1,6 @@
 package org.igsq.igsqbot;
 
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;

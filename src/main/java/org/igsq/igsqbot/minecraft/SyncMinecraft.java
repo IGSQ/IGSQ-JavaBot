@@ -5,8 +5,10 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.JsonMinecraft;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.util.YamlUtils;
@@ -15,11 +17,12 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SyncMinecraft
 {
-	private static final Map<String, String> ranks = new HashMap<>();
+	private static Map<List<String>, String> ranks = new HashMap<>();
 	private static final Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
 	private static Guild guild;
 	private static Role verifiedRole = null;
@@ -64,31 +67,34 @@ public class SyncMinecraft
 		{
 			if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 			{
-				String username = selectedMember.getUser().getAsTag();
-				String nickname = selectedMember.getEffectiveName();
-				String id = selectedMember.getId();
-				String rank = getRank(selectedMember);
-
-				int supporter = hasRole(Yaml.getFieldString("ranks.supporter", Filename.MINECRAFT).split(" "), selectedMember) ? 1 : 0;
-				int birthday = hasRole(Yaml.getFieldString("ranks.birthday", Filename.MINECRAFT).split(" "), selectedMember) ? 1 : 0;
-				int developer = hasRole(Yaml.getFieldString("ranks.developer", Filename.MINECRAFT).split(" "), selectedMember) ? 1 : 0;
-				int founder = hasRole(Yaml.getFieldString("ranks.founder", Filename.MINECRAFT).split(" "), selectedMember) ? 1 : 0;
-				// int retired = hasRole(Yaml.getFieldString("ranks.retired", Filename.MINECRAFT).split(" "), selectedMember)?1:0;
-				int nitroboost = hasRole(Yaml.getFieldString("ranks.nitroboost", Filename.MINECRAFT).split(" "), selectedMember) ? 1 : 0;
-
-				boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
-
-				if(userExists)
+				JsonMinecraft json = Json.get(JsonMinecraft.class, Filename.MINECRAFT);
+				if(json != null)
 				{
-					CommonMinecraft.updateUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
-				}
-				else
-				{
-					CommonMinecraft.addNewUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
+					String username = selectedMember.getUser().getAsTag();
+					String nickname = selectedMember.getEffectiveName();
+					String id = selectedMember.getId();
+					String rank = getRank(selectedMember);
+
+					int supporter = hasRole(json.getSupporter(), selectedMember) ? 1 : 0;
+					int birthday = hasRole(json.getBirthday(), selectedMember) ? 1 : 0;
+					int developer = hasRole(json.getDeveloper(), selectedMember) ? 1 : 0;
+					int founder = hasRole(json.getFounder(), selectedMember) ? 1 : 0;
+					// int retired = hasRole(json.getRetired(), selectedMember)?1:0;
+					int nitroboost = hasRole(json.getNitroboost(), selectedMember) ? 1 : 0;
+
+					boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
+
+					if(userExists)
+					{
+						CommonMinecraft.updateUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
+					}
+					else
+					{
+						CommonMinecraft.addNewUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
+					}
 				}
 			}
 		});
-
 	}
 
 	public static void clean()
@@ -156,7 +162,7 @@ public class SyncMinecraft
 		return false;
 	}
 
-	private static boolean hasRole(String[] roles, Member member)
+	private static boolean hasRole(List<String> roles, Member member)
 	{
 		for(String selectedRole : roles)
 		{
@@ -167,47 +173,28 @@ public class SyncMinecraft
 
 	private static String getRank(Member member)
 	{
-		if(ranks.isEmpty())
+		JsonMinecraft json = Json.get(JsonMinecraft.class, Filename.MINECRAFT);
+		if(json != null)
 		{
-			setRanks();
-		}
-
-		for(Role selectedRole : member.getRoles())
-		{
-			for(Map.Entry<String, String> selectedRanks : ranks.entrySet())
+			ranks = json.getRanks();
+			for(Role selectedRole : member.getRoles())
 			{
-				for(String selectedRank : selectedRanks.getKey().split(" "))
+				for(Map.Entry<List<String>, String> selectedRanks : ranks.entrySet())
 				{
-					if(selectedRole.getId().equals(selectedRank))
+					for(String selectedRank : selectedRanks.getKey())
 					{
-						return selectedRanks.getValue();
+						if(selectedRole.getId().equals(selectedRank))
+						{
+							return selectedRanks.getValue();
+						}
 					}
 				}
 			}
 		}
+		else
+		{
+			return "default";
+		}
 		return "default";
-	}
-
-	private static void setRanks()
-	{
-		ranks.put(Yaml.getFieldString("ranks.default", Filename.MINECRAFT), "default");
-
-		ranks.put(Yaml.getFieldString("ranks.rising", Filename.MINECRAFT), "rising");
-		ranks.put(Yaml.getFieldString("ranks.flying", Filename.MINECRAFT), "flying");
-		ranks.put(Yaml.getFieldString("ranks.soaring", Filename.MINECRAFT), "soaring");
-
-		ranks.put(Yaml.getFieldString("ranks.epic", Filename.MINECRAFT), "epic");
-		ranks.put(Yaml.getFieldString("ranks.epic2", Filename.MINECRAFT), "epic2");
-		ranks.put(Yaml.getFieldString("ranks.epic3", Filename.MINECRAFT), "epic3");
-
-		ranks.put(Yaml.getFieldString("ranks.elite", Filename.MINECRAFT), "elite");
-		ranks.put(Yaml.getFieldString("ranks.elite2", Filename.MINECRAFT), "elite2");
-		ranks.put(Yaml.getFieldString("ranks.elite3", Filename.MINECRAFT), "elite3");
-
-		ranks.put(Yaml.getFieldString("ranks.mod", Filename.MINECRAFT), "mod");
-		ranks.put(Yaml.getFieldString("ranks.mod2", Filename.MINECRAFT), "mod2");
-		ranks.put(Yaml.getFieldString("ranks.mod3", Filename.MINECRAFT), "mod3");
-
-		ranks.put(Yaml.getFieldString("ranks.council", Filename.MINECRAFT), "council");
 	}
 }

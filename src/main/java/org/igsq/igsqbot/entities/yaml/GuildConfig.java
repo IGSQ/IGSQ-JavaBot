@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.ArrayList;

@@ -1,8 +1,10 @@
 package org.igsq.igsqbot.commands;
 
+import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.yaml.BotConfig;
+import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.JsonBotConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.util.Collections;
@@ -43,7 +45,15 @@ public class TestCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return new BotConfig().getPrivilegedUsers().contains(ctx.getAuthor().getId());
+		JsonBotConfig config = Json.get(JsonBotConfig.class, Filename.CONFIG);
+		if(config == null)
+		{
+			return false;
+		}
+		else
+		{
+			return config.getPrivilegedUsers().contains(ctx.getAuthor().getId());
+		}
 	}
 
 	@Override

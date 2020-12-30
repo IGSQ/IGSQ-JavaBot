@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.ArrayList;

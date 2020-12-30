@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.handlers.TaskHandler;
 
 import java.awt.*;

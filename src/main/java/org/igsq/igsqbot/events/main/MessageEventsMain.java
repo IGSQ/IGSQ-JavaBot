@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.entities.EventWaiter;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.entities.yaml.ReactionRole;
 import org.igsq.igsqbot.handlers.CommandHandler;

@@ -1,6 +1,7 @@
 package org.igsq.igsqbot;
 
-import org.igsq.igsqbot.entities.yaml.BotConfig;
+import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.JsonBotConfig;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,18 @@ public class Database
 
 	public static void startDatabase()
 	{
-		Map<String, String> credentials = new BotConfig().getSQL();
-		url = credentials.get("database");
-		user = credentials.get("username");
-		password = credentials.get("password");
+		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
+		if(jsonBotConfig != null)
+		{
+			Map<String, String> credentials = jsonBotConfig.getSQL();
+			url = credentials.get("url");
+			user = credentials.get("username");
+			password = credentials.get("password");
+		}
+		else
+		{
+			LOGGER.error("An error occurred while loading the Database credentials, the Database is unlikely to work.");
+		}
 
 		if(testDatabase())
 		{

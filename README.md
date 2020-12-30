@@ -67,7 +67,7 @@ None!
 
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
  
- 
+ ```
     public static long parseSnowflake(String input)
     {
         Checks.notEmpty(input, "ID");
@@ -84,8 +84,12 @@ None!
                 String.format("The specified ID is not a valid snowflake (%s). Expecting a valid long value!", input));
         }
     }
-
+```
  - [ ] Muting (needs debugged)
+ - [ ] Json internal objects
+ - [ ] Json punishment objects
+ - [ ] ReactionRole utils?
+ - [ ] IJsonCachable interface
    
  - [ ] **PREPARE FOR PR!!!**
 
@@ -99,9 +103,8 @@ None!
  - [ ] Remove statics and use getInstance()
  - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo)
  - [ ] Consider switch usage (replace with elif)
- - [ ] Consider Exception catching (replace with specifics)\
+ - [ ] Consider Exception catching (replace with specifics)
  - [ ] Consider final usage
- - [ ] Yaml array object / functionality
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**

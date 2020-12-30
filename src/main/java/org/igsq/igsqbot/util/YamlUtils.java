@@ -1,7 +1,7 @@
 package org.igsq.igsqbot.util;
 
 import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
 
 public class YamlUtils
 {

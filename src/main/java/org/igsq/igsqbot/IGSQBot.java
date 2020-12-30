@@ -6,8 +6,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.entities.json.JSONBotConfig;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.JsonBotConfig;
+import org.igsq.igsqbot.entities.json.JsonGuildCache;
 import org.igsq.igsqbot.entities.yaml.Punishment;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
@@ -46,10 +47,11 @@ public class IGSQBot
 		Yaml.loadFile(Filename.ALL);
 		Yaml.applyDefault();
 
-		JSON.createFiles();
-		JSON.applyDefaults();
+		Json.createFiles();
+		Json.applyDefaults();
+		JsonGuildCache.load();
 
-		final JSONBotConfig jsonBotConfig = (JSONBotConfig) JSON.get(JSONBotConfig.class, Filename.CONFIG);
+		final JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 
 		if(jsonBotConfig != null)
 		{
@@ -75,7 +77,6 @@ public class IGSQBot
 						)
 
 						.build();
-
 				readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
 
 				Database.startDatabase();
@@ -93,6 +94,9 @@ public class IGSQBot
 				{
 					Yaml.saveFileChanges(Filename.ALL);
 					Yaml.loadFile(Filename.ALL);
+
+					JsonGuildCache.save();
+					JsonGuildCache.load();
 				}, "yamlReload", TimeUnit.SECONDS, 30);
 			}
 

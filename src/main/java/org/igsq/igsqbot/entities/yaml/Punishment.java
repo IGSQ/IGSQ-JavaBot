@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.YamlUtils;

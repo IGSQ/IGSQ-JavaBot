@@ -6,9 +6,8 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
-import org.igsq.igsqbot.entities.yaml.Filename;
+import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.YamlUtils;
 
@@ -38,29 +37,24 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 					Message message = (Message) results.get(0);
 					User user= (User) results.get(1);
 					Member member = (Member) results.get(2);
-
-					if(Yaml.getFieldBool(messageID + ".report.enabled", Filename.INTERNAL) && !user.isBot())
+					final MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
+					if(messageDataCache != null && messageDataCache.getType().equals(MessageDataCache.MessageType.REPORT) && !user.isBot())
 					{
-						final MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
+						Member reportedMember = messageDataCache.getMembers(guild).get("reporteduser");
+						MessageEmbed embed = message.getEmbeds().get(0);
 
-						if(messageDataCache != null)
+						if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && member.canInteract(reportedMember))
 						{
-							Member reportedMember = messageDataCache.getMembers(guild).get("reporteduser");
-							MessageEmbed embed = message.getEmbeds().get(0);
-
-							if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && member.canInteract(reportedMember))
-							{
-								EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
-										.setFooter("This was dealt with by " + user.getAsTag())
-										.setColor(Color.GREEN), true);
-								YamlUtils.clearField(messageID + ".report", Filename.INTERNAL);
-							}
-							else
-							{
-								EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
-										.setFooter(user.getAsTag() + ", you are not higher than " + reportedMember.getRoles().get(0).getName() + "."), 5000);
-								event.getReaction().removeReaction(user).queue();
-							}
+							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+									.setFooter("This was dealt with by " + user.getAsTag())
+									.setColor(Color.GREEN), true);
+							YamlUtils.clearField(messageID + ".report", Filename.INTERNAL);
+						}
+						else
+						{
+							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+									.setFooter(user.getAsTag() + ", you are not higher than " + reportedMember.getRoles().get(0).getName() + "."), 5000);
+							event.getReaction().removeReaction(user).queue();
 						}
 					}
 				});
