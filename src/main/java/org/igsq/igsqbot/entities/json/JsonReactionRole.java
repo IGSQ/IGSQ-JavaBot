@@ -6,8 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.igsq.igsqbot.Json;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JsonReactionRole implements IJson
 {
@@ -33,7 +33,7 @@ public class JsonReactionRole implements IJson
 		jsonObject.addProperty("guildId", guildId);
 		jsonObject.addProperty("channelId", channelId);
 		jsonObject.addProperty("messageId", messageId);
-		jsonObject.addProperty("emote", emote);
+		jsonObject.addProperty("emote", String.valueOf(emote));
 		jsonObject.addProperty("role", role);
 		return jsonObject;
 	}
@@ -41,14 +41,14 @@ public class JsonReactionRole implements IJson
 	@Override
 	public String getPrimaryKey()
 	{
-		return role;
+		return emote;
 	}
 
 	@Override
 	public void remove()
 	{
 		JsonArray onFile = Json.get(JsonArray.class, Filename.GUILD);
-		List<JsonReactionRole> reactionRoleList = new ArrayList<>();
+		Map<String, JsonReactionRole> reactionRoles = new HashMap<>();
 		if(onFile != null)
 		{
 			for(JsonElement element : onFile)
@@ -56,14 +56,14 @@ public class JsonReactionRole implements IJson
 				JsonGuild guild = new Gson().fromJson(element, JsonGuild.class);
 				if(guild.getPrimaryKey().equals(this.guildId))
 				{
-					for(JsonReactionRole reactionRole : guild.getReactionRoles())
+					for(Map.Entry<String, JsonReactionRole> entry : guild.getReactionRoles().entrySet())
 					{
-						if(!reactionRole.getPrimaryKey().equals(this.getPrimaryKey()))
+						if(!entry.getValue().getPrimaryKey().equals(this.getPrimaryKey()))
 						{
-							reactionRoleList.add(reactionRole);
+							reactionRoles.put(entry.getKey(), entry.getValue());
 						}
 					}
-					guild.setReactionRoles(reactionRoleList);
+					guild.setReactionRoles(reactionRoles);
 					JsonGuildCache.getInstance().set(guild);
 					break;
 				}

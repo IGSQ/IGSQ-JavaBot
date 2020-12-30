@@ -4,12 +4,15 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.yaml.ReactionRole;
+import org.igsq.igsqbot.entities.json.JsonGuild;
+import org.igsq.igsqbot.entities.json.JsonGuildCache;
+import org.igsq.igsqbot.entities.json.JsonReactionRole;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ReactionRoleCommand extends Command
 {
@@ -26,98 +29,110 @@ public class ReactionRoleCommand extends Command
 		}
 		else
 		{
-			final String action = args.get(0);
-			final String messageId = args.get(1);
-			final Role role = ctx.getMessage().getMentionedRoles().get(0);
-			final MessageChannel reactionChannel = message.getMentionedChannels().get(0);
+			String action = args.get(0);
+			String messageId = args.get(1);
+			Role role = ctx.getMessage().getMentionedRoles().get(0);
+			MessageChannel reactionChannel = message.getMentionedChannels().get(0);
+			JsonGuild jsonGuild = JsonGuildCache.getInstance().get(guild.getId());
 
+			if(jsonGuild != null)
+			{
+				Emote emote;
+				String emoji;
+				if(!message.getEmotes().isEmpty())
+				{
+					emote = message.getEmotes().get(0);
+					emoji = null;
+				}
+				else
+				{
+					emoji = args.get(4);
+					emote = null;
+				}
 
-			final Emote emote;
-			final String emoji;
-			if(!message.getEmotes().isEmpty())
-			{
-				emote = message.getEmotes().get(0);
-				emoji = null;
-			}
-			else
-			{
-				emoji = args.get(4);
-				emote = null;
-			}
+				if(!ctx.getMember().canInteract(role))
+				{
+					EmbedUtils.sendPermissionError(channel, this);
+					return;
+				}
 
-			if(emoji != null && !emoji.matches("/[^\\w$\\x{0080}-\\x{FFFF}]+/u"))
-			{
-				EmbedUtils.sendSyntaxError(channel, this);
-				return;
-			}
-
-			if(!ctx.getMember().canInteract(role))
-			{
-				EmbedUtils.sendPermissionError(channel, this);
-				return;
-			}
-			reactionChannel.retrieveMessageById(messageId).queue(
-					reactionMessage ->
-					{
-						ReactionRole rr = new ReactionRole(guild.getId(), reactionChannel.getId(), reactionMessage.getId());
-						switch(action.toLowerCase())
+				reactionChannel.retrieveMessageById(messageId).queue(
+						reactionMessage ->
 						{
-							case "add":
-								if(emote != null && !rr.isEmoteMapped(emote))
-								{
-									if(emote.canInteract(guild.getSelfMember().getUser(), reactionChannel))
-									{
-										reactionMessage.addReaction(emote).queue(success -> rr.setReaction(emote, role.getId()), error -> EmbedUtils.sendError(channel, "I cannot add the reaction: " + emote.getAsMention()));
-									}
-									else
-									{
-										EmbedUtils.sendError(channel, "I cannot use that emote.");
-									}
-								}
-								else if(emoji != null && !rr.isEmojiMapped(emoji))
-								{
-									reactionMessage.addReaction(emoji).queue(success -> rr.setReaction(emoji, role.getId()), error -> EmbedUtils.sendError(channel, "I cannot add the reaction: " + emoji));
-								}
-								else
-								{
-									EmbedUtils.sendError(channel, "That emote / emoji is already mapped to a role.");
-								}
-								break;
+							if(action.equalsIgnoreCase("add"))
+							{
 
-							case "remove":
 								if(emote != null)
 								{
-									if(emote.canInteract(guild.getSelfMember().getUser(), reactionChannel))
-									{
-										reactionMessage.clearReactions(emote).queue(success -> rr.removeReaction(emote, role.getId()), error -> EmbedUtils.sendError(channel, "An error occurred while removing the reaction role."));
-									}
-									else
-									{
-										EmbedUtils.sendError(channel, "I cannot use that emote.");
-									}
+									reactionMessage.addReaction(emote).queue(
+											success ->
+											{
+												JsonReactionRole reactionRole = new JsonReactionRole(guild.getId(), reactionChannel.getId(), reactionMessage.getId(), emote.getId(), role.getId());
+												Map<String, JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
+												reactionRoles.put(emote.getId(), reactionRole);
+												jsonGuild.setReactionRoles(reactionRoles);
+											},
+											failure -> EmbedUtils.sendError(channel, "That emote could not be found.")
+									);
+
 								}
 								else if(emoji != null)
 								{
-									reactionMessage.clearReactions(emoji).queue(success -> rr.removeReaction(emoji, role.getId()), error -> EmbedUtils.sendError(channel, "An error occurred while removing the reaction role."));
+									reactionMessage.addReaction(emoji).queue(
+											success ->
+											{
+												JsonReactionRole reactionRole = new JsonReactionRole(guild.getId(), reactionChannel.getId(), reactionMessage.getId(), emoji, role.getId());
+												Map<String, JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
+												reactionRoles.put(emoji, reactionRole);
+												jsonGuild.setReactionRoles(reactionRoles);
+											},
+											failure -> EmbedUtils.sendError(channel, "That emote could not be found.")
+									);
 								}
 								else
 								{
-									EmbedUtils.sendError(channel, "That emote / emoji is already mapped to a role.");
+									EmbedUtils.sendSyntaxError(channel, this);
 								}
-								break;
-							case "clear":
-								rr.clear();
-								reactionMessage.clearReactions().queue(success -> EmbedUtils.sendSuccess(channel, "Removed all reactionroles."), error -> EmbedUtils.sendError(channel, "An error occurred while removing the reaction role."));
-
-								break;
-							default:
-								EmbedUtils.sendSyntaxError(channel, this);
-						}
-
-
-					},
-					error -> EmbedUtils.sendError(channel, "The specified message ID was invalid.")
-			);
+							}
+							else if(action.equalsIgnoreCase("remove"))
+							{
+								if(emote != null)
+								{
+									reactionMessage.removeReaction(emote).queue(
+											success ->
+											{
+												Map<String, JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
+												reactionRoles.remove(emote.getId());
+												jsonGuild.setReactionRoles(reactionRoles);
+											},
+											failure -> EmbedUtils.sendError(channel, "That emote could not be removed.")
+									);
+								}
+								else if(emoji != null)
+								{
+									reactionMessage.removeReaction(emoji).queue(
+											success ->
+											{
+												Map<String, JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
+												reactionRoles.remove(emoji);
+												jsonGuild.setReactionRoles(reactionRoles);
+											},
+											failure -> EmbedUtils.sendError(channel, "That emote could not be removed.")
+									);
+								}
+								else
+								{
+									EmbedUtils.sendSyntaxError(channel, this);
+								}
+							}
+						},
+						error -> EmbedUtils.sendError(channel, "The specified message ID was invalid.")
+				);
+			}
+			else
+			{
+				EmbedUtils.sendError(channel, "An error occurred while adding the reaction role.");
+			}
 		}
 	}
 

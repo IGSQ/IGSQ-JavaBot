@@ -88,7 +88,7 @@ None!
     }
 ```
  - [ ] Json internal objects
- - [ ] ReactionRole utils?
+ - [ ] ReactionRole command
  - [ ] Report into JSON
  - [ ] Verification, written and Json
  - [ ] **PREPARE FOR PR!!!**

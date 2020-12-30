@@ -11,12 +11,12 @@ import org.igsq.igsqbot.entities.EventWaiter;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.JsonGuild;
+import org.igsq.igsqbot.entities.json.JsonGuildCache;
+import org.igsq.igsqbot.entities.json.JsonReactionRole;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.entities.yaml.ReactionRole;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.util.YamlUtils;
-
-import java.util.List;
 
 public class MessageEventsMain extends ListenerAdapter
 {
@@ -30,14 +30,22 @@ public class MessageEventsMain extends ListenerAdapter
 					{
 						if(!user.isBot())
 						{
-							ReactionRole rr = new ReactionRole(event.getGuild().getId(), event.getChannel().getId(), event.getMessageId());
-							List<Role> rrRoles = rr.getRoles(event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId(), event.getGuild());
-							event.retrieveMember().queue(member -> rrRoles.forEach(role -> event.getGuild().addRoleToMember(member.getId(), role).queue()));
+							JsonGuild jsonGuild = JsonGuildCache.getInstance().get(event.getGuild().getId());
+							JsonReactionRole jsonReactionRole = jsonGuild.getReactionRoles().get(event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId());
+							if(jsonReactionRole != null)
+							{
+								Role role = event.getGuild().getRoleById(jsonReactionRole.getPrimaryKey());
+								if(role != null)
+								{
+									event.retrieveMember().queue(member -> event.getGuild().addRoleToMember(member, role).queue());
+								}
+							}
 						}
 					}
 			);
 		}
 	}
+
 
 
 	@Override
@@ -50,9 +58,16 @@ public class MessageEventsMain extends ListenerAdapter
 					{
 						if(!user.isBot())
 						{
-							ReactionRole rr = new ReactionRole(event.getGuild().getId(), event.getChannel().getId(), event.getMessageId());
-							List<Role> rrRoles = rr.getRoles(event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId(), event.getGuild());
-							event.retrieveMember().queue(member -> rrRoles.forEach(role -> event.getGuild().removeRoleFromMember(member.getId(), role).queue()));
+							JsonGuild jsonGuild = JsonGuildCache.getInstance().get(event.getGuild().getId());
+							JsonReactionRole jsonReactionRole = jsonGuild.getReactionRoles().get(event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId());
+							if(jsonReactionRole != null)
+							{
+								Role role = event.getGuild().getRoleById(jsonReactionRole.getPrimaryKey());
+								if(role != null)
+								{
+									event.retrieveMember().queue(member -> event.getGuild().removeRoleFromMember(member, role).queue());
+								}
+							}
 						}
 					}
 			);

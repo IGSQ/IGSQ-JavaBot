@@ -52,7 +52,7 @@ public class IGSQBot
 		JsonGuildCache.getInstance().load();
 		JsonPunishmentCache.getInstance().load();
 
-		 JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
+		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 
 		if(jsonBotConfig != null)
 		{
@@ -133,11 +133,11 @@ public class IGSQBot
 
 			catch(IllegalArgumentException exception)
 			{
-				instance.logger.error("A provided value was invalid, please double check the values in CONFIG.json");
+				instance.logger.error("A provided value was invalid, please double check the values in CONFIG.json", exception);
 			}
 			catch(LoginException exception)
 			{
-				instance.logger.error("The provided token was invalid, please ensure you put a valid token in CONFIG.json");
+				instance.logger.error("The provided token was invalid, please ensure you put a valid token in CONFIG.json", exception);
 			}
 			catch(Exception exception)
 			{
