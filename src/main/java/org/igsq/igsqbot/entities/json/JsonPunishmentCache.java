@@ -19,6 +19,7 @@ public class JsonPunishmentCache implements IJsonCacheable
 	@Override
 	public void set(IJson json)
 	{
+		System.out.println("JSON ADDED: " + json.getPrimaryKey());
 		if(json instanceof JsonPunishment)
 		{
 			cachedFiles.put(json.getPrimaryKey(), (JsonPunishment) json);
@@ -33,11 +34,13 @@ public class JsonPunishmentCache implements IJsonCacheable
 		}
 		else
 		{
-			return cachedFiles.computeIfAbsent(guildId + userId, k -> new JsonPunishment(guildId, userId));
+			JsonPunishment newPunishment = new JsonPunishment(guildId, userId);
+			cachedFiles.put(guildId + userId, newPunishment);
+			return newPunishment;
 		}
 	}
 
-	public IJson get(Member member)
+	public JsonPunishment get(Member member)
 	{
 		String guildId = member.getGuild().getId();
 		String userId = member.getId();
@@ -47,7 +50,9 @@ public class JsonPunishmentCache implements IJsonCacheable
 		}
 		else
 		{
-			return cachedFiles.computeIfAbsent(guildId, k -> new JsonPunishment(guildId, member.getId()));
+			JsonPunishment newPunishment = new JsonPunishment(guildId, member.getId());
+			cachedFiles.put(guildId + userId, newPunishment);
+			return newPunishment;
 		}
 	}
 
@@ -88,9 +93,9 @@ public class JsonPunishmentCache implements IJsonCacheable
 	public void save()
 	{
 		List<JsonObject> json = new ArrayList<>();
-		for(JsonPunishment guild : cachedFiles.values())
+		for(JsonPunishment punishment : cachedFiles.values())
 		{
-			json.add(guild.toJson());
+			json.add(punishment.toJson());
 		}
 		Json.updateFile(json, Filename.PUNISHMENT);
 	}

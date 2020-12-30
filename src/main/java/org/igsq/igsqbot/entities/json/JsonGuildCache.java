@@ -58,7 +58,9 @@ public class JsonGuildCache implements IJsonCacheable
 		}
 		else
 		{
-			return cachedFiles.computeIfAbsent(guildId, k -> new JsonGuild(guildId, shardManager));
+			JsonGuild newGuild = new JsonGuild(guildId);
+			cachedFiles.put(guildId, newGuild);
+			return newGuild;
 		}
 	}
 

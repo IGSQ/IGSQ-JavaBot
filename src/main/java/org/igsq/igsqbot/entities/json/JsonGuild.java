@@ -2,21 +2,35 @@ package org.igsq.igsqbot.entities.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.dv8tion.jda.api.sharding.ShardManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonGuild implements IJson
 {
-	private String guildId = null;
+	private String guildId;
 	private List<JsonReactionRole> reactionRoles = new ArrayList<>();
+	private String mutedRole;
 
-	private final ShardManager shardManager;
-	public JsonGuild(String guildId, ShardManager shardManager)
+	public void setGuildId(String guildId)
 	{
 		this.guildId = guildId;
-		this.shardManager = shardManager;
+	}
+
+	public String getMutedRole()
+	{
+		return mutedRole;
+	}
+
+	public void setMutedRole(String mutedRole)
+	{
+		this.mutedRole = mutedRole;
+	}
+
+
+	public JsonGuild(String guildId)
+	{
+		this.guildId = guildId;
 	}
 
 	public List<JsonReactionRole> getReactionRoles()
@@ -45,6 +59,7 @@ public class JsonGuild implements IJson
 
 		jsonObject.addProperty("guildId", guildId);
 		jsonObject.add("reactionRoles", jsonArray);
+		jsonObject.addProperty("mutedRole", mutedRole);
 		return jsonObject;
 	}
 

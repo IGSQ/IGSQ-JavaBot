@@ -3,6 +3,7 @@ package org.igsq.igsqbot;
 import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -23,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class IGSQBot
@@ -92,38 +92,43 @@ public class IGSQBot
 
 				TaskHandler.addRepeatingTask(() ->
 				{
-					Yaml.saveFileChanges(Filename.ALL);
-					Yaml.loadFile(Filename.ALL);
-
-					JsonGuildCache.getInstance().save();
-					JsonGuildCache.getInstance().load();
-					JsonPunishmentCache.getInstance().save();
-					JsonPunishmentCache.getInstance().load();
-				}, "yamlReload", TimeUnit.SECONDS, 5);
-
-				TaskHandler.addRepeatingTask(() ->
-				{
 					for(JsonPunishment selectedPunishment: JsonPunishmentCache.getInstance().getAll())
 					{
-						if(selectedPunishment.isMuted())
+						if(selectedPunishment.isMuted() && System.currentTimeMillis() >= selectedPunishment.getMutedUntil())
 						{
-							if(System.currentTimeMillis() >= selectedPunishment.getMutedUntil())
+							selectedPunishment.setMuted(false);
+							selectedPunishment.setMutedUntil(-1);
+
+							Guild guild = instance.shardManager.getGuildById(selectedPunishment.getGuildId());
+							if(guild != null)
 							{
-								Guild guild = shardManager.getGuildById(selectedPunishment.getGuildId());
-								if(guild != null)
+								for(String roleId : selectedPunishment.getRoles())
 								{
-									selectedPunishment.getRoles().stream()
-											.map(guild::getRoleById)
-											.filter(Objects::nonNull)
-											.forEach(role -> guild.addRoleToMember(selectedPunishment.getUserId(), role).queue());
+									Role role = guild.getRoleById(roleId);
+									if(role != null && guild.getSelfMember().canInteract(role))
+									{
+										guild.addRoleToMember(selectedPunishment.getUserId(), role).queue();
+									}
 								}
-								selectedPunishment.setMuted(false);
-								selectedPunishment.setMutedUntil(-1);
 								selectedPunishment.setRoles(Collections.emptyList());
 							}
 						}
 					}
 				}, "muteCheck", TimeUnit.SECONDS, 5);
+
+				TaskHandler.addRepeatingTask(() ->
+				{
+					Yaml.saveFileChanges(Filename.ALL);
+					Yaml.loadFile(Filename.ALL);
+
+					JsonPunishmentCache.getInstance().save();
+					JsonPunishmentCache.getInstance().load();
+
+					JsonGuildCache.getInstance().save();
+					JsonGuildCache.getInstance().load();
+
+				}, "yamlReload", TimeUnit.SECONDS, 5);
+
 			}
 
 			catch (IllegalArgumentException exception)

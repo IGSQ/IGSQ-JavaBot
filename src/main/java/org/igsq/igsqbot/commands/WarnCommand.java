@@ -140,7 +140,7 @@ public class WarnCommand extends Command
 
 	private void showWarning(Member member, MessageChannel channel)
 	{
-		JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
+		JsonPunishment jsonPunishment = JsonPunishmentCache.getInstance().get(member);
 		List<String> warnings = jsonPunishment.getWarnings();
 		StringBuilder embedText = new StringBuilder();
 		int currentWarning = 1;
@@ -159,7 +159,7 @@ public class WarnCommand extends Command
 
 	private void removeWarning(Member member, MessageChannel channel, int number)
 	{
-		JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
+		JsonPunishment jsonPunishment = JsonPunishmentCache.getInstance().get(member);
 		List<String> warnings = jsonPunishment.getWarnings();
 
 		int decrementedNumber = --number;

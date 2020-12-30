@@ -8,11 +8,11 @@ import java.util.List;
 
 public class JsonPunishment implements IJson
 {
-	private String guildId = null;
-	private String userId = null;
+	private String guildId;
+	private String userId;
 	private List<String> warnings = new ArrayList<>();
-	private boolean isMuted = false;
-	private long mutedUntil = -1;
+	private boolean isMuted;
+	private long mutedUntil;
 	private List<String> roles = new ArrayList<>();
 
 	public JsonPunishment(String guildId, String userId)

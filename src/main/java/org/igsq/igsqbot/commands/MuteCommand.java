@@ -1,10 +1,14 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.json.JsonGuild;
+import org.igsq.igsqbot.entities.json.JsonGuildCache;
 import org.igsq.igsqbot.entities.json.JsonPunishment;
 import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
 import org.igsq.igsqbot.util.CommandUtils;
@@ -31,9 +35,20 @@ public class MuteCommand extends Command
 		{
 			Member member = ctx.getMessage().getMentionedMembers().get(0);
 			LocalDateTime muteTime = CommandUtils.parseTime(args.get(1));
-			JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
+			JsonPunishment jsonPunishment = JsonPunishmentCache.getInstance().get(member);
+			Guild guild = ctx.getGuild();
+			JsonGuild guildConfig = JsonGuildCache.getInstance().get(guild.getId(), ctx.getJDA().getShardManager());
+			Role mutedRole = guild.getRoleById(guildConfig.getMutedRole());
 
-			if(jsonPunishment.isMuted())
+			if(mutedRole == null)
+			{
+				EmbedUtils.sendError(channel, "Muted role not found, muting cannot proceed.");
+			}
+			else if(!guild.getSelfMember().canInteract(member) || !ctx.getMember().canInteract(member))
+			{
+				EmbedUtils.sendPermissionError(channel, this);
+			}
+			else if(jsonPunishment.isMuted())
 			{
 				EmbedUtils.sendError(channel, "User: " + member.getAsMention() + " is already muted!");
 			}
@@ -46,9 +61,10 @@ public class MuteCommand extends Command
 				jsonPunishment.setRoles(UserUtils.getRoleIds(member));
 				jsonPunishment.setMutedUntil(muteTime.atZone(CommandUtils.getLocalOffset()).toInstant().toEpochMilli());
 				jsonPunishment.setMuted(true);
-				EmbedUtils.sendSuccess(channel, "Muted member: " + member.getAsMention() + " until " + muteTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-			}
 
+
+				guild.modifyMemberRoles(member, mutedRole).queue(success -> EmbedUtils.sendSuccess(channel, "Muted member: " + member.getAsMention() + " until " + muteTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
+			}
 		}
 	}
 
