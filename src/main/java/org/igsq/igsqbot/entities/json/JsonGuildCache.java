@@ -10,16 +10,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class JsonGuildCache
+public class JsonGuildCache implements IJsonCacheable
 {
-	private static final Map<String, JsonGuild> CACHE_MAP = new ConcurrentHashMap<>();
+	private static final JsonGuildCache INSTANCE = new JsonGuildCache();
+	private final Map<String, JsonGuild> cachedFiles = new ConcurrentHashMap<>();
 
 	private JsonGuildCache()
 	{
 		//Overrides the default, public, constructor
 	}
 
-	public static void load()
+	@Override
+	public void load()
 	{
 		try
 		{
@@ -28,7 +30,7 @@ public class JsonGuildCache
 			{
 				for(JsonGuild guild : jsonGuilds)
 				{
-					CACHE_MAP.put(guild.getPrimaryKey(), guild);
+					cachedFiles.put(guild.getPrimaryKey(), guild);
 				}
 			}
 		}
@@ -39,40 +41,51 @@ public class JsonGuildCache
 		}
 	}
 
-	public static void set(JsonGuild guild)
+	@Override
+	public void set(IJson guild)
 	{
-		CACHE_MAP.put(guild.getPrimaryKey(), guild);
+		if(guild instanceof JsonGuild)
+		{
+			cachedFiles.put(guild.getPrimaryKey(), (JsonGuild) guild);
+		}
 	}
 
-	public static JsonGuild get(String guildId, ShardManager shardManager)
+	public JsonGuild get(String guildId, ShardManager shardManager)
 	{
-		if(CACHE_MAP.containsKey(guildId))
+		if(cachedFiles.containsKey(guildId))
 		{
-			return CACHE_MAP.get(guildId);
+			return cachedFiles.get(guildId);
 		}
 		else
 		{
-			return CACHE_MAP.computeIfAbsent(guildId, k -> new JsonGuild(guildId, shardManager));
+			return cachedFiles.computeIfAbsent(guildId, k -> new JsonGuild(guildId, shardManager));
 		}
 	}
 
-	public static void remove(JsonGuild guild)
+	public void remove(String guildId)
 	{
-		CACHE_MAP.remove(guild.getPrimaryKey());
+		cachedFiles.remove(guildId);
 	}
 
-	public static void remove(String guildId)
+	@Override
+	public void remove(IJson json)
 	{
-		CACHE_MAP.remove(guildId);
+		cachedFiles.remove(json.getPrimaryKey());
 	}
 
-	public static void save()
+	@Override
+	public void save()
 	{
 		List<JsonObject> json = new ArrayList<>();
-		for(JsonGuild guild : CACHE_MAP.values())
+		for(JsonGuild guild : cachedFiles.values())
 		{
 			json.add(guild.toJson());
 		}
 		Json.updateFile(json, Filename.GUILD);
+	}
+
+	public static JsonGuildCache getInstance()
+	{
+		return INSTANCE;
 	}
 }

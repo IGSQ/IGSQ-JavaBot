@@ -64,7 +64,7 @@ public class JsonReactionRole implements IJson
 						}
 					}
 					guild.setReactionRoles(reactionRoleList);
-					JsonGuildCache.set(guild);
+					JsonGuildCache.getInstance().set(guild);
 					break;
 				}
 			}

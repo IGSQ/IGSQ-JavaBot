@@ -2,7 +2,11 @@ package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserUtils
 {
@@ -21,6 +25,11 @@ public class UserUtils
 		{
 			return false;
 		}
+	}
+
+	public static List<String> getRoleIds(Member member)
+	{
+		return member.getRoles().stream().map(Role::getId).collect(Collectors.toList());
 	}
 
 	public static boolean basicPermCheck(Member user, TextChannel channel)

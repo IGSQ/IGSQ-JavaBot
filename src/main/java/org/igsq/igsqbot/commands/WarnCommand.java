@@ -7,9 +7,12 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.yaml.Punishment;
+import org.igsq.igsqbot.entities.json.JsonPunishment;
+import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
 import java.util.Collections;
@@ -28,7 +31,7 @@ public class WarnCommand extends Command
 		}
 		else if(UserUtils.isUserMention(args.get(0)))
 		{
-			if(member.hasPermission(Permission.MESSAGE_MANAGE))
+			if(!member.hasPermission(Permission.MESSAGE_MANAGE))
 			{
 				EmbedUtils.sendPermissionError(channel, this);
 			}
@@ -73,6 +76,7 @@ public class WarnCommand extends Command
 						}
 						catch(Exception exception)
 						{
+							new ErrorHandler(exception);
 							EmbedUtils.sendSyntaxError(channel, this);
 						}
 					}
@@ -127,33 +131,46 @@ public class WarnCommand extends Command
 
 	private void addWarning(Member member, MessageChannel channel, String reason)
 	{
-		Punishment punishment = new Punishment(member);
-		punishment.addWarning(reason);
+		JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
+		List<String> warnings = jsonPunishment.getWarnings();
+		warnings.add(reason + " - " + StringUtils.getTimestamp());
+		jsonPunishment.setWarnings(warnings);
 		EmbedUtils.sendSuccess(channel, "Warned " + member.getAsMention() + " for reason: " + reason);
 	}
 
 	private void showWarning(Member member, MessageChannel channel)
 	{
-		Punishment punishment = new Punishment(member);
-		String embedText = punishment.compileWarnings();
+		JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
+		List<String> warnings = jsonPunishment.getWarnings();
+		StringBuilder embedText = new StringBuilder();
+		int currentWarning = 1;
+
+		for(String selectedWarning : warnings)
+		{
+			embedText.append(currentWarning).append(": ").append(selectedWarning).append("\n");
+			currentWarning ++;
+		}
 		channel.sendMessage(new EmbedBuilder()
 				.setTitle("Warnings for " + member.getUser().getAsTag())
-				.setDescription(embedText.length() == 0 ? "This user has no warnings" : embedText)
+				.setDescription(embedText.length() == 0 ? "This user has no warnings" : embedText.toString())
 				.setColor(Constants.IGSQ_PURPLE)
 				.build()).queue();
 	}
 
 	private void removeWarning(Member member, MessageChannel channel, int number)
 	{
-		Punishment punishment = new Punishment(member);
-		String removedWarning = punishment.removeWarning(--number);
-		if(removedWarning != null)
+		JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
+		List<String> warnings = jsonPunishment.getWarnings();
+
+		int decrementedNumber = --number;
+		if(decrementedNumber > warnings.size() || decrementedNumber < 0)
 		{
-			EmbedUtils.sendSuccess(channel, "Removed warning: " + removedWarning + " from user " + member.getAsMention());
+			EmbedUtils.sendError(channel, "That warning does not exist.");
+			return;
 		}
-		else
-		{
-			EmbedUtils.sendSyntaxError(channel, this);
-		}
+		String removedWarning = warnings.get(decrementedNumber);
+		warnings.remove(decrementedNumber);
+		jsonPunishment.setWarnings(warnings);
+		EmbedUtils.sendSuccess(channel, "Removed warning: " + removedWarning + " from user " + member.getAsMention());
 	}
 }

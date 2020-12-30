@@ -1,17 +1,17 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.yaml.Punishment;
+import org.igsq.igsqbot.entities.json.JsonPunishment;
+import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +22,6 @@ public class MuteCommand extends Command
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
-		final Guild guild = ctx.getGuild();
 
 		if(args.size() != 2 || ctx.getMessage().getMentionedMembers().isEmpty())
 		{
@@ -32,23 +31,24 @@ public class MuteCommand extends Command
 		{
 			Member member = ctx.getMessage().getMentionedMembers().get(0);
 			LocalDateTime muteTime = CommandUtils.parseTime(args.get(1));
-			final Punishment punishment = new Punishment(member);
+			JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
 
-			if(muteTime == null)
+			if(jsonPunishment.isMuted())
 			{
-				EmbedUtils.sendError(channel, "Invalid time entered, specify the time as: EXAMPLE HERE");
+				EmbedUtils.sendError(channel, "User: " + member.getAsMention() + " is already muted!");
+			}
+			else if(muteTime == null)
+			{
+				EmbedUtils.sendError(channel, "Invalid time entered. Send time as: \n1d - 1day\n1h - 1 hour\n30m - 30 minutes\n Only 1 option allowed. ");
 			}
 			else
 			{
-				if(punishment.addMute("" + muteTime.toEpochSecond(OffsetDateTime.now().getOffset()), guild, member))
-				{
-					EmbedUtils.sendSuccess(channel, "Member " + member.getAsMention() + " muted until " + muteTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-				}
-				else
-				{
-					EmbedUtils.sendError(channel, "Member " + member.getAsMention() + " is already muted.");
-				}
+				jsonPunishment.setRoles(UserUtils.getRoleIds(member));
+				jsonPunishment.setMutedUntil(muteTime.atZone(CommandUtils.getLocalOffset()).toInstant().toEpochMilli());
+				jsonPunishment.setMuted(true);
+				EmbedUtils.sendSuccess(channel, "Muted member: " + member.getAsMention() + " until " + muteTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 			}
+
 		}
 	}
 

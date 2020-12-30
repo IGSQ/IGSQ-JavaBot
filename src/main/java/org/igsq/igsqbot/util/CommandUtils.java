@@ -7,6 +7,8 @@ import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -94,5 +96,10 @@ public class CommandUtils
 	public static boolean isValidCommand(String message, String guildId, JDA jda)
 	{
 		return message.startsWith(new GuildConfig(guildId, jda).getGuildPrefix()) || message.startsWith("<@" + IGSQBot.SelfUser.getId() + ">") || message.startsWith("<@!" + IGSQBot.SelfUser.getId() + ">");
+	}
+
+	public static ZoneOffset getLocalOffset()
+	{
+		return OffsetDateTime.now().getOffset();
 	}
 }

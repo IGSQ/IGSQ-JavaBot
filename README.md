@@ -112,6 +112,7 @@ None!
  - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
  - [x] discord_accounts table returning errors - fixed with additional error catching
  - [x] 2FA not functioning as intended - unintended feature
+ - [ ] Muting causing duplicate entries
 
 ## Building and Running
 

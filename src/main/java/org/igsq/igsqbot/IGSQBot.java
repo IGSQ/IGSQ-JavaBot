@@ -2,14 +2,12 @@ package org.igsq.igsqbot;
 
 import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
-import org.igsq.igsqbot.entities.json.JsonGuildCache;
-import org.igsq.igsqbot.entities.yaml.Punishment;
+import org.igsq.igsqbot.entities.json.*;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -24,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class IGSQBot
@@ -49,7 +49,8 @@ public class IGSQBot
 
 		Json.createFiles();
 		Json.applyDefaults();
-		JsonGuildCache.load();
+		JsonGuildCache.getInstance().load();
+		JsonPunishmentCache.getInstance().load();
 
 		final JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 
@@ -65,22 +66,21 @@ public class IGSQBot
 						.setAutoReconnect(true)
 						.setShardsTotal(-1)
 						.addEventListeners(
+								new MessageReactionAdd_Help(),
+								new MessageReactionAdd_Report(),
+
 								new MessageEventsMain(),
 								new GuildEventsMain(),
 
 								new VoiceEventsLogging(),
 								new MessageEventsLogging(),
-								new MemberEventsLogging(),
-
-								new MessageReactionAdd_Help(),
-								new MessageReactionAdd_Report()
+								new MemberEventsLogging()
 						)
 
 						.build();
 				readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
 
 				Database.startDatabase();
-				TaskHandler.addRepeatingTask(() -> Punishment.checkMutes(shardManager), "muteCheck", TimeUnit.SECONDS, 30);
 				MainMinecraft.startMinecraft(shardManager);
 
 				instance.logger.info("IGSQBot started!");
@@ -95,9 +95,35 @@ public class IGSQBot
 					Yaml.saveFileChanges(Filename.ALL);
 					Yaml.loadFile(Filename.ALL);
 
-					JsonGuildCache.save();
-					JsonGuildCache.load();
-				}, "yamlReload", TimeUnit.SECONDS, 30);
+					JsonGuildCache.getInstance().save();
+					JsonGuildCache.getInstance().load();
+					JsonPunishmentCache.getInstance().save();
+					JsonPunishmentCache.getInstance().load();
+				}, "yamlReload", TimeUnit.SECONDS, 5);
+
+				TaskHandler.addRepeatingTask(() ->
+				{
+					for(JsonPunishment selectedPunishment: JsonPunishmentCache.getInstance().getAll())
+					{
+						if(selectedPunishment.isMuted())
+						{
+							if(System.currentTimeMillis() >= selectedPunishment.getMutedUntil())
+							{
+								Guild guild = shardManager.getGuildById(selectedPunishment.getGuildId());
+								if(guild != null)
+								{
+									selectedPunishment.getRoles().stream()
+											.map(guild::getRoleById)
+											.filter(Objects::nonNull)
+											.forEach(role -> guild.addRoleToMember(selectedPunishment.getUserId(), role).queue());
+								}
+								selectedPunishment.setMuted(false);
+								selectedPunishment.setMutedUntil(-1);
+								selectedPunishment.setRoles(Collections.emptyList());
+							}
+						}
+					}
+				}, "muteCheck", TimeUnit.SECONDS, 5);
 			}
 
 			catch (IllegalArgumentException exception)
