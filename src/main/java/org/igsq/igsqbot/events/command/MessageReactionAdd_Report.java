@@ -45,14 +45,14 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 
 						if(event.getReactionEmote().isEmoji() && event.getReactionEmote().getAsCodepoints().equals("U+2705") && member.canInteract(reportedMember))
 						{
-							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(embed)
 									.setFooter("This was dealt with by " + user.getAsTag())
 									.setColor(Color.GREEN), true);
 							YamlUtils.clearField(messageID + ".report", Filename.INTERNAL);
 						}
 						else
 						{
-							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(embed)
 									.setFooter(user.getAsTag() + ", you are not higher than " + reportedMember.getRoles().get(0).getName() + "."), 5000);
 							event.getReaction().removeReaction(user).queue();
 						}

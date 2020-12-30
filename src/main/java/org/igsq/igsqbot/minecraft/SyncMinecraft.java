@@ -8,21 +8,19 @@ import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.JsonBotConfig;
 import org.igsq.igsqbot.entities.json.JsonMinecraft;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
-import org.igsq.igsqbot.util.YamlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SyncMinecraft
 {
-	private static Map<List<String>, String> ranks = new HashMap<>();
 	private static final Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
 	private static Guild guild;
 	private static Role verifiedRole = null;
@@ -35,23 +33,29 @@ public class SyncMinecraft
 
 	public static void startSync(ShardManager shardManager)
 	{
-		if(YamlUtils.isFieldEmpty("bot.server", Filename.CONFIG))
+		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
+		if(jsonBotConfig == null)
 		{
 			TaskHandler.cancelTask("minecraftSync");
-			LOGGER.warn("Minecraft sync stopped due to no guild.");
+			LOGGER.warn("Minecraft sync stopped due JSON error.");
+		}
+		else if(jsonBotConfig.getServer().equals(new JsonBotConfig().getServer()))
+		{
+			TaskHandler.cancelTask("minecraftSync");
+			LOGGER.warn("Minecraft sync stopped due to no guild being defined in CONFIG.json.");
 		}
 		else if(!Database.isOnline())
 		{
 			TaskHandler.cancelTask("minecraftSync");
-			LOGGER.warn("Minecraft sync stopped due to no Database connectivity.");
+			LOGGER.warn("Minecraft sync task stopped due to no Database connectivity.");
 		}
 		else
 		{
-			guild = shardManager.getGuildById(Yaml.getFieldString("bot.server", Filename.CONFIG));
+			guild = shardManager.getGuildById(jsonBotConfig.getServer());
 			if(guild == null)
 			{
 				TaskHandler.cancelTask("minecraftSync");
-				LOGGER.warn("Minecraft sync stopped due to invalid guild.");
+				LOGGER.warn("Minecraft sync stopped due to invalid guild being defined in CONFIG.json.");
 			}
 			else
 			{
@@ -99,16 +103,21 @@ public class SyncMinecraft
 
 	public static void clean()
 	{
+		if(!Database.isOnline())
+		{
+			TaskHandler.cancelTask("minecraftClean");
+			LOGGER.warn("Minecraft clean task stopped due to no Database connectivity.");
+		}
 		ResultSet discord_accounts = Database.queryCommand("SELECT * FROM discord_accounts");
 		if(discord_accounts == null)
 		{
 			TaskHandler.cancelTask("minecraftClean");
 			LOGGER.warn("Minecraft cleaning stopped due to invalid discord_accounts table.");
 		}
-		else if(!Database.isOnline())
+		else if(guild == null)
 		{
-			TaskHandler.cancelTask("minecraftSync");
-			LOGGER.warn("Minecraft sync stopped due to no Database connectivity.");
+			TaskHandler.cancelTask("minecraftClean");
+			LOGGER.warn("Minecraft cleaning stopped due to null guild.");
 		}
 		else
 		{
@@ -176,7 +185,7 @@ public class SyncMinecraft
 		JsonMinecraft json = Json.get(JsonMinecraft.class, Filename.MINECRAFT);
 		if(json != null)
 		{
-			ranks = json.getRanks();
+			Map<List<String>, String> ranks = json.getRanks();
 			for(Role selectedRole : member.getRoles())
 			{
 				for(Map.Entry<List<String>, String> selectedRanks : ranks.entrySet())

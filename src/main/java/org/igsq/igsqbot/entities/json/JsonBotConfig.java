@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class JsonBotConfig implements IJson
 {
-	private String botToken;
-	private String botServer;
+	private String botToken = "token";
+	private String botServer = "server";
 	private List<String> privilegedUsers = new ArrayList<>();
-	private String dbUsername;
-	private String dbPassword;
-	private String dbURL;
+	private String dbUsername = "username";
+	private String dbPassword = "password";
+	private String dbURL = "jdbc:mysql://localhost:3306/database";
 
 	public String getToken()
 	{
@@ -51,13 +51,13 @@ public class JsonBotConfig implements IJson
 		jsonArray.add(new JsonPrimitive("000000000000000001"));
 		jsonArray.add(new JsonPrimitive("000000000000000002"));
 
-		jsonObject.addProperty("botToken", "token");
-		jsonObject.addProperty("botServer", "server");
+		jsonObject.addProperty("botToken", botToken);
+		jsonObject.addProperty("botServer", botServer);
 		jsonObject.add("privilegedUsers", jsonArray);
 
-		jsonObject.addProperty("dbUsername", "username");
-		jsonObject.addProperty("dbPassword", "password");
-		jsonObject.addProperty("dbURL", "jdbc:mysql://localhost:3306/database");
+		jsonObject.addProperty("dbUsername", dbUsername);
+		jsonObject.addProperty("dbPassword", dbPassword);
+		jsonObject.addProperty("dbURL", dbURL);
 
 
 		return jsonObject;

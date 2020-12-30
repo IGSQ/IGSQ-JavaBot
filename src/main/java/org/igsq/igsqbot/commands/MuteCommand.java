@@ -37,7 +37,7 @@ public class MuteCommand extends Command
 			LocalDateTime muteTime = CommandUtils.parseTime(args.get(1));
 			JsonPunishment jsonPunishment = JsonPunishmentCache.getInstance().get(member);
 			Guild guild = ctx.getGuild();
-			JsonGuild guildConfig = JsonGuildCache.getInstance().get(guild.getId(), ctx.getJDA().getShardManager());
+			JsonGuild guildConfig = JsonGuildCache.getInstance().get(guild.getId());
 			Role mutedRole = guild.getRoleById(guildConfig.getMutedRole());
 
 			if(mutedRole == null)
@@ -95,7 +95,7 @@ public class MuteCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return ctx.hasPermission(Collections.singletonList(Permission.KICK_MEMBERS));
+		return ctx.hasPermission(Collections.singletonList(Permission.MESSAGE_MANAGE));
 	}
 
 	@Override

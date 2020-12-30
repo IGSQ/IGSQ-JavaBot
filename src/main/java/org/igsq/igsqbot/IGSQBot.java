@@ -131,13 +131,13 @@ public class IGSQBot
 
 			}
 
-			catch (IllegalArgumentException exception)
+			catch(IllegalArgumentException exception)
 			{
-				instance.logger.error("No login details provided! Please provide a token in the config.yml.");
+				instance.logger.error("A provided value was invalid, please double check the values in CONFIG.json");
 			}
-			catch (LoginException exception)
+			catch(LoginException exception)
 			{
-				instance.logger.error("The provided token was invalid, please ensure you put a valid token in config.yml");
+				instance.logger.error("The provided token was invalid, please ensure you put a valid token in CONFIG.json");
 			}
 			catch(Exception exception)
 			{

@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.entities.json;
 
 import com.google.gson.JsonObject;
-import net.dv8tion.jda.api.sharding.ShardManager;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
@@ -50,7 +49,7 @@ public class JsonGuildCache implements IJsonCacheable
 		}
 	}
 
-	public JsonGuild get(String guildId, ShardManager shardManager)
+	public JsonGuild get(String guildId)
 	{
 		if(cachedFiles.containsKey(guildId))
 		{
