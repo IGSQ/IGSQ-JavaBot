@@ -15,18 +15,20 @@ import java.util.concurrent.TimeUnit;
 
 public class Database
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
-	private static String url;
-	private static String user;
-	private static String password;
-	private static boolean isOnline;
+	private static final Database INSTANCE = new Database();
+	private final Logger LOGGER = LoggerFactory.getLogger(Database.class);
+
+	private String url;
+	private String user;
+	private String password;
+	private boolean isOnline;
 
 	private Database()
 	{
 		//Overrides the default, public, constructor
 	}
 
-	public static void startDatabase()
+	public void start()
 	{
 		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 		if(jsonBotConfig != null)
@@ -54,7 +56,7 @@ public class Database
 		}
 	}
 
-	public static ResultSet queryCommand(String sql)
+	public ResultSet queryCommand(String sql)
 	{
 		if(!isOnline)
 		{
@@ -84,7 +86,7 @@ public class Database
 		}
 	}
 
-	public static void updateCommand(String sql)
+	public void updateCommand(String sql)
 	{
 		if(!isOnline)
 		{
@@ -103,7 +105,7 @@ public class Database
 		}
 	}
 
-	public static int scalarCommand(String sql)
+	public int scalarCommand(String sql)
 	{
 		if(!isOnline)
 		{
@@ -125,7 +127,7 @@ public class Database
 		}
 	}
 
-	public static boolean testDatabase()
+	public boolean testDatabase()
 	{
 		try
 		{
@@ -147,8 +149,13 @@ public class Database
 		}
 	}
 
-	public static boolean isOnline()
+	public boolean isOnline()
 	{
 		return isOnline;
+	}
+
+	public static Database getInstance()
+	{
+		return INSTANCE;
 	}
 }

@@ -20,10 +20,10 @@ public class MessageReactionAdd_Help extends ListenerAdapter
 	public void onMessageReactionAdd(MessageReactionAddEvent event)
 	{
 		if(!event.getReactionEmote().isEmoji()) return;
-		final String messageID = event.getMessageId();
-		final ReactionEmote reaction = event.getReactionEmote();
-		final String codePoint = reaction.getAsCodepoints();
-		final JDA jda = event.getJDA();
+		String messageID = event.getMessageId();
+		ReactionEmote reaction = event.getReactionEmote();
+		String codePoint = reaction.getAsCodepoints();
+		JDA jda = event.getJDA();
 
 		List<RestAction<?>> actions = new ArrayList<>();
 
@@ -31,46 +31,46 @@ public class MessageReactionAdd_Help extends ListenerAdapter
 		actions.add(event.retrieveUser());
 
 		RestAction.allOf(actions).queue(
-			results ->
-			{
-				final Message message = (Message) results.get(0);
-				final User user = (User) results.get(1);
-
-				final MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
-
-				if(messageDataCache != null && messageDataCache.getType().equals(MessageDataCache.MessageType.HELP) && !user.isBot())
+				results ->
 				{
+					Message message = (Message) results.get(0);
+					User user = (User) results.get(1);
 
-					List<EmbedBuilder> PAGES = HelpCommand.getPages();
+					MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
 
-					if(messageDataCache.getUsers().get("user").equals(user))
+					if(messageDataCache != null && messageDataCache.getType().equals(MessageDataCache.MessageType.HELP) && !user.isBot())
 					{
-						int page = messageDataCache.getPage();
 
-						if(reaction.isEmoji() && codePoint.equals("U+25c0"))
-						{
-							page--;
-							if(page == 0) page = PAGES.size();
-							messageDataCache.setPage(page);
-						}
+						List<EmbedBuilder> PAGES = HelpCommand.getPages();
 
-						else if(reaction.isEmoji() && codePoint.equals("U+25b6"))
+						if(messageDataCache.getUsers().get("user").equals(user))
 						{
-							page++;
-							if(page == PAGES.size() + 1) page = 1;
-							messageDataCache.setPage(page);
+							int page = messageDataCache.getPage();
+
+							if(reaction.isEmoji() && codePoint.equals("U+25c0"))
+							{
+								page--;
+								if(page == 0) page = PAGES.size();
+								messageDataCache.setPage(page);
+							}
+
+							else if(reaction.isEmoji() && codePoint.equals("U+25b6"))
+							{
+								page++;
+								if(page == PAGES.size() + 1) page = 1;
+								messageDataCache.setPage(page);
+							}
+							else if(reaction.isEmoji() && codePoint.equals("U+274c"))
+							{
+								messageDataCache.remove();
+								message.delete().queue();
+								return;
+							}
+							event.getReaction().removeReaction(user).queue();
+							message.editMessage(PAGES.get(page - 1).build()).queue();
 						}
-						else if(reaction.isEmoji() && codePoint.equals("U+274c"))
-						{
-							messageDataCache.remove();
-							message.delete().queue();
-							return;
-						}
-						event.getReaction().removeReaction(user).queue();
-						message.editMessage(PAGES.get(page - 1).build()).queue();
 					}
 				}
-			}
 		);
 	}
 }

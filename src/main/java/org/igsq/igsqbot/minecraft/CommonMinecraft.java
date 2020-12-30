@@ -5,8 +5,8 @@ import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CommonMinecraft
 {
@@ -17,7 +17,7 @@ public class CommonMinecraft
 
 	public static String getIDFromUUID(String uuid)
 	{
-		ResultSet linked_accounts = Database.queryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
+		ResultSet linked_accounts = Database.getInstance().queryCommand("SELECT id FROM linked_accounts WHERE uuid = '" + uuid + "';");
 		try
 		{
 			if(linked_accounts.next())
@@ -34,7 +34,7 @@ public class CommonMinecraft
 
 	public static String getNameFromUUID(String uuid)
 	{
-		ResultSet mc_accounts = Database.queryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + uuid + "';");
+		ResultSet mc_accounts = Database.getInstance().queryCommand("SELECT username FROM mc_accounts WHERE uuid = '" + uuid + "';");
 		try
 		{
 			if(mc_accounts.next())
@@ -51,7 +51,7 @@ public class CommonMinecraft
 
 	public static String getUUIDFromName(String name)
 	{
-		ResultSet mc_accounts = Database.queryCommand("SELECT uuid FROM mc_accounts WHERE username = '" + name + "';");
+		ResultSet mc_accounts = Database.getInstance().queryCommand("SELECT uuid FROM mc_accounts WHERE username = '" + name + "';");
 		try
 		{
 			if(mc_accounts.next())
@@ -68,7 +68,7 @@ public class CommonMinecraft
 
 	public static String getUUIDFromID(String id)
 	{
-		ResultSet linked_accounts = Database.queryCommand("SELECT uuid FROM linked_accounts WHERE id = '" + id + "';");
+		ResultSet linked_accounts = Database.getInstance().queryCommand("SELECT uuid FROM linked_accounts WHERE id = '" + id + "';");
 		try
 		{
 			if(linked_accounts.next())
@@ -85,8 +85,8 @@ public class CommonMinecraft
 
 	public static Map<String, String> fetchLinks(String discordId)
 	{
-		final Map<String, String> result = new ConcurrentHashMap<>();
-		final ResultSet linked_accounts = Database.queryCommand("SELECT * FROM linked_accounts WHERE id = '" + discordId + "';");
+		 Map<String, String> result = new HashMap<>();
+		 ResultSet linked_accounts = Database.getInstance().queryCommand("SELECT * FROM linked_accounts WHERE id = '" + discordId + "';");
 
 		try
 		{
@@ -104,18 +104,18 @@ public class CommonMinecraft
 
 	public static void removeLinkedAccount(String uuid)
 	{
-		Database.updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';");
+		Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE uuid = '" + uuid + "';");
 	}
 
 	public static void updateUser(String id, String username, String nickname, String rank
 			, int supporter, int birthday, int developer, int founder, int nitroboost)
 	{
-		Database.updateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
+		Database.getInstance().updateCommand("UPDATE discord_accounts SET " + "username = '" + username + "', nickname = '" + nickname + "', role = '" + rank + "', founder = " + founder + ", developer = " + developer + ", birthday = " + birthday + ", supporter = " + supporter + ", nitroboost = " + nitroboost + " WHERE id = '" + id + "';");
 	}
 
 	public static void addNewUser(String id, String username, String nickname, String rank
 			, int supporter, int birthday, int developer, int founder, int nitroboost)
 	{
-		Database.updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
+		Database.getInstance().updateCommand("INSERT INTO discord_accounts VALUES('" + id + "','" + username + "','" + nickname + "','" + rank + "'," + founder + "," + developer + "," + birthday + "," + supporter + "," + nitroboost + ");");
 	}
 }

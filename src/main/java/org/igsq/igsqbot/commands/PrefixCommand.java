@@ -20,10 +20,10 @@ public class PrefixCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final MessageChannel channel = ctx.getChannel();
-		final Guild guild = ctx.getGuild();
-		final JDA jda = ctx.getJDA();
-		final GuildConfig config = new GuildConfig(guild, jda);
+		MessageChannel channel = ctx.getChannel();
+		Guild guild = ctx.getGuild();
+		JDA jda = ctx.getJDA();
+		GuildConfig config = new GuildConfig(guild, jda);
 
 		if(args.isEmpty())
 		{

@@ -19,11 +19,11 @@ public class VoiceEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildVoiceMove(GuildVoiceMoveEvent event)
 	{
-		final Guild guild = event.getGuild();
-		final MessageChannel logChannel = new GuildConfig(guild, event.getJDA()).getLogChannel();
-		final VoiceChannel oldChannel = event.getChannelLeft();
-		final VoiceChannel newChannel = event.getChannelJoined();
-		final Member member = event.getMember();
+		Guild guild = event.getGuild();
+		MessageChannel logChannel = new GuildConfig(guild, event.getJDA()).getLogChannel();
+		VoiceChannel oldChannel = event.getChannelLeft();
+		VoiceChannel newChannel = event.getChannelJoined();
+		Member member = event.getMember();
 
 		if(logChannel != null)
 		{
@@ -42,9 +42,9 @@ public class VoiceEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildVoiceLeave(GuildVoiceLeaveEvent event)
 	{
-		final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
-		final VoiceChannel channel = event.getChannelLeft();
-		final Member member = event.getMember();
+		MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+		VoiceChannel channel = event.getChannelLeft();
+		Member member = event.getMember();
 
 		if(logChannel != null)
 		{
@@ -62,10 +62,10 @@ public class VoiceEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildVoiceJoin(GuildVoiceJoinEvent event)
 	{
-		final Guild guild = event.getGuild();
-		final MessageChannel logChannel = new GuildConfig(guild, event.getJDA()).getLogChannel();
-		final VoiceChannel channel = event.getChannelJoined();
-		final Member member = event.getMember();
+		Guild guild = event.getGuild();
+		MessageChannel logChannel = new GuildConfig(guild, event.getJDA()).getLogChannel();
+		VoiceChannel channel = event.getChannelJoined();
+		Member member = event.getMember();
 
 		if(logChannel != null)
 		{

@@ -21,9 +21,10 @@ import java.util.Map;
 
 public class SyncMinecraft
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
-	private static Guild guild;
-	private static Role verifiedRole = null;
+	private static final SyncMinecraft INSTANCE = new SyncMinecraft();
+	private  Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
+	private Guild guild;
+	private Role verifiedRole = null;
 
 
 	private SyncMinecraft()
@@ -31,7 +32,7 @@ public class SyncMinecraft
 		//Overriding the default, public, constructor
 	}
 
-	public static void startSync(ShardManager shardManager)
+	public void start(ShardManager shardManager)
 	{
 		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 		if(jsonBotConfig == null)
@@ -44,7 +45,7 @@ public class SyncMinecraft
 			TaskHandler.cancelTask("minecraftSync");
 			LOGGER.warn("Minecraft sync stopped due to no guild being defined in CONFIG.json.");
 		}
-		else if(!Database.isOnline())
+		else if(!Database.getInstance().isOnline())
 		{
 			TaskHandler.cancelTask("minecraftSync");
 			LOGGER.warn("Minecraft sync task stopped due to no Database connectivity.");
@@ -64,7 +65,7 @@ public class SyncMinecraft
 		}
 	}
 
-	public static void sync()
+	public void sync()
 	{
 		verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", Filename.GUILD));
 		guild.loadMembers(selectedMember ->
@@ -86,7 +87,7 @@ public class SyncMinecraft
 					// int retired = hasRole(json.getRetired(), selectedMember)?1:0;
 					int nitroboost = hasRole(json.getNitroboost(), selectedMember) ? 1 : 0;
 
-					boolean userExists = Database.scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
+					boolean userExists = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
 
 					if(userExists)
 					{
@@ -101,14 +102,14 @@ public class SyncMinecraft
 		});
 	}
 
-	public static void clean()
+	public void clean()
 	{
-		if(!Database.isOnline())
+		if(!Database.getInstance().isOnline())
 		{
 			TaskHandler.cancelTask("minecraftClean");
 			LOGGER.warn("Minecraft clean task stopped due to no Database connectivity.");
 		}
-		ResultSet discord_accounts = Database.queryCommand("SELECT * FROM discord_accounts");
+		ResultSet discord_accounts = Database.getInstance().queryCommand("SELECT * FROM discord_accounts");
 		if(discord_accounts == null)
 		{
 			TaskHandler.cancelTask("minecraftClean");
@@ -125,11 +126,11 @@ public class SyncMinecraft
 			{
 				while(discord_accounts.next())
 				{
-					final String currentId = discord_accounts.getString(1);
+					 String currentId = discord_accounts.getString(1);
 					guild.retrieveMemberById(currentId).queue(
 							selectedMember ->
 							{
-								final String memberId = selectedMember.getId();
+								 String memberId = selectedMember.getId();
 
 								if(!(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 								{
@@ -137,17 +138,17 @@ public class SyncMinecraft
 
 									if(uuid != null)
 									{
-										Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
-										Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + memberId + "';");
+										Database.getInstance().updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
+										Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE id = '" + memberId + "';");
 									}
-									Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
+									Database.getInstance().updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
 								}
 							},
 							error ->
 							{
-								Database.updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(currentId) + "';");
-								Database.updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
-								Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + currentId + "';");
+								Database.getInstance().updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(currentId) + "';");
+								Database.getInstance().updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
+								Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE id = '" + currentId + "';");
 							}
 					);
 				}
@@ -159,7 +160,7 @@ public class SyncMinecraft
 		}
 	}
 
-	private static boolean hasRole(String roleID, Member member)
+	private boolean hasRole(String roleID, Member member)
 	{
 		for(Role selectedRole : member.getRoles())
 		{
@@ -171,7 +172,7 @@ public class SyncMinecraft
 		return false;
 	}
 
-	private static boolean hasRole(List<String> roles, Member member)
+	private boolean hasRole(List<String> roles, Member member)
 	{
 		for(String selectedRole : roles)
 		{
@@ -180,7 +181,7 @@ public class SyncMinecraft
 		return false;
 	}
 
-	private static String getRank(Member member)
+	private String getRank(Member member)
 	{
 		JsonMinecraft json = Json.get(JsonMinecraft.class, Filename.MINECRAFT);
 		if(json != null)
@@ -205,5 +206,10 @@ public class SyncMinecraft
 			return "default";
 		}
 		return "default";
+	}
+
+	public static SyncMinecraft getInstance()
+	{
+		return INSTANCE;
 	}
 }

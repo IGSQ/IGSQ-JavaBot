@@ -131,7 +131,7 @@ public class WarnCommand extends Command
 
 	private void addWarning(Member member, MessageChannel channel, String reason)
 	{
-		JsonPunishment jsonPunishment = (JsonPunishment) JsonPunishmentCache.getInstance().get(member);
+		JsonPunishment jsonPunishment = JsonPunishmentCache.getInstance().get(member);
 		List<String> warnings = jsonPunishment.getWarnings();
 		warnings.add(reason + " - " + StringUtils.getTimestamp());
 		jsonPunishment.setWarnings(warnings);
@@ -148,7 +148,7 @@ public class WarnCommand extends Command
 		for(String selectedWarning : warnings)
 		{
 			embedText.append(currentWarning).append(": ").append(selectedWarning).append("\n");
-			currentWarning ++;
+			currentWarning++;
 		}
 		channel.sendMessage(new EmbedBuilder()
 				.setTitle("Warnings for " + member.getUser().getAsTag())

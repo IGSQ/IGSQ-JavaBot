@@ -18,12 +18,12 @@ public class MemberEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{
-		final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
-		final User user = event.getUser();
+		MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+		User user = event.getUser();
 
 		event.getGuild().retrieveMember(user).queue(member ->
 		{
-			final String timeJoined = member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+			String timeJoined = member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 			if(logChannel != null && !user.isBot())
 			{
 				logChannel.sendMessage(new EmbedBuilder()
@@ -40,7 +40,7 @@ public class MemberEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event)
 	{
-		final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+		MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
 		Member member = event.getMember();
 		User user = event.getUser();
 

@@ -12,6 +12,7 @@ import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.util.YamlUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -123,68 +124,22 @@ public class MessageDataCache
 		{
 			throw new UnsupportedOperationException("You must set the type before getting users");
 		}
-		Map<String, User> result = new ConcurrentHashMap<>();
+		Map<String, User> result = new HashMap<>();
 		switch(type)
 		{
-			case HELP:
-			{
+			case HELP -> {
 				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".help.user", Filename.INTERNAL)));
-				break;
 			}
-			case REPORT:
-			{
+			case REPORT -> {
 				result.put("reporteduser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reporteduser", Filename.INTERNAL)));
 				result.put("reportinguser", jda.getUserById(Yaml.getFieldString(messageId + ".report.reportinguser", Filename.INTERNAL)));
-				break;
 			}
-			case MODHELP:
-			{
-				result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL)));
-				break;
-			}
-			case VERIFICATION:
+			case MODHELP -> result.put("user", jda.getUserById(Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL)));
+			case VERIFICATION -> {
 				result.put("author", jda.getUserById(Yaml.getFieldString(messageId + ".verification.author", Filename.INTERNAL)));
 				result.put("target", jda.getUserById(Yaml.getFieldString(messageId + ".verification.target", Filename.INTERNAL)));
-				break;
-			default:
-			{
-				return result;
 			}
-		}
-		return result;
-	}
-
-	public Map<String, String> getUserIds()
-	{
-		if(type == null)
-		{
-			throw new UnsupportedOperationException("You must set the type before getting users");
-		}
-		Map<String, String> result = new ConcurrentHashMap<>();
-		switch(type)
-		{
-			case HELP:
-			{
-				result.put("user", Yaml.getFieldString(messageId + ".help.user", Filename.INTERNAL));
-				break;
-			}
-			case REPORT:
-			{
-				result.put("reporteduser", Yaml.getFieldString(messageId + ".report.reporteduser", Filename.INTERNAL));
-				result.put("reportinguser", Yaml.getFieldString(messageId + ".report.reportinguser", Filename.INTERNAL));
-				break;
-			}
-			case MODHELP:
-			{
-				result.put("user", Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL));
-				break;
-			}
-			case VERIFICATION:
-				result.put("author", Yaml.getFieldString(messageId + ".verification.author", Filename.INTERNAL));
-				result.put("target", Yaml.getFieldString(messageId + ".verification.target", Filename.INTERNAL));
-				break;
-			default:
-			{
+			default -> {
 				return result;
 			}
 		}
@@ -195,7 +150,7 @@ public class MessageDataCache
 	{
 		if(type == null)
 		{
-				throw new UnsupportedOperationException("You must set the type before setting users");
+			throw new UnsupportedOperationException("You must set the type before setting users");
 		}
 		switch(type)
 		{
@@ -223,6 +178,32 @@ public class MessageDataCache
 			{
 			}
 		}
+	}
+
+	public Map<String, String> getUserIds()
+	{
+		if(type == null)
+		{
+			throw new UnsupportedOperationException("You must set the type before getting users");
+		}
+		Map<String, String> result = new HashMap<>();
+		switch(type)
+		{
+			case HELP -> result.put("user", Yaml.getFieldString(messageId + ".help.user", Filename.INTERNAL));
+			case REPORT -> {
+				result.put("reporteduser", Yaml.getFieldString(messageId + ".report.reporteduser", Filename.INTERNAL));
+				result.put("reportinguser", Yaml.getFieldString(messageId + ".report.reportinguser", Filename.INTERNAL));
+			}
+			case MODHELP -> result.put("user", Yaml.getFieldString(messageId + ".modhelp.user", Filename.INTERNAL));
+			case VERIFICATION -> {
+				result.put("author", Yaml.getFieldString(messageId + ".verification.author", Filename.INTERNAL));
+				result.put("target", Yaml.getFieldString(messageId + ".verification.target", Filename.INTERNAL));
+			}
+			default -> {
+				return result;
+			}
+		}
+		return result;
 	}
 
 	public void setRoles(Map<String, String> roles)
@@ -255,30 +236,23 @@ public class MessageDataCache
 		{
 			throw new UnsupportedOperationException("You must set the type before getting roles");
 		}
-		Map<Role, String> result = new ConcurrentHashMap<>();
+		Map<Role, String> result = new HashMap<>();
 		switch(type)
 		{
-			case HELP:
-			case MODHELP:
-			case REPORT:
-			{
-				break;
-			}
-			case VERIFICATION:
+			case HELP, MODHELP, REPORT -> { }
+			case VERIFICATION -> {
 				Arrays.stream(Yaml.getFieldString(messageId + ".verification.guessedroles", Filename.INTERNAL)
 						.split("/"))
 						.map(guild::getRoleById)
 						.filter(Objects::nonNull)
 						.forEach(role -> result.put(role, "guess"));
-
 				Arrays.stream(Yaml.getFieldString(messageId + ".verification.matchedroles", Filename.INTERNAL)
 						.split("/"))
 						.map(guild::getRoleById)
 						.filter(Objects::nonNull)
 						.forEach(role -> result.put(role, "match"));
-				break;
-			default:
-			{
+			}
+			default -> {
 				return result;
 			}
 		}
@@ -364,6 +338,6 @@ public class MessageDataCache
 		HELP,
 		MODHELP,
 		VERIFICATION,
-		DISABLED;
+		DISABLED
 	}
 }

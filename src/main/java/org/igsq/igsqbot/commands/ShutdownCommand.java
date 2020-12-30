@@ -1,12 +1,13 @@
 package org.igsq.igsqbot.commands;
 
 import org.igsq.igsqbot.Json;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.json.JsonBotConfig;
+import org.igsq.igsqbot.entities.json.JsonGuildCache;
+import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
 import org.igsq.igsqbot.entities.yaml.Blacklist;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
@@ -37,8 +38,8 @@ public class ShutdownCommand extends Command
 
 		ctx.getJDA().shutdown();
 
-		Yaml.saveFileChanges(Filename.ALL);
-		Yaml.disregardAndCloseFile(Filename.ALL);
+		JsonGuildCache.getInstance().save();
+		JsonPunishmentCache.getInstance().save();
 
 		LOGGER.warn("IGSQBot was shutdown using shutdown command.");
 		LOGGER.warn("-- Issued by: " + ctx.getAuthor().getAsTag());

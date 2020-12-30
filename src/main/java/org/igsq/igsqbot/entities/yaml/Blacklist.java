@@ -15,9 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Blacklist
 {
-	private final UUID name;
-	private final String delimiter;
 	private static final Map<UUID, Blacklist> BLACKLIST_MAP;
+
 	static
 	{
 		BLACKLIST_MAP = ExpiringMap.builder()
@@ -26,13 +25,22 @@ public class Blacklist
 				.expiration(30, TimeUnit.MINUTES)
 				.build();
 	}
+
+	private final UUID name;
+	private final String delimiter;
+
 	public Blacklist(String delimiter)
 	{
 		this.name = getName();
 		this.delimiter = delimiter;
 		BLACKLIST_MAP.putIfAbsent(name, this);
 	}
-	
+
+	public static void close()
+	{
+		BLACKLIST_MAP.keySet().forEach(uuid -> YamlUtils.clearField(uuid + ".blacklist", Filename.INTERNAL));
+	}
+
 	public Blacklist append(Object data)
 	{
 		if(isFirstEntry())
@@ -66,6 +74,7 @@ public class Blacklist
 	{
 		return Arrays.asList(Yaml.getFieldString(name + ".blacklist", Filename.INTERNAL).split(delimiter));
 	}
+
 	private boolean isFirstEntry()
 	{
 		return YamlUtils.isFieldEmpty(name + ".blacklist", Filename.INTERNAL);
@@ -82,10 +91,5 @@ public class Blacklist
 		{
 			return uuid;
 		}
-	}
-
-	public static void close()
-	{
-		BLACKLIST_MAP.keySet().forEach(uuid -> YamlUtils.clearField(uuid + ".blacklist", Filename.INTERNAL));
 	}
 }

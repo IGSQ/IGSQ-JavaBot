@@ -32,11 +32,11 @@ public class MessageEventsLogging extends ListenerAdapter
 
 			if(cache.isInCache(event.getMessage()))
 			{
-				final Message newMessage = event.getMessage();
-				final CachedMessage oldMessage = cache.get(event.getMessageId());
-				final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
-				final MessageChannel channel = event.getChannel();
-				final String oldContent = oldMessage.getContentRaw();
+				Message newMessage = event.getMessage();
+				CachedMessage oldMessage = cache.get(event.getMessageId());
+				MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+				MessageChannel channel = event.getChannel();
+				String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
 
 				if(CommandUtils.isValidCommand(newMessage.getContentRaw(), event.getGuild().getId(), event.getJDA()))
@@ -79,13 +79,13 @@ public class MessageEventsLogging extends ListenerAdapter
 	{
 		if(event.getChannelType().equals(ChannelType.TEXT))
 		{
-			final MessageCache cache = MessageCache.getCache(event.getGuild());
+			MessageCache cache = MessageCache.getCache(event.getGuild());
 
 			if(cache.isInCache(event.getMessageId()))
 			{
-				final CachedMessage message = cache.get(event.getMessageId());
-				final MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
-				final MessageChannel channel = event.getChannel();
+				CachedMessage message = cache.get(event.getMessageId());
+				MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+				MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
 
 				if(CommandUtils.isValidCommand(content, event.getGuild().getId(), event.getJDA()))

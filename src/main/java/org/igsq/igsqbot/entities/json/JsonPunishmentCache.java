@@ -16,6 +16,11 @@ public class JsonPunishmentCache implements IJsonCacheable
 	private static final JsonPunishmentCache INSTANCE = new JsonPunishmentCache();
 	private final Map<String, JsonPunishment> cachedFiles = new ConcurrentHashMap<>();
 
+	public static JsonPunishmentCache getInstance()
+	{
+		return INSTANCE;
+	}
+
 	@Override
 	public void set(IJson json)
 	{
@@ -103,10 +108,5 @@ public class JsonPunishmentCache implements IJsonCacheable
 	public Collection<JsonPunishment> getAll()
 	{
 		return cachedFiles.values();
-	}
-
-	public static JsonPunishmentCache getInstance()
-	{
-		return INSTANCE;
 	}
 }

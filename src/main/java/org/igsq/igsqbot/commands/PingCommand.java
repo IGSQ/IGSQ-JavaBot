@@ -19,9 +19,9 @@ public class PingCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final User author = ctx.getAuthor();
-		final MessageChannel channel = ctx.getChannel();
-		final JDA jda = ctx.getJDA();
+		User author = ctx.getAuthor();
+		MessageChannel channel = ctx.getChannel();
+		JDA jda = ctx.getJDA();
 
 		if(!args.isEmpty())
 		{

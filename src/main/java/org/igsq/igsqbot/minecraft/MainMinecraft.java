@@ -16,10 +16,9 @@ public class MainMinecraft
 
 	public static void startMinecraft(ShardManager shardManager)
 	{
-		SyncMinecraft.startSync(shardManager);
-		TwoFAMinecraft.startTwoFA();
-		TaskHandler.addRepeatingTask(SyncMinecraft::sync, "minecraftSync", 0, TimeUnit.SECONDS, 10);
-		TaskHandler.addRepeatingTask(SyncMinecraft::clean, "minecraftClean", 0, TimeUnit.HOURS, 6);
-		new GuildMemberRemoveEvent_Minecraft();
+		SyncMinecraft.getInstance().start(shardManager);
+		TwoFAMinecraft.start();
+		TaskHandler.addRepeatingTask(() -> SyncMinecraft.getInstance().sync(), "minecraftSync", 0, TimeUnit.SECONDS, 10);
+		TaskHandler.addRepeatingTask(() -> SyncMinecraft.getInstance().clean(), "minecraftClean", 0, TimeUnit.HOURS, 6);
 	}
 }

@@ -19,7 +19,7 @@ public class MockCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final MessageChannel channel = ctx.getChannel();
+		MessageChannel channel = ctx.getChannel();
 
 		if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
 		{

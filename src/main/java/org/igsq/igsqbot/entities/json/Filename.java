@@ -8,5 +8,5 @@ public enum Filename
 	VERIFICATION,
 	MINECRAFT,
 	PUNISHMENT,
-	ALL;
+	ALL
 }

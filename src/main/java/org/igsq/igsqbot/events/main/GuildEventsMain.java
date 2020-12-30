@@ -2,8 +2,11 @@ package org.igsq.igsqbot.events.main;
 
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.UnavailableGuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.minecraft.CommonMinecraft;
 
 public class GuildEventsMain extends ListenerAdapter
 {
@@ -18,4 +21,18 @@ public class GuildEventsMain extends ListenerAdapter
 	{
 		new GuildConfig(event.getGuildId(), event.getJDA()).wipe();
 	}
+
+	@Override
+	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
+	{
+		String id = event.getUser().getId();
+		String uuid = CommonMinecraft.getUUIDFromID(id);
+		if(uuid != null)
+		{
+			Database.getInstance().updateCommand("DELETE FROM discord_2fa WHERE id = '" + uuid + "';");
+			Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE id = '" + id + "';");
+		}
+		Database.getInstance().updateCommand("DELETE FROM discord_accounts WHERE id = '" + id + "';");
+	}
 }
+

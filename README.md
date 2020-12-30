@@ -55,14 +55,16 @@
  - [x] Remove EmbedGenerator in favour of JDAs EmbedBuilder
  - [x] Created new EmbedUtils to compensate for missing functionality
  - [x] Investigate caffeine > expiringmap (unneeded for now)
+ - [x] Replaced concurrenthashmap with hashmap if possible
+ - [x] IJsonCachable interface
+ - [x] Muting (needs debugged) (fixed)
+ - [x] Json punishment objects
+ - [x] Consider final usage
 
 ### **TeaEyes**
 None!
 
 ### **arynxd**
- - [ ] Finish verification
- - [ ] Reactionevent / ~~roles into the yaml~~
-   
  - [ ] Alias / Decline (within the setup command)
 
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
@@ -85,12 +87,10 @@ None!
         }
     }
 ```
- - [ ] Muting (needs debugged)
  - [ ] Json internal objects
- - [ ] Json punishment objects
  - [ ] ReactionRole utils?
- - [ ] IJsonCachable interface
-   
+ - [ ] Report into JSON
+ - [ ] Verification, written and Json
  - [ ] **PREPARE FOR PR!!!**
 
 ### **Future work**
@@ -103,8 +103,6 @@ None!
  - [ ] Remove statics and use getInstance()
  - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo)
  - [ ] Consider switch usage (replace with elif)
- - [ ] Consider Exception catching (replace with specifics)
- - [ ] Consider final usage
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
@@ -112,7 +110,7 @@ None!
  - [x] GUIGenerator#menu & GUIGenerator#confirmation can take extended amounts of time to register (fixed but untested)
  - [x] discord_accounts table returning errors - fixed with additional error catching
  - [x] 2FA not functioning as intended - unintended feature
- - [ ] Muting causing duplicate entries
+ - [x] Muting causing duplicate entries (fixed, was a Map issue)
 
 ## Building and Running
 

@@ -19,17 +19,17 @@ public class PollCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final StringBuilder options = new StringBuilder();
-		final MessageChannel channel = ctx.getChannel();
-		final User author = ctx.getAuthor();
-		final List<String> reactions = new ArrayList<>();
+		StringBuilder options = new StringBuilder();
+		MessageChannel channel = ctx.getChannel();
+		User author = ctx.getAuthor();
+		List<String> reactions = new ArrayList<>();
 
 		if(args.size() != 1 || CommandUtils.isArgsEmbedCompatible(args))
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
-		final List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
+		List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
 		if(slashArgs.size() >= 3 && !CommandUtils.isArgsEmbedCompatible(args))
 		{
 			String topic = slashArgs.get(0);

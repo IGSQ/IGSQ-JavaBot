@@ -66,29 +66,29 @@ public class CommandHandler
 			return;
 		}
 
-		final List<String> args = Arrays.stream(event.getMessage().getContentRaw().split("\\s+")).collect(Collectors.toList());
-		final String messageContent = event.getMessage().getContentRaw();
-		final JDA jda = event.getJDA();
-		final MessageChannel channel = event.getChannel();
-		final String selfID = jda.getSelfUser().getId();
-		final String commandText;
-		final String content;
-		final Command cmd;
+		 List<String> args = Arrays.stream(event.getMessage().getContentRaw().split("\\s+")).collect(Collectors.toList());
+		 String messageContent = event.getMessage().getContentRaw();
+		 JDA jda = event.getJDA();
+		 MessageChannel channel = event.getChannel();
+		 String selfID = jda.getSelfUser().getId();
+		 String commandText;
+		 String content;
+		 Command cmd;
 
-		final boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
-		final boolean startWithIdSpaced =  messageContent.startsWith("<@" + selfID + "> ")|| messageContent.startsWith("<@!" + selfID + "> ");
-		final String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
+		 boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
+		 boolean startWithIdSpaced =  messageContent.startsWith("<@" + selfID + "> ")|| messageContent.startsWith("<@!" + selfID + "> ");
+		 String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 
 		if(event.isFromGuild())
 		{
-			final Guild guild = event.getGuild();
+			 Guild guild = event.getGuild();
 			if(startsWithId || startWithIdSpaced)
 			{
 				content = idTrimmed;
 			}
 			else if(messageContent.startsWith(new GuildConfig(guild.getId(), jda).getGuildPrefix()))
 			{
-				final String prefix  = new GuildConfig(guild.getId(), jda).getGuildPrefix();
+				 String prefix  = new GuildConfig(guild.getId(), jda).getGuildPrefix();
 				content = messageContent.substring(prefix.length()).trim();
 				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 				{
@@ -102,7 +102,7 @@ public class CommandHandler
 		}
 		else
 		{
-			final String prefix  = Constants.DEFAULT_BOT_PREFIX;
+			 String prefix  = Constants.DEFAULT_BOT_PREFIX;
 			if(startsWithId || startWithIdSpaced)
 			{
 				content = idTrimmed;

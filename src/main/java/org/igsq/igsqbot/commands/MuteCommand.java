@@ -25,7 +25,7 @@ public class MuteCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final MessageChannel channel = ctx.getChannel();
+		MessageChannel channel = ctx.getChannel();
 
 		if(args.size() != 2 || ctx.getMessage().getMentionedMembers().isEmpty())
 		{

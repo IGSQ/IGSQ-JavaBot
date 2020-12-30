@@ -11,15 +11,12 @@ import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 public class HelpCommand extends Command
 {
 	private static final List<EmbedBuilder> PAGES = new ArrayList<>();
+
 	public static void generatePages()
 	{
 		List<Command> commands = new ArrayList<>();
@@ -40,7 +37,7 @@ public class HelpCommand extends Command
 			{
 				fieldCount++;
 				embedBuilder.setTitle("Help page: " + page);
-				embedBuilder.addField(cmd.getName(), cmd.getDescription() + "\n**" + cmd.getAliases().get(0) + "**`" +cmd.getSyntax() + "`", fieldCount % 2 == 0);
+				embedBuilder.addField(cmd.getName(), cmd.getDescription() + "\n**" + cmd.getAliases().get(0) + "**`" + cmd.getSyntax() + "`", fieldCount % 2 == 0);
 				embedBuilder.setColor(Constants.IGSQ_PURPLE);
 
 			}
@@ -79,7 +76,7 @@ public class HelpCommand extends Command
 							message ->
 							{
 								final MessageDataCache messageDataCache = new MessageDataCache(message.getId(), jda);
-								final Map<String, String> users = new ConcurrentHashMap<>();
+								final Map<String, String> users = new HashMap<>();
 
 								users.put("user", author.getId());
 								messageDataCache.setType(MessageDataCache.MessageType.HELP);

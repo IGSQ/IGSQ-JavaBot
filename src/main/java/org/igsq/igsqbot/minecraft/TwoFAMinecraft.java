@@ -22,7 +22,7 @@ public class TwoFAMinecraft
 		//Overrides the default, public, constructor
 	}
 
-	public static void startTwoFA()
+	public static void start()
 	{
 		TaskHandler.addRepeatingTask(() ->
 		{
@@ -47,16 +47,16 @@ public class TwoFAMinecraft
 									.build()).queue(
 									message ->
 									{
-										Database.updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+										Database.getInstance().updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 
 										TaskHandler.addTask(() ->
 										{
 											EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0)).setDescription("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message."), true);
-											if(Database.scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
+											if(Database.getInstance().scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
 											{
-												Database.updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+												Database.getInstance().updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 											}
-											Database.updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+											Database.getInstance().updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
 										}, TimeUnit.SECONDS, 60);
 									}, error -> {}
 							);
@@ -72,7 +72,7 @@ public class TwoFAMinecraft
 
 	private static List<String> getPending()
 	{
-		ResultSet discord_2fa = Database.queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending' AND `code` IS NULL");
+		ResultSet discord_2fa = Database.getInstance().queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending' AND `code` IS NULL");
 		List<String> pendingIDs = new ArrayList<>();
 
 		if(discord_2fa == null)

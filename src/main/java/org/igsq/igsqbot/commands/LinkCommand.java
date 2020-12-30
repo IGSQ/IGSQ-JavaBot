@@ -69,7 +69,7 @@ public class LinkCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return Database.isOnline();
+		return Database.getInstance().isOnline();
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class LinkCommand extends Command
 
 	private void showPending()
 	{
-		final StringBuilder embedDescription = new StringBuilder();
+		StringBuilder embedDescription = new StringBuilder();
 		CommonMinecraft.fetchLinks(author.getId()).forEach((name, state) ->
 		{
 			String status;
@@ -128,10 +128,10 @@ public class LinkCommand extends Command
 		}
 		else
 		{
-			final String mcAccount = args.get(1);
-			final String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
-			final String username = CommonMinecraft.getNameFromUUID(uuid);
-			final String id = CommonMinecraft.getIDFromUUID(uuid);
+			String mcAccount = args.get(1);
+			String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
+			String username = CommonMinecraft.getNameFromUUID(uuid);
+			String id = CommonMinecraft.getIDFromUUID(uuid);
 
 			if(username == null)
 			{
@@ -164,14 +164,14 @@ public class LinkCommand extends Command
 		}
 		else
 		{
-			final String mcAccount = args.get(1);
-			final String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
+			String mcAccount = args.get(1);
+			String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
 			final String username = CommonMinecraft.getNameFromUUID(uuid);
 			if(uuid != null)
 			{
-				boolean isWaiting = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'dwait';") > 0;
-				boolean isAlreadyLinked = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'linked';") > 0;
-				boolean isUsersAccount = Database.scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'linked';") > 0;
+				boolean isWaiting = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'dwait';") > 0;
+				boolean isAlreadyLinked = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'linked';") > 0;
+				boolean isUsersAccount = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'linked';") > 0;
 
 				if(isUsersAccount)
 				{
@@ -183,13 +183,13 @@ public class LinkCommand extends Command
 				}
 				else if(isWaiting)
 				{
-					Database.updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
-					Database.updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
+					Database.getInstance().updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
+					Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
 					EmbedUtils.sendSuccess(channel, "Link confirmed for account: " + username);
 				}
 				else
 				{
-					Database.updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
+					Database.getInstance().updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
 					EmbedUtils.sendSuccess(channel, "Link added for account: " + username);
 				}
 			}

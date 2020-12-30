@@ -38,10 +38,10 @@ public class IGSQBot
 	public static void main(String[] args)
 	{
 		instance = new IGSQBot();
-		instance.start();
+		instance.run();
 	}
 
-	private void start()
+	private void run()
 	{
 		Yaml.createFiles();
 		Yaml.loadFile(Filename.ALL);
@@ -52,7 +52,7 @@ public class IGSQBot
 		JsonGuildCache.getInstance().load();
 		JsonPunishmentCache.getInstance().load();
 
-		final JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
+		 JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 
 		if(jsonBotConfig != null)
 		{
@@ -80,7 +80,7 @@ public class IGSQBot
 						.build();
 				readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
 
-				Database.startDatabase();
+				Database.getInstance().start();
 				MainMinecraft.startMinecraft(shardManager);
 
 				instance.logger.info("IGSQBot started!");

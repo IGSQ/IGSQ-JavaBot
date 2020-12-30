@@ -21,9 +21,9 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 	public void onMessageReactionAdd(MessageReactionAddEvent event)
 	{
 		if(!event.getReactionEmote().isEmoji()) return;
-		final String messageID = event.getMessageId();
-		final Guild guild = event.getGuild();
-		final JDA jda = event.getJDA();
+		String messageID = event.getMessageId();
+		Guild guild = event.getGuild();
+		JDA jda = event.getJDA();
 
 		List<RestAction<?>> actions = new ArrayList<>();
 
@@ -35,9 +35,9 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 				results ->
 				{
 					Message message = (Message) results.get(0);
-					User user= (User) results.get(1);
+					User user = (User) results.get(1);
 					Member member = (Member) results.get(2);
-					final MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
+					MessageDataCache messageDataCache = MessageDataCache.getMessageData(messageID, jda);
 					if(messageDataCache != null && messageDataCache.getType().equals(MessageDataCache.MessageType.REPORT) && !user.isBot())
 					{
 						Member reportedMember = messageDataCache.getMembers(guild).get("reporteduser");

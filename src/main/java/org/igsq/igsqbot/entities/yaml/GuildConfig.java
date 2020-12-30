@@ -148,6 +148,7 @@ public class GuildConfig
 		}
 
 	}
+
 	public void setVerifiedRole(Role role)
 	{
 		Yaml.updateField(guildId + ".verifiedrole", Filename.GUILD, role.getId());
@@ -165,13 +166,13 @@ public class GuildConfig
 		}
 	}
 
-	public void wipe()
-	{
-		YamlUtils.clearField(guildId, Filename.GUILD);
-	}
-
 	public void setGuildPrefix(String prefix)
 	{
 		Yaml.updateField(guildId + ".prefix", Filename.GUILD, " " + prefix);
+	}
+
+	public void wipe()
+	{
+		YamlUtils.clearField(guildId, Filename.GUILD);
 	}
 }

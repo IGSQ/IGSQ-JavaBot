@@ -12,6 +12,11 @@ public class JsonGuild implements IJson
 	private List<JsonReactionRole> reactionRoles = new ArrayList<>();
 	private String mutedRole;
 
+	public JsonGuild(String guildId)
+	{
+		this.guildId = guildId;
+	}
+
 	public void setGuildId(String guildId)
 	{
 		this.guildId = guildId;
@@ -25,12 +30,6 @@ public class JsonGuild implements IJson
 	public void setMutedRole(String mutedRole)
 	{
 		this.mutedRole = mutedRole;
-	}
-
-
-	public JsonGuild(String guildId)
-	{
-		this.guildId = guildId;
 	}
 
 	public List<JsonReactionRole> getReactionRoles()

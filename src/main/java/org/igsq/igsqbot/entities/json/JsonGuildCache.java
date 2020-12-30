@@ -19,6 +19,11 @@ public class JsonGuildCache implements IJsonCacheable
 		//Overrides the default, public, constructor
 	}
 
+	public static JsonGuildCache getInstance()
+	{
+		return INSTANCE;
+	}
+
 	@Override
 	public void load()
 	{
@@ -83,10 +88,5 @@ public class JsonGuildCache implements IJsonCacheable
 			json.add(guild.toJson());
 		}
 		Json.updateFile(json, Filename.GUILD);
-	}
-
-	public static JsonGuildCache getInstance()
-	{
-		return INSTANCE;
 	}
 }

@@ -11,26 +11,26 @@ import java.util.Map;
 
 public class JsonMinecraft implements IJson
 {
-	private List<String> squirrel = new ArrayList<>();
-	private List<String> rising = new ArrayList<>();
-	private List<String> flying = new ArrayList<>();
-	private List<String> soaring = new ArrayList<>();
-	private List<String> epic = new ArrayList<>();
-	private List<String> epic2 = new ArrayList<>();
-	private List<String> epic3 = new ArrayList<>();
-	private List<String> elite = new ArrayList<>();
-	private List<String> elite2 = new ArrayList<>();
-	private List<String> elite3 = new ArrayList<>();
-	private List<String> mod = new ArrayList<>();
-	private List<String> mod2 = new ArrayList<>();
-	private List<String> mod3 = new ArrayList<>();
-	private List<String> council = new ArrayList<>();
-	private List<String> birthday = new ArrayList<>();
-	private List<String> nitroboost = new ArrayList<>();
-	private List<String> retired = new ArrayList<>();
-	private List<String> founder = new ArrayList<>();
-	private List<String> developer = new ArrayList<>();
-	private List<String> supporter = new ArrayList<>();
+	private final List<String> squirrel = new ArrayList<>();
+	private final List<String> rising = new ArrayList<>();
+	private final List<String> flying = new ArrayList<>();
+	private final List<String> soaring = new ArrayList<>();
+	private final List<String> epic = new ArrayList<>();
+	private final List<String> epic2 = new ArrayList<>();
+	private final List<String> epic3 = new ArrayList<>();
+	private final List<String> elite = new ArrayList<>();
+	private final List<String> elite2 = new ArrayList<>();
+	private final List<String> elite3 = new ArrayList<>();
+	private final List<String> mod = new ArrayList<>();
+	private final List<String> mod2 = new ArrayList<>();
+	private final List<String> mod3 = new ArrayList<>();
+	private final List<String> council = new ArrayList<>();
+	private final List<String> birthday = new ArrayList<>();
+	private final List<String> nitroboost = new ArrayList<>();
+	private final List<String> retired = new ArrayList<>();
+	private final List<String> founder = new ArrayList<>();
+	private final List<String> developer = new ArrayList<>();
+	private final List<String> supporter = new ArrayList<>();
 
 	public Map<List<String>, String> getRanks()
 	{
@@ -93,7 +93,7 @@ public class JsonMinecraft implements IJson
 	{
 		JsonObject jsonObject = new JsonObject();
 		JsonArray exampleArray = new JsonArray();
-		exampleArray.add(new JsonPrimitive("123456789012345678"));
+		exampleArray.add(new JsonPrimitive("010101010101010101"));
 
 		jsonObject.add("squirrel", exampleArray);
 		jsonObject.add("rising", exampleArray);
