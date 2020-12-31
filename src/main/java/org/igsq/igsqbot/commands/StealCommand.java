@@ -34,13 +34,13 @@ public class StealCommand extends Command
 			Icon icon = FileUtils.getIcon(args.get(1));
 			if(icon == null)
 			{
-				EmbedUtils.sendError(channel, "The image / gif provided could not be loaded.");
+				ctx.replyError("The image / gif provided could not be loaded.");
 			}
 			else
 			{
 				ctx.getGuild().createEmote(args.get(0), icon).queue(
-						emote -> EmbedUtils.sendSuccess(channel, "Added emote " + emote.getAsMention() + " successfully!"),
-						error -> EmbedUtils.sendError(channel, "An error occurred while adding the emote."));
+						emote -> ctx.replySuccess("Added emote " + emote.getAsMention() + " successfully!"),
+						error -> ctx.replyError("An error occurred while adding the emote."));
 			}
 		}
 	}

@@ -49,7 +49,7 @@ public class ClearCommand extends Command
 		channel.getIterableHistory().takeAsync(amount).thenAccept(messages ->
 		{
 			channel.purgeMessages(messages);
-			EmbedUtils.sendSuccess(channel, "Deleted " + (messages.size()) + " messages");
+			ctx.replySuccess("Deleted " + (messages.size()) + " messages");
 			final MessageCache cache = MessageCache.getCache(guild);
 			messages.stream().filter(cache::isInCache).forEach(cache::remove);
 		});

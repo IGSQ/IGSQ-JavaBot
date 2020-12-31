@@ -129,6 +129,10 @@ public class Json
 		}
 	}
 
+	public static String parseUnicode(String input)
+	{
+		return new Gson().toJson(input);
+	}
 	public static void applyDefaults()
 	{
 		addDefault(new JsonBotConfig().toJson(), Filename.CONFIG);

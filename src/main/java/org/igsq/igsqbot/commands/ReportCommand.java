@@ -37,19 +37,28 @@ public class ReportCommand extends Command
 
 		final Member reportedMember = ctx.getMessage().getMentionedMembers().get(0);
 		final User reportedUser = reportedMember.getUser();
-		final GuildConfig config = new GuildConfig(ctx.getGuild(), ctx.getJDA());
+		final GuildConfig config = new GuildConfig(ctx.getGuild(), ctx.getJDA()); //TODO: jsonify this
 		final MessageChannel reportChannel = config.getReportChannel();
 		args.remove(0);
 
 		if(reportChannel == null)
 		{
-			EmbedUtils.sendError(channel, "There is no report channel setup");
+			ctx.replyError("There is no report channel setup");
 			return;
 		}
 
-		if(reportedUser.equals(author)) EmbedUtils.sendError(channel, "You can't report yourself!");
-		else if(reportedUser.isBot()) EmbedUtils.sendError(channel, "You may not report bots.");
-		else if(reportedMember.isOwner()) EmbedUtils.sendError(channel, "You may not report the owner.");
+		if(reportedUser.equals(author))
+		{
+			ctx.replyError("You can't report yourself!");
+		}
+		else if(reportedUser.isBot())
+		{
+			ctx.replyError("You may not report bots.");
+		}
+		else if(reportedMember.isOwner())
+		{
+			ctx.replyError("You may not report the owner.");
+		}
 		else
 		{
 			for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())

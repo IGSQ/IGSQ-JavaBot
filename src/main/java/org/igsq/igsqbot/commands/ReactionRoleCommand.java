@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
+import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.json.JsonGuild;
@@ -74,7 +75,7 @@ public class ReactionRoleCommand extends Command
 								reactionMessage.addReaction(emoteId).queue(
 										success ->
 										{
-											JsonReactionRole reactionRole = new JsonReactionRole(guild.getId(), reactionChannel.getId(), reactionMessage.getId(), emoteId, role.getId());
+											JsonReactionRole reactionRole = new JsonReactionRole(guild.getId(), reactionChannel.getId(), reactionMessage.getId(), Json.parseUnicode(emoteId), role.getId());
 											List<JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
 											reactionRoles.add(reactionRole);
 											jsonGuild.setReactionRoles(reactionRoles);
@@ -88,7 +89,7 @@ public class ReactionRoleCommand extends Command
 										success ->
 										{
 											List<JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
-											reactionRoles.removeIf(rr -> rr.getPrimaryKey().equals(emoteId));
+											reactionRoles.removeIf(rr -> rr.getPrimaryKey().equals(Json.parseUnicode(emoteId)));
 											jsonGuild.setReactionRoles(reactionRoles);
 										},
 										failure -> EmbedUtils.sendError(channel, "That emote could not be removed.")

@@ -37,7 +37,7 @@ public class PrefixCommand extends Command
 		}
 		else if(args.get(0).equalsIgnoreCase("reset"))
 		{
-			EmbedUtils.sendSuccess(channel, "Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
+			ctx.replySuccess("Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
 			config.setGuildPrefix(Constants.DEFAULT_BOT_PREFIX);
 		}
 		else
@@ -45,7 +45,7 @@ public class PrefixCommand extends Command
 			if(!ArrayUtils.isValueInArray(new String[]{" "}, args.get(0)))
 			{
 				config.setGuildPrefix(args.get(0));
-				EmbedUtils.sendSuccess(channel, "My new prefix is `" + args.get(0) + "`");
+				ctx.replySuccess("My new prefix is `" + args.get(0) + "`");
 			}
 		}
 	}

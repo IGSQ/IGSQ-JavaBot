@@ -46,11 +46,11 @@ public class InviteCommand extends Command
 
 						if(chosenInvite.get() == null)
 						{
-							EmbedUtils.sendError(channel, "No invites found.");
+							ctx.replyError("No invites found.");
 						}
 						else
 						{
-							EmbedUtils.sendSuccess(channel, "Invite found: " + chosenInvite.get().getUrl());
+							ctx.replySuccess("Invite found: " + chosenInvite.get().getUrl());
 						}
 					}
 

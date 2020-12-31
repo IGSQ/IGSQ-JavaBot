@@ -2,14 +2,12 @@ package org.igsq.igsqbot;
 
 import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.json.JsonBotConfig;
+import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -86,6 +84,7 @@ public class Database
 		}
 	}
 
+
 	public void updateCommand(String sql)
 	{
 		if(!isOnline)
@@ -101,9 +100,10 @@ public class Database
 		}
 		catch(Exception exception)
 		{
-
+			new ErrorHandler(exception);
 		}
 	}
+
 
 	public int scalarCommand(String sql)
 	{
@@ -126,6 +126,7 @@ public class Database
 			return -1;
 		}
 	}
+
 
 	public boolean testDatabase()
 	{

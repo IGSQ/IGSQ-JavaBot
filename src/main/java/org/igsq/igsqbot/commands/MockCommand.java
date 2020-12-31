@@ -38,7 +38,7 @@ public class MockCommand extends Command
 			}
 			else
 			{
-				EmbedUtils.sendError(channel, "An error occurred while loading the mock image.");
+				ctx.replyError("An error occurred while loading the mock image.");
 			}
 		}
 	}

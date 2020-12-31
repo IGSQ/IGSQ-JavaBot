@@ -36,6 +36,7 @@ public class ShutdownCommand extends Command
 		MessageDataCache.close();
 		Blacklist.close();
 
+		ctx.replySuccess("IGSQBot going down NOW.");
 		ctx.getJDA().shutdown();
 
 		JsonGuildCache.getInstance().save();

@@ -42,7 +42,7 @@ public class MuteCommand extends Command
 
 			if(mutedRole == null)
 			{
-				EmbedUtils.sendError(channel, "Muted role not found, muting cannot proceed.");
+				ctx.replyError("Muted role not found, muting cannot proceed.");
 			}
 			else if(!guild.getSelfMember().canInteract(member) || !ctx.getMember().canInteract(member))
 			{
@@ -50,11 +50,11 @@ public class MuteCommand extends Command
 			}
 			else if(jsonPunishment.isMuted())
 			{
-				EmbedUtils.sendError(channel, "User: " + member.getAsMention() + " is already muted!");
+				ctx.replyError("User: " + member.getAsMention() + " is already muted!");
 			}
 			else if(muteTime == null)
 			{
-				EmbedUtils.sendError(channel, "Invalid time entered. Send time as: \n1d - 1day\n1h - 1 hour\n30m - 30 minutes\n Only 1 option allowed. ");
+				ctx.replyError("Invalid time entered. Send time as: \n1d - 1day\n1h - 1 hour\n30m - 30 minutes\n Only 1 option allowed.");
 			}
 			else
 			{
@@ -62,8 +62,14 @@ public class MuteCommand extends Command
 				jsonPunishment.setMutedUntil(muteTime.atZone(CommandUtils.getLocalOffset()).toInstant().toEpochMilli());
 				jsonPunishment.setMuted(true);
 
-
-				guild.modifyMemberRoles(member, mutedRole).queue(success -> EmbedUtils.sendSuccess(channel, "Muted member: " + member.getAsMention() + " until " + muteTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
+				guild.modifyMemberRoles(member, mutedRole).queue(success -> ctx.replySuccess("Muted member: " + member.getAsMention() + " until " + muteTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
+				,error ->
+						{
+							ctx.replyError("An error occurred during role removal, muting halted.");
+							jsonPunishment.setMuted(false);
+							jsonPunishment.setRoles(Collections.emptyList());
+							jsonPunishment.setMutedUntil(-1);
+						});
 			}
 		}
 	}

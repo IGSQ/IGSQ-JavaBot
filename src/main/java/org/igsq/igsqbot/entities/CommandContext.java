@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.util.EmbedUtils;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -30,14 +31,7 @@ public class CommandContext
 
 	public Guild getGuild()
 	{
-		if(event.isFromGuild())
-		{
-			return event.getGuild();
-		}
-		else
-		{
-			return null;
-		}
+		return event.isFromGuild() ? event.getGuild() : null;
 
 	}
 
@@ -69,6 +63,16 @@ public class CommandContext
 	public Member getMember()
 	{
 		return Objects.requireNonNull(event.getMember());
+	}
+
+	public void replyError(String errorText)
+	{
+		EmbedUtils.sendError(getChannel(), errorText);
+	}
+
+	public void replySuccess(String successText)
+	{
+		EmbedUtils.sendError(getChannel(), successText);
 	}
 
 
