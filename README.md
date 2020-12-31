@@ -93,6 +93,7 @@ None!
  - [ ] Verification, written and Json
  - [ ] ctx isDeveloper method
  - [ ] Objectify the IGSQBot class, make it instansiate listners and pass itself, will be a central object for everything
+ - [ ] Use optionals for Json
  - [ ] **PREPARE FOR PR!!!**
 
 ### **Future work**
