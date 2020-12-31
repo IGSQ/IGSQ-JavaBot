@@ -31,13 +31,16 @@ public class MessageEventsMain extends ListenerAdapter
 						if(!user.isBot())
 						{
 							JsonGuild jsonGuild = JsonGuildCache.getInstance().get(event.getGuild().getId());
-							JsonReactionRole jsonReactionRole = jsonGuild.getReactionRoles().get(event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId());
-							if(jsonReactionRole != null)
+							String emoteId = event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId();
+							for(JsonReactionRole jsonReactionRole : jsonGuild.getReactionRoles())
 							{
-								Role role = event.getGuild().getRoleById(jsonReactionRole.getPrimaryKey());
-								if(role != null)
+								if(jsonReactionRole.getPrimaryKey().equals(emoteId))
 								{
-									event.retrieveMember().queue(member -> event.getGuild().addRoleToMember(member, role).queue());
+									Role role = event.getGuild().getRoleById(jsonReactionRole.getRole());
+									if(role != null)
+									{
+										event.retrieveMember().queue(member -> event.getGuild().addRoleToMember(member, role).queue());
+									}
 								}
 							}
 						}
@@ -59,13 +62,16 @@ public class MessageEventsMain extends ListenerAdapter
 						if(!user.isBot())
 						{
 							JsonGuild jsonGuild = JsonGuildCache.getInstance().get(event.getGuild().getId());
-							JsonReactionRole jsonReactionRole = jsonGuild.getReactionRoles().get(event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId());
-							if(jsonReactionRole != null)
+							String emoteId = event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId();
+							for(JsonReactionRole jsonReactionRole : jsonGuild.getReactionRoles())
 							{
-								Role role = event.getGuild().getRoleById(jsonReactionRole.getPrimaryKey());
-								if(role != null)
+								if(jsonReactionRole.getPrimaryKey().equals(emoteId))
 								{
-									event.retrieveMember().queue(member -> event.getGuild().removeRoleFromMember(member, role).queue());
+									Role role = event.getGuild().getRoleById(jsonReactionRole.getRole());
+									if(role != null)
+									{
+										event.retrieveMember().queue(member -> event.getGuild().removeRoleFromMember(member, role).queue());
+									}
 								}
 							}
 						}

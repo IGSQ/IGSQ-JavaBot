@@ -73,7 +73,7 @@ public class Json
 		try
 		{
 			Writer writer = new FileWriter(new File(FOLDER, filename + ".json"));
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 			gson.toJson(json.toJson(), writer);
 			writer.close();
 		}

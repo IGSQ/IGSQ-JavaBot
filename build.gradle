@@ -21,6 +21,7 @@ dependencies
     implementation('io.github.classgraph:classgraph:4.8.98')
     implementation('net.jodah:expiringmap:0.5.9')
     implementation('mysql:mysql-connector-java:8.0.22')
+    implementation('com.vdurmont:emoji-java:5.1.1')
 }
 
 
