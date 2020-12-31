@@ -92,6 +92,7 @@ None!
  - [ ] Report into JSON
  - [ ] Verification, written and Json
  - [ ] ctx isDeveloper method
+ - [ ] Objectify the IGSQBot class, make it instansiate listners and pass itself, will be a central object for everything
  - [ ] **PREPARE FOR PR!!!**
 
 ### **Future work**
@@ -104,7 +105,6 @@ None!
  - [ ] Remove statics and use getInstance()
  - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo)
  - [ ] Consider switch usage (replace with elif)
- - [ ] Consider objectifying the main class
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
