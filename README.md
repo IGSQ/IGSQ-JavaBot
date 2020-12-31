@@ -91,6 +91,7 @@ None!
  - [ ] ReactionRole command
  - [ ] Report into JSON
  - [ ] Verification, written and Json
+ - [ ] ctx isDeveloper method
  - [ ] **PREPARE FOR PR!!!**
 
 ### **Future work**
