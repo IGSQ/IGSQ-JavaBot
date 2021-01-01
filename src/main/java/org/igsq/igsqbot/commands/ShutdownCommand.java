@@ -7,16 +7,12 @@ import org.igsq.igsqbot.entities.json.JsonGuildCache;
 import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
 import org.igsq.igsqbot.entities.yaml.Blacklist;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
 
 public class ShutdownCommand extends Command
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ShutdownCommand.class);
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -38,15 +34,15 @@ public class ShutdownCommand extends Command
 		JsonGuildCache.getInstance().save();
 		JsonPunishmentCache.getInstance().save();
 
-		LOGGER.warn("Main was shutdown using shutdown command.");
-		LOGGER.warn("-- Issued by: " + ctx.getAuthor().getAsTag());
+		ctx.getIGSQBot().getLogger().warn("-- IGSQBot was shutdown using shutdown command.");
+		ctx.getIGSQBot().getLogger().warn("-- Issued by: " + ctx.getAuthor().getAsTag());
 		if(ctx.getGuild() != null)
 		{
-			LOGGER.warn("-- In guild: " + ctx.getGuild().getName());
+			ctx.getIGSQBot().getLogger().warn("-- In guild: " + ctx.getGuild().getName());
 		}
 		else
 		{
-			LOGGER.warn("-- In guild: " + "Shutdown in DMs.");
+			ctx.getIGSQBot().getLogger().warn("-- In guild: " + "Shutdown in DMs.");
 		}
 		System.exit(0);
 	}

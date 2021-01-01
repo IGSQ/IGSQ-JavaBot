@@ -28,7 +28,7 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)
 	{
-		if(!event.getReactionEmote().isEmoji()) return;
+		if(!event.getReactionEmote().isEmoji() || !event.isFromGuild()) return;
 		String messageID = event.getMessageId();
 		Guild guild = event.getGuild();
 		JDA jda = event.getJDA();

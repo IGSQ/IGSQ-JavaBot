@@ -96,12 +96,13 @@ None!
  - [ ] Use optionals for Json
  - [ ] Voting
  - [ ] GuildConfig to take something (IGSQBot object) as input to fetch the channels
+
  - [ ] Custom Task object to hold task info
+ - [ ] flesh out JsonGuildConfig vars
+ - [ ] Debug logging
+ - [ ] Refactor json objects to remove 'Json' prefix
  - [ ] Remove emoji-java
  - [ ] Remove simple-yaml
- - [ ] flesh out JsonGuildConfig vars
- - [ ] Refactor json objects to remove 'Json' prefix
- - [ ] Debug logging
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**
@@ -121,6 +122,7 @@ None!
  - [x] discord_accounts table returning errors - fixed with additional error catching
  - [x] 2FA not functioning as intended - unintended feature
  - [x] Muting causing duplicate entries (fixed, was a Map issue)
+ - [x] Resource loading fails
 
 ## Building and Running
 

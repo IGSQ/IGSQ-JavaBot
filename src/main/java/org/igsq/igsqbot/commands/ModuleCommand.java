@@ -5,16 +5,12 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ModuleCommand extends Command
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ModuleCommand.class);
-
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
@@ -95,7 +91,7 @@ public class ModuleCommand extends Command
 		{
 			cmd.setDisabled(false);
 			EmbedUtils.sendSuccess(channel, "Enabled module: `" + cmd.getName() + "`.");
-			LOGGER.warn("Module " + cmd.getName() + " was enabled.");
+			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was enabled.");
 		}
 	}
 
@@ -110,7 +106,7 @@ public class ModuleCommand extends Command
 		{
 			cmd.setDisabled(true);
 			EmbedUtils.sendSuccess(channel, "Disabled module: `" + cmd.getName() + "`.");
-			LOGGER.warn("Module " + cmd.getName() + " was disabled.");
+			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was disabled.");
 		}
 	}
 }

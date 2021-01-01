@@ -2,6 +2,7 @@ package org.igsq.igsqbot.events.command;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.api.entities.User;
@@ -73,7 +74,11 @@ public class MessageReactionAdd_Help extends ListenerAdapter
 								message.delete().queue();
 								return;
 							}
-							event.getReaction().removeReaction(user).queue();
+							if(event.isFromGuild() && event.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_MANAGE))
+							{
+								event.getReaction().removeReaction(user).queue();
+							}
+
 							message.editMessage(PAGES.get(page - 1).build()).queue();
 						}
 					}
