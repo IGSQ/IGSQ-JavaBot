@@ -60,6 +60,9 @@
  - [x] Muting (needs debugged) (fixed)
  - [x] Json punishment objects
  - [x] Consider final usage
+ - [x] ctx isDeveloper method
+ - [x] Restructure minecraft
+ - [x] Objectify the IGSQBot class, make it instansiate listners and pass itself, will be a central object for everything
 
 ### **TeaEyes**
 None!
@@ -88,12 +91,13 @@ None!
     }
 ```
  - [ ] Json internal objects
- - [ ] ReactionRole command
- - [ ] Report into JSON
+ - [ ] ReactionRole command (fix json)
+ - [ ] Report into JSON (punishment)
  - [ ] Verification, written and Json
- - [ ] ctx isDeveloper method
- - [ ] Objectify the IGSQBot class, make it instansiate listners and pass itself, will be a central object for everything
  - [ ] Use optionals for Json
+ - [ ] Voting
+ - [ ] GuildConfig to take something (IGSQBot object) as input to get the channels
+ - [ ] Custom Task object to hold task info
  - [ ] **PREPARE FOR PR!!!**
 
 ### **Future work**

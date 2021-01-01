@@ -1,73 +1,59 @@
 package org.igsq.igsqbot.minecraft;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.sharding.ShardManager;
-import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.json.JsonBotConfig;
 import org.igsq.igsqbot.entities.json.JsonMinecraft;
-import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.handlers.TaskHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class SyncMinecraft
 {
-	private static final SyncMinecraft INSTANCE = new SyncMinecraft();
-	private  Logger LOGGER = LoggerFactory.getLogger(SyncMinecraft.class);
+	private final IGSQBot igsqBot;
 	private Guild guild;
-	private Role verifiedRole = null;
 
-
-	private SyncMinecraft()
+	public SyncMinecraft(IGSQBot igsqBot)
 	{
-		//Overriding the default, public, constructor
+		this.igsqBot = igsqBot;
+		start();
 	}
 
-	public void start(ShardManager shardManager)
+	private void start()
 	{
 		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 		if(jsonBotConfig == null)
 		{
-			TaskHandler.cancelTask("minecraftSync");
-			LOGGER.warn("Minecraft sync stopped due JSON error.");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getLogger().error("An error occurred while reading JSON for Minecraft.");
+			return;
 		}
-		else if(jsonBotConfig.getServer().equals(new JsonBotConfig().getServer()))
+		if(!igsqBot.getDatabase().isOnline())
 		{
-			TaskHandler.cancelTask("minecraftSync");
-			LOGGER.warn("Minecraft sync stopped due to no guild being defined in CONFIG.json.");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getLogger().warn("Minecraft sync task stopped due to no Database connectivity being found.");
+			return;
 		}
-		else if(!Database.getInstance().isOnline())
+
+		guild = igsqBot.getShardManager().getGuildById(jsonBotConfig.getServer());
+		if(guild == null)
 		{
-			TaskHandler.cancelTask("minecraftSync");
-			LOGGER.warn("Minecraft sync task stopped due to no Database connectivity.");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getLogger().warn("Minecraft sync stopped due to invalid guild being defined in CONFIG.json.");
 		}
 		else
 		{
-			guild = shardManager.getGuildById(jsonBotConfig.getServer());
-			if(guild == null)
-			{
-				TaskHandler.cancelTask("minecraftSync");
-				LOGGER.warn("Minecraft sync stopped due to invalid guild being defined in CONFIG.json.");
-			}
-			else
-			{
-				LOGGER.info("Guild link established with guild: " + guild.getName() + ", starting sync.");
-			}
+			igsqBot.getLogger().info("Guild link established with guild: " + guild.getName() + ", starting sync.");
+			igsqBot.getTaskHandler().addRepeatingTask(this::sync, "minecraftSync", 0, TimeUnit.SECONDS, 10);
 		}
 	}
 
-	public void sync()
+	private void sync()
 	{
-		verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", Filename.GUILD));
+		Role verifiedRole = guild.getRoleById(Yaml.getFieldString(guild.getId() + ".verifiedrole", Filename.GUILD));
 		guild.loadMembers(selectedMember ->
 		{
 			if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
@@ -78,138 +64,27 @@ public class SyncMinecraft
 					String username = selectedMember.getUser().getAsTag();
 					String nickname = selectedMember.getEffectiveName();
 					String id = selectedMember.getId();
-					String rank = getRank(selectedMember);
+					String rank = MinecraftUtils.getRank(selectedMember);
 
-					int supporter = hasRole(json.getSupporter(), selectedMember) ? 1 : 0;
-					int birthday = hasRole(json.getBirthday(), selectedMember) ? 1 : 0;
-					int developer = hasRole(json.getDeveloper(), selectedMember) ? 1 : 0;
-					int founder = hasRole(json.getFounder(), selectedMember) ? 1 : 0;
+					int supporter = MinecraftUtils.hasRole(json.getSupporter(), selectedMember) ? 1 : 0;
+					int birthday = MinecraftUtils.hasRole(json.getBirthday(), selectedMember) ? 1 : 0;
+					int developer = MinecraftUtils.hasRole(json.getDeveloper(), selectedMember) ? 1 : 0;
+					int founder = MinecraftUtils.hasRole(json.getFounder(), selectedMember) ? 1 : 0;
 					// int retired = hasRole(json.getRetired(), selectedMember)?1:0;
-					int nitroboost = hasRole(json.getNitroboost(), selectedMember) ? 1 : 0;
+					int nitroboost = MinecraftUtils.hasRole(json.getNitroboost(), selectedMember) ? 1 : 0;
 
-					boolean userExists = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
+					boolean userExists = igsqBot.getDatabase().scalarCommand("SELECT COUNT(*) FROM discord_accounts WHERE id = '" + id + "';") > 0;
 
 					if(userExists)
 					{
-						CommonMinecraft.updateUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
+						MinecraftUtils.updateUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost, igsqBot);
 					}
 					else
 					{
-						CommonMinecraft.addNewUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost);
+						MinecraftUtils.addNewUser(id, username, nickname, rank, supporter, birthday, developer, founder, nitroboost, igsqBot);
 					}
 				}
 			}
 		});
-	}
-
-	public void clean()
-	{
-		if(!Database.getInstance().isOnline())
-		{
-			TaskHandler.cancelTask("minecraftClean");
-			LOGGER.warn("Minecraft clean task stopped due to no Database connectivity.");
-		}
-		ResultSet discord_accounts = Database.getInstance().queryCommand("SELECT * FROM discord_accounts");
-		if(discord_accounts == null)
-		{
-			TaskHandler.cancelTask("minecraftClean");
-			LOGGER.warn("Minecraft cleaning stopped due to invalid discord_accounts table.");
-		}
-		else if(guild == null)
-		{
-			TaskHandler.cancelTask("minecraftClean");
-			LOGGER.warn("Minecraft cleaning stopped due to null guild.");
-		}
-		else
-		{
-			try
-			{
-				while(discord_accounts.next())
-				{
-					 String currentId = discord_accounts.getString(1);
-					guild.retrieveMemberById(currentId).queue(
-							selectedMember ->
-							{
-								 String memberId = selectedMember.getId();
-
-								if(!(verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
-								{
-									String uuid = CommonMinecraft.getUUIDFromID(memberId);
-
-									if(uuid != null)
-									{
-										Database.getInstance().updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + uuid + "';");
-										Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE id = '" + memberId + "';");
-									}
-									Database.getInstance().updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
-								}
-							},
-							error ->
-							{
-								Database.getInstance().updateCommand("DELETE FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(currentId) + "';");
-								Database.getInstance().updateCommand("DELETE FROM discord_accounts WHERE id = '" + currentId + "';");
-								Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE id = '" + currentId + "';");
-							}
-					);
-				}
-			}
-			catch(Exception exception)
-			{
-				new ErrorHandler(exception);
-			}
-		}
-	}
-
-	private boolean hasRole(String roleID, Member member)
-	{
-		for(Role selectedRole : member.getRoles())
-		{
-			if(selectedRole.getId().equals(roleID))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean hasRole(List<String> roles, Member member)
-	{
-		for(String selectedRole : roles)
-		{
-			if(hasRole(selectedRole, member)) return true;
-		}
-		return false;
-	}
-
-	private String getRank(Member member)
-	{
-		JsonMinecraft json = Json.get(JsonMinecraft.class, Filename.MINECRAFT);
-		if(json != null)
-		{
-			Map<List<String>, String> ranks = json.getRanks();
-			for(Role selectedRole : member.getRoles())
-			{
-				for(Map.Entry<List<String>, String> selectedRanks : ranks.entrySet())
-				{
-					for(String selectedRank : selectedRanks.getKey())
-					{
-						if(selectedRole.getId().equals(selectedRank))
-						{
-							return selectedRanks.getValue();
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			return "default";
-		}
-		return "default";
-	}
-
-	public static SyncMinecraft getInstance()
-	{
-		return INSTANCE;
 	}
 }

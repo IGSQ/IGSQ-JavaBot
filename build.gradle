@@ -4,7 +4,7 @@ plugins
     id'application'
     id'com.github.johnrengelman.shadow' version '6.0.0'
 }
-mainClassName = 'org.igsq.igsqbot.IGSQBot'
+mainClassName = 'org.igsq.igsqbot.Main'
 version '0.0.1'
 sourceCompatibility = 14
 repositories

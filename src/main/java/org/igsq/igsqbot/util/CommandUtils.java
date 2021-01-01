@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.JDA;
-import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
@@ -96,7 +95,8 @@ public class CommandUtils
 
 	public static boolean isValidCommand(String message, String guildId, JDA jda)
 	{
-		return message.startsWith(new GuildConfig(guildId, jda).getGuildPrefix()) || message.startsWith("<@" + IGSQBot.SelfUser.getId() + ">") || message.startsWith("<@!" + IGSQBot.SelfUser.getId() + ">");
+		//TODO: move this to jsonguild with prefix
+		return message.startsWith(new GuildConfig(guildId, jda).getGuildPrefix()) || message.startsWith("<@" + jda.getSelfUser().getId() + ">") || message.startsWith("<@!" + jda.getSelfUser().getId() + ">");
 	}
 
 	public static ZoneOffset getLocalOffset()

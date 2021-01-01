@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 
 import java.time.Instant;
@@ -15,6 +16,13 @@ import java.time.format.DateTimeFormatter;
 
 public class MemberEventsLogging extends ListenerAdapter
 {
+	private final IGSQBot igsqBot;
+
+	public MemberEventsLogging(IGSQBot igsqBot)
+	{
+		this.igsqBot = igsqBot;
+	}
+
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{

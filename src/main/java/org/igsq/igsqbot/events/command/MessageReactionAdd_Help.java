@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.igsq.igsqbot.commands.HelpCommand;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 
 import java.util.ArrayList;
@@ -16,6 +16,13 @@ import java.util.List;
 
 public class MessageReactionAdd_Help extends ListenerAdapter
 {
+	private final IGSQBot igsqBot;
+
+	public MessageReactionAdd_Help(IGSQBot igsqBot) 
+	{
+		this.igsqBot = igsqBot;
+	}
+
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)
 	{
@@ -41,7 +48,7 @@ public class MessageReactionAdd_Help extends ListenerAdapter
 					if(messageDataCache != null && messageDataCache.getType().equals(MessageDataCache.MessageType.HELP) && !user.isBot())
 					{
 
-						List<EmbedBuilder> PAGES = HelpCommand.getPages();
+						List<EmbedBuilder> PAGES = igsqBot.getHelpPages();
 
 						if(messageDataCache.getUsers().get("user").equals(user))
 						{

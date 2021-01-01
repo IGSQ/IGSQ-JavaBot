@@ -3,30 +3,29 @@ package org.igsq.igsqbot;
 import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.json.JsonBotConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.handlers.TaskHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Database
 {
-	private static final Database INSTANCE = new Database();
-	private final Logger LOGGER = LoggerFactory.getLogger(Database.class);
-
+	private final IGSQBot igsqBot;
 	private String url;
 	private String user;
 	private String password;
 	private boolean isOnline;
 
-	private Database()
+	public Database(IGSQBot igsqBot)
 	{
-		//Overrides the default, public, constructor
+		this.igsqBot = igsqBot;
+		start();
 	}
 
-	public void start()
+	private void start()
 	{
 		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
 		if(jsonBotConfig != null)
@@ -38,7 +37,7 @@ public class Database
 		}
 		else
 		{
-			LOGGER.error("An error occurred while loading the Database credentials, the Database is unlikely to work.");
+			igsqBot.getLogger().error("An error occurred while loading the Database credentials, the Database is unlikely to work.");
 		}
 
 		if(testDatabase())
@@ -47,7 +46,7 @@ public class Database
 		}
 		else
 		{
-			LOGGER.error("A database connection could not be established, " +
+			igsqBot.getLogger().error("A database connection could not be established, " +
 					"this could be due to a faulty installation, " +
 					"incorrect credentials, or a networking error. Database functionality disabled.");
 			isOnline = false;
@@ -65,7 +64,7 @@ public class Database
 			Connection connection = DriverManager.getConnection(url, user, password);
 			Statement commandAdapter = connection.createStatement();
 			ResultSet resultTable = commandAdapter.executeQuery(sql);
-			TaskHandler.addTask(() ->
+			igsqBot.getTaskHandler().addTask(() ->
 			{
 				try
 				{
@@ -73,7 +72,7 @@ public class Database
 				}
 				catch(Exception exception)
 				{
-					LOGGER.error("A database error occurred.", exception);
+					igsqBot.getLogger().error("A database error occurred.", exception);
 				}
 			}, TimeUnit.SECONDS, 3);
 			return resultTable;
@@ -153,10 +152,5 @@ public class Database
 	public boolean isOnline()
 	{
 		return isOnline;
-	}
-
-	public static Database getInstance()
-	{
-		return INSTANCE;
 	}
 }

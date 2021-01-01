@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.commands.HelpCommand;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
@@ -24,19 +24,22 @@ import java.util.stream.Collectors;
 public class CommandHandler
 {
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands";
-	private static final ClassGraph CLASS_GRAPH = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
-	private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
-	public static final Map<String, Command> COMMAND_MAP;
 
-	private CommandHandler()
+	private final Map<String, Command> commandMap;
+	private final ClassGraph classGraph = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
+	private final ExecutorService commandExecutor = Executors.newFixedThreadPool(5);
+	private final IGSQBot igsqBot;
+
+	public CommandHandler(IGSQBot igsqBot)
 	{
-		//Overrides the default, public, constructor
+		this.igsqBot = igsqBot;
+		commandMap = loadCommands();
 	}
 
-	static
+	private Map<String, Command> loadCommands()
 	{
 		Map<String, Command> COMMANDS = new HashMap<>();
-		try(ScanResult result = CLASS_GRAPH.scan())
+		try(ScanResult result = classGraph.scan())
 		{
 			for(ClassInfo cls : result.getAllClasses())
 			{
@@ -50,16 +53,15 @@ public class CommandHandler
 			new ErrorHandler(exception);
 			System.exit(1);
 		}
-		COMMAND_MAP = Collections.unmodifiableMap(COMMANDS);
-		HelpCommand.generatePages();
+		return Collections.unmodifiableMap(COMMANDS);
 	}
 
-	public static Map<String, Command> getCommandMap()
+	public Map<String, Command> getCommandMap()
 	{
-		return COMMAND_MAP;
+		return commandMap;
 	}
 
-	public static void handle(MessageReceivedEvent event)
+	public void handle(MessageReceivedEvent event)
 	{
 		if(event.getAuthor().isBot() || event.isWebhookMessage())
 		{
@@ -120,7 +122,7 @@ public class CommandHandler
 		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 		if(!commandText.isEmpty())
 		{
-			cmd = COMMAND_MAP.get(commandText.toLowerCase());
+			cmd = commandMap.get(commandText.toLowerCase());
 			if(cmd == null)
 			{
 				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.");
@@ -133,7 +135,7 @@ public class CommandHandler
 			{
 				EmbedUtils.sendError(channel, "This command requires execution in a server.");
 			}
-			else if(!cmd.canExecute(new CommandContext(event)))
+			else if(!cmd.canExecute(new CommandContext(event, igsqBot)))
 			{
 				EmbedUtils.sendExecutionError(channel, cmd);
 			}
@@ -144,12 +146,12 @@ public class CommandHandler
 				{
 					args.remove(0);
 				}
-				commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event)));
+				commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event, igsqBot)));
 			}
 		}
 	}
 
-	public static void close()
+	public void close()
 	{
 		commandExecutor.shutdown();
 	}

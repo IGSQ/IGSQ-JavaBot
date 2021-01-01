@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -17,6 +18,13 @@ import java.util.List;
 
 public class MessageReactionAdd_Report extends ListenerAdapter
 {
+	private final IGSQBot igsqBot;
+
+	public MessageReactionAdd_Report(IGSQBot igsqBot) 
+	{
+		this.igsqBot = igsqBot;
+	}
+
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)
 	{

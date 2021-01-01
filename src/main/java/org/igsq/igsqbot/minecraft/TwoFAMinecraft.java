@@ -3,10 +3,8 @@ package org.igsq.igsqbot.minecraft;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.Database;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.handlers.ErrorHandler;
-import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.sql.ResultSet;
@@ -17,26 +15,29 @@ import java.util.concurrent.TimeUnit;
 
 public class TwoFAMinecraft
 {
-	private TwoFAMinecraft()
+	private final IGSQBot igsqBot;
+
+	public TwoFAMinecraft(IGSQBot igsqBot)
 	{
-		//Overrides the default, public, constructor
+		this.igsqBot = igsqBot;
+		start();
 	}
 
-	public static void start()
+	public void start()
 	{
-		TaskHandler.addRepeatingTask(() ->
+		igsqBot.getTaskHandler().addRepeatingTask(() ->
 		{
 			for(String selectedID : getPending())
 			{
 				sendDirectMessage(selectedID);
 			}
-		}, "2faPending", 0, TimeUnit.SECONDS, 2);
+		}, "2FATask", 0, TimeUnit.SECONDS, 2);
 	}
 
-	private static void sendDirectMessage(String id)
+	private void sendDirectMessage(String id)
 	{
 		String code = generateCode();
-		IGSQBot.getInstance().getShardManager().retrieveUserById(id)
+		igsqBot.getShardManager().retrieveUserById(id)
 				.flatMap(User::openPrivateChannel)
 				.queue(
 						channel ->
@@ -47,16 +48,16 @@ public class TwoFAMinecraft
 									.build()).queue(
 									message ->
 									{
-										Database.getInstance().updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+										igsqBot.getDatabase().updateCommand("UPDATE discord_2fa SET code = '" + code + "' WHERE uuid = '" + MinecraftUtils.getUUIDFromID(id, igsqBot) + "';");
 
-										TaskHandler.addTask(() ->
+										igsqBot.getTaskHandler().addTask(() ->
 										{
 											EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0)).setDescription("Here is your Minecraft 2FA Code: **EXPIRED**\n If you did not request this code, please ignore this message."), true);
-											if(Database.getInstance().scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "' AND current_status = 'pending';") > 0)
+											if(igsqBot.getDatabase().scalarCommand("SELECT COUNT(*) FROM discord_2fa WHERE uuid = '" + MinecraftUtils.getUUIDFromID(id, igsqBot) + "' AND current_status = 'pending';") > 0)
 											{
-												Database.getInstance().updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+												igsqBot.getDatabase().updateCommand("UPDATE discord_2fa SET current_status = 'expired' WHERE uuid = '" + MinecraftUtils.getUUIDFromID(id, igsqBot) + "';");
 											}
-											Database.getInstance().updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + CommonMinecraft.getUUIDFromID(id) + "';");
+											igsqBot.getDatabase().updateCommand("UPDATE discord_2fa SET code = NULL WHERE uuid = '" + MinecraftUtils.getUUIDFromID(id, igsqBot) + "';");
 										}, TimeUnit.SECONDS, 60);
 									}, error -> {}
 							);
@@ -65,14 +66,14 @@ public class TwoFAMinecraft
 				);
 	}
 
-	private static String generateCode()
+	private String generateCode()
 	{
 		return String.format("%06d", new Random().nextInt(999999));
 	}
 
-	private static List<String> getPending()
+	private List<String> getPending()
 	{
-		ResultSet discord_2fa = Database.getInstance().queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending' AND `code` IS NULL");
+		ResultSet discord_2fa = igsqBot.getDatabase().queryCommand("SELECT * FROM discord_2fa WHERE current_status = 'pending' AND `code` IS NULL");
 		List<String> pendingIDs = new ArrayList<>();
 
 		if(discord_2fa == null)
@@ -83,7 +84,7 @@ public class TwoFAMinecraft
 		{
 			while(discord_2fa.next())
 			{
-				pendingIDs.add(CommonMinecraft.getIDFromUUID(discord_2fa.getString(1)));
+				pendingIDs.add(MinecraftUtils.getIDFromUUID(discord_2fa.getString(1), igsqBot));
 			}
 		}
 		catch(Exception exception)

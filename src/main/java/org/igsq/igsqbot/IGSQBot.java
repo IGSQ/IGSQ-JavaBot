@@ -1,14 +1,16 @@
 package org.igsq.igsqbot;
 
-import net.dv8tion.jda.api.JDAInfo;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.igsq.igsqbot.entities.json.*;
+import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.JsonBotConfig;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -16,178 +18,176 @@ import org.igsq.igsqbot.events.logging.MessageEventsLogging;
 import org.igsq.igsqbot.events.logging.VoiceEventsLogging;
 import org.igsq.igsqbot.events.main.GuildEventsMain;
 import org.igsq.igsqbot.events.main.MessageEventsMain;
+import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
-import org.igsq.igsqbot.minecraft.MainMinecraft;
+import org.igsq.igsqbot.minecraft.Minecraft;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IGSQBot
 {
-	private static IGSQBot instance;
-
+	private final Logger LOGGER = LoggerFactory.getLogger(IGSQBot.class);
 	private final LocalDateTime startTimestamp = LocalDateTime.now();
-	private final Logger logger = LoggerFactory.getLogger(IGSQBot.class);
-	private int readyShardID;
+	private final List<EmbedBuilder> helpPages = new ArrayList<>();
+	private CommandHandler commandHandler;
 	private ShardManager shardManager;
+	private TaskHandler taskHandler;
+	private Minecraft minecraft;
+	private Database database;
+	private JDA readyShard;
 
-	public static void main(String[] args)
+	public void build() throws LoginException
 	{
-		instance = new IGSQBot();
-		instance.run();
+		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
+		if(jsonBotConfig == null)
+		{
+			throw new NullPointerException("Json was null.");
+		}
+		this.shardManager = DefaultShardManagerBuilder.createDefault(jsonBotConfig.getToken())
+				.enableIntents(GatewayIntent.GUILD_MEMBERS)
+				.setMemberCachePolicy(MemberCachePolicy.ALL)
+
+				.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
+				.setAutoReconnect(true)
+				.setShardsTotal(-1)
+				.addEventListeners(
+						new MessageReactionAdd_Help(this),
+						new MessageReactionAdd_Report(this),
+
+						new MessageEventsMain(this),
+						new GuildEventsMain(this),
+
+						new VoiceEventsLogging(this),
+						new MessageEventsLogging(this),
+						new MemberEventsLogging(this)
+				)
+				.build();
 	}
 
-	private void run()
+	public void getReadyShard() throws InterruptedException
 	{
-		Yaml.createFiles();
-		Yaml.loadFile(Filename.ALL);
-		Yaml.applyDefault();
-
-		Json.createFiles();
-		Json.applyDefaults();
-		JsonGuildCache.getInstance().load();
-		JsonPunishmentCache.getInstance().load();
-
-		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
-
-		if(jsonBotConfig != null)
+		if(shardManager == null)
+		{
+			throw new UnsupportedOperationException("Cannot get ready shard without a shard manager.");
+		}
+		else if(readyShard == null)
 		{
 			try
 			{
-				shardManager = DefaultShardManagerBuilder.createDefault(jsonBotConfig.getToken())
-						.enableIntents(GatewayIntent.GUILD_MEMBERS)
-						.setMemberCachePolicy(MemberCachePolicy.ALL)
-
-						.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
-						.setAutoReconnect(true)
-						.setShardsTotal(-1)
-						.addEventListeners(
-								new MessageReactionAdd_Help(),
-								new MessageReactionAdd_Report(),
-
-								new MessageEventsMain(),
-								new GuildEventsMain(),
-
-								new VoiceEventsLogging(),
-								new MessageEventsLogging(),
-								new MemberEventsLogging()
-						)
-
-						.build();
-				readyShardID = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady().getShardInfo().getShardId();
-
-				Database.getInstance().start();
-				MainMinecraft.startMinecraft(shardManager);
-
-				instance.logger.info("IGSQBot started!");
-				instance.logger.info("Account:         " + SelfUser.getAsTag() + " / " + SelfUser.getId());
-				instance.logger.info("Total Shards:    " + shardManager.getShardsRunning());
-				instance.logger.info("JDA Version:     " + JDAInfo.VERSION);
-				instance.logger.info("IGSQBot Version: " + Constants.VERSION);
-				instance.logger.info("Java Version:    " + System.getProperty("java.version"));
-
-				TaskHandler.addRepeatingTask(() ->
-				{
-					for(JsonPunishment selectedPunishment: JsonPunishmentCache.getInstance().getAll())
-					{
-						if(selectedPunishment.isMuted() && System.currentTimeMillis() >= selectedPunishment.getMutedUntil())
-						{
-							selectedPunishment.setMuted(false);
-							selectedPunishment.setMutedUntil(-1);
-
-							Guild guild = instance.shardManager.getGuildById(selectedPunishment.getGuildId());
-							if(guild != null)
-							{
-								for(String roleId : selectedPunishment.getRoles())
-								{
-									Role role = guild.getRoleById(roleId);
-									if(role != null && guild.getSelfMember().canInteract(role))
-									{
-										guild.addRoleToMember(selectedPunishment.getUserId(), role).queue();
-									}
-								}
-								selectedPunishment.setRoles(Collections.emptyList());
-							}
-						}
-					}
-				}, "muteCheck", TimeUnit.SECONDS, 5);
-
-				TaskHandler.addRepeatingTask(() ->
-				{
-					Yaml.saveFileChanges(Filename.ALL);
-					Yaml.loadFile(Filename.ALL);
-
-					JsonPunishmentCache.getInstance().save();
-					JsonPunishmentCache.getInstance().load();
-
-					JsonGuildCache.getInstance().save();
-					JsonGuildCache.getInstance().load();
-
-				}, "yamlReload", TimeUnit.SECONDS, 5);
-
+				readyShard = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady();
 			}
-
-			catch(IllegalArgumentException exception)
+			catch(InterruptedException exception)
 			{
-				instance.logger.error("A provided value was invalid, please double check the values in CONFIG.json", exception);
+				throw new InterruptedException("The bot was interrupted during startup");
 			}
-			catch(LoginException exception)
-			{
-				instance.logger.error("The provided token was invalid, please ensure you put a valid token in CONFIG.json", exception);
-			}
-			catch(Exception exception)
-			{
-				instance.logger.error("An unexpected exception occurred", exception);
-			}
-		}
-		else
-		{
-			instance.logger.error("An error occurred when loading the config file.");
 		}
 	}
 
+	public SelfUser getSelfUser()
+	{
+		if(readyShard == null)
+		{
+			throw new UnsupportedOperationException("No ready shard present.");
+		}
+		return readyShard.getSelfUser();
+	}
 
 	public LocalDateTime getStartTimestamp()
 	{
 		return startTimestamp;
 	}
 
+	public List<EmbedBuilder> getHelpPages()
+	{
+		if(helpPages.isEmpty())
+		{
+			List<Command> commands = new ArrayList<>();
+			for(Command cmd : getCommandHandler().getCommandMap().values())
+			{
+				if(!commands.contains(cmd))
+				{
+					commands.add(cmd);
+				}
+			}
+
+			EmbedBuilder embedBuilder = new EmbedBuilder();
+			int fieldCount = 0;
+			int page = 1;
+			for(Command cmd : commands)
+			{
+				if(fieldCount < 6)
+				{
+					fieldCount++;
+					embedBuilder.setTitle("Help page: " + page);
+					embedBuilder.addField(cmd.getName(), cmd.getDescription() + "\n**" + cmd.getAliases().get(0) + "**`" + cmd.getSyntax() + "`", fieldCount % 2 == 0);
+					embedBuilder.setColor(Constants.IGSQ_PURPLE);
+
+				}
+				else
+				{
+					helpPages.add(embedBuilder);
+					embedBuilder = new EmbedBuilder();
+					fieldCount = 0;
+					page++;
+				}
+			}
+		}
+		return helpPages;
+	}
+
 	public ShardManager getShardManager()
 	{
+		if(shardManager == null)
+		{
+			throw new UnsupportedOperationException("Shardmanager is not built.");
+		}
 		return shardManager;
 	}
 
-	public int getReadyShardID()
+	public Minecraft getMinecraft()
 	{
-		return readyShardID;
+		if(minecraft == null)
+		{
+			minecraft = new Minecraft(this);
+		}
+		return minecraft;
 	}
 
-	public static IGSQBot getInstance()
+	public CommandHandler getCommandHandler()
 	{
-		return instance;
+		if(commandHandler == null)
+		{
+			commandHandler = new CommandHandler(this);
+		}
+		return commandHandler;
 	}
 
-	public static class SelfUser
+	public Logger getLogger()
 	{
-		private SelfUser()
-		{
-			//Overrides the default, public, constructor
-		}
-		private static final String id = IGSQBot.getInstance().getShardManager().getShardById(IGSQBot.getInstance().getReadyShardID()).getSelfUser().getId();
-		private static final String tag = IGSQBot.getInstance().getShardManager().getShardById(IGSQBot.getInstance().getReadyShardID()).getSelfUser().getAsTag();
-
-		public static String getId()
-		{
-			return id;
-		}
-
-		public static String getAsTag()
-		{
-			return tag;
-		}
+		return LOGGER;
 	}
+
+	public TaskHandler getTaskHandler()
+	{
+		if(taskHandler == null)
+		{
+			taskHandler = new TaskHandler();
+		}
+		return taskHandler;
+	}
+
+	public Database getDatabase()
+	{
+		if(database == null)
+		{
+			database = new Database(this);
+		}
+		return database;
+	}
+
 }

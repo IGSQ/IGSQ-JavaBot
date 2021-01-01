@@ -11,4 +11,6 @@ public interface IJsonCacheable
 	void load();
 
 	void save();
+
+	void reload();
 }

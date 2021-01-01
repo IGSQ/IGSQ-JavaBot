@@ -89,4 +89,11 @@ public class JsonGuildCache implements IJsonCacheable
 		}
 		Json.updateFile(json, Filename.GUILD);
 	}
+
+	@Override
+	public void reload()
+	{
+		save();
+		load();
+	}
 }

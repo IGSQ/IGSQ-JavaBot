@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
@@ -23,6 +24,13 @@ import java.time.format.DateTimeFormatter;
 
 public class MessageEventsLogging extends ListenerAdapter
 {
+	private final IGSQBot igsqBot;
+
+	public MessageEventsLogging(IGSQBot igsqBot) 
+	{
+		this.igsqBot = igsqBot;
+	}
+
 	@Override
 	public void onMessageUpdate(MessageUpdateEvent event)
 	{

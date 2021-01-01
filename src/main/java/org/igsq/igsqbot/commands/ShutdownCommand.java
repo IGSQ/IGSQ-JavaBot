@@ -1,16 +1,11 @@
 package org.igsq.igsqbot.commands;
 
-import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
 import org.igsq.igsqbot.entities.json.JsonGuildCache;
 import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
 import org.igsq.igsqbot.entities.yaml.Blacklist;
-import org.igsq.igsqbot.handlers.CommandHandler;
-import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +26,9 @@ public class ShutdownCommand extends Command
 			return;
 		}
 
-		CommandHandler.close();
-		TaskHandler.close();
+		ctx.getIGSQBot().getCommandHandler().close();
+		ctx.getIGSQBot().getTaskHandler().close();
+		ctx.getIGSQBot().getMinecraft().close();
 		MessageDataCache.close();
 		Blacklist.close();
 
@@ -42,7 +38,7 @@ public class ShutdownCommand extends Command
 		JsonGuildCache.getInstance().save();
 		JsonPunishmentCache.getInstance().save();
 
-		LOGGER.warn("IGSQBot was shutdown using shutdown command.");
+		LOGGER.warn("Main was shutdown using shutdown command.");
 		LOGGER.warn("-- Issued by: " + ctx.getAuthor().getAsTag());
 		if(ctx.getGuild() != null)
 		{
@@ -82,15 +78,7 @@ public class ShutdownCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		JsonBotConfig config = Json.get(JsonBotConfig.class, Filename.CONFIG);
-		if(config == null)
-		{
-			return false;
-		}
-		else
-		{
-			return config.getPrivilegedUsers().contains(ctx.getAuthor().getId());
-		}
+		return ctx.isDeveloper();
 	}
 
 	@Override

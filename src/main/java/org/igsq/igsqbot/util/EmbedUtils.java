@@ -3,12 +3,8 @@ package org.igsq.igsqbot.util;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.handlers.TaskHandler;
 
 import java.awt.*;
 import java.time.Instant;
@@ -87,33 +83,16 @@ public class EmbedUtils
 
 	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed, long delay, boolean overwritePending)
 	{
-		if(!overwritePending && Yaml.getFieldBool(message.getId() + ".changepending", Filename.INTERNAL))
-		{
-			return;
-		}
-		if(message.getEmbeds().isEmpty())
-		{
-			MessageEmbed oldEmbed = message.getEmbeds().get(0);
-			message.editMessage(newEmbed.build()).queue(editedMessage ->
-			{
-				editedMessage.editMessage(oldEmbed).queueAfter(delay, TimeUnit.MILLISECONDS);
-				Yaml.updateField(message.getId() + ".changepending", Filename.INTERNAL, true);
-				TaskHandler.addTask(() -> Yaml.updateField(message.getId() + ".changepending", Filename.INTERNAL, false), TimeUnit.MILLISECONDS, delay);
-			});
-		}
+		//TO BE IMPLEMENTED: once json internal is complete
 	}
 
 	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed, long delay)
 	{
-		sendReplacedEmbed(message, newEmbed, delay, false);
+		//TO BE IMPLEMENTED: once json internal is complete
 	}
 
 	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed, boolean overwritePending)
 	{
-		if(!overwritePending && Yaml.getFieldBool(message.getId() + ".changepending", Filename.INTERNAL))
-		{
-			return;
-		}
-		message.editMessage(newEmbed.build()).queue();
+		//TO BE IMPLEMENTED: once json internal is complete
 	}
 }

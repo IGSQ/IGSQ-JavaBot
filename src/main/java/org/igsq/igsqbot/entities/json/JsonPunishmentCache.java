@@ -24,7 +24,6 @@ public class JsonPunishmentCache implements IJsonCacheable
 	@Override
 	public void set(IJson json)
 	{
-		System.out.println("JSON ADDED: " + json.getPrimaryKey());
 		if(json instanceof JsonPunishment)
 		{
 			cachedFiles.put(json.getPrimaryKey(), (JsonPunishment) json);
@@ -103,6 +102,13 @@ public class JsonPunishmentCache implements IJsonCacheable
 			json.add(punishment.toJson());
 		}
 		Json.updateFile(json, Filename.PUNISHMENT);
+	}
+
+	@Override
+	public void reload()
+	{
+		save();
+		load();
 	}
 
 	public Collection<JsonPunishment> getAll()

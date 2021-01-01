@@ -4,10 +4,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.Database;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.minecraft.CommonMinecraft;
+import org.igsq.igsqbot.minecraft.MinecraftUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Arrays;
@@ -34,9 +34,9 @@ public class LinkCommand extends Command
 		{
 			switch(args.get(0).toLowerCase())
 			{
-				case "add", "new" -> addLink();
-				case "remove", "delete" -> removeLink();
-				case "show", "list", "pending" -> showPending();
+				case "add", "new" -> addLink(ctx.getIGSQBot());
+				case "remove", "delete" -> removeLink(ctx.getIGSQBot());
+				case "show", "list", "pending" -> showPending(ctx.getIGSQBot());
 				default -> EmbedUtils.sendSyntaxError(channel, this);
 			}
 		}
@@ -69,7 +69,7 @@ public class LinkCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return Database.getInstance().isOnline();
+		return ctx.getIGSQBot().getDatabase().isOnline();
 	}
 
 	@Override
@@ -84,27 +84,18 @@ public class LinkCommand extends Command
 		return 0;
 	}
 
-	private void showPending()
+	private void showPending(IGSQBot igsqBot)
 	{
 		StringBuilder embedDescription = new StringBuilder();
-		CommonMinecraft.fetchLinks(author.getId()).forEach((name, state) ->
+		MinecraftUtils.fetchLinks(author.getId(), igsqBot).forEach((name, state) ->
 		{
-			String status;
-			switch(state.toLowerCase())
-			{
-				case "mwait":
-					status = "pending Minecraft confirmation.";
-					break;
-				case "dwait":
-					status = "pending Discord confirmation.";
-					break;
-				case "linked":
-					status = "linked!";
-					break;
-				default:
-					status = "status not found / invalid";
-					break;
-			}
+			String status = switch(state.toLowerCase())
+					{
+						case "mwait" -> "pending Minecraft confirmation.";
+						case "dwait" -> "pending Discord confirmation.";
+						case "linked" -> "linked!";
+						default -> "status not found / invalid";
+					};
 			embedDescription.append("**")
 					.append(name)
 					.append("**: ")
@@ -120,7 +111,7 @@ public class LinkCommand extends Command
 				.build()).queue();
 	}
 
-	private void removeLink()
+	private void removeLink(IGSQBot igsqBot)
 	{
 		if(args.size() != 2)
 		{
@@ -129,9 +120,9 @@ public class LinkCommand extends Command
 		else
 		{
 			String mcAccount = args.get(1);
-			String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
-			String username = CommonMinecraft.getNameFromUUID(uuid);
-			String id = CommonMinecraft.getIDFromUUID(uuid);
+			String uuid = MinecraftUtils.getUUIDFromName(mcAccount, igsqBot);
+			String username = MinecraftUtils.getNameFromUUID(uuid, igsqBot);
+			String id = MinecraftUtils.getIDFromUUID(uuid, igsqBot);
 
 			if(username == null)
 			{
@@ -146,7 +137,7 @@ public class LinkCommand extends Command
 
 			if(id.equals(author.getId()))
 			{
-				CommonMinecraft.removeLinkedAccount(uuid);
+				MinecraftUtils.removeLinkedAccount(uuid, igsqBot);
 				EmbedUtils.sendSuccess(channel, "Link removed for account: " + username);
 			}
 			else
@@ -156,7 +147,7 @@ public class LinkCommand extends Command
 		}
 	}
 
-	private void addLink()
+	private void addLink(IGSQBot igsqBot)
 	{
 		if(args.size() != 2)
 		{
@@ -165,13 +156,13 @@ public class LinkCommand extends Command
 		else
 		{
 			String mcAccount = args.get(1);
-			String uuid = CommonMinecraft.getUUIDFromName(mcAccount);
-			final String username = CommonMinecraft.getNameFromUUID(uuid);
+			String uuid = MinecraftUtils.getUUIDFromName(mcAccount, igsqBot);
+			final String username = MinecraftUtils.getNameFromUUID(uuid, igsqBot);
 			if(uuid != null)
 			{
-				boolean isWaiting = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'dwait';") > 0;
-				boolean isAlreadyLinked = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'linked';") > 0;
-				boolean isUsersAccount = Database.getInstance().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'linked';") > 0;
+				boolean isWaiting = igsqBot.getDatabase().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'dwait';") > 0;
+				boolean isAlreadyLinked = igsqBot.getDatabase().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'linked';") > 0;
+				boolean isUsersAccount = igsqBot.getDatabase().scalarCommand("SELECT COUNT(*) FROM linked_accounts WHERE uuid = '" + uuid + "' AND current_status = 'linked';") > 0;
 
 				if(isUsersAccount)
 				{
@@ -183,13 +174,13 @@ public class LinkCommand extends Command
 				}
 				else if(isWaiting)
 				{
-					Database.getInstance().updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
-					Database.getInstance().updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
+					igsqBot.getDatabase().updateCommand("UPDATE linked_accounts SET current_status = 'linked' WHERE uuid = '" + uuid + "';");
+					igsqBot.getDatabase().updateCommand("DELETE FROM linked_accounts WHERE id = '" + author.getId() + "' AND current_status = 'dwait';");
 					EmbedUtils.sendSuccess(channel, "Link confirmed for account: " + username);
 				}
 				else
 				{
-					Database.getInstance().updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
+					igsqBot.getDatabase().updateCommand("INSERT INTO linked_accounts VALUES(null,'" + uuid + "','" + author.getId() + "','mwait');");
 					EmbedUtils.sendSuccess(channel, "Link added for account: " + username);
 				}
 			}

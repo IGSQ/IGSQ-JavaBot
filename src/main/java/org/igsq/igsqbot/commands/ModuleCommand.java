@@ -1,12 +1,8 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
-import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.slf4j.Logger;
@@ -33,11 +29,11 @@ public class ModuleCommand extends Command
 		}
 		else if(args.get(0).equalsIgnoreCase("enable"))
 		{
-			enableModule(args.get(1), channel);
+			enableModule(args.get(1), channel, ctx);
 		}
 		else if(args.get(0).equalsIgnoreCase("disable"))
 		{
-			disableModule(args.get(1), channel);
+			disableModule(args.get(1), channel, ctx);
 		}
 		else
 		{
@@ -73,15 +69,7 @@ public class ModuleCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		JsonBotConfig config = Json.get(JsonBotConfig.class, Filename.CONFIG);
-		if(config == null)
-		{
-			return false;
-		}
-		else
-		{
-			return config.getPrivilegedUsers().contains(ctx.getAuthor().getId());
-		}
+		return ctx.isDeveloper();
 	}
 
 	@Override
@@ -96,9 +84,9 @@ public class ModuleCommand extends Command
 		return 0;
 	}
 
-	private void enableModule(String moduleName, MessageChannel channel)
+	private void enableModule(String moduleName, MessageChannel channel, CommandContext ctx)
 	{
-		Command cmd = CommandHandler.getCommandMap().get(moduleName);
+		Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 		if(cmd == null)
 		{
 			EmbedUtils.sendError(channel, "The specified module: `" + moduleName + "` was not found");
@@ -111,9 +99,9 @@ public class ModuleCommand extends Command
 		}
 	}
 
-	private void disableModule(String moduleName, MessageChannel channel)
+	private void disableModule(String moduleName, MessageChannel channel, CommandContext ctx)
 	{
-		Command cmd = CommandHandler.getCommandMap().get(moduleName);
+		Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 		if(cmd == null)
 		{
 			EmbedUtils.sendError(channel, "The specified module: `" + moduleName + "` was not found");

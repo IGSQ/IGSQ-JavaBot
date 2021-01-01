@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.EventWaiter;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
@@ -15,11 +16,17 @@ import org.igsq.igsqbot.entities.json.JsonGuild;
 import org.igsq.igsqbot.entities.json.JsonGuildCache;
 import org.igsq.igsqbot.entities.json.JsonReactionRole;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
-import org.igsq.igsqbot.handlers.CommandHandler;
 import org.igsq.igsqbot.util.YamlUtils;
 
 public class MessageEventsMain extends ListenerAdapter
 {
+	private final IGSQBot igsqBot;
+
+	public MessageEventsMain(IGSQBot igsqBot) 
+	{
+		this.igsqBot = igsqBot;
+	}
+
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)
 	{
@@ -90,7 +97,7 @@ public class MessageEventsMain extends ListenerAdapter
 				MessageCache.getCache(event.getGuild()).set(new CachedMessage(event.getMessage()));
 			}
 		}
-		CommandHandler.handle(event);
+		igsqBot.getCommandHandler().handle(event);
 	}
 
 

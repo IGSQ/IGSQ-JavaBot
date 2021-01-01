@@ -10,12 +10,20 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.yaml.GuildConfig;
 
 import java.time.Instant;
 
 public class VoiceEventsLogging extends ListenerAdapter
 {
+	private final IGSQBot igsqBot;
+
+	public VoiceEventsLogging(IGSQBot igsqBot)
+	{
+		this.igsqBot = igsqBot;
+	}
+
 	@Override
 	public void onGuildVoiceMove(GuildVoiceMoveEvent event)
 	{

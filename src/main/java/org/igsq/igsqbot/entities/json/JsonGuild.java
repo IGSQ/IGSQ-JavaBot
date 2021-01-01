@@ -11,6 +11,17 @@ public class JsonGuild implements IJson
 	private String guildId;
 	private List<JsonReactionRole> reactionRoles = new ArrayList<>();
 	private String mutedRole;
+	private String verifiedRole;
+
+	public String getVerifiedRole()
+	{
+		return verifiedRole;
+	}
+
+	public void setVerifiedRole(String verifiedRole)
+	{
+		this.verifiedRole = verifiedRole;
+	}
 
 	public JsonGuild(String guildId)
 	{
