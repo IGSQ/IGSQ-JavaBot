@@ -22,10 +22,10 @@ public class UwUCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
-		final MessageChannel channel = ctx.getChannel();
-		final StringBuilder finalSentence = new StringBuilder();
-		final User author = ctx.getAuthor();
+		List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
+		MessageChannel channel = ctx.getChannel();
+		StringBuilder finalSentence = new StringBuilder();
+		User author = ctx.getAuthor();
 
 		if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
 		{

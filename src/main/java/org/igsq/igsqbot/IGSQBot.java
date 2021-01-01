@@ -31,7 +31,7 @@ import java.util.List;
 
 public class IGSQBot
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(IGSQBot.class);
+	private final Logger logger = LoggerFactory.getLogger(IGSQBot.class);
 	private final LocalDateTime startTimestamp = LocalDateTime.now();
 	private final List<EmbedBuilder> helpPages = new ArrayList<>();
 	private CommandHandler commandHandler;
@@ -169,7 +169,7 @@ public class IGSQBot
 
 	public Logger getLogger()
 	{
-		return LOGGER;
+		return logger;
 	}
 
 	public TaskHandler getTaskHandler()

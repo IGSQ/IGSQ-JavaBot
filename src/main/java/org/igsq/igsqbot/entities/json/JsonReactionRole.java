@@ -1,9 +1,6 @@
 package org.igsq.igsqbot.entities.json;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import org.igsq.igsqbot.Json;
 
 import java.util.ArrayList;
@@ -33,7 +30,7 @@ public class JsonReactionRole implements IJson
 		jsonObject.addProperty("guildId", guildId);
 		jsonObject.addProperty("channelId", channelId);
 		jsonObject.addProperty("messageId", messageId);
-		jsonObject.addProperty("emote", String.valueOf(emote));
+		jsonObject.addProperty("emote", emote);
 		jsonObject.addProperty("role", role);
 		return jsonObject;
 	}

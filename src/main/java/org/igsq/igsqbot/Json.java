@@ -73,7 +73,7 @@ public class Json
 		try
 		{
 			Writer writer = new FileWriter(new File(FOLDER, filename + ".json"));
-			Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			gson.toJson(json.toJson(), writer);
 			writer.close();
 		}
@@ -131,8 +131,29 @@ public class Json
 
 	public static String parseUnicode(String input)
 	{
-		return new Gson().toJson(input);
+		StringBuilder builder = new StringBuilder();
+		input.codePoints().forEachOrdered(code ->
+		{
+			char[] chars = Character.toChars(code);
+			if(chars.length > 1)
+			{
+				String hex0 = Integer.toHexString(chars[0]).toUpperCase();
+				String hex1 = Integer.toHexString(chars[1]).toUpperCase();
+				while(hex0.length() < 4)
+				{
+					hex0 = "0" + hex0;
+				}
+
+				while(hex1.length() < 4)
+				{
+					hex1 = "0" + hex1;
+				}
+				builder.append("\\u").append(hex0).append("\\u").append(hex1);
+			}
+		});
+		return builder.toString();
 	}
+
 	public static void applyDefaults()
 	{
 		addDefault(new JsonBotConfig().toJson(), Filename.CONFIG);

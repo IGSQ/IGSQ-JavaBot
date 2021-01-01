@@ -69,7 +69,7 @@ public class Main
 			JsonPunishmentCache.getInstance().reload();
 			JsonGuildCache.getInstance().reload();
 
-		}, "fileReload", TimeUnit.SECONDS, 15);
+		}, "fileReload", TimeUnit.SECONDS, 5);
 
 		bot.getTaskHandler().addRepeatingTask(() ->
 		{

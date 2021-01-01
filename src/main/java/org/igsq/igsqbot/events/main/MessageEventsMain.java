@@ -41,7 +41,7 @@ public class MessageEventsMain extends ListenerAdapter
 							String emoteId = event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId();
 							for(JsonReactionRole jsonReactionRole : jsonGuild.getReactionRoles())
 							{
-								if(jsonReactionRole.getPrimaryKey().equals(emoteId))
+								if(jsonReactionRole.getPrimaryKey().replace("\\\\", "\\").equalsIgnoreCase(emoteId))
 								{
 									Role role = event.getGuild().getRoleById(jsonReactionRole.getRole());
 									if(role != null)
