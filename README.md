@@ -101,6 +101,7 @@ None!
  - [ ] Remove simple-yaml
  - [ ] flesh out JsonGuildConfig vars
  - [ ] Refactor json objects to remove 'Json' prefix
+ - [ ] Debug logging
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**
