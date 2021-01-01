@@ -63,13 +63,12 @@
  - [x] ctx isDeveloper method
  - [x] Restructure minecraft
  - [x] Objectify the IGSQBot class, make it instansiate listners and pass itself, will be a central object for everything
+ - [x] Remove statics and use getInstance()
 
 ### **TeaEyes**
 None!
 
 ### **arynxd**
- - [ ] Alias / Decline (within the setup command)
-
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
  
  ```
@@ -91,14 +90,18 @@ None!
     }
 ```
  - [ ] Json internal objects
- - [ ] ReactionRole command (fix json)
+ - [ ] ReactionRole command (fix json encoding)
  - [ ] Report into JSON (punishment)
  - [ ] Verification, written and Json
  - [ ] Use optionals for Json
  - [ ] Voting
- - [ ] GuildConfig to take something (IGSQBot object) as input to get the channels
+ - [ ] GuildConfig to take something (IGSQBot object) as input to fetch the channels
  - [ ] Custom Task object to hold task info
- - [ ] **PREPARE FOR PR!!!**
+ - [ ] Remove emoji-java
+ - [ ] Remove simple-yaml
+ - [ ] flesh out JsonGuildConfig vars
+ - [ ] Refactor json objects to remove 'Json' prefix
+ - [ ] **PREPARE FOR PR**
 
 ### **Future work**
  - [ ] Rewrite the event waiter
@@ -107,8 +110,7 @@ None!
  - [ ] Implement slash commands when they release
  - [ ] Complex args parser
  - [ ] Restarting of the bot
- - [ ] Remove statics and use getInstance()
- - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo)
+ - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo, GuildInfo)
  - [ ] Consider switch usage (replace with elif)
 
 ## Known Issues
