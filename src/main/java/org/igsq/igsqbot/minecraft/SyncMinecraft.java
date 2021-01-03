@@ -6,8 +6,8 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
-import org.igsq.igsqbot.entities.json.JsonMinecraft;
+import org.igsq.igsqbot.entities.json.BotConfig;
+import org.igsq.igsqbot.entities.json.MinecraftConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,24 +24,24 @@ public class SyncMinecraft
 
 	private void start()
 	{
-		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
-		if(jsonBotConfig == null)
+		BotConfig botConfig = Json.get(BotConfig.class, Filename.CONFIG);
+		if(botConfig == null)
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
 			igsqBot.getLogger().error("An error occurred while reading JSON for Minecraft.");
 			return;
 		}
 		if(!igsqBot.getDatabase().isOnline())
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
 			igsqBot.getLogger().warn("Minecraft sync task stopped due to no Database connectivity being found.");
 			return;
 		}
 
-		guild = igsqBot.getShardManager().getGuildById(jsonBotConfig.getServer());
+		guild = igsqBot.getShardManager().getGuildById(botConfig.getServer());
 		if(guild == null)
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
 			igsqBot.getLogger().warn("Minecraft sync stopped due to invalid guild being defined in CONFIG.json.");
 		}
 		else
@@ -58,7 +58,7 @@ public class SyncMinecraft
 		{
 			if(!selectedMember.getUser().isBot() && (verifiedRole == null || selectedMember.getRoles().contains(verifiedRole)))
 			{
-				JsonMinecraft json = Json.get(JsonMinecraft.class, Filename.MINECRAFT);
+				MinecraftConfig json = Json.get(MinecraftConfig.class, Filename.MINECRAFT);
 				if(json != null)
 				{
 					String username = selectedMember.getUser().getAsTag();

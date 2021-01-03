@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
+import org.igsq.igsqbot.entities.json.BotConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import javax.annotation.Nonnull;
@@ -78,12 +78,12 @@ public class CommandContext
 
 	public void replySuccess(String successText)
 	{
-		EmbedUtils.sendError(getChannel(), successText);
+		EmbedUtils.sendSuccess(getChannel(), successText);
 	}
 
 	public boolean isDeveloper()
 	{
-		JsonBotConfig config = Json.get(JsonBotConfig.class, Filename.CONFIG);
+		BotConfig config = Json.get(BotConfig.class, Filename.CONFIG);
 		if(config == null)
 		{
 			return false;

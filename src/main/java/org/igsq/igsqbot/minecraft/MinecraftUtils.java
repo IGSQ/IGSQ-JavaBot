@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonMinecraft;
+import org.igsq.igsqbot.entities.json.MinecraftConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.sql.ResultSet;
@@ -148,7 +148,7 @@ public class MinecraftUtils
 
 	public static String getRank(Member member)
 	{
-		JsonMinecraft json = Json.get(JsonMinecraft.class, Filename.MINECRAFT);
+		MinecraftConfig json = Json.get(MinecraftConfig.class, Filename.MINECRAFT);
 		if(json != null)
 		{
 			Map<List<String>, String> ranks = json.getRanks();

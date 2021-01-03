@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JsonMinecraft implements IJson
+public class MinecraftConfig implements IJsonEntity
 {
 	private final List<String> squirrel = new ArrayList<>();
 	private final List<String> rising = new ArrayList<>();

@@ -3,8 +3,8 @@ package org.igsq.igsqbot.commands;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.cache.MessageDataCache;
-import org.igsq.igsqbot.entities.json.JsonGuildCache;
-import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
+import org.igsq.igsqbot.entities.cache.PunishmentCache;
 import org.igsq.igsqbot.entities.yaml.Blacklist;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -31,8 +31,8 @@ public class ShutdownCommand extends Command
 		ctx.replySuccess("IGSQBot going down NOW.");
 		ctx.getJDA().shutdown();
 
-		JsonGuildCache.getInstance().save();
-		JsonPunishmentCache.getInstance().save();
+		GuildConfigCache.getInstance().save();
+		PunishmentCache.getInstance().save();
 
 		ctx.getIGSQBot().getLogger().warn("-- IGSQBot was shutdown using shutdown command.");
 		ctx.getIGSQBot().getLogger().warn("-- Issued by: " + ctx.getAuthor().getAsTag());

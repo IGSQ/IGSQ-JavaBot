@@ -16,8 +16,8 @@ public class Minecraft
 
 	public void close()
 	{
-		igsqBot.getTaskHandler().cancelTask("minecraftClean");
-		igsqBot.getTaskHandler().cancelTask("minecraftSync");
-		igsqBot.getTaskHandler().cancelTask("2FATask");
+		igsqBot.getTaskHandler().cancelTask("minecraftClean", false);
+		igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
+		igsqBot.getTaskHandler().cancelTask("2FATask", false);
 	}
 }

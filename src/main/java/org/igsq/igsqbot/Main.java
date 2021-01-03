@@ -4,9 +4,9 @@ import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonGuildCache;
-import org.igsq.igsqbot.entities.json.JsonPunishment;
-import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
+import org.igsq.igsqbot.entities.json.Punishment;
+import org.igsq.igsqbot.entities.cache.PunishmentCache;
 import org.igsq.igsqbot.util.JsonUtils;
 
 import javax.security.auth.login.LoginException;
@@ -26,8 +26,8 @@ public class Main
 		Json.createFiles();
 		Json.applyDefaults();
 
-		JsonGuildCache.getInstance().load();
-		JsonPunishmentCache.getInstance().load();
+		GuildConfigCache.getInstance().load();
+		PunishmentCache.getInstance().load();
 
 		try
 		{
@@ -66,14 +66,14 @@ public class Main
 			Yaml.saveFileChanges(Filename.ALL);
 			Yaml.loadFile(Filename.ALL);
 
-			JsonPunishmentCache.getInstance().reload();
-			JsonGuildCache.getInstance().reload();
+			PunishmentCache.getInstance().reload();
+			GuildConfigCache.getInstance().reload();
 
 		}, "fileReload", TimeUnit.SECONDS, 5);
 
 		bot.getTaskHandler().addRepeatingTask(() ->
 		{
-			for(JsonPunishment selectedPunishment : JsonUtils.getExpiredMutes())
+			for(Punishment selectedPunishment : JsonUtils.getExpiredMutes())
 			{
 				selectedPunishment.setMuted(false);
 				selectedPunishment.setMutedUntil(-1);

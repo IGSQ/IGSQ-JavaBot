@@ -1,17 +1,17 @@
 package org.igsq.igsqbot.util;
 
-import org.igsq.igsqbot.entities.json.JsonPunishment;
-import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
+import org.igsq.igsqbot.entities.json.Punishment;
+import org.igsq.igsqbot.entities.cache.PunishmentCache;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonUtils
 {
-	public static List<JsonPunishment> getExpiredMutes()
+	public static List<Punishment> getExpiredMutes()
 	{
-		List<JsonPunishment> result = new ArrayList<>();
-		for(JsonPunishment selectedPunishment: JsonPunishmentCache.getInstance().getAll())
+		List<Punishment> result = new ArrayList<>();
+		for(Punishment selectedPunishment: PunishmentCache.getInstance().getAll())
 		{
 			if(selectedPunishment.isMuted() && System.currentTimeMillis() >= selectedPunishment.getMutedUntil())
 			{

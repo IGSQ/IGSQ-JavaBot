@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JsonBotConfig implements IJson
+public class BotConfig implements IJsonEntity
 {
 	private String botToken = "token";
 	private String botServer = "server";

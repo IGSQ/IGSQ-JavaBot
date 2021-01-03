@@ -9,9 +9,9 @@ import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.json.JsonGuild;
-import org.igsq.igsqbot.entities.json.JsonGuildCache;
-import org.igsq.igsqbot.entities.json.JsonReactionRole;
+import org.igsq.igsqbot.entities.json.GuildConfig;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
+import org.igsq.igsqbot.entities.json.ReactionRole;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Arrays;
@@ -37,9 +37,9 @@ public class ReactionRoleCommand extends Command
 			String messageId = args.get(1);
 			Role role = ctx.getMessage().getMentionedRoles().get(0);
 			MessageChannel reactionChannel = message.getMentionedChannels().get(0);
-			JsonGuild jsonGuild = JsonGuildCache.getInstance().get(guild.getId());
+			GuildConfig guildConfig = GuildConfigCache.getInstance().get(guild.getId());
 
-			if(jsonGuild != null)
+			if(guildConfig != null)
 			{
 				String emoteId;
 
@@ -75,10 +75,10 @@ public class ReactionRoleCommand extends Command
 								reactionMessage.addReaction(emoteId).queue(
 										success ->
 										{
-											JsonReactionRole reactionRole = new JsonReactionRole(guild.getId(), reactionChannel.getId(), reactionMessage.getId(), Json.parseUnicode(emoteId), role.getId());
-											List<JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
+											ReactionRole reactionRole = new ReactionRole(guild.getId(), reactionChannel.getId(), reactionMessage.getId(), Json.parseUnicode(emoteId), role.getId());
+											List<ReactionRole> reactionRoles = guildConfig.getReactionRoles();
 											reactionRoles.add(reactionRole);
-											jsonGuild.setReactionRoles(reactionRoles);
+											guildConfig.setReactionRoles(reactionRoles);
 										},
 										failure -> EmbedUtils.sendError(channel, "That emote could not be found.")
 								);
@@ -88,9 +88,9 @@ public class ReactionRoleCommand extends Command
 								reactionMessage.removeReaction(emoteId).queue(
 										success ->
 										{
-											List<JsonReactionRole> reactionRoles = jsonGuild.getReactionRoles();
+											List<ReactionRole> reactionRoles = guildConfig.getReactionRoles();
 											reactionRoles.removeIf(rr -> rr.getPrimaryKey().equals(Json.parseUnicode(emoteId)));
-											jsonGuild.setReactionRoles(reactionRoles);
+											guildConfig.setReactionRoles(reactionRoles);
 										},
 										failure -> EmbedUtils.sendError(channel, "That emote could not be removed.")
 								);

@@ -94,5 +94,9 @@ public class EmbedUtils
 	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed, boolean overwritePending)
 	{
 		//TO BE IMPLEMENTED: once json internal is complete
+		if(!message.getEmbeds().isEmpty())
+		{
+			message.editMessage(newEmbed.build()).queue();
+		}
 	}
 }

@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.IJson;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
-import org.igsq.igsqbot.entities.json.JsonMinecraft;
+import org.igsq.igsqbot.entities.json.IJsonEntity;
+import org.igsq.igsqbot.entities.json.BotConfig;
+import org.igsq.igsqbot.entities.json.MinecraftConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.io.File;
@@ -58,7 +58,7 @@ public class Json
 		try
 		{
 			Writer writer = new FileWriter(new File(FOLDER, filename + ".json"));
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 			gson.toJson(json, writer);
 			writer.close();
 		}
@@ -68,12 +68,12 @@ public class Json
 		}
 	}
 
-	public static void updateFile(IJson json, Filename filename)
+	public static void updateFile(IJsonEntity json, Filename filename)
 	{
 		try
 		{
 			Writer writer = new FileWriter(new File(FOLDER, filename + ".json"));
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 			gson.toJson(json.toJson(), writer);
 			writer.close();
 		}
@@ -156,7 +156,7 @@ public class Json
 
 	public static void applyDefaults()
 	{
-		addDefault(new JsonBotConfig().toJson(), Filename.CONFIG);
-		addDefault(new JsonMinecraft().toJson(), Filename.MINECRAFT);
+		addDefault(new BotConfig().toJson(), Filename.CONFIG);
+		addDefault(new MinecraftConfig().toJson(), Filename.MINECRAFT);
 	}
 }

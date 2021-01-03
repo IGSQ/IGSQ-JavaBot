@@ -48,7 +48,6 @@ public class MessageReactionAdd_Help extends ListenerAdapter
 
 					if(messageDataCache != null && messageDataCache.getType().equals(MessageDataCache.MessageType.HELP) && !user.isBot())
 					{
-
 						List<EmbedBuilder> PAGES = igsqBot.getHelpPages();
 
 						if(messageDataCache.getUsers().get("user").equals(user))

@@ -12,10 +12,9 @@ import org.igsq.igsqbot.entities.EventWaiter;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonGuild;
-import org.igsq.igsqbot.entities.json.JsonGuildCache;
-import org.igsq.igsqbot.entities.json.JsonReactionRole;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.entities.json.GuildConfig;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
+import org.igsq.igsqbot.entities.json.ReactionRole;
 import org.igsq.igsqbot.util.YamlUtils;
 
 public class MessageEventsMain extends ListenerAdapter
@@ -37,13 +36,13 @@ public class MessageEventsMain extends ListenerAdapter
 					{
 						if(!user.isBot())
 						{
-							JsonGuild jsonGuild = JsonGuildCache.getInstance().get(event.getGuild().getId());
+							GuildConfig guildConfig = GuildConfigCache.getInstance().get(event.getGuild().getId());
 							String emoteId = event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId();
-							for(JsonReactionRole jsonReactionRole : jsonGuild.getReactionRoles())
+							for(ReactionRole reactionRole : guildConfig.getReactionRoles())
 							{
-								if(jsonReactionRole.getPrimaryKey().replace("\\\\", "\\").equalsIgnoreCase(emoteId))
+								if(reactionRole.getPrimaryKey().replace("\\\\", "\\").equalsIgnoreCase(emoteId))
 								{
-									Role role = event.getGuild().getRoleById(jsonReactionRole.getRole());
+									Role role = event.getGuild().getRoleById(reactionRole.getRole());
 									if(role != null)
 									{
 										event.retrieveMember().queue(member -> event.getGuild().addRoleToMember(member, role).queue());
@@ -68,13 +67,13 @@ public class MessageEventsMain extends ListenerAdapter
 					{
 						if(!user.isBot())
 						{
-							JsonGuild jsonGuild = JsonGuildCache.getInstance().get(event.getGuild().getId());
+							GuildConfig guildConfig = GuildConfigCache.getInstance().get(event.getGuild().getId());
 							String emoteId = event.getReactionEmote().isEmoji() ? event.getReactionEmote().getEmoji() : event.getReactionEmote().getEmote().getId();
-							for(JsonReactionRole jsonReactionRole : jsonGuild.getReactionRoles())
+							for(ReactionRole reactionRole : guildConfig.getReactionRoles())
 							{
-								if(jsonReactionRole.getPrimaryKey().equals(emoteId))
+								if(reactionRole.getPrimaryKey().equals(emoteId))
 								{
-									Role role = event.getGuild().getRoleById(jsonReactionRole.getRole());
+									Role role = event.getGuild().getRoleById(reactionRole.getRole());
 									if(role != null)
 									{
 										event.retrieveMember().queue(member -> event.getGuild().removeRoleFromMember(member, role).queue());
@@ -92,7 +91,7 @@ public class MessageEventsMain extends ListenerAdapter
 	{
 		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot() && !EventWaiter.waitingOnThis(event))
 		{
-			if(!event.getMessage().getContentRaw().startsWith(new GuildConfig(event.getGuild(), event.getJDA()).getGuildPrefix()))
+			if(!event.getMessage().getContentRaw().startsWith(new org.igsq.igsqbot.entities.yaml.GuildConfig(event.getGuild(), event.getJDA()).getGuildPrefix()))
 			{
 				MessageCache.getCache(event.getGuild()).set(new CachedMessage(event.getMessage()));
 			}

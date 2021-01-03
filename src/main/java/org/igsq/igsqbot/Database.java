@@ -1,7 +1,7 @@
 package org.igsq.igsqbot;
 
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
+import org.igsq.igsqbot.entities.json.BotConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.sql.Connection;
@@ -27,10 +27,10 @@ public class Database
 
 	private void start()
 	{
-		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
-		if(jsonBotConfig != null)
+		BotConfig botConfig = Json.get(BotConfig.class, Filename.CONFIG);
+		if(botConfig != null)
 		{
-			Map<String, String> credentials = jsonBotConfig.getSQL();
+			Map<String, String> credentials = botConfig.getSQL();
 			url = credentials.get("url");
 			user = credentials.get("username");
 			password = credentials.get("password");

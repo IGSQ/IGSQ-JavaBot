@@ -1,12 +1,11 @@
 package org.igsq.igsqbot.entities.json;
 
-import com.google.gson.*;
-import org.igsq.igsqbot.Json;
+import com.google.gson.JsonObject;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class JsonReactionRole implements IJson
+public class ReactionRole implements IJsonEntity
 {
 	private final String guildId;
 	private final String channelId;
@@ -14,7 +13,7 @@ public class JsonReactionRole implements IJson
 	private final String emote;
 	private final String role;
 
-	public JsonReactionRole(String guildId, String channelId, String messageId, String emote, String role)
+	public ReactionRole(String guildId, String channelId, String messageId, String emote, String role)
 	{
 		this.guildId = guildId;
 		this.channelId = channelId;
@@ -69,27 +68,9 @@ public class JsonReactionRole implements IJson
 	@Override
 	public void remove()
 	{
-		JsonArray onFile = Json.get(JsonArray.class, Filename.GUILD);
-		List<JsonReactionRole> reactionRoles = new ArrayList<>();
-		if(onFile != null)
-		{
-			for(JsonElement element : onFile)
-			{
-				JsonGuild guild = new Gson().fromJson(element, JsonGuild.class);
-				if(guild.getPrimaryKey().equals(this.guildId))
-				{
-					for(JsonReactionRole entry : guild.getReactionRoles())
-					{
-						if(!entry.getPrimaryKey().equals(this.getPrimaryKey()))
-						{
-							reactionRoles.add(entry);
-						}
-					}
-					guild.setReactionRoles(reactionRoles);
-					JsonGuildCache.getInstance().set(guild);
-					break;
-				}
-			}
-		}
+		GuildConfig config = GuildConfigCache.getInstance().get(guildId);
+		List<ReactionRole> reactionRoles = config.getReactionRoles();
+		reactionRoles.removeIf(reactionRole -> reactionRole.getPrimaryKey().equals(getPrimaryKey()));
+		config.setReactionRoles(reactionRoles);
 	}
 }

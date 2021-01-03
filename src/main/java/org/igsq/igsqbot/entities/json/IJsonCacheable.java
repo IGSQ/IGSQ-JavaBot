@@ -2,11 +2,11 @@ package org.igsq.igsqbot.entities.json;
 
 public interface IJsonCacheable
 {
-	void set(IJson json);
+	void set(IJsonEntity json);
 
 	void remove(String primaryKey);
 
-	void remove(IJson json);
+	void remove(IJsonEntity json);
 
 	void load();
 

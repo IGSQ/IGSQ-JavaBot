@@ -2,20 +2,22 @@ package org.igsq.igsqbot.entities.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.igsq.igsqbot.entities.cache.PunishmentCache;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonPunishment implements IJson
+public class Punishment implements IJsonEntity
 {
 	private String guildId;
 	private String userId;
 	private List<String> warnings = new ArrayList<>();
+	private List<Report> reports = new ArrayList<>();
 	private boolean isMuted;
 	private long mutedUntil;
 	private List<String> roles = new ArrayList<>();
 
-	public JsonPunishment(String guildId, String userId)
+	public Punishment(String guildId, String userId)
 	{
 		this.guildId = guildId;
 		this.userId = userId;
@@ -87,16 +89,29 @@ public class JsonPunishment implements IJson
 		JsonObject jsonObject = new JsonObject();
 		JsonArray warnings = new JsonArray();
 		JsonArray roles = new JsonArray();
+		JsonArray reports = new JsonArray();
 		this.warnings.forEach(warnings::add);
 		this.roles.forEach(roles::add);
+		this.reports.forEach(report -> reports.add(report.toJson()));
 
 		jsonObject.addProperty("guildId", guildId);
 		jsonObject.addProperty("userId", userId);
 		jsonObject.add("warnings", warnings);
+		jsonObject.add("reports", reports);
 		jsonObject.addProperty("isMuted", isMuted);
 		jsonObject.addProperty("mutedUntil", mutedUntil);
 		jsonObject.add("roles", roles);
 		return jsonObject;
+	}
+
+	public List<Report> getReports()
+	{
+		return reports;
+	}
+
+	public void setReports(List<Report> reports)
+	{
+		this.reports = reports;
 	}
 
 	@Override
@@ -108,6 +123,6 @@ public class JsonPunishment implements IJson
 	@Override
 	public void remove()
 	{
-		JsonPunishmentCache.getInstance().remove(this);
+		PunishmentCache.getInstance().remove(this);
 	}
 }

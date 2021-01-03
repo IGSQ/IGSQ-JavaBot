@@ -1,7 +1,11 @@
-package org.igsq.igsqbot.entities.json;
+package org.igsq.igsqbot.entities.cache;
 
 import com.google.gson.JsonObject;
 import org.igsq.igsqbot.Json;
+import org.igsq.igsqbot.entities.json.Filename;
+import org.igsq.igsqbot.entities.json.GuildConfig;
+import org.igsq.igsqbot.entities.json.IJsonCacheable;
+import org.igsq.igsqbot.entities.json.IJsonEntity;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.util.ArrayList;
@@ -9,17 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class JsonGuildCache implements IJsonCacheable
+public class GuildConfigCache implements IJsonCacheable
 {
-	private static final JsonGuildCache INSTANCE = new JsonGuildCache();
-	private final Map<String, JsonGuild> cachedFiles = new ConcurrentHashMap<>();
+	private static final GuildConfigCache INSTANCE = new GuildConfigCache();
+	private final Map<String, GuildConfig> cachedFiles = new ConcurrentHashMap<>();
 
-	private JsonGuildCache()
+	private GuildConfigCache()
 	{
 		//Overrides the default, public, constructor
 	}
 
-	public static JsonGuildCache getInstance()
+	public static GuildConfigCache getInstance()
 	{
 		return INSTANCE;
 	}
@@ -29,10 +33,10 @@ public class JsonGuildCache implements IJsonCacheable
 	{
 		try
 		{
-			JsonGuild[] jsonGuilds = Json.get(JsonGuild[].class, Filename.GUILD);
-			if(jsonGuilds != null)
+			GuildConfig[] guildConfigs = Json.get(GuildConfig[].class, Filename.GUILD);
+			if(guildConfigs != null)
 			{
-				for(JsonGuild guild : jsonGuilds)
+				for(GuildConfig guild : guildConfigs)
 				{
 					cachedFiles.put(guild.getPrimaryKey(), guild);
 				}
@@ -46,15 +50,15 @@ public class JsonGuildCache implements IJsonCacheable
 	}
 
 	@Override
-	public void set(IJson guild)
+	public void set(IJsonEntity guild)
 	{
-		if(guild instanceof JsonGuild)
+		if(guild instanceof GuildConfig)
 		{
-			cachedFiles.put(guild.getPrimaryKey(), (JsonGuild) guild);
+			cachedFiles.put(guild.getPrimaryKey(), (GuildConfig) guild);
 		}
 	}
 
-	public JsonGuild get(String guildId)
+	public GuildConfig get(String guildId)
 	{
 		if(cachedFiles.containsKey(guildId))
 		{
@@ -62,7 +66,7 @@ public class JsonGuildCache implements IJsonCacheable
 		}
 		else
 		{
-			JsonGuild newGuild = new JsonGuild(guildId);
+			GuildConfig newGuild = new GuildConfig(guildId);
 			cachedFiles.put(guildId, newGuild);
 			return newGuild;
 		}
@@ -74,7 +78,7 @@ public class JsonGuildCache implements IJsonCacheable
 	}
 
 	@Override
-	public void remove(IJson json)
+	public void remove(IJsonEntity json)
 	{
 		cachedFiles.remove(json.getPrimaryKey());
 	}
@@ -83,7 +87,7 @@ public class JsonGuildCache implements IJsonCacheable
 	public void save()
 	{
 		List<JsonObject> json = new ArrayList<>();
-		for(JsonGuild guild : cachedFiles.values())
+		for(GuildConfig guild : cachedFiles.values())
 		{
 			json.add(guild.toJson());
 		}

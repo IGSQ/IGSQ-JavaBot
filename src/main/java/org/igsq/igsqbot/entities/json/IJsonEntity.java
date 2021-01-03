@@ -2,7 +2,7 @@ package org.igsq.igsqbot.entities.json;
 
 import com.google.gson.JsonObject;
 
-public interface IJson
+public interface IJsonEntity
 {
 	JsonObject toJson();
 

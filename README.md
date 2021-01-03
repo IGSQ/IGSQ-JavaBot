@@ -64,6 +64,8 @@
  - [x] Restructure minecraft
  - [x] Objectify the IGSQBot class, make it instansiate listners and pass itself, will be a central object for everything
  - [x] Remove statics and use getInstance()
+ - [x] Custom Task object to hold task info
+ - [x] Refactor json objects to remove 'Json' prefix
 
 ### **TeaEyes**
 None!
@@ -97,10 +99,8 @@ None!
  - [ ] Voting
  - [ ] GuildConfig to take something (IGSQBot object) as input to fetch the channels
 
- - [ ] Custom Task object to hold task info
  - [ ] flesh out JsonGuildConfig vars
  - [ ] Debug logging
- - [ ] Refactor json objects to remove 'Json' prefix
  - [ ] Remove emoji-java
  - [ ] Remove simple-yaml
  - [ ] **PREPARE FOR PR**

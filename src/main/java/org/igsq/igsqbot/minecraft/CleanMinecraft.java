@@ -5,9 +5,9 @@ import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Json;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
-import org.igsq.igsqbot.entities.json.JsonGuild;
-import org.igsq.igsqbot.entities.json.JsonGuildCache;
+import org.igsq.igsqbot.entities.json.BotConfig;
+import org.igsq.igsqbot.entities.json.GuildConfig;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.sql.ResultSet;
@@ -26,24 +26,24 @@ public class CleanMinecraft
 
 	private void start()
 	{
-		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
-		if(jsonBotConfig == null)
+		BotConfig botConfig = Json.get(BotConfig.class, Filename.CONFIG);
+		if(botConfig == null)
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
 			igsqBot.getLogger().error("An error occurred while reading JSON for Minecraft.");
 			return;
 		}
 		if(!igsqBot.getDatabase().isOnline())
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
 			igsqBot.getLogger().warn("Minecraft clean task stopped due to no Database connectivity being found.");
 			return;
 		}
 
-		guild = igsqBot.getShardManager().getGuildById(jsonBotConfig.getServer());
+		guild = igsqBot.getShardManager().getGuildById(botConfig.getServer());
 		if(guild == null)
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftSync");
+			igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
 			igsqBot.getLogger().warn("Minecraft clean stopped due to invalid guild being defined in CONFIG.json.");
 		}
 		else
@@ -57,15 +57,15 @@ public class CleanMinecraft
 
 		if(!igsqBot.getDatabase().isOnline())
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftClean");
+			igsqBot.getTaskHandler().cancelTask("minecraftClean", false);
 			igsqBot.getLogger().warn("Minecraft clean task stopped due to no Database connectivity.");
 		}
-		JsonGuild jsonGuild = JsonGuildCache.getInstance().get(guild.getId());
-		Role verifiedRole = guild.getRoleById(jsonGuild.getVerifiedRole());
+		GuildConfig guildConfig = GuildConfigCache.getInstance().get(guild.getId());
+		Role verifiedRole = guild.getRoleById(guildConfig.getVerifiedRole());
 		ResultSet discord_accounts = igsqBot.getDatabase().queryCommand("SELECT * FROM discord_accounts");
 		if(discord_accounts == null)
 		{
-			igsqBot.getTaskHandler().cancelTask("minecraftClean");
+			igsqBot.getTaskHandler().cancelTask("minecraftClean", false);
 			igsqBot.getLogger().warn("Minecraft clean task stopped due to invalid discord_accounts table.");
 		}
 		else

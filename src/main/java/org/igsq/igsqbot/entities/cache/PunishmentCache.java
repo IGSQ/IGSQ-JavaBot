@@ -1,8 +1,9 @@
-package org.igsq.igsqbot.entities.json;
+package org.igsq.igsqbot.entities.cache;
 
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.entities.Member;
 import org.igsq.igsqbot.Json;
+import org.igsq.igsqbot.entities.json.*;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.util.ArrayList;
@@ -11,26 +12,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class JsonPunishmentCache implements IJsonCacheable
+public class PunishmentCache implements IJsonCacheable
 {
-	private static final JsonPunishmentCache INSTANCE = new JsonPunishmentCache();
-	private final Map<String, JsonPunishment> cachedFiles = new ConcurrentHashMap<>();
+	private static final PunishmentCache INSTANCE = new PunishmentCache();
+	private final Map<String, Punishment> cachedFiles = new ConcurrentHashMap<>();
 
-	public static JsonPunishmentCache getInstance()
+	public static PunishmentCache getInstance()
 	{
 		return INSTANCE;
 	}
 
 	@Override
-	public void set(IJson json)
+	public void set(IJsonEntity json)
 	{
-		if(json instanceof JsonPunishment)
+		if(json instanceof Punishment)
 		{
-			cachedFiles.put(json.getPrimaryKey(), (JsonPunishment) json);
+			cachedFiles.put(json.getPrimaryKey(), (Punishment) json);
 		}
 	}
 
-	public IJson get(String guildId, String userId)
+	public Punishment get(String guildId, String userId)
 	{
 		if(cachedFiles.containsKey(guildId + userId))
 		{
@@ -38,13 +39,13 @@ public class JsonPunishmentCache implements IJsonCacheable
 		}
 		else
 		{
-			JsonPunishment newPunishment = new JsonPunishment(guildId, userId);
+			Punishment newPunishment = new Punishment(guildId, userId);
 			cachedFiles.put(guildId + userId, newPunishment);
 			return newPunishment;
 		}
 	}
 
-	public JsonPunishment get(Member member)
+	public Punishment get(Member member)
 	{
 		String guildId = member.getGuild().getId();
 		String userId = member.getId();
@@ -54,7 +55,7 @@ public class JsonPunishmentCache implements IJsonCacheable
 		}
 		else
 		{
-			JsonPunishment newPunishment = new JsonPunishment(guildId, member.getId());
+			Punishment newPunishment = new Punishment(guildId, member.getId());
 			cachedFiles.put(guildId + userId, newPunishment);
 			return newPunishment;
 		}
@@ -67,7 +68,7 @@ public class JsonPunishmentCache implements IJsonCacheable
 	}
 
 	@Override
-	public void remove(IJson json)
+	public void remove(IJsonEntity json)
 	{
 		cachedFiles.remove(json.getPrimaryKey());
 	}
@@ -77,10 +78,10 @@ public class JsonPunishmentCache implements IJsonCacheable
 	{
 		try
 		{
-			JsonPunishment[] punishments = Json.get(JsonPunishment[].class, Filename.PUNISHMENT);
+			Punishment[] punishments = Json.get(Punishment[].class, Filename.PUNISHMENT);
 			if(punishments != null)
 			{
-				for(JsonPunishment punishment : punishments)
+				for(Punishment punishment : punishments)
 				{
 					cachedFiles.put(punishment.getPrimaryKey(), punishment);
 				}
@@ -97,7 +98,7 @@ public class JsonPunishmentCache implements IJsonCacheable
 	public void save()
 	{
 		List<JsonObject> json = new ArrayList<>();
-		for(JsonPunishment punishment : cachedFiles.values())
+		for(Punishment punishment : cachedFiles.values())
 		{
 			json.add(punishment.toJson());
 		}
@@ -111,7 +112,22 @@ public class JsonPunishmentCache implements IJsonCacheable
 		load();
 	}
 
-	public Collection<JsonPunishment> getAll()
+	public Report getReport(String messageId)
+	{
+		for(Punishment punishment : cachedFiles.values())
+		{
+			for(Report report : punishment.getReports())
+			{
+				if(report.getMessageId().equals(messageId))
+				{
+					return report;
+				}
+			}
+		}
+		return null;
+	}
+
+	public Collection<Punishment> getAll()
 	{
 		return cachedFiles.values();
 	}

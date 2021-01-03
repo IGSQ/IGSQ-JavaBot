@@ -1,23 +1,24 @@
 package org.igsq.igsqbot.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.cache.MessageDataCache;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
+import org.igsq.igsqbot.entities.cache.PunishmentCache;
+import org.igsq.igsqbot.entities.json.GuildConfig;
+import org.igsq.igsqbot.entities.json.Punishment;
+import org.igsq.igsqbot.entities.json.Report;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ReportCommand extends Command
 {
@@ -27,9 +28,8 @@ public class ReportCommand extends Command
 		final MessageChannel channel = ctx.getChannel();
 		final StringBuilder messageLog = new StringBuilder();
 		final User author = ctx.getAuthor();
-		final JDA jda = ctx.getJDA();
 
-		if(args.size() != 2 || ctx.getMessage().getMentionedMembers().isEmpty())
+		if(args.size() < 2 || ctx.getMessage().getMentionedMembers().isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 			return;
@@ -37,64 +37,61 @@ public class ReportCommand extends Command
 
 		final Member reportedMember = ctx.getMessage().getMentionedMembers().get(0);
 		final User reportedUser = reportedMember.getUser();
-		final GuildConfig config = new GuildConfig(ctx.getGuild(), ctx.getJDA()); //TODO: jsonify this
-		final MessageChannel reportChannel = config.getReportChannel();
+		GuildConfig config = GuildConfigCache.getInstance().get(ctx.getGuild().getId());
 		args.remove(0);
 
-		if(reportChannel == null)
+		if(config.getReportChannel() == null)
 		{
 			ctx.replyError("There is no report channel setup");
-			return;
 		}
-
-		if(reportedUser.equals(author))
-		{
-			ctx.replyError("You can't report yourself!");
-		}
-		else if(reportedUser.isBot())
-		{
-			ctx.replyError("You may not report bots.");
-		}
-		else if(reportedMember.isOwner())
-		{
-			ctx.replyError("You may not report the owner.");
-		}
+//		else if(reportedUser.equals(author))
+//		{
+//			ctx.replyError("You can't report yourself!");
+//		}
+//		else if(reportedUser.isBot())
+//		{
+//			ctx.replyError("You may not report bots.");
+//		}
+//		else if(reportedMember.isOwner())
+//		{
+//			ctx.replyError("You may not report the owner.");
+//		}
 		else
 		{
-			for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
+			final MessageChannel reportChannel = ctx.getGuild().getTextChannelById(config.getReportChannel());
+			if(reportChannel != null)
 			{
-				if(selectedMessage.getAuthor().getId().equals(reportedMember.getId()))
+				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
 				{
-					messageLog.append(reportedMember.getAsMention()).append(" | ").append(selectedMessage.getContentRaw()).append("\n");
+					if(selectedMessage.getAuthor().getId().equals(reportedMember.getId()))
+					{
+						messageLog.append(reportedMember.getAsMention()).append(" | ").append(selectedMessage.getContentRaw()).append("\n");
+					}
 				}
+
+				if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
+
+				reportChannel.sendMessage(new EmbedBuilder()
+						.setTitle("New report by: " + author.getAsTag())
+						.addField("Reporting user:", reportedMember.getAsMention(), false)
+						.addField("Description:", ArrayUtils.arrayCompile(args, " "), false)
+						.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
+						.addField("Message Log:", messageLog.toString(), false)
+						.setColor(reportedMember.getColor())
+						.setFooter("This report is unhandled and can only be dealt by members higher than " + reportedMember.getRoles().get(0).getName())
+						.build()).queue
+						(
+								message ->
+								{
+									Punishment punishment = PunishmentCache.getInstance().get(ctx.getGuild().getId(), reportedUser.getId());
+									Report report = new Report(message.getId(), ctx.getGuild().getId(), author.getId(), reportedUser.getId());
+									List<Report> reports = punishment.getReports();
+									reports.add(report);
+									punishment.setReports(reports);
+									message.addReaction(Constants.THUMB_UP).queue();
+								}
+						);
 			}
-
-			if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
-
-			reportChannel.sendMessage(new EmbedBuilder()
-					.setTitle("New report by: " + author.getAsTag())
-					.addField("Reporting user:", reportedMember.getAsMention(), false)
-					.addField("Description:", ArrayUtils.arrayCompile(args, " "), false)
-					.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
-					.addField("Message Log:", messageLog.toString(), false)
-					.setColor(reportedMember.getColor())
-					.setFooter("This report is unhandled and can only be dealt by members higher than " + reportedMember.getRoles().get(0).getName())
-					.build()).queue
-					(
-							message ->
-							{
-								final MessageDataCache messageDataCache = new MessageDataCache(message.getId(), jda);
-								final Map<String, String> users = new HashMap<>();
-
-								users.put("reporteduser", reportedMember.getId());
-								users.put("reportinguser", author.getId());
-								messageDataCache.setType(MessageDataCache.MessageType.REPORT);
-								messageDataCache.setUsers(users);
-								messageDataCache.build();
-
-								message.addReaction("U+1F44D").queue();
-							}
-					);
 		}
 	}
 

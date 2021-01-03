@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.JsonBotConfig;
+import org.igsq.igsqbot.entities.json.BotConfig;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -43,12 +43,12 @@ public class IGSQBot
 
 	public void build() throws LoginException
 	{
-		JsonBotConfig jsonBotConfig = Json.get(JsonBotConfig.class, Filename.CONFIG);
-		if(jsonBotConfig == null)
+		BotConfig botConfig = Json.get(BotConfig.class, Filename.CONFIG);
+		if(botConfig == null)
 		{
 			throw new NullPointerException("Json was null.");
 		}
-		this.shardManager = DefaultShardManagerBuilder.createDefault(jsonBotConfig.getToken())
+		this.shardManager = DefaultShardManagerBuilder.createDefault(botConfig.getToken())
 				.enableIntents(GatewayIntent.GUILD_MEMBERS)
 				.setMemberCachePolicy(MemberCachePolicy.ALL)
 

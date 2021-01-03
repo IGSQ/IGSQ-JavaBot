@@ -7,10 +7,10 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.json.JsonGuild;
-import org.igsq.igsqbot.entities.json.JsonGuildCache;
-import org.igsq.igsqbot.entities.json.JsonPunishment;
-import org.igsq.igsqbot.entities.json.JsonPunishmentCache;
+import org.igsq.igsqbot.entities.json.GuildConfig;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
+import org.igsq.igsqbot.entities.json.Punishment;
+import org.igsq.igsqbot.entities.cache.PunishmentCache;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
@@ -35,9 +35,9 @@ public class MuteCommand extends Command
 		{
 			Member member = ctx.getMessage().getMentionedMembers().get(0);
 			LocalDateTime muteTime = CommandUtils.parseTime(args.get(1));
-			JsonPunishment jsonPunishment = JsonPunishmentCache.getInstance().get(member);
+			Punishment punishment = PunishmentCache.getInstance().get(member);
 			Guild guild = ctx.getGuild();
-			JsonGuild guildConfig = JsonGuildCache.getInstance().get(guild.getId());
+			GuildConfig guildConfig = GuildConfigCache.getInstance().get(guild.getId());
 			Role mutedRole = guild.getRoleById(guildConfig.getMutedRole());
 
 			if(mutedRole == null)
@@ -48,7 +48,7 @@ public class MuteCommand extends Command
 			{
 				EmbedUtils.sendPermissionError(channel, this);
 			}
-			else if(jsonPunishment.isMuted())
+			else if(punishment.isMuted())
 			{
 				ctx.replyError("User: " + member.getAsMention() + " is already muted!");
 			}
@@ -58,17 +58,17 @@ public class MuteCommand extends Command
 			}
 			else
 			{
-				jsonPunishment.setRoles(UserUtils.getRoleIds(member));
-				jsonPunishment.setMutedUntil(muteTime.atZone(CommandUtils.getLocalOffset()).toInstant().toEpochMilli());
-				jsonPunishment.setMuted(true);
+				punishment.setRoles(UserUtils.getRoleIds(member));
+				punishment.setMutedUntil(muteTime.atZone(CommandUtils.getLocalOffset()).toInstant().toEpochMilli());
+				punishment.setMuted(true);
 
 				guild.modifyMemberRoles(member, mutedRole).queue(success -> ctx.replySuccess("Muted member: " + member.getAsMention() + " until " + muteTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
 				,error ->
 						{
 							ctx.replyError("An error occurred during role removal, muting halted.");
-							jsonPunishment.setMuted(false);
-							jsonPunishment.setRoles(Collections.emptyList());
-							jsonPunishment.setMutedUntil(-1);
+							punishment.setMuted(false);
+							punishment.setRoles(Collections.emptyList());
+							punishment.setMutedUntil(-1);
 						});
 			}
 		}
