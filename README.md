@@ -98,7 +98,7 @@ None!
  - [ ] Use optionals for Json
  - [ ] Voting
  - [ ] GuildConfig to take something (IGSQBot object) as input to fetch the channels
-
+ - [ ] Jsonify logging
  - [ ] flesh out JsonGuildConfig vars
  - [ ] Debug logging
  - [ ] Remove emoji-java

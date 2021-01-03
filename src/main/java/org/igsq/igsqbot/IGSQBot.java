@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.json.Filename;
 import org.igsq.igsqbot.entities.json.BotConfig;
@@ -48,13 +49,28 @@ public class IGSQBot
 		{
 			throw new NullPointerException("Json was null.");
 		}
-		this.shardManager = DefaultShardManagerBuilder.createDefault(botConfig.getToken())
-				.enableIntents(GatewayIntent.GUILD_MEMBERS)
-				.setMemberCachePolicy(MemberCachePolicy.ALL)
+		this.shardManager = DefaultShardManagerBuilder
+				.create(botConfig.getToken(),
+					GatewayIntent.GUILD_MEMBERS,
 
-				.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
-				.setAutoReconnect(true)
+					GatewayIntent.DIRECT_MESSAGES,
+					GatewayIntent.DIRECT_MESSAGE_REACTIONS,
+
+					GatewayIntent.GUILD_MESSAGES,
+					GatewayIntent.GUILD_MESSAGE_REACTIONS,
+					GatewayIntent.GUILD_VOICE_STATES)
+
+
+				.disableCache(
+						CacheFlag.ACTIVITY,
+						CacheFlag.EMOTE,
+						CacheFlag.CLIENT_STATUS,
+						CacheFlag.ROLE_TAGS,
+						CacheFlag.MEMBER_OVERRIDES)
+
+				.setMemberCachePolicy(MemberCachePolicy.NONE)
 				.setShardsTotal(-1)
+
 				.addEventListeners(
 						new MessageReactionAdd_Help(this),
 						new MessageReactionAdd_Report(this),
@@ -66,6 +82,8 @@ public class IGSQBot
 						new MessageEventsLogging(this),
 						new MemberEventsLogging(this)
 				)
+
+				.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
 				.build();
 	}
 
