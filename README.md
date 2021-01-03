@@ -66,6 +66,7 @@
  - [x] Remove statics and use getInstance()
  - [x] Custom Task object to hold task info
  - [x] Refactor json objects to remove 'Json' prefix
+ - [x] Report into JSON (punishment) with helper cache method
 
 ### **TeaEyes**
 None!
@@ -91,14 +92,15 @@ None!
         }
     }
 ```
- - [ ] Json internal objects
+ - [ ] Json internal objects (help, verification)
  - [ ] ReactionRole command (fix json encoding)
- - [ ] Report into JSON (punishment)
  - [ ] Verification, written and Json
  - [ ] Use optionals for Json
  - [ ] Voting
  - [ ] GuildConfig to take something (IGSQBot object) as input to fetch the channels
  - [ ] Jsonify logging
+ - [ ] GuildConfig to take something (Guild) as input to fetch the channels and check for null prior to getting
+
  - [ ] flesh out JsonGuildConfig vars
  - [ ] Debug logging
  - [ ] Remove emoji-java
