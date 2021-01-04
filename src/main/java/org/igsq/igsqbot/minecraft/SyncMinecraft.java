@@ -46,7 +46,6 @@ public class SyncMinecraft
 		}
 		else
 		{
-			igsqBot.getLogger().info("Guild link established with guild: " + guild.getName() + ", starting sync.");
 			igsqBot.getTaskHandler().addRepeatingTask(this::sync, "minecraftSync", 0, TimeUnit.SECONDS, 10);
 		}
 	}
