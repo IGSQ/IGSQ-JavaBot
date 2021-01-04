@@ -98,6 +98,7 @@ None!
  - [ ] ReactionRole command (fix json encoding)
  - [ ] Verification, written and Json
  - [ ] Voting (guild / internal)
+ - [ ] Investigate https://github.com/twitter/twemoji for codepoint conversion, as this means unicode can be stored as codepoints and converted afterwords
 
  - [ ] flesh out GuildConfig vars
  - [ ] Debug logging
