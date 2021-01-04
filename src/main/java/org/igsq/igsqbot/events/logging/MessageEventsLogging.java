@@ -2,6 +2,7 @@ package org.igsq.igsqbot.events.logging;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
@@ -11,9 +12,9 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -34,7 +35,7 @@ public class MessageEventsLogging extends ListenerAdapter
 	@Override
 	public void onMessageUpdate(MessageUpdateEvent event)
 	{
-		if(event.getChannel().getType().equals(ChannelType.TEXT))
+		if(event.isFromGuild())
 		{
 			MessageCache cache = MessageCache.getCache(event.getGuild().getId());
 
@@ -42,7 +43,8 @@ public class MessageEventsLogging extends ListenerAdapter
 			{
 				Message newMessage = event.getMessage();
 				CachedMessage oldMessage = cache.get(event.getMessageId());
-				MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+				Guild guild = event.getGuild();
+				MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 				MessageChannel channel = event.getChannel();
 				String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
@@ -92,7 +94,8 @@ public class MessageEventsLogging extends ListenerAdapter
 			if(cache.isInCache(event.getMessageId()))
 			{
 				CachedMessage message = cache.get(event.getMessageId());
-				MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+				Guild guild = event.getGuild();
+				MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 				MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
 

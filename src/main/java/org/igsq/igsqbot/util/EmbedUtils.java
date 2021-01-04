@@ -32,7 +32,7 @@ public class EmbedUtils
 	public static void sendSyntaxError(MessageChannel channel, Command command)
 	{
 		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Constants.FAILURE + " The provided syntax was incorrect.\n`" + command.getAliases().get(0) + " " + command.getSyntax() + "`")
+				.setDescription(Constants.FAILURE + "The provided syntax was incorrect.\n`" + command.getAliases().get(0) + " " + command.getSyntax() + "`")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
@@ -64,7 +64,7 @@ public class EmbedUtils
 	public static void sendExecutionError(MessageChannel channel, Command command)
 	{
 		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Constants.FAILURE + " `" + command.getName() + "` could not be executed, this could be due to a permission error.")
+				.setDescription(Constants.FAILURE + " `" + command.getName() + "` could not be executed.")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}

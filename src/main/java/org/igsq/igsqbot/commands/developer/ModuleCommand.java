@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands.developer;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;

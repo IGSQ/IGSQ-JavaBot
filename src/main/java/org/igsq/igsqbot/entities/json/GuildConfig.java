@@ -2,7 +2,9 @@ package org.igsq.igsqbot.entities.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.cache.GuildConfigCache;
+import org.igsq.igsqbot.util.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +15,18 @@ public class GuildConfig implements IJsonEntity
 	private List<ReactionRole> reactionRoles = new ArrayList<>();
 	private String mutedRole;
 	private String reportChannel;
+	private String logChannel;
 	private String verifiedRole;
+	private String prefix;
+
+	public void setPrefix(String prefix)
+	{
+		this.prefix = prefix;
+	}
 
 	public String getReportChannel()
 	{
-		return reportChannel;
+		return JsonUtils.getIdOrNone(reportChannel);
 	}
 
 	public void setReportChannel(String reportChannel)
@@ -27,12 +36,24 @@ public class GuildConfig implements IJsonEntity
 
 	public String getVerifiedRole()
 	{
-		return verifiedRole;
+		return JsonUtils.getIdOrNone(verifiedRole);
 	}
 
 	public void setVerifiedRole(String verifiedRole)
 	{
 		this.verifiedRole = verifiedRole;
+	}
+
+	public String getPrefix()
+	{
+		if(prefix == null)
+		{
+			return Constants.DEFAULT_BOT_PREFIX;
+		}
+		else
+		{
+			return prefix;
+		}
 	}
 
 	public GuildConfig(String guildId)
@@ -47,7 +68,7 @@ public class GuildConfig implements IJsonEntity
 
 	public String getMutedRole()
 	{
-		return mutedRole;
+		return JsonUtils.getIdOrNone(mutedRole);
 	}
 
 	public void setMutedRole(String mutedRole)
@@ -71,6 +92,16 @@ public class GuildConfig implements IJsonEntity
 		GuildConfigCache.getInstance().remove(this);
 	}
 
+	public String getLogChannel()
+	{
+		return JsonUtils.getIdOrNone(logChannel);
+	}
+
+	public void setLogChannel(String logChannel)
+	{
+		this.logChannel = logChannel;
+	}
+
 	@Override
 	public JsonObject toJson()
 	{
@@ -83,7 +114,9 @@ public class GuildConfig implements IJsonEntity
 		jsonObject.add("reactionRoles", jsonArray);
 		jsonObject.addProperty("mutedRole", mutedRole);
 		jsonObject.addProperty("reportChannel", reportChannel);
+		jsonObject.addProperty("logChannel", logChannel);
 		jsonObject.addProperty("verifiedRole", verifiedRole);
+		jsonObject.addProperty("prefix", prefix);
 		return jsonObject;
 	}
 

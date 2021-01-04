@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.events.logging;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -9,7 +10,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,8 @@ public class MemberEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{
-		MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+		Guild guild = event.getGuild();
+		MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 		User user = event.getUser();
 
 		event.getGuild().retrieveMember(user).queue(member ->
@@ -48,7 +50,8 @@ public class MemberEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event)
 	{
-		MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+		Guild guild = event.getGuild();
+		MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 		Member member = event.getMember();
 		User user = event.getUser();
 

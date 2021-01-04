@@ -20,4 +20,16 @@ public class JsonUtils
 		}
 		return result;
 	}
+
+	public static String getIdOrNone(String id)
+	{
+		if(id == null || id.isEmpty())
+		{
+			return "-1";
+		}
+		else
+		{
+			return id;
+		}
+	}
 }

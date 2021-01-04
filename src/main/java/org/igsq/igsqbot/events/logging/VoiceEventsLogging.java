@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 
 import java.time.Instant;
 
@@ -28,7 +28,7 @@ public class VoiceEventsLogging extends ListenerAdapter
 	public void onGuildVoiceMove(GuildVoiceMoveEvent event)
 	{
 		Guild guild = event.getGuild();
-		MessageChannel logChannel = new GuildConfig(guild, event.getJDA()).getLogChannel();
+		MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 		VoiceChannel oldChannel = event.getChannelLeft();
 		VoiceChannel newChannel = event.getChannelJoined();
 		Member member = event.getMember();
@@ -50,7 +50,8 @@ public class VoiceEventsLogging extends ListenerAdapter
 	@Override
 	public void onGuildVoiceLeave(GuildVoiceLeaveEvent event)
 	{
-		MessageChannel logChannel = new GuildConfig(event.getGuild(), event.getJDA()).getLogChannel();
+		Guild guild = event.getGuild();
+		MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 		VoiceChannel channel = event.getChannelLeft();
 		Member member = event.getMember();
 
@@ -71,7 +72,7 @@ public class VoiceEventsLogging extends ListenerAdapter
 	public void onGuildVoiceJoin(GuildVoiceJoinEvent event)
 	{
 		Guild guild = event.getGuild();
-		MessageChannel logChannel = new GuildConfig(guild, event.getJDA()).getLogChannel();
+		MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 		VoiceChannel channel = event.getChannelJoined();
 		Member member = event.getMember();
 

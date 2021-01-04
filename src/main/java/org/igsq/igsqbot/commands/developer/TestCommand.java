@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands.developer;
 
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;

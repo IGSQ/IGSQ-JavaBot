@@ -67,13 +67,15 @@
  - [x] Custom Task object to hold task info
  - [x] Refactor json objects to remove 'Json' prefix
  - [x] Report into JSON (punishment) with helper cache method
-
+ - [x] GuildConfig to take something (Guild) as input to fetch the channels and check for null prior to getting (its far easier to check on the other side)
+ - [x] Jsonify logging including prefix detection
+ - [x] Use optionals for Json (didnt work out)
 ### **TeaEyes**
 None!
 
 ### **arynxd**
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
- 
+ - [ ] Complex args parser ^
  ```
     public static long parseSnowflake(String input)
     {
@@ -95,13 +97,9 @@ None!
  - [ ] Json internal objects (help, verification)
  - [ ] ReactionRole command (fix json encoding)
  - [ ] Verification, written and Json
- - [ ] Use optionals for Json
- - [ ] Voting
- - [ ] GuildConfig to take something (IGSQBot object) as input to fetch the channels
- - [ ] Jsonify logging
- - [ ] GuildConfig to take something (Guild) as input to fetch the channels and check for null prior to getting
+ - [ ] Voting (guild / internal)
 
- - [ ] flesh out JsonGuildConfig vars
+ - [ ] flesh out GuildConfig vars
  - [ ] Debug logging
  - [ ] Remove emoji-java
  - [ ] Remove simple-yaml
@@ -112,7 +110,6 @@ None!
  - [ ] Translation
  - [ ] XP system
  - [ ] Implement slash commands when they release
- - [ ] Complex args parser
  - [ ] Restarting of the bot
  - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo, GuildInfo)
  - [ ] Consider switch usage (replace with elif)

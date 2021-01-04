@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands.misc;
 
 import com.vdurmont.emoji.EmojiParser;
 import net.dv8tion.jda.api.Permission;

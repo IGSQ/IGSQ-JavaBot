@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.commands;
+package org.igsq.igsqbot.commands.misc;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;

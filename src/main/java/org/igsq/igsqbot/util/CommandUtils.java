@@ -2,8 +2,8 @@ package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.JDA;
 import org.igsq.igsqbot.Yaml;
+import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.yaml.GuildConfig;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -95,8 +95,7 @@ public class CommandUtils
 
 	public static boolean isValidCommand(String message, String guildId, JDA jda)
 	{
-		//TODO: move this to jsonguild with prefix
-		return message.startsWith(new GuildConfig(guildId, jda).getGuildPrefix()) || message.startsWith("<@" + jda.getSelfUser().getId() + ">") || message.startsWith("<@!" + jda.getSelfUser().getId() + ">");
+		return message.startsWith(GuildConfigCache.getInstance().get(guildId).getPrefix()) || message.startsWith("<@" + jda.getSelfUser().getId() + ">") || message.startsWith("<@!" + jda.getSelfUser().getId() + ">");
 	}
 
 	public static ZoneOffset getLocalOffset()
