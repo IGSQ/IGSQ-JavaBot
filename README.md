@@ -73,8 +73,9 @@
 ### **TeaEyes**
 None!
 
+
 ### **arynxd**
- ** - [ ] Switch to postgres **
+ - [ ] Switch to postgres
  
  
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
