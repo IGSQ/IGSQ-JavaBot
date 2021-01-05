@@ -73,7 +73,11 @@
 ### **TeaEyes**
 None!
 
+
 ### **arynxd**
+ - [ ] Switch to postgres
+ 
+ 
  - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
  - [ ] Complex args parser ^
  ```
@@ -94,13 +98,9 @@ None!
         }
     }
 ```
- - [ ] Json internal objects (help, verification)
- - [ ] ReactionRole command (fix json encoding)
- - [ ] Verification, written and Json
+
  - [ ] Voting (guild / internal)
  - [ ] Investigate https://github.com/twitter/twemoji for codepoint conversion, as this means unicode can be stored as codepoints and converted afterwords
-
- - [ ] flesh out GuildConfig vars
  - [ ] Debug logging
  - [ ] Remove emoji-java
  - [ ] Remove simple-yaml
