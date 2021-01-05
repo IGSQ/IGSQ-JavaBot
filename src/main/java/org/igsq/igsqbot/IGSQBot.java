@@ -44,7 +44,7 @@ public class IGSQBot
 	public void build() throws LoginException
 	{
 		this.shardManager = DefaultShardManagerBuilder
-				.create("NzY5MzY0MDgyMjkzNDczMzEw.X5N8Iw.EJVt1eI5CqgqlWIpQ-zrOpwf6ew",
+				.create("NzY5MzY0MDgyMjkzNDczMzEw.X5N8Iw.AdjCFj7P2WCMDkbHM7lR6hBFuoI",
 						GatewayIntent.GUILD_MEMBERS,
 
 						GatewayIntent.DIRECT_MESSAGES,

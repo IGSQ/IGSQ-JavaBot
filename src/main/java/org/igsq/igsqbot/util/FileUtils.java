@@ -1,8 +1,11 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.entities.Icon;
+import org.igsq.igsqbot.entities.database.DatabaseManager;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 public class FileUtils
@@ -17,7 +20,7 @@ public class FileUtils
 		InputStream file;
 		try
 		{
-			file = FileUtils.class.getResource(fileName).toURI().toURL().openStream();
+			file = DatabaseManager.class.getClassLoader().getResourceAsStream(fileName);
 		}
 		catch(Exception exception)
 		{
@@ -39,5 +42,27 @@ public class FileUtils
 			return null;
 		}
 		return icon;
+	}
+
+	public static String convertToString(InputStream inputStream)
+	{
+		InputStreamReader isReader = new InputStreamReader(inputStream);
+		BufferedReader reader = new BufferedReader(isReader);
+
+		StringBuilder stringBuilder = new StringBuilder();
+		String str;
+		try
+		{
+			while((str = reader.readLine()) != null)
+			{
+				stringBuilder.append(str);
+			}
+		}
+		catch(Exception exception)
+		{
+			return "";
+		}
+
+		return stringBuilder.toString();
 	}
 }

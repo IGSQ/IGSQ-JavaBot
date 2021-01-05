@@ -2,7 +2,6 @@ package org.igsq.igsqbot.commands.moderation;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
@@ -21,7 +20,6 @@ public class ReportCommand extends Command
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		final MessageChannel channel = ctx.getChannel();
-		final StringBuilder messageLog = new StringBuilder();
 		final User author = ctx.getAuthor();
 
 		if(args.size() < 2 || ctx.getMessage().getMentionedMembers().isEmpty())
@@ -47,22 +45,12 @@ public class ReportCommand extends Command
 			ctx.replyError("You may not report the owner.");
 		}
 
-		for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
-		{
-			if(selectedMessage.getAuthor().getId().equals(reportedMember.getId()))
-			{
-				messageLog.append(reportedMember.getAsMention()).append(" | ").append(selectedMessage.getContentRaw()).append("\n");
-			}
-		}
-
-		if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
-
 		ctx.getChannel().sendMessage(new EmbedBuilder()
 				.setTitle("New report by: " + author.getAsTag())
 				.addField("Reporting user:", reportedMember.getAsMention(), false)
 				.addField("Description:", ArrayUtils.arrayCompile(args, " "), false)
 				.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
-				.addField("Message Log:", messageLog.toString(), false)
+				.addField("Message Link:", "", false)
 				.setColor(reportedMember.getColor())
 				.setFooter("This report is unhandled and can only be dealt by members higher than " + reportedMember.getRoles().get(0).getName())
 				.build()).queue

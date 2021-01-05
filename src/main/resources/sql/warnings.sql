@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS warnings
+(
+    warnId BIGSERIAL NOT NULL PRIMARY KEY,
+    guildId BIGINT NOT NULL REFERENCES guilds(guildId) ON DELETE CASCADE,
+    userId BIGINT NOT NULL REFERENCES users(userId),
+    timeStamp TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    warnText TEXT NOT NULL
+);

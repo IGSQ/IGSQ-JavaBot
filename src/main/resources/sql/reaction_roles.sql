@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS reaction_roles
 (
+    reactionRoleId BIGSERIAL NOT NULL PRIMARY KEY,
     guildId BIGINT NOT NULL REFERENCES guilds(guildId) ON DELETE CASCADE,
     emoteId VARCHAR(25) NULL,
-    roleId BIGINT NULL,
-
-    PRIMARY KEY (emoteId, roleId)
+    roleId BIGINT NULL
 );
