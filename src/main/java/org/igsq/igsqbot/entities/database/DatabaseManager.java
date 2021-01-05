@@ -4,6 +4,9 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.util.FileUtils;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -94,6 +97,16 @@ public class DatabaseManager
 		config.setMinimumIdle(10);
 		config.setConnectionTimeout(10000);
 		return new HikariDataSource(config);
+	}
+
+	public DSLContext getContext()
+	{
+		return getContext(getConnection());
+	}
+
+	public DSLContext getContext(Connection connection)
+	{
+		return DSL.using(connection, SQLDialect.POSTGRES);
 	}
 
 	public void dropConnection(Connection connection)

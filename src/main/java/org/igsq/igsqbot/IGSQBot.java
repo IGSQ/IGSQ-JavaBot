@@ -25,6 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +44,11 @@ public class IGSQBot
 	private Minecraft minecraft;
 	private JDA readyShard;
 
-	public void build() throws LoginException
+	public void build() throws LoginException, IOException
 	{
+		String token = new BufferedReader(new FileReader("token.txt")).readLine();
 		this.shardManager = DefaultShardManagerBuilder
-				.create("NzY5MzY0MDgyMjkzNDczMzEw.X5N8Iw.AdjCFj7P2WCMDkbHM7lR6hBFuoI",
+				.create(token,
 						GatewayIntent.GUILD_MEMBERS,
 
 						GatewayIntent.DIRECT_MESSAGES,

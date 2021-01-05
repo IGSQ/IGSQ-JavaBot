@@ -2,7 +2,7 @@ package org.igsq.igsqbot.commands.developer;
 
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.handlers.ErrorHandler;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +12,12 @@ public class TestCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		new ErrorHandler(new UnsupportedOperationException("THIS IS A TEST EXCEPTION"));
+		var record = ctx.getDBContext()
+				.select(Guilds.GUILDS.PREFIX)
+				.from(Guilds.GUILDS)
+				.where(Guilds.GUILDS.GUILDID.eq(100L))
+				.fetchOne();
+		System.out.println(record);
 	}
 
 	@Override
@@ -38,7 +43,6 @@ public class TestCommand extends Command
 	{
 		return "[none]";
 	}
-
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
