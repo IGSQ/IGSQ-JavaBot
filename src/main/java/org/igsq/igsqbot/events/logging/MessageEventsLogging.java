@@ -10,15 +10,10 @@ import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.Yaml;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
-import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 import org.igsq.igsqbot.entities.cache.MessageCache;
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.StringUtils;
-import org.igsq.igsqbot.util.YamlUtils;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +22,7 @@ public class MessageEventsLogging extends ListenerAdapter
 {
 	private final IGSQBot igsqBot;
 
-	public MessageEventsLogging(IGSQBot igsqBot) 
+	public MessageEventsLogging(IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
 	}
@@ -43,8 +38,6 @@ public class MessageEventsLogging extends ListenerAdapter
 			{
 				Message newMessage = event.getMessage();
 				CachedMessage oldMessage = cache.get(event.getMessageId());
-				Guild guild = event.getGuild();
-				MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 				MessageChannel channel = event.getChannel();
 				String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
@@ -58,27 +51,17 @@ public class MessageEventsLogging extends ListenerAdapter
 				if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 				if(oldContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
 
-				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", Filename.GUILD))
-				{
-					if(ArrayUtils.isValueInArray(Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", Filename.GUILD).split(","), channel.getId()))
-					{
-						return;
-					}
-				}
+				new EmbedBuilder()
+						.setTitle("Message Altered")
+						.setDescription("**Author**: " + newMessage.getAuthor().getAsMention() +
+								"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
+								"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+								"\n\n**Message Content Before**: " + oldContent +
+								"\n**Message Content After**: " + newContent)
+						.setColor(Constants.IGSQ_PURPLE)
+						.setTimestamp(Instant.now())
+						.build();
 
-				if(logChannel != null)
-				{
-					logChannel.sendMessage(new EmbedBuilder()
-							.setTitle("Message Altered")
-							.setDescription("**Author**: " + newMessage.getAuthor().getAsMention() +
-									"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
-									"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
-									"\n\n**Message Content Before**: " + oldContent +
-									"\n**Message Content After**: " + newContent)
-							.setColor(Constants.IGSQ_PURPLE)
-							.setTimestamp(Instant.now())
-							.build()).queue();
-				}
 				cache.update(oldMessage, new CachedMessage(newMessage));
 			}
 		}
@@ -95,7 +78,6 @@ public class MessageEventsLogging extends ListenerAdapter
 			{
 				CachedMessage message = cache.get(event.getMessageId());
 				Guild guild = event.getGuild();
-				MessageChannel logChannel = guild.getTextChannelById(GuildConfigCache.getInstance().get(event.getGuild().getId()).getLogChannel());
 				MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
 
@@ -106,20 +88,9 @@ public class MessageEventsLogging extends ListenerAdapter
 				if(message.getAuthor().isBot()) return;
 				if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
 
-				if(!YamlUtils.isFieldEmpty(event.getGuild().getId() + ".blacklistlog", Filename.GUILD))
-				{
-					for(String selectedChannel : Yaml.getFieldString(event.getGuild().getId() + ".blacklistlog", Filename.GUILD).split(","))
-					{
-						if(selectedChannel.equals(channel.getId()))
-						{
-							return;
-						}
-					}
-				}
 
-				if(logChannel != null)
-				{
-					logChannel.sendMessage(new EmbedBuilder()
+
+					new EmbedBuilder()
 							.setTitle("Message Deleted")
 							.setDescription("**Author**: " + message.getAuthor().getAsMention() +
 									"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
@@ -127,10 +98,10 @@ public class MessageEventsLogging extends ListenerAdapter
 									"\n\n**Message Content**: " + content)
 							.setColor(Constants.IGSQ_PURPLE)
 							.setTimestamp(Instant.now())
-							.build()).queue();
-				}
+							.build();
 				cache.remove(message);
 			}
 		}
 	}
 }
+

@@ -10,17 +10,17 @@ public class BotTask
 	private final long expiresAt;
 	private final TimeUnit unit;
 
-	public TimeUnit getUnit()
-	{
-		return unit;
-	}
-
 	public BotTask(ScheduledFuture<?> task, String name, long expiresAt, TimeUnit timeUnit)
 	{
 		this.task = task;
 		this.name = name;
 		this.expiresAt = expiresAt;
 		this.unit = timeUnit;
+	}
+
+	public TimeUnit getUnit()
+	{
+		return unit;
 	}
 
 	public ScheduledFuture<?> getTask()

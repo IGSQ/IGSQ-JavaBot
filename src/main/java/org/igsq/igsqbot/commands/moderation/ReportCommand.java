@@ -8,11 +8,6 @@ import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.cache.GuildConfigCache;
-import org.igsq.igsqbot.entities.cache.PunishmentCache;
-import org.igsq.igsqbot.entities.json.GuildConfig;
-import org.igsq.igsqbot.entities.json.Punishment;
-import org.igsq.igsqbot.entities.json.Report;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -37,62 +32,47 @@ public class ReportCommand extends Command
 
 		final Member reportedMember = ctx.getMessage().getMentionedMembers().get(0);
 		final User reportedUser = reportedMember.getUser();
-		GuildConfig config = GuildConfigCache.getInstance().get(ctx.getGuild().getId());
 		args.remove(0);
 
-		if(config.getReportChannel() == null)
+		if(reportedUser.equals(author))
 		{
-			ctx.replyError("There is no report channel setup");
+			ctx.replyError("You can't report yourself!");
 		}
-//		else if(reportedUser.equals(author))
-//		{
-//			ctx.replyError("You can't report yourself!");
-//		}
-//		else if(reportedUser.isBot())
-//		{
-//			ctx.replyError("You may not report bots.");
-//		}
-//		else if(reportedMember.isOwner())
-//		{
-//			ctx.replyError("You may not report the owner.");
-//		}
-		else
+		else if(reportedUser.isBot())
 		{
-			final MessageChannel reportChannel = ctx.getGuild().getTextChannelById(config.getReportChannel());
-			if(reportChannel != null)
+			ctx.replyError("You may not report bots.");
+		}
+		else if(reportedMember.isOwner())
+		{
+			ctx.replyError("You may not report the owner.");
+		}
+
+		for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
+		{
+			if(selectedMessage.getAuthor().getId().equals(reportedMember.getId()))
 			{
-				for(Message selectedMessage : channel.getHistory().retrievePast(5).complete())
-				{
-					if(selectedMessage.getAuthor().getId().equals(reportedMember.getId()))
-					{
-						messageLog.append(reportedMember.getAsMention()).append(" | ").append(selectedMessage.getContentRaw()).append("\n");
-					}
-				}
-
-				if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
-
-				reportChannel.sendMessage(new EmbedBuilder()
-						.setTitle("New report by: " + author.getAsTag())
-						.addField("Reporting user:", reportedMember.getAsMention(), false)
-						.addField("Description:", ArrayUtils.arrayCompile(args, " "), false)
-						.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
-						.addField("Message Log:", messageLog.toString(), false)
-						.setColor(reportedMember.getColor())
-						.setFooter("This report is unhandled and can only be dealt by members higher than " + reportedMember.getRoles().get(0).getName())
-						.build()).queue
-						(
-								message ->
-								{
-									Punishment punishment = PunishmentCache.getInstance().get(ctx.getGuild().getId(), reportedUser.getId());
-									Report report = new Report(message.getId(), ctx.getGuild().getId(), author.getId(), reportedUser.getId());
-									List<Report> reports = punishment.getReports();
-									reports.add(report);
-									punishment.setReports(reports);
-									message.addReaction(Constants.THUMB_UP).queue();
-								}
-						);
+				messageLog.append(reportedMember.getAsMention()).append(" | ").append(selectedMessage.getContentRaw()).append("\n");
 			}
 		}
+
+		if(messageLog.length() == 0) messageLog.append("No recent messages found for this user.");
+
+		ctx.getChannel().sendMessage(new EmbedBuilder()
+				.setTitle("New report by: " + author.getAsTag())
+				.addField("Reporting user:", reportedMember.getAsMention(), false)
+				.addField("Description:", ArrayUtils.arrayCompile(args, " "), false)
+				.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
+				.addField("Message Log:", messageLog.toString(), false)
+				.setColor(reportedMember.getColor())
+				.setFooter("This report is unhandled and can only be dealt by members higher than " + reportedMember.getRoles().get(0).getName())
+				.build()).queue
+				(
+						message ->
+						{
+							message.addReaction(Constants.THUMB_UP).queue();
+						}
+				);
+
 	}
 
 	@Override

@@ -10,8 +10,7 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.BotConfig;
+import org.igsq.igsqbot.entities.database.DatabaseManager;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -38,27 +37,22 @@ public class IGSQBot
 	private CommandHandler commandHandler;
 	private ShardManager shardManager;
 	private TaskHandler taskHandler;
+	private DatabaseManager databaseManager;
 	private Minecraft minecraft;
-	private Database database;
 	private JDA readyShard;
 
 	public void build() throws LoginException
 	{
-		BotConfig botConfig = Json.get(BotConfig.class, Filename.CONFIG);
-		if(botConfig == null)
-		{
-			throw new NullPointerException("Json was null.");
-		}
 		this.shardManager = DefaultShardManagerBuilder
-				.create(botConfig.getToken(),
-					GatewayIntent.GUILD_MEMBERS,
+				.create("NzY5MzY0MDgyMjkzNDczMzEw.X5N8Iw.EJVt1eI5CqgqlWIpQ-zrOpwf6ew",
+						GatewayIntent.GUILD_MEMBERS,
 
-					GatewayIntent.DIRECT_MESSAGES,
-					GatewayIntent.DIRECT_MESSAGE_REACTIONS,
+						GatewayIntent.DIRECT_MESSAGES,
+						GatewayIntent.DIRECT_MESSAGE_REACTIONS,
 
-					GatewayIntent.GUILD_MESSAGES,
-					GatewayIntent.GUILD_MESSAGE_REACTIONS,
-					GatewayIntent.GUILD_VOICE_STATES)
+						GatewayIntent.GUILD_MESSAGES,
+						GatewayIntent.GUILD_MESSAGE_REACTIONS,
+						GatewayIntent.GUILD_VOICE_STATES)
 
 
 				.disableCache(
@@ -199,12 +193,12 @@ public class IGSQBot
 		return taskHandler;
 	}
 
-	public Database getDatabase()
+	public DatabaseManager getDatabaseManager()
 	{
-		if(database == null)
+		if(databaseManager == null)
 		{
-			database = new Database(this);
+			databaseManager = new DatabaseManager(this);
 		}
-		return database;
+		return databaseManager;
 	}
 }

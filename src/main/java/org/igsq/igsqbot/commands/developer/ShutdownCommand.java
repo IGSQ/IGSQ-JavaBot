@@ -2,10 +2,6 @@ package org.igsq.igsqbot.commands.developer;
 
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.cache.MessageDataCache;
-import org.igsq.igsqbot.entities.cache.GuildConfigCache;
-import org.igsq.igsqbot.entities.cache.PunishmentCache;
-import org.igsq.igsqbot.entities.yaml.Blacklist;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Collections;
@@ -25,14 +21,9 @@ public class ShutdownCommand extends Command
 		ctx.getIGSQBot().getCommandHandler().close();
 		ctx.getIGSQBot().getTaskHandler().close();
 		ctx.getIGSQBot().getMinecraft().close();
-		MessageDataCache.close();
-		Blacklist.close();
 
 		ctx.replySuccess("IGSQBot going down NOW.");
 		ctx.getJDA().shutdown();
-
-		GuildConfigCache.getInstance().save();
-		PunishmentCache.getInstance().save();
 
 		ctx.getIGSQBot().getLogger().warn("-- IGSQBot was shutdown using shutdown command.");
 		ctx.getIGSQBot().getLogger().warn("-- Issued by: " + ctx.getAuthor().getAsTag());

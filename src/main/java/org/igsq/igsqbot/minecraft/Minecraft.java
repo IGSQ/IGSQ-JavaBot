@@ -9,9 +9,6 @@ public class Minecraft
 	public Minecraft(IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
-		new SyncMinecraft(igsqBot);
-		new CleanMinecraft(igsqBot);
-		new TwoFAMinecraft(igsqBot);
 	}
 
 	public void close()

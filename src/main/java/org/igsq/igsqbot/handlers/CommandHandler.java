@@ -13,7 +13,6 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.cache.GuildConfigCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.*;
@@ -68,18 +67,18 @@ public class CommandHandler
 			return;
 		}
 
-		 List<String> args = Arrays.stream(event.getMessage().getContentRaw().split("\\s+")).collect(Collectors.toList());
-		 String messageContent = event.getMessage().getContentRaw();
-		 JDA jda = event.getJDA();
-		 MessageChannel channel = event.getChannel();
-		 String selfID = jda.getSelfUser().getId();
-		 String commandText;
-		 String content;
-		 Command cmd;
+		List<String> args = Arrays.stream(event.getMessage().getContentRaw().split("\\s+")).collect(Collectors.toList());
+		String messageContent = event.getMessage().getContentRaw();
+		JDA jda = event.getJDA();
+		MessageChannel channel = event.getChannel();
+		String selfID = jda.getSelfUser().getId();
+		String commandText;
+		String content;
+		Command cmd;
 
-		 boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
-		 boolean startWithIdSpaced =  messageContent.startsWith("<@" + selfID + "> ")|| messageContent.startsWith("<@!" + selfID + "> ");
-		 String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
+		boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
+		boolean startWithIdSpaced = messageContent.startsWith("<@" + selfID + "> ") || messageContent.startsWith("<@!" + selfID + "> ");
+		String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 
 		if(event.isFromGuild())
 		{
@@ -89,16 +88,20 @@ public class CommandHandler
 				content = idTrimmed;
 				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 				{
-					event.getMessage().delete().queue(null, error -> {});
+					event.getMessage().delete().queue(null, error ->
+					{
+					});
 				}
 			}
-			else if(messageContent.startsWith(GuildConfigCache.getInstance().get(guild.getId()).getPrefix()))
+			else if(messageContent.startsWith(" "))
 			{
-				String prefix  = GuildConfigCache.getInstance().get(guild.getId()).getPrefix();
+				String prefix = " ";
 				content = messageContent.substring(prefix.length()).trim();
 				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 				{
-					event.getMessage().delete().queue(null, error -> {});
+					event.getMessage().delete().queue(null, error ->
+					{
+					});
 				}
 			}
 			else
@@ -108,7 +111,7 @@ public class CommandHandler
 		}
 		else
 		{
-			String prefix  = Constants.DEFAULT_BOT_PREFIX;
+			String prefix = Constants.DEFAULT_BOT_PREFIX;
 			if(startsWithId || startWithIdSpaced)
 			{
 				content = idTrimmed;

@@ -6,10 +6,10 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.cache.MessageDataCache;
 import org.igsq.igsqbot.util.EmbedUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class HelpCommand extends Command
 {
@@ -32,15 +32,6 @@ public class HelpCommand extends Command
 					(
 							message ->
 							{
-								final MessageDataCache messageDataCache = new MessageDataCache(message.getId(), jda);
-								final Map<String, String> users = new HashMap<>();
-
-								users.put("user", author.getId());
-								messageDataCache.setType(MessageDataCache.MessageType.HELP);
-								messageDataCache.setUsers(users);
-								messageDataCache.setPage(1);
-								messageDataCache.build();
-
 								message.addReaction("U+25C0").queue();
 								message.addReaction("U+25B6").queue();
 								message.addReaction("U+274C").queue();

@@ -1,18 +1,12 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.JDA;
-import org.igsq.igsqbot.Yaml;
-import org.igsq.igsqbot.entities.cache.GuildConfigCache;
-import org.igsq.igsqbot.entities.json.Filename;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CommandUtils
 {
@@ -24,53 +18,10 @@ public class CommandUtils
 		// Override the default, public, constructor
 	}
 
-	public static Map<String, String> getAliases(String id)
-	{
-		int i = 0;
-		Map<String, String> result = new HashMap<>();
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", Filename.VERIFICATION))
-		{
-			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
-			{
-				String role = Yaml.getFieldString(id + ".references." + i + ".id", Filename.VERIFICATION);
-				if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
-				{
-					for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".aliases", Filename.VERIFICATION).split(","))
-					{
-						result.putIfAbsent(selectedAlias, role);
-					}
-				}
-			}
-			i++;
-		}
-		return result;
-	}
-
-	public static Map<String, String> getDeclined(String id)
-	{
-		int i = 0;
-		Map<String, String> result = new HashMap<>();
-		while(!YamlUtils.isFieldEmpty(id + ".references." + i + ".name", Filename.VERIFICATION))
-		{
-			if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".aliases", Filename.VERIFICATION))
-			{
-				String role = Yaml.getFieldString(id + ".references." + i + ".id", Filename.VERIFICATION);
-				if(!YamlUtils.isFieldEmpty(id + ".references." + i + ".declined", Filename.VERIFICATION))
-				{
-					for(String selectedAlias : Yaml.getFieldString(id + ".references." + i + ".declined", Filename.VERIFICATION).split(","))
-					{
-						result.putIfAbsent(selectedAlias, role);
-					}
-				}
-			}
-			i++;
-		}
-		return result;
-	}
 
 	public static boolean isArgsEmbedCompatible(List<String> args)
 	{
-		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList()).size() > EmbedUtils.CHARACTER_LIMIT;
+		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).count() > EmbedUtils.CHARACTER_LIMIT;
 	}
 
 	public static LocalDateTime parseTime(String offset)
@@ -95,7 +46,7 @@ public class CommandUtils
 
 	public static boolean isValidCommand(String message, String guildId, JDA jda)
 	{
-		return message.startsWith(GuildConfigCache.getInstance().get(guildId).getPrefix()) || message.startsWith("<@" + jda.getSelfUser().getId() + ">") || message.startsWith("<@!" + jda.getSelfUser().getId() + ">");
+		return message.startsWith("<@" + jda.getSelfUser().getId() + ">") || message.startsWith("<@!" + jda.getSelfUser().getId() + ">");
 	}
 
 	public static ZoneOffset getLocalOffset()

@@ -5,9 +5,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.Json;
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.BotConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import javax.annotation.Nonnull;
@@ -63,6 +60,7 @@ public class CommandContext
 
 	/**
 	 * This member will not be null, due to previous checks
+	 *
 	 * @return the member for this context
 	 */
 	@Nonnull
@@ -83,15 +81,7 @@ public class CommandContext
 
 	public boolean isDeveloper()
 	{
-		BotConfig config = Json.get(BotConfig.class, Filename.CONFIG);
-		if(config == null)
-		{
-			return false;
-		}
-		else
-		{
-			return config.getPrivilegedUsers().contains(getAuthor().getId());
-		}
+		return false;
 	}
 
 	public IGSQBot getIGSQBot()

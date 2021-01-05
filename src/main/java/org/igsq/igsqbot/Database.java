@@ -1,14 +1,11 @@
 package org.igsq.igsqbot;
 
-import org.igsq.igsqbot.entities.json.Filename;
-import org.igsq.igsqbot.entities.json.BotConfig;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Database
@@ -27,19 +24,6 @@ public class Database
 
 	private void start()
 	{
-		BotConfig botConfig = Json.get(BotConfig.class, Filename.CONFIG);
-		if(botConfig != null)
-		{
-			Map<String, String> credentials = botConfig.getSQL();
-			url = credentials.get("url");
-			user = credentials.get("username");
-			password = credentials.get("password");
-		}
-		else
-		{
-			igsqBot.getLogger().error("An error occurred while loading the Database credentials, the Database is unlikely to work.");
-		}
-
 		if(testDatabase())
 		{
 			isOnline = true;
