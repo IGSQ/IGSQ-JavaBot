@@ -106,6 +106,7 @@ None!
  - [ ] Remove simple-yaml
  - [ ] Switch to longs for IDs
  - [ ] Change user loading to lazy
+ - [ ] Consider users table
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**
