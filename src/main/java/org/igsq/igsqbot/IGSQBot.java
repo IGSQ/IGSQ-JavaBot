@@ -3,6 +3,7 @@ package org.igsq.igsqbot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -10,7 +11,6 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.handlers.DatabaseHandler;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -19,15 +19,17 @@ import org.igsq.igsqbot.events.logging.VoiceEventsLogging;
 import org.igsq.igsqbot.events.main.GuildEventsMain;
 import org.igsq.igsqbot.events.main.MessageEventsMain;
 import org.igsq.igsqbot.handlers.CommandHandler;
+import org.igsq.igsqbot.handlers.DatabaseHandler;
 import org.igsq.igsqbot.handlers.TaskHandler;
 import org.igsq.igsqbot.minecraft.Minecraft;
+import org.igsq.igsqbot.util.DatabaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +48,9 @@ public class IGSQBot
 
 	public void build() throws LoginException, IOException
 	{
-		String token = new BufferedReader(new FileReader("token.txt")).readLine();
+
 		this.shardManager = DefaultShardManagerBuilder
-				.create(token,
+				.create(Files.readString(Path.of("token.txt")).strip(),
 						GatewayIntent.GUILD_MEMBERS,
 
 						GatewayIntent.DIRECT_MESSAGES,
@@ -111,6 +113,19 @@ public class IGSQBot
 			throw new UnsupportedOperationException("No ready shard present.");
 		}
 		return readyShard.getSelfUser();
+	}
+
+	public void registerGuilds()
+	{
+		if(shardManager == null)
+		{
+			throw new UnsupportedOperationException("Cannot register guilds without a shard manager.");
+		}
+		for(Guild guild : shardManager.getGuilds())
+		{
+			DatabaseUtils.registerGuild(guild, this);
+			guild.loadMembers().onSuccess(members -> members.stream().filter(member -> !member.getUser().isBot()).forEach(member -> DatabaseUtils.registerUser(member, this)));
+		}
 	}
 
 	public LocalDateTime getStartTimestamp()

@@ -37,7 +37,9 @@ public class PingCommand extends Command
 		CooldownHandler.addCooldown(author.getId(), this);
 		jda.getRestPing().queue(
 				time -> channel.sendMessage(new EmbedBuilder()
-						.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId() + "\n**REST Ping**: " + time + "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
+						.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId()
+								+ "\n**REST Ping**: " + time
+								+ "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
 						.setColor(Constants.IGSQ_PURPLE)
 						.setTimestamp(Instant.now())
 						.build()).queue()

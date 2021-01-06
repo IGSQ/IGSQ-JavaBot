@@ -81,19 +81,8 @@ public class EmbedUtils
 		sendDeletingEmbed(channel, embed, 10000);
 	}
 
-	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed, long delay, boolean overwritePending)
+	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed)
 	{
-		//TO BE IMPLEMENTED: once json internal is complete
-	}
-
-	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed, long delay)
-	{
-		//TO BE IMPLEMENTED: once json internal is complete
-	}
-
-	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed, boolean overwritePending)
-	{
-		//TO BE IMPLEMENTED: once json internal is complete
 		if(!message.getEmbeds().isEmpty())
 		{
 			message.editMessage(newEmbed.build()).queue();

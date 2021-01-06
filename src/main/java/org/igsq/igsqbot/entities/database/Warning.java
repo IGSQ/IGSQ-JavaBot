@@ -1,5 +1,7 @@
 package org.igsq.igsqbot.entities.database;
 
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 
@@ -18,6 +20,13 @@ public class Warning
 	{
 		this.guildId = guildId;
 		this.userId = userId;
+		this.igsqBot = igsqBot;
+	}
+
+	public Warning(Guild guild, User user, IGSQBot igsqBot)
+	{
+		this.guildId = guild.getIdLong();
+		this.userId = user.getIdLong();
 		this.igsqBot = igsqBot;
 	}
 	
@@ -76,6 +85,33 @@ public class Warning
 		}
 
 		return result;
+	}
+
+	public Warn getById(long warnId)
+	{
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection)
+					.selectFrom(Warnings.WARNINGS)
+					.where(Warnings.WARNINGS.WARNID.eq(warnId));
+
+			var result = context.fetch();
+			context.close();
+			if(!result.isEmpty())
+			{
+				var warn = result.get(0);
+				return new Warn(warn.getWarnid(), warn.getUserid(), warn.getGuildid(), warn.getTimestamp(), warn.getWarntext());
+			}
+			else
+			{
+				return null;
+			}
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return null;
+		}
 	}
 
 	public static class Warn

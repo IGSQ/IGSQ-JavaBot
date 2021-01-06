@@ -1,9 +1,7 @@
 package org.igsq.igsqbot.commands.misc;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -16,10 +14,8 @@ public class HelpCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final MessageChannel channel = ctx.getChannel();
-		final EmbedBuilder embed = ctx.getIGSQBot().getHelpPages().get(0);
-		final User author = ctx.getAuthor();
-		final JDA jda = ctx.getJDA();
+		MessageChannel channel = ctx.getChannel();
+		EmbedBuilder embed = ctx.getIGSQBot().getHelpPages().get(0);
 
 		if(!args.isEmpty())
 		{

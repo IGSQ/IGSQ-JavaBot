@@ -3,11 +3,12 @@ package org.igsq.igsqbot.util;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.jooq.Tables;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.Users;
 
 import java.sql.Connection;
 
-import static org.igsq.igsqbot.entities.jooq.tables.Guilds.GUILDS;
-import static org.igsq.igsqbot.entities.jooq.tables.Users.USERS;
 public class DatabaseUtils
 {
 	private DatabaseUtils()
@@ -20,12 +21,11 @@ public class DatabaseUtils
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(GUILDS)
-					.columns(GUILDS.GUILDID)
+					.insertInto(Tables.GUILDS)
+					.columns(Guilds.GUILDS.GUILDID)
 					.values(guild.getIdLong())
 					.onDuplicateKeyIgnore();
 			context.execute();
-			context.close();
 		}
 		catch(Exception exception)
 		{
@@ -38,12 +38,11 @@ public class DatabaseUtils
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(GUILDS)
-					.columns(GUILDS.GUILDID)
+					.insertInto(Tables.GUILDS)
+					.columns(Guilds.GUILDS.GUILDID)
 					.values(guildId)
 					.onDuplicateKeyIgnore();
 			context.execute();
-			context.close();
 		}
 		catch(Exception exception)
 		{
@@ -56,12 +55,11 @@ public class DatabaseUtils
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(USERS)
-					.columns(USERS.USERID, USERS.GUILDID)
+					.insertInto(Tables.USERS)
+					.columns(Users.USERS.USERID, Users.USERS.GUILDID)
 					.values(member.getIdLong(), member.getGuild().getIdLong())
 					.onDuplicateKeyIgnore();
 			context.execute();
-			context.close();
 		}
 		catch(Exception exception)
 		{
@@ -74,12 +72,11 @@ public class DatabaseUtils
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(USERS)
-					.columns(USERS.USERID, USERS.GUILDID)
+					.insertInto(Tables.USERS)
+					.columns(Users.USERS.USERID, Users.USERS.GUILDID)
 					.values(userId, guildId)
 					.onDuplicateKeyIgnore();
 			context.execute();
-			context.close();
 		}
 		catch(Exception exception)
 		{

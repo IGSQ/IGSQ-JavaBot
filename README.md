@@ -105,6 +105,7 @@ None!
  - [ ] Remove emoji-java
  - [ ] Remove simple-yaml
  - [ ] Switch to longs for IDs
+ - [ ] Change user loading to lazy
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

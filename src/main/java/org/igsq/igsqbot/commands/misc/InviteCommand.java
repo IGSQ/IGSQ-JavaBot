@@ -17,8 +17,8 @@ public class InviteCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final MessageChannel channel = ctx.getChannel();
-		final Guild guild = ctx.getGuild();
+		MessageChannel channel = ctx.getChannel();
+		Guild guild = ctx.getGuild();
 
 		if(!args.isEmpty())
 		{

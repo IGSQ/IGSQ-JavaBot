@@ -18,9 +18,9 @@ public class AvatarCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final Message message = ctx.getMessage();
-		final MessageChannel channel = ctx.getChannel();
-		final User author = message.getAuthor();
+		Message message = ctx.getMessage();
+		MessageChannel channel = ctx.getChannel();
+		User author = message.getAuthor();
 
 		if(message.getMentionedMembers().size() > 3)
 		{

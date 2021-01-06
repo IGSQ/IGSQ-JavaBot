@@ -11,29 +11,6 @@ public class StringUtils
 		//Overrides the default, public, constructor
 	}
 
-	/**
-	 * Removes all text before a given character. If the character is not found the whole string is returned.
-	 *
-	 * @return <b>String</b>
-	 */
-	public static String removeBeforeCharacter(String string, char target)
-	{
-		boolean targetFound = false;
-		char[] charArray = string.toCharArray();
-		StringBuilder rebuiltString = new StringBuilder();
-
-		for(int i = 0; i < string.length(); i++)
-		{
-			if(!targetFound)
-			{
-				if(charArray[i] == target) targetFound = true;
-			}
-			else rebuiltString.append(charArray[i]);
-		}
-		if(targetFound) return rebuiltString.toString();
-		else return string;
-	}
-
 	public static String getChannelAsMention(String channelID)
 	{
 		return "<#" + channelID + ">";

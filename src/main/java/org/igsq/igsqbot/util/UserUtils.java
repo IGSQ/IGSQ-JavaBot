@@ -15,18 +15,6 @@ public class UserUtils
 		//Overrides the default, public constructor
 	}
 
-	public static boolean isUserMention(String arg)
-	{
-		try
-		{
-			return (arg.startsWith("<@!") && arg.endsWith(">")) || (arg.startsWith("<@") && arg.endsWith(">"));
-		}
-		catch(Exception exception)
-		{
-			return false;
-		}
-	}
-
 	public static List<String> getRoleIds(Member member)
 	{
 		return member.getRoles().stream().map(Role::getId).collect(Collectors.toList());

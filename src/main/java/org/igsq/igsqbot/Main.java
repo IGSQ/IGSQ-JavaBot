@@ -15,6 +15,7 @@ public class Main
 			bot.build();
 			bot.getReadyShard();
 			bot.getDatabaseManager().createTables();
+			bot.registerGuilds();
 			bot.getMinecraft();
 			bot.getCommandHandler();
 		}

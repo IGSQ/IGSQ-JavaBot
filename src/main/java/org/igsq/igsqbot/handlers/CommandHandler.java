@@ -13,6 +13,7 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.*;
@@ -83,25 +84,21 @@ public class CommandHandler
 		if(event.isFromGuild())
 		{
 			Guild guild = event.getGuild();
-			if(startsWithId || startWithIdSpaced)
+			if(startsWithId)
 			{
 				content = idTrimmed;
 				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 				{
-					event.getMessage().delete().queue(null, error ->
-					{
-					});
+					event.getMessage().delete().queue(null, error -> { });
 				}
 			}
-			else if(messageContent.startsWith(" "))
+			else if(messageContent.startsWith(new GuildConfig(guild.getIdLong(), igsqBot).getPrefix()))
 			{
-				String prefix = " ";
+				String prefix = new GuildConfig(guild.getIdLong(), igsqBot).getPrefix();
 				content = messageContent.substring(prefix.length()).trim();
 				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 				{
-					event.getMessage().delete().queue(null, error ->
-					{
-					});
+					event.getMessage().delete().queue(null, error -> { });
 				}
 			}
 			else
@@ -112,7 +109,7 @@ public class CommandHandler
 		else
 		{
 			String prefix = Constants.DEFAULT_BOT_PREFIX;
-			if(startsWithId || startWithIdSpaced)
+			if(startsWithId)
 			{
 				content = idTrimmed;
 			}
