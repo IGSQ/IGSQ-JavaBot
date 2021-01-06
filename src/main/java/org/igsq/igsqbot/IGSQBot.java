@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.database.DatabaseManager;
+import org.igsq.igsqbot.handlers.DatabaseHandler;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -40,7 +40,7 @@ public class IGSQBot
 	private CommandHandler commandHandler;
 	private ShardManager shardManager;
 	private TaskHandler taskHandler;
-	private DatabaseManager databaseManager;
+	private DatabaseHandler databaseHandler;
 	private Minecraft minecraft;
 	private JDA readyShard;
 
@@ -197,12 +197,12 @@ public class IGSQBot
 		return taskHandler;
 	}
 
-	public DatabaseManager getDatabaseManager()
+	public DatabaseHandler getDatabaseManager()
 	{
-		if(databaseManager == null)
+		if(databaseHandler == null)
 		{
-			databaseManager = new DatabaseManager(this);
+			databaseHandler = new DatabaseHandler(this);
 		}
-		return databaseManager;
+		return databaseHandler;
 	}
 }

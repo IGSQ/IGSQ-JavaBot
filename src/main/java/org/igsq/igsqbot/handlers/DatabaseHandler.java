@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.entities.database;
+package org.igsq.igsqbot.handlers;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -11,17 +11,18 @@ import org.jooq.impl.DSL;
 import java.io.InputStream;
 import java.sql.Connection;
 
-public class DatabaseManager
+public class DatabaseHandler
 {
 	private final IGSQBot igsqBot;
 	private final HikariDataSource pool;
 
-	public DatabaseManager(IGSQBot igsqBot)
+	public DatabaseHandler(IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
 		this.pool = initHikari();
 
 		initTables();
+		System.getProperties().setProperty("org.jooq.no-logo", "true");
 	}
 
 	public void createTables()
@@ -72,7 +73,7 @@ public class DatabaseManager
 	private void initTable(String table){
 		try
 		{
-			InputStream file = DatabaseManager.class.getClassLoader().getResourceAsStream("sql/" + table + ".sql");
+			InputStream file = DatabaseHandler.class.getClassLoader().getResourceAsStream("sql/" + table + ".sql");
 			if(file == null)
 			{
 				throw new NullPointerException("File for table '" + table + "' not found");

@@ -1,7 +1,7 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.entities.Icon;
-import org.igsq.igsqbot.entities.database.DatabaseManager;
+import org.igsq.igsqbot.handlers.DatabaseHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,7 +20,7 @@ public class FileUtils
 		InputStream file;
 		try
 		{
-			file = DatabaseManager.class.getClassLoader().getResourceAsStream(fileName);
+			file = DatabaseHandler.class.getClassLoader().getResourceAsStream(fileName);
 		}
 		catch(Exception exception)
 		{

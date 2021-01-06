@@ -21,7 +21,6 @@ public class HelpCommand extends Command
 		final User author = ctx.getAuthor();
 		final JDA jda = ctx.getJDA();
 
-
 		if(!args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
