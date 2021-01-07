@@ -57,33 +57,33 @@ public class Parser
 		String typeName = type.name().toLowerCase();
 		String notFound = typeName.toUpperCase() + " not found";
 		Matcher idMatcher = ID_REGEX.matcher(arg);
+		JDA jda = ctx.getJDA();
+		SelfUser selfUser = jda.getSelfUser();
 
 		if(type.getPattern().matcher(arg).matches()) //Direct mention
 		{
-			final var mentionable = message.getMentions(type).get(0);
-			consumer.accept(mentionable);
+			IMentionable mention = message.getMentions(type).get(0);
+			consumer.accept(mention);
 			return;
 		}
 
 		if(idMatcher.matches()) //ID
 		{
-			final var mentionableId = Long.parseLong(idMatcher.group());
+			long mentionableId = Long.parseLong(idMatcher.group());
 			if(type == Message.MentionType.USER)
 			{
 				if(mentionableId == author.getIdLong())
 				{
 					consumer.accept(author);
-					return;
 				}
-				JDA jda = ctx.getJDA();
-				SelfUser selfUser = jda.getSelfUser();
-				if(mentionableId == selfUser.getIdLong())
+				else if(mentionableId == selfUser.getIdLong())
 				{
 					consumer.accept(selfUser);
-					return;
 				}
-				jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("User not found"));
-				return;
+				else
+				{
+					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("User not found."));
+				}
 			}
 		}
 
@@ -101,7 +101,7 @@ public class Parser
 						{
 							if(members.isEmpty())
 							{
-								ctx.replyError("User not found");
+								ctx.replyError("User not found.");
 							}
 							else
 							{
@@ -110,14 +110,14 @@ public class Parser
 						});
 				return;
 			}
-			var mentionables = type == Message.MentionType.CHANNEL ? guild.getTextChannelsByName(arg, true) : guild.getRolesByName(arg, true);
-			if(mentionables.isEmpty()) //Role / Channel
+			var rolesChannelsList = type == Message.MentionType.CHANNEL ? guild.getTextChannelsByName(arg, true) : guild.getRolesByName(arg, true);
+			if(rolesChannelsList.isEmpty()) //Role / Channel
 			{
-				ctx.replyError("No " + typeName.toLowerCase() + "s with given name found");
+				ctx.replyError("No " + typeName.toLowerCase() + "s with that name found");
 			}
 			else
 			{
-				consumer.accept(mentionables.get(0));
+				consumer.accept(rolesChannelsList.get(0));
 			}
 		}
 		ctx.replyError(notFound);
