@@ -42,7 +42,6 @@ public class DatabaseHandler
 	private void initTables()
 	{
 		initTable("guilds");
-		initTable("users");
 
 		initTable("roles");
 		initTable("mutes");

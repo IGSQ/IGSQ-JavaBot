@@ -2,6 +2,6 @@ CREATE TABLE IF NOT EXISTS reminders
 (
     reminderId BIGSERIAL NOT NULL PRIMARY KEY,
     guildId BIGINT NOT NULL REFERENCES guilds(guildId) ON DELETE CASCADE,
-    userId BIGINT NOT NULL REFERENCES users(userId),
+    userId BIGINT NOT NULL,
     reminderText TEXT NOT NULL
 );
