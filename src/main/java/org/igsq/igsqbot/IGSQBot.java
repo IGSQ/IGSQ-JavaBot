@@ -124,7 +124,6 @@ public class IGSQBot
 		for(Guild guild : shardManager.getGuilds())
 		{
 			DatabaseUtils.registerGuild(guild, this);
-			guild.loadMembers().onSuccess(members -> members.stream().filter(member -> !member.getUser().isBot()).forEach(member -> DatabaseUtils.registerUser(member, this)));
 		}
 	}
 
