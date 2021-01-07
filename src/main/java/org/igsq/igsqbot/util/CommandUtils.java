@@ -1,10 +1,16 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.requests.RestAction;
+import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.CommandContext;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +53,28 @@ public class CommandUtils
 	public static boolean isValidCommand(String message, String guildId, JDA jda)
 	{
 		return message.startsWith("<@" + jda.getSelfUser().getId() + ">") || message.startsWith("<@!" + jda.getSelfUser().getId() + ">");
+	}
+
+	public static void interactionCheck(User user1, User user2, CommandContext ctx, Command command, Runnable onSuccess)
+	{
+		List<RestAction<?>> actions = new ArrayList<>();
+		actions.add(ctx.getGuild().retrieveMember(user1));
+		actions.add(ctx.getGuild().retrieveMember(user2));
+		RestAction.allOf(actions).queue(results ->
+				{
+					Member member1 = (Member) results.get(0);
+					Member member2 = (Member) results.get(1);
+
+					if(!member1.canInteract(member2))
+					{
+						EmbedUtils.sendPermissionError(ctx.getChannel(), command);
+					}
+					else
+					{
+						onSuccess.run();
+					}
+				}
+		);
 	}
 
 	public static ZoneOffset getLocalOffset()

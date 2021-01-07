@@ -1,15 +1,14 @@
 package org.igsq.igsqbot.commands.moderation;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.util.ArrayUtils;
-import org.igsq.igsqbot.util.EmbedUtils;
-import org.igsq.igsqbot.util.StringUtils;
+import org.igsq.igsqbot.entities.database.Report;
+import org.igsq.igsqbot.util.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,48 +18,53 @@ public class ReportCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final MessageChannel channel = ctx.getChannel();
-		final User author = ctx.getAuthor();
+		MessageChannel channel = ctx.getChannel();
+		User author = ctx.getAuthor();
 
-		if(args.size() < 2 || ctx.getMessage().getMentionedMembers().isEmpty())
+		if(args.size() < 2)
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
 			return;
 		}
 
-		final Member reportedMember = ctx.getMessage().getMentionedMembers().get(0);
-		final User reportedUser = reportedMember.getUser();
-		args.remove(0);
-
-		if(reportedUser.equals(author))
+		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
-			ctx.replyError("You can't report yourself!");
-		}
-		else if(reportedUser.isBot())
-		{
-			ctx.replyError("You may not report bots.");
-		}
-		else if(reportedMember.isOwner())
-		{
-			ctx.replyError("You may not report the owner.");
-		}
-
-		ctx.getChannel().sendMessage(new EmbedBuilder()
-				.setTitle("New report by: " + author.getAsTag())
-				.addField("Reporting user:", reportedMember.getAsMention(), false)
-				.addField("Description:", ArrayUtils.arrayCompile(args, " "), false)
-				.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
-				.addField("Message Link:", "", false)
-				.setColor(reportedMember.getColor())
-				.setFooter("This report is unhandled and can only be dealt by members higher than " + reportedMember.getRoles().get(0).getName())
-				.build()).queue
-				(
-						message ->
-						{
-							message.addReaction(Constants.THUMB_UP).queue();
-						}
-				);
-
+			args.remove(0);
+			String reason = ArrayUtils.arrayCompile(args, " ");
+			Guild guild = ctx.getGuild();
+			String messageLink = StringUtils.getMessageLink(ctx.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
+//			if(user.isBot())
+//			{
+//				ctx.replyError("You may not report bots.");
+//			}
+//			else
+//			{
+				CommandUtils.interactionCheck(author, user, ctx, this, () ->
+				{
+					UserUtils.getMemberFromUser(user, guild).queue(
+							member ->
+							{
+								ctx.getChannel().sendMessage(new EmbedBuilder()
+										.setTitle("New report by: " + author.getAsTag())
+										.addField("Reporting user:", user.getAsMention(), false)
+										.addField("Description:", reason, false)
+										.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
+										.addField("Message Link:", "[Jump to message](" + messageLink + ")", false)
+										.setColor(member.getColor())
+										.setFooter("This report is unhandled and can only be dealt by members higher than " + member.getRoles().get(0).getName())
+										.build()).queue
+										(
+												message ->
+												{
+													new Report(message, ctx.getMessage(), channel, guild, user, reason, ctx.getIGSQBot()).add();
+													message.addReaction(Constants.THUMB_UP).queue();
+												}
+										);
+							}
+					);
+				});
+			//}
+		});
 	}
 
 	@Override

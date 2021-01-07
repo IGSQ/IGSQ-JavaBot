@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.util.ArrayUtils;
+import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
@@ -24,6 +25,7 @@ public class WarnCommand extends Command
 	{
 		MessageChannel channel = ctx.getChannel();
 		Guild guild = ctx.getGuild();
+		User author = ctx.getAuthor();
 		if(args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(channel, this);
@@ -47,7 +49,7 @@ public class WarnCommand extends Command
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
 				warnings.forEach(warn -> stringBuilder
-						.append("**")
+						.append("**ID: ")
 						.append(warn.getWarnId())
 						.append("** ")
 						.append(warn.getWarnText())
@@ -72,27 +74,52 @@ public class WarnCommand extends Command
 			}
 
 			new Parser(args.get(0), ctx).parseAsUser(user ->
-			{
-				OptionalInt warningNumber = new Parser(args.get(1), ctx).parseAsUnsignedInt();
-				if(warningNumber.isPresent())
-				{
-					Warning.Warn warn = new Warning(ctx.getGuild(), user, ctx.getIGSQBot()).getById(warningNumber.getAsInt());
+					{
+						if(user.isBot())
+						{
+							EmbedUtils.sendError(channel, "Bots cannot be warned.");
+						}
+						else
+						{
+							CommandUtils.interactionCheck(author, user, ctx, this, () ->
+							{
+								OptionalInt warningNumber = new Parser(args.get(1), ctx).parseAsUnsignedInt();
+								if(warningNumber.isEmpty())
+								{
+									ctx.replyError("Invalid warning specified.");
+								}
+								else
+								{
+									Warning.Warn warn = new Warning(ctx.getGuild(), user, ctx.getIGSQBot()).getById(warningNumber.getAsInt());
 
-					if(warn == null)
-					{
-						ctx.replyError("Invalid warning specified.");
+									if(warn == null)
+									{
+										ctx.replyError("Invalid warning specified.");
+									}
+									else
+									{
+										removeWarning(user, guild, ctx, warn.getWarnId());
+										ctx.replySuccess("Removed warning: " + warn.getWarnText());
+									}
+								}
+							});
+						}
 					}
-					else
-					{
-						removeWarning(user, guild, ctx, warn.getWarnId());
-						ctx.replySuccess("Removed warning: " + warn.getWarnText());
-					}
-				}
-			});
+				);
 		}
 		else
 		{
-			new Parser(firstArg, ctx).parseAsUser(user -> addWarning(user, guild, ctx, ArrayUtils.arrayCompile(args, " ")));
+			new Parser(firstArg, ctx).parseAsUser(user ->
+			{
+				if(user.isBot())
+				{
+					EmbedUtils.sendError(channel, "Bots cannot be warned.");
+				}
+				else
+				{
+					CommandUtils.interactionCheck(author, user, ctx, this, () -> addWarning(user, guild, ctx, ArrayUtils.arrayCompile(args, " ")));
+				}
+			});
 		}
 	}
 

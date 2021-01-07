@@ -1,9 +1,8 @@
 package org.igsq.igsqbot.util;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.requests.RestAction;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,5 +22,10 @@ public class UserUtils
 	public static boolean basicPermCheck(Member user, TextChannel channel)
 	{
 		return user.hasPermission(channel, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_READ, Permission.VIEW_CHANNEL, Permission.MESSAGE_EMBED_LINKS);
+	}
+
+	public static RestAction<Member> getMemberFromUser(User user, Guild guild)
+	{
+		return guild.retrieveMember(user);
 	}
 }

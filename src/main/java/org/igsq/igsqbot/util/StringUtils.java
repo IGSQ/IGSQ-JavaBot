@@ -80,4 +80,8 @@ public class StringUtils
 		}
 	}
 
+	public static String getMessageLink(long messageId, long channelId, long guildId)
+	{
+		return "https://discord.com/channels/" + guildId + "/" + channelId + "/" + guildId;
+	}
 }
