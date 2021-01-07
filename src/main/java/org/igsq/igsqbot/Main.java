@@ -13,7 +13,7 @@ public class Main
 		try
 		{
 			bot.build();
-			bot.getReadyShard();
+			bot.getJDA();
 			bot.getDatabaseManager().createTables();
 			bot.registerGuilds();
 			bot.getMinecraft();
@@ -26,10 +26,6 @@ public class Main
 		catch(IllegalArgumentException exception)
 		{
 			bot.getLogger().error("A provided value was invalid, please double check the values in CONFIG.json", exception);
-		}
-		catch(InterruptedException exception)
-		{
-			bot.getLogger().error("The bot was interrupted during launch.", exception);
 		}
 		catch(Exception exception)
 		{

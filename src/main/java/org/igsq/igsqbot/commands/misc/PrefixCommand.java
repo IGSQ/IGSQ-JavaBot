@@ -27,7 +27,7 @@ public class PrefixCommand extends Command
 		}
 		else if(args.size() > 1 || args.get(0).length() > 5)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(args.get(0).equalsIgnoreCase("reset"))
 		{

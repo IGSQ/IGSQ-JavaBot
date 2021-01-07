@@ -23,11 +23,11 @@ public class StealCommand extends Command
 
 		if(args.size() != 2 || !StringUtils.isURLValid(args.get(1)) || !args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(!UserUtils.basicPermCheck(ctx.getGuild().getSelfMember(), (TextChannel) channel))
 		{
-			EmbedUtils.sendPermissionError(channel, this);
+			EmbedUtils.sendPermissionError(ctx);
 		}
 		else
 		{

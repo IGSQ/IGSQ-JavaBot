@@ -26,7 +26,7 @@ public class PollCommand extends Command
 
 		if(args.size() != 1 || CommandUtils.isArgsEmbedCompatible(args))
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
 		List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
@@ -49,7 +49,7 @@ public class PollCommand extends Command
 		}
 		else
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 	}
 

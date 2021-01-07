@@ -19,7 +19,7 @@ public class VerificationCommand extends Command
 
 		if(args.size() != 1 || message.getMentionedMembers().isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 	}
 

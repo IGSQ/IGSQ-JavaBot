@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
 import org.igsq.igsqbot.util.*;
 
@@ -20,18 +21,24 @@ public class ReportCommand extends Command
 	{
 		MessageChannel channel = ctx.getChannel();
 		User author = ctx.getAuthor();
-
+		Guild guild = ctx.getGuild();
+		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(guild, ctx).getReportChannel());
 		if(args.size() < 2)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
+		if(reportChannel == null)
+		{
+			ctx.replyError("There is no report channel setup");
+			return;
+		}
+		reportChannel.sendMessage("ooga booga").queue();
 
 		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
 			args.remove(0);
 			String reason = ArrayUtils.arrayCompile(args, " ");
-			Guild guild = ctx.getGuild();
 			String messageLink = StringUtils.getMessageLink(ctx.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
 //			if(user.isBot())
 //			{
@@ -39,12 +46,12 @@ public class ReportCommand extends Command
 //			}
 //			else
 //			{
-				CommandUtils.interactionCheck(author, user, ctx, this, () ->
+				CommandUtils.interactionCheck(author, user, ctx, () ->
 				{
 					UserUtils.getMemberFromUser(user, guild).queue(
 							member ->
 							{
-								ctx.getChannel().sendMessage(new EmbedBuilder()
+								reportChannel.sendMessage(new EmbedBuilder()
 										.setTitle("New report by: " + author.getAsTag())
 										.addField("Reporting user:", user.getAsMention(), false)
 										.addField("Description:", reason, false)

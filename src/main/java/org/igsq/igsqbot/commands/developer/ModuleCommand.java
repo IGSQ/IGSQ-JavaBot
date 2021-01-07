@@ -17,7 +17,7 @@ public class ModuleCommand extends Command
 		MessageChannel channel = ctx.getChannel();
 		if(args.size() != 2)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(ArrayUtils.isValueInArray(this.getAliases().toArray(), args.get(1).toLowerCase()))
 		{
@@ -33,7 +33,7 @@ public class ModuleCommand extends Command
 		}
 		else
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 
 	}

@@ -126,22 +126,25 @@ public class CommandHandler
 		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 		if(!commandText.isEmpty())
 		{
+
 			cmd = commandMap.get(commandText.toLowerCase());
 			if(cmd == null)
 			{
 				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.");
+				return;
 			}
-			else if(cmd.isDisabled())
+			CommandContext ctx = new CommandContext(event, igsqBot, cmd);
+			if(cmd.isDisabled())
 			{
-				EmbedUtils.sendDisabledError(channel, cmd);
+				EmbedUtils.sendDisabledError(ctx);
 			}
 			else if(cmd.isGuildOnly() && !event.isFromGuild())
 			{
 				EmbedUtils.sendError(channel, "This command requires execution in a server.");
 			}
-			else if(!cmd.canExecute(new CommandContext(event, igsqBot)))
+			else if(!cmd.canExecute(ctx))
 			{
-				EmbedUtils.sendExecutionError(channel, cmd);
+				EmbedUtils.sendExecutionError(ctx);
 			}
 			else
 			{
@@ -150,7 +153,7 @@ public class CommandHandler
 				{
 					args.remove(0);
 				}
-				commandExecutor.submit(() -> cmd.execute(args, new CommandContext(event, igsqBot)));
+				commandExecutor.submit(() -> cmd.execute(args, ctx));
 			}
 		}
 	}

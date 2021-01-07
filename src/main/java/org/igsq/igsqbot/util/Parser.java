@@ -85,6 +85,18 @@ public class Parser
 					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("User not found."));
 				}
 			}
+			else if(type == Message.MentionType.CHANNEL)
+			{
+				MessageChannel channel = jda.getTextChannelById(mentionableId);
+				if(channel != null)
+				{
+					consumer.accept((IMentionable) channel);
+				}
+				else
+				{
+					ctx.replyError("Channel not found / i do not have permissions to see it.");
+				}
+			}
 		}
 
 		if(arg.length() >= 2 && arg.length() <= 32) //Named users

@@ -22,11 +22,11 @@ public class InviteCommand extends Command
 
 		if(!args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(!guild.getSelfMember().hasPermission(Permission.MANAGE_SERVER))
 		{
-			EmbedUtils.sendPermissionError(channel, this);
+			EmbedUtils.sendPermissionError(ctx);
 		}
 		else
 		{

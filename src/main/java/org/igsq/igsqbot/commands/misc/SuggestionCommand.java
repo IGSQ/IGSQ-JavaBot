@@ -25,13 +25,13 @@ public class SuggestionCommand extends Command
 
 		if(args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
 
 		if(CommandUtils.isArgsEmbedCompatible(args))
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else
 		{

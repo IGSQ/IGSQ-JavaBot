@@ -23,7 +23,7 @@ public class MockCommand extends Command
 
 		if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else
 		{

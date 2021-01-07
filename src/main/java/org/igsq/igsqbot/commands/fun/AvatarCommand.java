@@ -24,7 +24,7 @@ public class AvatarCommand extends Command
 
 		if(message.getMentionedMembers().size() > 3)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(!message.getMentionedMembers().isEmpty())
 		{

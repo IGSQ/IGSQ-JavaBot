@@ -16,11 +16,23 @@ public class CommandContext
 {
 	private final MessageReceivedEvent event;
 	private final IGSQBot igsqBot;
+	private final Command command;
 
-	public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot)
+	public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot, Command command)
 	{
 		this.event = event;
 		this.igsqBot = igsqBot;
+		this.command = command;
+	}
+
+	public IGSQBot getIGSQBot()
+	{
+		return igsqBot;
+	}
+
+	public Command getCommand()
+	{
+		return command;
 	}
 
 	public MessageChannel getChannel()
@@ -87,11 +99,6 @@ public class CommandContext
 	public boolean isDeveloper()
 	{
 		return true;
-	}
-
-	public IGSQBot getIGSQBot()
-	{
-		return igsqBot;
 	}
 
 	public boolean hasPermission(List<Permission> permissions)

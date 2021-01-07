@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.CommandContext;
 
 import java.awt.*;
 import java.time.Instant;
@@ -29,18 +29,18 @@ public class EmbedUtils
 				.setTimestamp(Instant.now()));
 	}
 
-	public static void sendSyntaxError(MessageChannel channel, Command command)
+	public static void sendSyntaxError(CommandContext ctx)
 	{
-		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Constants.FAILURE + "The provided syntax was incorrect.\n`" + command.getAliases().get(0) + " " + command.getSyntax() + "`")
+		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+				.setDescription(Constants.FAILURE + "The provided syntax was incorrect.\n`" + ctx.getCommand().getAliases().get(0) + " " + ctx.getCommand().getSyntax() + "`")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
 
-	public static void sendPermissionError(MessageChannel channel, Command command)
+	public static void sendPermissionError(CommandContext ctx)
 	{
-		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Constants.FAILURE + " A permission error occurred when attempting to execute command:`" + command.getAliases().get(0) + "`")
+		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+				.setDescription(Constants.FAILURE + " A permission error occurred when attempting to execute command:`" + ctx.getCommand().getAliases().get(0) + "`")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
@@ -53,27 +53,25 @@ public class EmbedUtils
 				.setTimestamp(Instant.now()));
 	}
 
-	public static void sendDisabledError(MessageChannel channel, Command command)
+	public static void sendDisabledError(CommandContext ctx)
 	{
-		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Constants.FAILURE + " `" + command.getName() + "` is currently disabled!")
+		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+				.setDescription(Constants.FAILURE + " `" + ctx.getCommand().getName() + "` is currently disabled!")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
 
-	public static void sendExecutionError(MessageChannel channel, Command command)
+	public static void sendExecutionError(CommandContext ctx)
 	{
-		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Constants.FAILURE + " `" + command.getName() + "` could not be executed.")
+		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+				.setDescription(Constants.FAILURE + " `" + ctx.getCommand().getName() + "` could not be executed.")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
 
 	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed, long delay)
 	{
-		channel.sendMessage(embed.build()).queue(message -> message.delete().queueAfter(delay, TimeUnit.MILLISECONDS, null, error ->
-		{
-		}));
+		channel.sendMessage(embed.build()).flatMap(Message::delete).queueAfter(delay, TimeUnit.MILLISECONDS);
 	}
 
 	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed)
@@ -83,9 +81,6 @@ public class EmbedUtils
 
 	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed)
 	{
-		if(!message.getEmbeds().isEmpty())
-		{
-			message.editMessage(newEmbed.build()).queue();
-		}
+		message.editMessage(newEmbed.build()).queue();
 	}
 }

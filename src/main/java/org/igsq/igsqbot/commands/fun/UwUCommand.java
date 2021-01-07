@@ -29,11 +29,11 @@ public class UwUCommand extends Command
 
 		if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(ctx.getChannelType().equals(ChannelType.TEXT) && !UserUtils.basicPermCheck(ctx.getGuild().getSelfMember(), (TextChannel) channel))
 		{
-			EmbedUtils.sendPermissionError(channel, this);
+			EmbedUtils.sendPermissionError(ctx);
 		}
 		else
 		{

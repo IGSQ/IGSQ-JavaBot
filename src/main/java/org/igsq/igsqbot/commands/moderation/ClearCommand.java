@@ -30,16 +30,16 @@ public class ClearCommand extends Command
 		}
 		catch(Exception exception)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
 		if(amount <= 0)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(amount > 51)
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(CooldownHandler.isOnCooldown(author.getId(), this))
 		{

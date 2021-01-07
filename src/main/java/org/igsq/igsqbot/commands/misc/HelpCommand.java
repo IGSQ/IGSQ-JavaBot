@@ -19,7 +19,7 @@ public class HelpCommand extends Command
 
 		if(!args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else
 		{

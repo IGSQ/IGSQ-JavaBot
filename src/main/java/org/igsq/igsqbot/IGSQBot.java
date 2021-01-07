@@ -44,7 +44,7 @@ public class IGSQBot
 	private TaskHandler taskHandler;
 	private DatabaseHandler databaseHandler;
 	private Minecraft minecraft;
-	private JDA readyShard;
+	private JDA jda;
 
 	public void build() throws LoginException, IOException
 	{
@@ -87,32 +87,33 @@ public class IGSQBot
 				.build();
 	}
 
-	public void getReadyShard() throws InterruptedException
+	public JDA getJDA()
 	{
 		if(shardManager == null)
 		{
 			throw new UnsupportedOperationException("Cannot get ready shard without a shard manager.");
 		}
-		else if(readyShard == null)
+		else if(jda == null)
 		{
 			try
 			{
-				readyShard = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady();
+				jda = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady();
 			}
 			catch(InterruptedException exception)
 			{
-				throw new InterruptedException("The bot was interrupted during startup");
+				getLogger().error("The bot was interrupted at startup.", exception);
 			}
 		}
+		return jda;
 	}
 
 	public SelfUser getSelfUser()
 	{
-		if(readyShard == null)
+		if(jda == null)
 		{
 			throw new UnsupportedOperationException("No ready shard present.");
 		}
-		return readyShard.getSelfUser();
+		return jda.getSelfUser();
 	}
 
 	public void registerGuilds()

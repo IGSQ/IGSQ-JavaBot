@@ -14,7 +14,7 @@ public class ShutdownCommand extends Command
 	{
 		if(!args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(ctx.getChannel(), this);
+			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
 

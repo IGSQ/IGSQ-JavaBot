@@ -28,7 +28,7 @@ public class WarnCommand extends Command
 		User author = ctx.getAuthor();
 		if(args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
 
@@ -39,7 +39,7 @@ public class WarnCommand extends Command
 		{
 			if(argsSize != 2)
 			{
-				EmbedUtils.sendSyntaxError(channel, this);
+				EmbedUtils.sendSyntaxError(ctx);
 				return;
 			}
 			new Parser(args.get(0), ctx).parseAsUser(user ->
@@ -69,7 +69,7 @@ public class WarnCommand extends Command
 		{
 			if(args.size() != 2)
 			{
-				EmbedUtils.sendSyntaxError(channel, this);
+				EmbedUtils.sendSyntaxError(ctx);
 				return;
 			}
 
@@ -81,7 +81,7 @@ public class WarnCommand extends Command
 						}
 						else
 						{
-							CommandUtils.interactionCheck(author, user, ctx, this, () ->
+							CommandUtils.interactionCheck(author, user, ctx, () ->
 							{
 								OptionalInt warningNumber = new Parser(args.get(1), ctx).parseAsUnsignedInt();
 								if(warningNumber.isEmpty())
@@ -117,7 +117,7 @@ public class WarnCommand extends Command
 				}
 				else
 				{
-					CommandUtils.interactionCheck(author, user, ctx, this, () -> addWarning(user, guild, ctx, ArrayUtils.arrayCompile(args, " ")));
+					CommandUtils.interactionCheck(author, user, ctx, () -> addWarning(user, guild, ctx, ArrayUtils.arrayCompile(args, " ")));
 				}
 			});
 		}

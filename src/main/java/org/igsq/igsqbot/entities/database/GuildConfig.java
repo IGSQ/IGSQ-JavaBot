@@ -4,6 +4,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.Table;
 
 import java.sql.Connection;
 
@@ -39,6 +42,37 @@ public class GuildConfig
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 			return ".";
+		}
+	}
+
+	public long getReportChannel()
+	{
+		Long channelId = getValue(Guilds.GUILDS, Guilds.GUILDS.REPORTCHANNEL, Guilds.GUILDS.GUILDID.eq(guildId));
+		if(channelId == null)
+		{
+			return -1;
+		}
+		else
+		{
+			return channelId;
+		}
+	}
+
+	private long getValue(Table<?> from, Field<?> value, Condition condition)
+	{
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection)
+					.select(value)
+					.from(from)
+					.where(condition);
+
+			return Long.parseLong(String.valueOf(context.fetchOne(value)));
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return -1;
 		}
 	}
 }

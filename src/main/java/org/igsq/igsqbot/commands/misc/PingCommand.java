@@ -25,7 +25,7 @@ public class PingCommand extends Command
 
 		if(!args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(channel, this);
+			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
 

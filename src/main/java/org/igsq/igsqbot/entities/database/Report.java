@@ -32,6 +32,17 @@ public class Report
 		this.igsqBot = igsqBot;
 	}
 
+	public Report(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, String reason, IGSQBot igsqBot)
+	{
+		this.messageId = messageId;
+		this.commandMessageId = commandMessageId;
+		this.channelId = channelId;
+		this.guildId = guildId;
+		this.reportedUserId = reportedUserId;
+		this.reason = reason;
+		this.igsqBot = igsqBot;
+	}
+
 	public void add()
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
@@ -42,6 +53,23 @@ public class Report
 					.values(messageId, commandMessageId, channelId, guildId, reportedUserId, reason);
 
 			context.execute();
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+		}
+	}
+
+	public void remove()
+	{
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection)
+					.deleteFrom(Tables.REPORTS)
+					.where(REPORTS.MESSAGEID.eq(messageId));
+
+			context.execute();
+			context.close();
 		}
 		catch(Exception exception)
 		{
@@ -82,5 +110,32 @@ public class Report
 	public IGSQBot getIgsqBot()
 	{
 		return igsqBot;
+	}
+
+	public static Report getById(long messageId, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection)
+					.selectFrom(REPORTS)
+					.where(REPORTS.MESSAGEID.eq(messageId));
+
+			var result = context.fetch();
+			context.close();
+			if(!result.isEmpty())
+			{
+				var warn = result.get(0);
+				return new Report(warn.getMessageid(), warn.getReportmessageid(), warn.getChannelid(), warn.getGuildid(), warn.getUserid(), warn.getReporttext(), igsqBot);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return null;
+		}
 	}
 }
