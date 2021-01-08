@@ -96,6 +96,7 @@ None!
  - [ ] Translation
  - [ ] XP system
  - [ ] Implement slash commands when they release
+ - [ ] Child / Sub commands system
  - [ ] Restarting of the bot
  - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo, GuildInfo)
  - [ ] Consider switch usage (replace with elif)
