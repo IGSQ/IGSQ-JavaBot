@@ -3,7 +3,6 @@ package org.igsq.igsqbot.commands.misc;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -17,7 +16,6 @@ public class InviteCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		MessageChannel channel = ctx.getChannel();
 		Guild guild = ctx.getGuild();
 
 		if(!args.isEmpty())

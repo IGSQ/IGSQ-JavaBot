@@ -4,9 +4,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.Table;
 
 import java.sql.Connection;
 
@@ -27,6 +25,12 @@ public class GuildConfig
 		this.igsqBot = igsqBot;
 	}
 
+	public GuildConfig(Guild guild, IGSQBot igsqBot)
+	{
+		this.guildId = guild.getIdLong();
+		this.igsqBot = igsqBot;
+	}
+
 	public String getPrefix()
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
@@ -36,7 +40,9 @@ public class GuildConfig
 					.from(Guilds.GUILDS)
 					.where(Guilds.GUILDS.GUILDID.eq(guildId));
 
-			return context.fetchOne(Guilds.GUILDS.PREFIX);
+			String result = context.fetchOne(Guilds.GUILDS.PREFIX);
+			context.close();
+			return result;
 		}
 		catch(Exception exception)
 		{
@@ -45,29 +51,46 @@ public class GuildConfig
 		}
 	}
 
-	public long getReportChannel()
+	public void setPrefix(String prefix)
 	{
-		Long channelId = getValue(Guilds.GUILDS, Guilds.GUILDS.REPORTCHANNEL, Guilds.GUILDS.GUILDID.eq(guildId));
-		if(channelId == null)
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			return -1;
+			var context = igsqBot.getDatabaseManager().getContext(connection)
+					.update(Guilds.GUILDS)
+					.set(Guilds.GUILDS.PREFIX, prefix)
+					.where(Guilds.GUILDS.GUILDID.eq(guildId));
+
+			context.execute();
+			context.close();
 		}
-		else
+		catch(Exception exception)
 		{
-			return channelId;
+			igsqBot.getLogger().error("An SQL error occurred", exception);
 		}
 	}
 
-	private long getValue(Table<?> from, Field<?> value, Condition condition)
+	public long getReportChannel()
+	{
+		return getValue(Guilds.GUILDS.REPORTCHANNEL);
+	}
+
+	public long getLogChannel()
+	{
+		return getValue(Guilds.GUILDS.LOGCHANNEL);
+	}
+
+	private long getValue(Field<?> value)
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
 					.select(value)
-					.from(from)
-					.where(condition);
+					.from(Guilds.GUILDS)
+					.where(Guilds.GUILDS.GUILDID.eq(guildId));
 
-			return Long.parseLong(String.valueOf(context.fetchOne(value)));
+			long result = Long.parseLong(String.valueOf(context.fetchOne(value)));
+			context.close();
+			return result;
 		}
 		catch(Exception exception)
 		{

@@ -3,12 +3,14 @@ package org.igsq.igsqbot.events.logging;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.database.GuildConfig;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -27,21 +29,25 @@ public class MemberEventsLogging extends ListenerAdapter
 	{
 		Guild guild = event.getGuild();
 		User user = event.getUser();
+		MessageChannel logChannel = guild.getTextChannelById(new GuildConfig(guild, igsqBot).getLogChannel());
 
-		event.getGuild().retrieveMember(user).queue(member ->
+		if(logChannel != null)
 		{
-			String timeJoined = member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-			if(!user.isBot())
+			event.getGuild().retrieveMember(user).queue(member ->
 			{
-				new EmbedBuilder()
-						.setTitle("Member Left")
-						.setDescription("**Member**: " + member.getAsMention() +
-								"\n**Joined On**: " + timeJoined)
-						.setColor(Constants.IGSQ_PURPLE)
-						.setTimestamp(Instant.now())
-						.build();
-			}
-		});
+				String timeJoined = member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+				if(!user.isBot())
+				{
+					logChannel.sendMessage(new EmbedBuilder()
+							.setTitle("Member Left")
+							.setDescription("**Member**: " + member.getAsMention() +
+									"\n**Joined On**: " + timeJoined)
+							.setColor(Constants.IGSQ_PURPLE)
+							.setTimestamp(Instant.now())
+							.build()).queue();
+				}
+			});
+		}
 	}
 
 	@Override
@@ -51,15 +57,20 @@ public class MemberEventsLogging extends ListenerAdapter
 		Member member = event.getMember();
 		User user = event.getUser();
 
-		if(!user.isBot())
+		MessageChannel logChannel = guild.getTextChannelById(new GuildConfig(guild, igsqBot).getLogChannel());
+
+		if(logChannel != null)
 		{
-			new EmbedBuilder()
-					.setTitle("Member Joined")
-					.setDescription("**Member**: " + member.getAsMention() +
-							"\n**Joined On**: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
-					.setColor(Constants.IGSQ_PURPLE)
-					.setTimestamp(Instant.now())
-					.build();
+			if(!user.isBot())
+			{
+				logChannel.sendMessage(new EmbedBuilder()
+						.setTitle("Member Joined")
+						.setDescription("**Member**: " + member.getAsMention() +
+								"\n**Joined On**: " + member.getTimeJoined().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
+						.setColor(Constants.IGSQ_PURPLE)
+						.setTimestamp(Instant.now())
+						.build()).queue();
+			}
 		}
 	}
 }

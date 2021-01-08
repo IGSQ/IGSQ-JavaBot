@@ -21,6 +21,7 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
+@Deprecated
 /**
  * Waits for desired events
  */

@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.EventWaiter;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 
@@ -23,7 +22,7 @@ public class MessageEventsMain extends ListenerAdapter
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event)
 	{
-		if(!EventWaiter.waitingOnThis(event) && event.isFromType(ChannelType.TEXT))
+		if(event.isFromType(ChannelType.TEXT))
 		{
 			event.retrieveUser().queue(
 					user ->
@@ -41,7 +40,7 @@ public class MessageEventsMain extends ListenerAdapter
 	@Override
 	public void onMessageReactionRemove(MessageReactionRemoveEvent event)
 	{
-		if(!EventWaiter.waitingOnThis(event) && event.isFromType(ChannelType.TEXT))
+		if(event.isFromType(ChannelType.TEXT))
 		{
 			event.retrieveUser().queue(
 					user ->
@@ -58,7 +57,7 @@ public class MessageEventsMain extends ListenerAdapter
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event)
 	{
-		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot() && !EventWaiter.waitingOnThis(event))
+		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot())
 		{
 			MessageCache.getCache(event.getGuild()).set(new CachedMessage(event.getMessage()));
 		}

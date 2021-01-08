@@ -70,43 +70,25 @@
  - [x] GuildConfig to take something (Guild) as input to fetch the channels and check for null prior to getting (its far easier to check on the other side)
  - [x] Jsonify logging including prefix detection
  - [x] Use optionals for Json (didnt work out)
+ - [x] Investigate https://github.com/twitter/twemoji (DB can handle emojis)
+ - [x] Switch to postgres
+ - [x] Change user loading to lazy (removed)
+ - [x] Consider users table ^
+ - [x] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
+ - [x] Complex args parser ^
+
 ### **TeaEyes**
 None!
 
-
 ### **arynxd**
- - [ ] Switch to postgres
- 
- 
- - [ ] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
- - [ ] Complex args parser ^
- ```
-    public static long parseSnowflake(String input)
-    {
-        Checks.notEmpty(input, "ID");
-        try
-        {
-            if (!input.startsWith("-")) // if not negative -> parse unsigned
-                return Long.parseUnsignedLong(input);
-            else // if negative -> parse normal
-                return Long.parseLong(input);
-        }
-        catch (NumberFormatException ex)
-        {
-            throw new NumberFormatException(
-                String.format("The specified ID is not a valid snowflake (%s). Expecting a valid long value!", input));
-        }
-    }
-```
 
  - [ ] Voting (guild / internal)
- - [ ] Investigate https://github.com/twitter/twemoji for codepoint conversion, as this means unicode can be stored as codepoints and converted afterwords
+ - [ ] Muting (Temp ban)
+ - [ ] ReactionRoles
+ 
  - [ ] Debug logging
  - [ ] Remove emoji-java
- - [ ] Remove simple-yaml
  - [ ] Switch to longs for IDs
- - [ ] Change user loading to lazy
- - [ ] Consider users table
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

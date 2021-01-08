@@ -1,10 +1,11 @@
 package org.igsq.igsqbot.util;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.RestAction;
+import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.database.GuildConfig;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -49,9 +50,9 @@ public class CommandUtils
 
 	}
 
-	public static boolean isValidCommand(String message, String guildId, JDA jda)
+	public static boolean isValidCommand(String message, long guildId, IGSQBot igsqBot)
 	{
-		return message.startsWith("<@" + jda.getSelfUser().getId() + ">") || message.startsWith("<@!" + jda.getSelfUser().getId() + ">");
+		return message.startsWith(new GuildConfig(guildId, igsqBot).getPrefix()) || message.startsWith("<@" + igsqBot.getSelfUser().getId() + ">") || message.startsWith("<@!" + igsqBot.getSelfUser().getId() + ">");
 	}
 
 	public static void interactionCheck(User user1, User user2, CommandContext ctx, Runnable onSuccess)

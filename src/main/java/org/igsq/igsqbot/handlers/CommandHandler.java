@@ -126,7 +126,6 @@ public class CommandHandler
 		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
 		if(!commandText.isEmpty())
 		{
-
 			cmd = commandMap.get(commandText.toLowerCase());
 			if(cmd == null)
 			{

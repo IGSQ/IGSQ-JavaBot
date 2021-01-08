@@ -71,7 +71,7 @@ public class EmbedUtils
 
 	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed, long delay)
 	{
-		channel.sendMessage(embed.build()).flatMap(Message::delete).queueAfter(delay, TimeUnit.MILLISECONDS);
+		channel.sendMessage(embed.build()).queue(message -> message.delete().queueAfter(delay, TimeUnit.MILLISECONDS, null, error -> { }));
 	}
 
 	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed)

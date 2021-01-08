@@ -12,6 +12,7 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
+import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
@@ -41,28 +42,33 @@ public class MessageEventsLogging extends ListenerAdapter
 				MessageChannel channel = event.getChannel();
 				String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
+				Guild guild = event.getGuild();
+				MessageChannel logChannel = guild.getTextChannelById(new GuildConfig(guild, igsqBot).getLogChannel());
 
-				if(CommandUtils.isValidCommand(newMessage.getContentRaw(), event.getGuild().getId(), event.getJDA()))
+				if(logChannel != null)
 				{
-					return;
+					if(CommandUtils.isValidCommand(newMessage.getContentRaw(), event.getGuild().getIdLong(), igsqBot))
+					{
+						return;
+					}
+
+					if(newMessage.getAuthor().isBot()) return;
+					if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
+					if(oldContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
+
+					logChannel.sendMessage(new EmbedBuilder()
+							.setTitle("Message Altered")
+							.setDescription("**Author**: " + newMessage.getAuthor().getAsMention() +
+									"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
+									"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+									"\n\n**Message Content Before**: " + oldContent +
+									"\n**Message Content After**: " + newContent)
+							.setColor(Constants.IGSQ_PURPLE)
+							.setTimestamp(Instant.now())
+							.build()).queue();
+
+					cache.update(oldMessage, new CachedMessage(newMessage));
 				}
-
-				if(newMessage.getAuthor().isBot()) return;
-				if(newContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
-				if(oldContent.length() >= 2000) newContent = newContent.substring(0, 1500) + " **...**";
-
-				new EmbedBuilder()
-						.setTitle("Message Altered")
-						.setDescription("**Author**: " + newMessage.getAuthor().getAsMention() +
-								"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
-								"\n**Sent On**: " + newMessage.getTimeCreated().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
-								"\n\n**Message Content Before**: " + oldContent +
-								"\n**Message Content After**: " + newContent)
-						.setColor(Constants.IGSQ_PURPLE)
-						.setTimestamp(Instant.now())
-						.build();
-
-				cache.update(oldMessage, new CachedMessage(newMessage));
 			}
 		}
 	}
@@ -80,17 +86,19 @@ public class MessageEventsLogging extends ListenerAdapter
 				Guild guild = event.getGuild();
 				MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
+				MessageChannel logChannel = guild.getTextChannelById(new GuildConfig(guild, igsqBot).getLogChannel());
 
-				if(CommandUtils.isValidCommand(content, event.getGuild().getId(), event.getJDA()))
+				if(logChannel != null)
 				{
-					return;
-				}
-				if(message.getAuthor().isBot()) return;
-				if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
+					if(CommandUtils.isValidCommand(content, guild.getIdLong(), igsqBot))
+					{
+						return;
+					}
+					if(message.getAuthor().isBot()) return;
+					if(content.length() >= 2000) content = content.substring(0, 1500) + " **...**";
 
 
-
-					new EmbedBuilder()
+					logChannel.sendMessage(new EmbedBuilder()
 							.setTitle("Message Deleted")
 							.setDescription("**Author**: " + message.getAuthor().getAsMention() +
 									"\n**Sent In**: " + StringUtils.getChannelAsMention(channel.getId()) +
@@ -98,8 +106,9 @@ public class MessageEventsLogging extends ListenerAdapter
 									"\n\n**Message Content**: " + content)
 							.setColor(Constants.IGSQ_PURPLE)
 							.setTimestamp(Instant.now())
-							.build();
-				cache.remove(message);
+							.build()).queue();
+					cache.remove(message);
+				}
 			}
 		}
 	}
