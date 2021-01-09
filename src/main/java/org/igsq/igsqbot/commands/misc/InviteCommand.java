@@ -9,7 +9,6 @@ import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class InviteCommand extends Command
 {
@@ -31,27 +30,16 @@ public class InviteCommand extends Command
 			guild.retrieveInvites().queue(
 					invites ->
 					{
-						AtomicReference<Invite> chosenInvite = new AtomicReference<>();
-						invites.forEach(invite -> invite.expand().queue(
-								expandedInvite ->
-								{
-									if(expandedInvite.getMaxUses() == 0 && chosenInvite.get() == null)
-									{
-										chosenInvite.set(expandedInvite);
-									}
-								}
-						));
-
-						if(chosenInvite.get() == null)
+						for(Invite invite : invites)
 						{
-							ctx.replyError("No invites found.");
+							if(invite.getMaxUses() == 0)
+							{
+								ctx.replySuccess("Invite found: " + invite.getUrl());
+								return;
+							}
 						}
-						else
-						{
-							ctx.replySuccess("Invite found: " + chosenInvite.get().getUrl());
-						}
+						ctx.replyError("No invites found.");
 					}
-
 			);
 		}
 	}
