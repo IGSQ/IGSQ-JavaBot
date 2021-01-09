@@ -86,7 +86,8 @@ None!
 
  - [ ] Voting (guild / internal)
  - [ ] ReactionRoles
- - [ ] Improve time parsing
+ - [ ] Improve time parsing (https://github.com/oliver276/OliverBot/blob/dev/src/main/java/me/hexillium/discordbot/commands/util/Reminder.java)
+ - [ ] Insert time parsing into Parser
  - [ ] Message generation garbage
  - [ ] Minecraft syncing etc
  - [ ] Use Properties for config options
