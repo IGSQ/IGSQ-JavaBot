@@ -84,4 +84,9 @@ public class StringUtils
 	{
 		return "https://discord.com/channels/" + guildId + "/" + channelId + "/" + guildId;
 	}
+
+	public static String parseDateTime(LocalDateTime time)
+	{
+		return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(time);
+	}
 }

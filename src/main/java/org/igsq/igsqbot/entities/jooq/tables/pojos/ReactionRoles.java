@@ -15,35 +15,35 @@ public class ReactionRoles implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long   reactionroleid;
+    private final Long   id;
     private final Long   guildid;
     private final String emoteid;
     private final Long   roleid;
 
     public ReactionRoles(ReactionRoles value) {
-        this.reactionroleid = value.reactionroleid;
+        this.id = value.id;
         this.guildid = value.guildid;
         this.emoteid = value.emoteid;
         this.roleid = value.roleid;
     }
 
     public ReactionRoles(
-        Long   reactionroleid,
+        Long   id,
         Long   guildid,
         String emoteid,
         Long   roleid
     ) {
-        this.reactionroleid = reactionroleid;
+        this.id = id;
         this.guildid = guildid;
         this.emoteid = emoteid;
         this.roleid = roleid;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.reactionroleid</code>.
+     * Getter for <code>public.reaction_roles.id</code>.
      */
-    public Long getReactionroleid() {
-        return this.reactionroleid;
+    public Long getId() {
+        return this.id;
     }
 
     /**
@@ -71,7 +71,7 @@ public class ReactionRoles implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("ReactionRoles (");
 
-        sb.append(reactionroleid);
+        sb.append(id);
         sb.append(", ").append(guildid);
         sb.append(", ").append(emoteid);
         sb.append(", ").append(roleid);

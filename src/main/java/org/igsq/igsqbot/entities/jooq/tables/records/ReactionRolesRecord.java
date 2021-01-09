@@ -21,17 +21,17 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.reaction_roles.reactionroleid</code>.
+     * Setter for <code>public.reaction_roles.id</code>.
      */
-    public ReactionRolesRecord setReactionroleid(Long value) {
+    public ReactionRolesRecord setId(Long value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.reactionroleid</code>.
+     * Getter for <code>public.reaction_roles.id</code>.
      */
-    public Long getReactionroleid() {
+    public Long getId() {
         return (Long) get(0);
     }
 
@@ -105,7 +105,7 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public Field<Long> field1() {
-        return ReactionRoles.REACTION_ROLES.REACTIONROLEID;
+        return ReactionRoles.REACTION_ROLES.ID;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public Long component1() {
-        return getReactionroleid();
+        return getId();
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public Long value1() {
-        return getReactionroleid();
+        return getId();
     }
 
     @Override
@@ -165,7 +165,7 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public ReactionRolesRecord value1(Long value) {
-        setReactionroleid(value);
+        setId(value);
         return this;
     }
 
@@ -210,10 +210,10 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
     /**
      * Create a detached, initialised ReactionRolesRecord
      */
-    public ReactionRolesRecord(Long reactionroleid, Long guildid, String emoteid, Long roleid) {
+    public ReactionRolesRecord(Long id, Long guildid, String emoteid, Long roleid) {
         super(ReactionRoles.REACTION_ROLES);
 
-        setReactionroleid(reactionroleid);
+        setId(id);
         setGuildid(guildid);
         setEmoteid(emoteid);
         setRoleid(roleid);

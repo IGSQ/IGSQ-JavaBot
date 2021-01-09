@@ -76,6 +76,8 @@
  - [x] Consider users table ^
  - [x] Redo Channel / Role / User / Emote/Emoji parsing - into CommandContext (JDA internal checker)
  - [x] Complex args parser ^
+ - [x] Muting (Temp ban) (improve time parsing)
+ - [x] Remove emoji-java
 
 ### **TeaEyes**
 None!
@@ -83,11 +85,13 @@ None!
 ### **arynxd**
 
  - [ ] Voting (guild / internal)
- - [ ] Muting (Temp ban)
  - [ ] ReactionRoles
+ - [ ] Improve time parsing
+ - [ ] Message generation garbage
+ - [ ] Minecraft syncing etc
+ - [ ] Use Properties for config options
  
  - [ ] Debug logging
- - [ ] Remove emoji-java
  - [ ] Switch to longs for IDs
  - [ ] **PREPARE FOR PR**
 

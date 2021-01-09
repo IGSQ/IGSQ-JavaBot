@@ -76,15 +76,18 @@ public class VoiceEventsLogging extends ListenerAdapter
 	{
 		VoiceChannel channel = event.getChannelJoined();
 		Member member = event.getMember();
+		Guild guild = event.getGuild();
+		MessageChannel logChannel = guild.getTextChannelById(new GuildConfig(guild, igsqBot).getLogChannel());
 
-
-			new EmbedBuilder()
+		if(logChannel != null)
+		{
+			logChannel.sendMessage(new EmbedBuilder()
 					.setTitle("Member Joined VC")
 					.setDescription("**Member**: " + member.getAsMention() + "\n" +
 							"**Channel**: " + channel.getName())
 					.setColor(Constants.IGSQ_PURPLE)
 					.setTimestamp(Instant.now())
-					.build();
-
+					.build()).queue();
+		}
 	}
 }

@@ -7,7 +7,6 @@ package org.igsq.igsqbot.entities.jooq.tables;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.ReactionRolesRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -21,6 +20,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -48,9 +48,9 @@ public class ReactionRoles extends TableImpl<ReactionRolesRecord> {
     }
 
     /**
-     * The column <code>public.reaction_roles.reactionroleid</code>.
+     * The column <code>public.reaction_roles.id</code>.
      */
-    public final TableField<ReactionRolesRecord, Long> REACTIONROLEID = createField(DSL.name("reactionroleid"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<ReactionRolesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.reaction_roles.guildid</code>.

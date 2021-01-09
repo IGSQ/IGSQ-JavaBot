@@ -16,35 +16,35 @@ public class Mutes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long          muteid;
+    private final Long          id;
     private final Long          userid;
     private final Long          guildid;
     private final LocalDateTime muteduntil;
 
     public Mutes(Mutes value) {
-        this.muteid = value.muteid;
+        this.id = value.id;
         this.userid = value.userid;
         this.guildid = value.guildid;
         this.muteduntil = value.muteduntil;
     }
 
     public Mutes(
-        Long          muteid,
+        Long          id,
         Long          userid,
         Long          guildid,
         LocalDateTime muteduntil
     ) {
-        this.muteid = muteid;
+        this.id = id;
         this.userid = userid;
         this.guildid = guildid;
         this.muteduntil = muteduntil;
     }
 
     /**
-     * Getter for <code>public.mutes.muteid</code>.
+     * Getter for <code>public.mutes.id</code>.
      */
-    public Long getMuteid() {
-        return this.muteid;
+    public Long getId() {
+        return this.id;
     }
 
     /**
@@ -72,7 +72,7 @@ public class Mutes implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("Mutes (");
 
-        sb.append(muteid);
+        sb.append(id);
         sb.append(", ").append(userid);
         sb.append(", ").append(guildid);
         sb.append(", ").append(muteduntil);

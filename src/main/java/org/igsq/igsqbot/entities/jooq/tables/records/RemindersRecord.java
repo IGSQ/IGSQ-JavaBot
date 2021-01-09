@@ -4,11 +4,11 @@
 package org.igsq.igsqbot.entities.jooq.tables.records;
 
 
-import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
 import org.jooq.Row4;
+import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
@@ -21,17 +21,17 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.reminders.reminderid</code>.
+     * Setter for <code>public.reminders.id</code>.
      */
-    public RemindersRecord setReminderid(Long value) {
+    public RemindersRecord setId(Long value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reminders.reminderid</code>.
+     * Getter for <code>public.reminders.id</code>.
      */
-    public Long getReminderid() {
+    public Long getId() {
         return (Long) get(0);
     }
 
@@ -105,7 +105,7 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public Field<Long> field1() {
-        return Reminders.REMINDERS.REMINDERID;
+        return Reminders.REMINDERS.ID;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public Long component1() {
-        return getReminderid();
+        return getId();
     }
 
     @Override
@@ -145,7 +145,7 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public Long value1() {
-        return getReminderid();
+        return getId();
     }
 
     @Override
@@ -165,7 +165,7 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public RemindersRecord value1(Long value) {
-        setReminderid(value);
+        setId(value);
         return this;
     }
 
@@ -210,10 +210,10 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
     /**
      * Create a detached, initialised RemindersRecord
      */
-    public RemindersRecord(Long reminderid, Long guildid, Long userid, String remindertext) {
+    public RemindersRecord(Long id, Long guildid, Long userid, String remindertext) {
         super(Reminders.REMINDERS);
 
-        setReminderid(reminderid);
+        setId(id);
         setGuildid(guildid);
         setUserid(userid);
         setRemindertext(remindertext);

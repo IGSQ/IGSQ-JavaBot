@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS mutes
 (
-    muteId bigserial PRIMARY KEY NOT NULL,
+    id bigserial PRIMARY KEY NOT NULL,
     userId BIGINT NOT NULL UNIQUE,
     guildId BIGINT NOT NULL UNIQUE REFERENCES guilds(guildId) ON DELETE CASCADE,
     mutedUntil TIMESTAMP NOT NULL

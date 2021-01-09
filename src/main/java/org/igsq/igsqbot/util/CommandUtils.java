@@ -24,7 +24,6 @@ public class CommandUtils
 		// Override the default, public, constructor
 	}
 
-
 	public static boolean isArgsEmbedCompatible(List<String> args)
 	{
 		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).count() > EmbedUtils.CHARACTER_LIMIT;
@@ -38,14 +37,20 @@ public class CommandUtils
 		}
 
 		String unit = offset.substring(offset.length() - 1);
-		String quantity = offset.substring(0, offset.length() - 1);
+		long quantity = Long.parseLong(offset.substring(0, offset.length() - 1));
 		LocalDateTime result = LocalDateTime.now();
+
+		if(quantity == 0)
+		{
+			return null;
+		}
+
 		return switch(unit.toLowerCase())
 				{
-					case "m" -> result.plusMinutes(Long.parseLong(quantity));
-					case "h" -> result.plusHours(Long.parseLong(quantity));
-					case "d" -> result.plusDays(Long.parseLong(quantity));
-					default -> LocalDateTime.now();
+					case "m" -> result.plusMinutes(quantity);
+					case "h" -> result.plusHours(quantity);
+					case "d" -> result.plusDays(quantity);
+					default -> null;
 				};
 
 	}

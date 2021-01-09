@@ -6,11 +6,11 @@ package org.igsq.igsqbot.entities.jooq.tables.records;
 
 import java.time.LocalDateTime;
 
-import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record8;
 import org.jooq.Row8;
+import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
@@ -23,17 +23,17 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.reports.reportid</code>.
+     * Setter for <code>public.reports.id</code>.
      */
-    public ReportsRecord setReportid(Long value) {
+    public ReportsRecord setId(Long value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reports.reportid</code>.
+     * Getter for <code>public.reports.id</code>.
      */
-    public Long getReportid() {
+    public Long getId() {
         return (Long) get(0);
     }
 
@@ -167,7 +167,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public Field<Long> field1() {
-        return Reports.REPORTS.REPORTID;
+        return Reports.REPORTS.ID;
     }
 
     @Override
@@ -207,7 +207,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public Long component1() {
-        return getReportid();
+        return getId();
     }
 
     @Override
@@ -247,7 +247,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public Long value1() {
-        return getReportid();
+        return getId();
     }
 
     @Override
@@ -287,7 +287,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public ReportsRecord value1(Long value) {
-        setReportid(value);
+        setId(value);
         return this;
     }
 
@@ -360,10 +360,10 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
     /**
      * Create a detached, initialised ReportsRecord
      */
-    public ReportsRecord(Long reportid, Long messageid, Long reportmessageid, Long channelid, Long guildid, Long userid, LocalDateTime timestamp, String reporttext) {
+    public ReportsRecord(Long id, Long messageid, Long reportmessageid, Long channelid, Long guildid, Long userid, LocalDateTime timestamp, String reporttext) {
         super(Reports.REPORTS);
 
-        setReportid(reportid);
+        setId(id);
         setMessageid(messageid);
         setReportmessageid(reportmessageid);
         setChannelid(channelid);

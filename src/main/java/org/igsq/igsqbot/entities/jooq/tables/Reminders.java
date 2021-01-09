@@ -7,6 +7,8 @@ package org.igsq.igsqbot.entities.jooq.tables;
 import java.util.Arrays;
 import java.util.List;
 
+import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.tables.records.RemindersRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -19,8 +21,6 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.RemindersRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -48,9 +48,9 @@ public class Reminders extends TableImpl<RemindersRecord> {
     }
 
     /**
-     * The column <code>public.reminders.reminderid</code>.
+     * The column <code>public.reminders.id</code>.
      */
-    public final TableField<RemindersRecord, Long> REMINDERID = createField(DSL.name("reminderid"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<RemindersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.reminders.guildid</code>.

@@ -5,7 +5,7 @@ package org.igsq.igsqbot.entities.jooq.tables.pojos;
 
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Arrays;
 
 
 /**
@@ -16,44 +16,39 @@ public class Votes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long          voteid;
-    private final Long          guildid;
-    private final LocalDateTime timestamp;
-    private final String        topic;
-    private final String        optionone;
-    private final String        optiontwo;
-    private final Integer       votecountone;
-    private final Integer       votecounttwo;
+    private final Long      id;
+    private final Long      voteid;
+    private final Long[]    allowedroles;
+    private final Integer[] receivedvotes;
+    private final Integer   maxvotes;
 
     public Votes(Votes value) {
+        this.id = value.id;
         this.voteid = value.voteid;
-        this.guildid = value.guildid;
-        this.timestamp = value.timestamp;
-        this.topic = value.topic;
-        this.optionone = value.optionone;
-        this.optiontwo = value.optiontwo;
-        this.votecountone = value.votecountone;
-        this.votecounttwo = value.votecounttwo;
+        this.allowedroles = value.allowedroles;
+        this.receivedvotes = value.receivedvotes;
+        this.maxvotes = value.maxvotes;
     }
 
     public Votes(
-        Long          voteid,
-        Long          guildid,
-        LocalDateTime timestamp,
-        String        topic,
-        String        optionone,
-        String        optiontwo,
-        Integer       votecountone,
-        Integer       votecounttwo
+        Long      id,
+        Long      voteid,
+        Long[]    allowedroles,
+        Integer[] receivedvotes,
+        Integer   maxvotes
     ) {
+        this.id = id;
         this.voteid = voteid;
-        this.guildid = guildid;
-        this.timestamp = timestamp;
-        this.topic = topic;
-        this.optionone = optionone;
-        this.optiontwo = optiontwo;
-        this.votecountone = votecountone;
-        this.votecounttwo = votecounttwo;
+        this.allowedroles = allowedroles;
+        this.receivedvotes = receivedvotes;
+        this.maxvotes = maxvotes;
+    }
+
+    /**
+     * Getter for <code>public.votes.id</code>.
+     */
+    public Long getId() {
+        return this.id;
     }
 
     /**
@@ -64,66 +59,35 @@ public class Votes implements Serializable {
     }
 
     /**
-     * Getter for <code>public.votes.guildid</code>.
+     * Getter for <code>public.votes.allowedroles</code>.
      */
-    public Long getGuildid() {
-        return this.guildid;
+    public Long[] getAllowedroles() {
+        return this.allowedroles;
     }
 
     /**
-     * Getter for <code>public.votes.timestamp</code>.
+     * Getter for <code>public.votes.receivedvotes</code>.
      */
-    public LocalDateTime getTimestamp() {
-        return this.timestamp;
+    public Integer[] getReceivedvotes() {
+        return this.receivedvotes;
     }
 
     /**
-     * Getter for <code>public.votes.topic</code>.
+     * Getter for <code>public.votes.maxvotes</code>.
      */
-    public String getTopic() {
-        return this.topic;
-    }
-
-    /**
-     * Getter for <code>public.votes.optionone</code>.
-     */
-    public String getOptionone() {
-        return this.optionone;
-    }
-
-    /**
-     * Getter for <code>public.votes.optiontwo</code>.
-     */
-    public String getOptiontwo() {
-        return this.optiontwo;
-    }
-
-    /**
-     * Getter for <code>public.votes.votecountone</code>.
-     */
-    public Integer getVotecountone() {
-        return this.votecountone;
-    }
-
-    /**
-     * Getter for <code>public.votes.votecounttwo</code>.
-     */
-    public Integer getVotecounttwo() {
-        return this.votecounttwo;
+    public Integer getMaxvotes() {
+        return this.maxvotes;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Votes (");
 
-        sb.append(voteid);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(timestamp);
-        sb.append(", ").append(topic);
-        sb.append(", ").append(optionone);
-        sb.append(", ").append(optiontwo);
-        sb.append(", ").append(votecountone);
-        sb.append(", ").append(votecounttwo);
+        sb.append(id);
+        sb.append(", ").append(voteid);
+        sb.append(", ").append(Arrays.toString(allowedroles));
+        sb.append(", ").append(Arrays.toString(receivedvotes));
+        sb.append(", ").append(maxvotes);
 
         sb.append(")");
         return sb.toString();

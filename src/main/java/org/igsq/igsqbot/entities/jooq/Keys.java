@@ -40,19 +40,17 @@ public class Keys {
 
     public static final UniqueKey<GuildsRecord> GUILDS_PKEY = Internal.createUniqueKey(Guilds.GUILDS, DSL.name("guilds_pkey"), new TableField[] { Guilds.GUILDS.GUILDID }, true);
     public static final UniqueKey<MutesRecord> MUTES_GUILDID_KEY = Internal.createUniqueKey(Mutes.MUTES, DSL.name("mutes_guildid_key"), new TableField[] { Mutes.MUTES.GUILDID }, true);
-    public static final UniqueKey<MutesRecord> MUTES_PKEY = Internal.createUniqueKey(Mutes.MUTES, DSL.name("mutes_pkey"), new TableField[] { Mutes.MUTES.MUTEID }, true);
+    public static final UniqueKey<MutesRecord> MUTES_PKEY = Internal.createUniqueKey(Mutes.MUTES, DSL.name("mutes_pkey"), new TableField[] { Mutes.MUTES.ID }, true);
     public static final UniqueKey<MutesRecord> MUTES_USERID_KEY = Internal.createUniqueKey(Mutes.MUTES, DSL.name("mutes_userid_key"), new TableField[] { Mutes.MUTES.USERID }, true);
-    public static final UniqueKey<ReactionRolesRecord> REACTION_ROLES_PKEY = Internal.createUniqueKey(ReactionRoles.REACTION_ROLES, DSL.name("reaction_roles_pkey"), new TableField[] { ReactionRoles.REACTION_ROLES.REACTIONROLEID }, true);
-    public static final UniqueKey<RemindersRecord> REMINDERS_PKEY = Internal.createUniqueKey(Reminders.REMINDERS, DSL.name("reminders_pkey"), new TableField[] { Reminders.REMINDERS.REMINDERID }, true);
-    public static final UniqueKey<ReportsRecord> REPORTS_CHANNELID_KEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_channelid_key"), new TableField[] { Reports.REPORTS.CHANNELID }, true);
+    public static final UniqueKey<ReactionRolesRecord> REACTION_ROLES_PKEY = Internal.createUniqueKey(ReactionRoles.REACTION_ROLES, DSL.name("reaction_roles_pkey"), new TableField[] { ReactionRoles.REACTION_ROLES.ID }, true);
+    public static final UniqueKey<RemindersRecord> REMINDERS_PKEY = Internal.createUniqueKey(Reminders.REMINDERS, DSL.name("reminders_pkey"), new TableField[] { Reminders.REMINDERS.ID }, true);
     public static final UniqueKey<ReportsRecord> REPORTS_MESSAGEID_KEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_messageid_key"), new TableField[] { Reports.REPORTS.MESSAGEID }, true);
-    public static final UniqueKey<ReportsRecord> REPORTS_PKEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_pkey"), new TableField[] { Reports.REPORTS.REPORTID }, true);
+    public static final UniqueKey<ReportsRecord> REPORTS_PKEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_pkey"), new TableField[] { Reports.REPORTS.ID }, true);
     public static final UniqueKey<ReportsRecord> REPORTS_REPORTMESSAGEID_KEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_reportmessageid_key"), new TableField[] { Reports.REPORTS.REPORTMESSAGEID }, true);
     public static final UniqueKey<RolesRecord> ROLES_GUILDID_KEY = Internal.createUniqueKey(Roles.ROLES, DSL.name("roles_guildid_key"), new TableField[] { Roles.ROLES.GUILDID }, true);
     public static final UniqueKey<RolesRecord> ROLES_PKEY = Internal.createUniqueKey(Roles.ROLES, DSL.name("roles_pkey"), new TableField[] { Roles.ROLES.ID }, true);
     public static final UniqueKey<RolesRecord> ROLES_USERID_KEY = Internal.createUniqueKey(Roles.ROLES, DSL.name("roles_userid_key"), new TableField[] { Roles.ROLES.USERID }, true);
-    public static final UniqueKey<VotesRecord> VOTES_GUILDID_KEY = Internal.createUniqueKey(Votes.VOTES, DSL.name("votes_guildid_key"), new TableField[] { Votes.VOTES.GUILDID }, true);
-    public static final UniqueKey<VotesRecord> VOTES_PKEY = Internal.createUniqueKey(Votes.VOTES, DSL.name("votes_pkey"), new TableField[] { Votes.VOTES.VOTEID }, true);
+    public static final UniqueKey<VotesRecord> VOTES_PKEY = Internal.createUniqueKey(Votes.VOTES, DSL.name("votes_pkey"), new TableField[] { Votes.VOTES.ID }, true);
     public static final UniqueKey<WarningsRecord> WARNINGS_PKEY = Internal.createUniqueKey(Warnings.WARNINGS, DSL.name("warnings_pkey"), new TableField[] { Warnings.WARNINGS.WARNID }, true);
 
     // -------------------------------------------------------------------------
@@ -64,6 +62,5 @@ public class Keys {
     public static final ForeignKey<RemindersRecord, GuildsRecord> REMINDERS__REMINDERS_GUILDID_FKEY = Internal.createForeignKey(Reminders.REMINDERS, DSL.name("reminders_guildid_fkey"), new TableField[] { Reminders.REMINDERS.GUILDID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILDID }, true);
     public static final ForeignKey<ReportsRecord, GuildsRecord> REPORTS__REPORTS_GUILDID_FKEY = Internal.createForeignKey(Reports.REPORTS, DSL.name("reports_guildid_fkey"), new TableField[] { Reports.REPORTS.GUILDID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILDID }, true);
     public static final ForeignKey<RolesRecord, GuildsRecord> ROLES__ROLES_GUILDID_FKEY = Internal.createForeignKey(Roles.ROLES, DSL.name("roles_guildid_fkey"), new TableField[] { Roles.ROLES.GUILDID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILDID }, true);
-    public static final ForeignKey<VotesRecord, GuildsRecord> VOTES__VOTES_GUILDID_FKEY = Internal.createForeignKey(Votes.VOTES, DSL.name("votes_guildid_fkey"), new TableField[] { Votes.VOTES.GUILDID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILDID }, true);
     public static final ForeignKey<WarningsRecord, GuildsRecord> WARNINGS__WARNINGS_GUILDID_FKEY = Internal.createForeignKey(Warnings.WARNINGS, DSL.name("warnings_guildid_fkey"), new TableField[] { Warnings.WARNINGS.GUILDID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILDID }, true);
 }

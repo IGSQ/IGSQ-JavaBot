@@ -3,10 +3,10 @@ package org.igsq.igsqbot.entities.database;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.jooq.Tables;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 
 import java.sql.Connection;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class Warning
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(Warnings.WARNINGS)
+					.insertInto(Tables.WARNINGS)
 					.columns(Warnings.WARNINGS.GUILDID, Warnings.WARNINGS.USERID, Warnings.WARNINGS.WARNTEXT)
 					.values(guildId, userId, reason);
 			context.execute();
@@ -52,7 +52,7 @@ public class Warning
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Warnings.WARNINGS)
+					.deleteFrom(Tables.WARNINGS)
 					.where(Warnings.WARNINGS.WARNID.eq(key));
 			context.execute();
 			context.close();
@@ -63,9 +63,9 @@ public class Warning
 		}
 	}
 
-	public List<Warn> get()
+	public List<org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings> get()
 	{
-		List<Warn> result = new ArrayList<>();
+		List<org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings> result = new ArrayList<>();
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
@@ -75,7 +75,7 @@ public class Warning
 
 			for(var value : context.fetch())
 			{
-				result.add(new Warn(value.getWarnid(), value.getUserid(), value.getGuildid(), value.getTimestamp(), value.getWarntext()));
+				result.add(new org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings(value.getWarnid(), value.getUserid(), value.getGuildid(), value.getTimestamp(), value.getWarntext()));
 			}
 			context.close();
 		}
@@ -87,7 +87,7 @@ public class Warning
 		return result;
 	}
 
-	public Warn getById(long warnId)
+	public org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings getById(long warnId)
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
@@ -100,7 +100,7 @@ public class Warning
 			if(!result.isEmpty())
 			{
 				var warn = result.get(0);
-				return new Warn(warn.getWarnid(), warn.getUserid(), warn.getGuildid(), warn.getTimestamp(), warn.getWarntext());
+				return new org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings(warn.getWarnid(), warn.getUserid(), warn.getGuildid(), warn.getTimestamp(), warn.getWarntext());
 			}
 			else
 			{
@@ -111,49 +111,6 @@ public class Warning
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 			return null;
-		}
-	}
-
-	public static class Warn
-	{
-		private final long warnId;
-		private final long userId;
-		private final LocalDateTime timeStamp;
-		private final String warnText;
-		private final long guildId;
-
-		public long getWarnId()
-		{
-			return warnId;
-		}
-
-		public long getUserId()
-		{
-			return userId;
-		}
-
-		public long getGuildId()
-		{
-			return guildId;
-		}
-
-		public LocalDateTime getTimeStamp()
-		{
-			return timeStamp;
-		}
-
-		public String getWarnText()
-		{
-			return warnText;
-		}
-
-		public Warn(long warnId, long userId, long guildId, LocalDateTime timeStamp, String warnText)
-		{
-			this.warnId = warnId;
-			this.userId = userId;
-			this.guildId = guildId;
-			this.timeStamp = timeStamp;
-			this.warnText = warnText;
 		}
 	}
 }

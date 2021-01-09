@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.tables.records.ReportsRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -20,8 +22,6 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.ReportsRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -49,9 +49,9 @@ public class Reports extends TableImpl<ReportsRecord> {
     }
 
     /**
-     * The column <code>public.reports.reportid</code>.
+     * The column <code>public.reports.id</code>.
      */
-    public final TableField<ReportsRecord, Long> REPORTID = createField(DSL.name("reportid"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<ReportsRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.reports.messageid</code>.
@@ -138,7 +138,7 @@ public class Reports extends TableImpl<ReportsRecord> {
 
     @Override
     public List<UniqueKey<ReportsRecord>> getKeys() {
-        return Arrays.<UniqueKey<ReportsRecord>>asList(Keys.REPORTS_PKEY, Keys.REPORTS_MESSAGEID_KEY, Keys.REPORTS_REPORTMESSAGEID_KEY, Keys.REPORTS_CHANNELID_KEY);
+        return Arrays.<UniqueKey<ReportsRecord>>asList(Keys.REPORTS_PKEY, Keys.REPORTS_MESSAGEID_KEY, Keys.REPORTS_REPORTMESSAGEID_KEY);
     }
 
     @Override

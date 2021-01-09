@@ -16,7 +16,7 @@ public class Reports implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long          reportid;
+    private final Long          id;
     private final Long          messageid;
     private final Long          reportmessageid;
     private final Long          channelid;
@@ -26,7 +26,7 @@ public class Reports implements Serializable {
     private final String        reporttext;
 
     public Reports(Reports value) {
-        this.reportid = value.reportid;
+        this.id = value.id;
         this.messageid = value.messageid;
         this.reportmessageid = value.reportmessageid;
         this.channelid = value.channelid;
@@ -37,7 +37,7 @@ public class Reports implements Serializable {
     }
 
     public Reports(
-        Long          reportid,
+        Long          id,
         Long          messageid,
         Long          reportmessageid,
         Long          channelid,
@@ -46,7 +46,7 @@ public class Reports implements Serializable {
         LocalDateTime timestamp,
         String        reporttext
     ) {
-        this.reportid = reportid;
+        this.id = id;
         this.messageid = messageid;
         this.reportmessageid = reportmessageid;
         this.channelid = channelid;
@@ -57,10 +57,10 @@ public class Reports implements Serializable {
     }
 
     /**
-     * Getter for <code>public.reports.reportid</code>.
+     * Getter for <code>public.reports.id</code>.
      */
-    public Long getReportid() {
-        return this.reportid;
+    public Long getId() {
+        return this.id;
     }
 
     /**
@@ -116,7 +116,7 @@ public class Reports implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("Reports (");
 
-        sb.append(reportid);
+        sb.append(id);
         sb.append(", ").append(messageid);
         sb.append(", ").append(reportmessageid);
         sb.append(", ").append(channelid);

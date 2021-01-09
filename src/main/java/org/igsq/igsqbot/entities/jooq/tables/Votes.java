@@ -4,24 +4,23 @@
 package org.igsq.igsqbot.entities.jooq.tables;
 
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -49,44 +48,29 @@ public class Votes extends TableImpl<VotesRecord> {
     }
 
     /**
+     * The column <code>public.votes.id</code>.
+     */
+    public final TableField<VotesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+
+    /**
      * The column <code>public.votes.voteid</code>.
      */
-    public final TableField<VotesRecord, Long> VOTEID = createField(DSL.name("voteid"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<VotesRecord, Long> VOTEID = createField(DSL.name("voteid"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.votes.guildid</code>.
+     * The column <code>public.votes.allowedroles</code>.
      */
-    public final TableField<VotesRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<VotesRecord, Long[]> ALLOWEDROLES = createField(DSL.name("allowedroles"), SQLDataType.BIGINT.getArrayDataType(), this, "");
 
     /**
-     * The column <code>public.votes.timestamp</code>.
+     * The column <code>public.votes.receivedvotes</code>.
      */
-    public final TableField<VotesRecord, LocalDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<VotesRecord, Integer[]> RECEIVEDVOTES = createField(DSL.name("receivedvotes"), SQLDataType.INTEGER.getArrayDataType(), this, "");
 
     /**
-     * The column <code>public.votes.topic</code>.
+     * The column <code>public.votes.maxvotes</code>.
      */
-    public final TableField<VotesRecord, String> TOPIC = createField(DSL.name("topic"), SQLDataType.CLOB.nullable(false), this, "");
-
-    /**
-     * The column <code>public.votes.optionone</code>.
-     */
-    public final TableField<VotesRecord, String> OPTIONONE = createField(DSL.name("optionone"), SQLDataType.CLOB.nullable(false), this, "");
-
-    /**
-     * The column <code>public.votes.optiontwo</code>.
-     */
-    public final TableField<VotesRecord, String> OPTIONTWO = createField(DSL.name("optiontwo"), SQLDataType.CLOB.nullable(false), this, "");
-
-    /**
-     * The column <code>public.votes.votecountone</code>.
-     */
-    public final TableField<VotesRecord, Integer> VOTECOUNTONE = createField(DSL.name("votecountone"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>public.votes.votecounttwo</code>.
-     */
-    public final TableField<VotesRecord, Integer> VOTECOUNTTWO = createField(DSL.name("votecounttwo"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.INTEGER)), this, "");
+    public final TableField<VotesRecord, Integer> MAXVOTES = createField(DSL.name("maxvotes"), SQLDataType.INTEGER.nullable(false), this, "");
 
     private Votes(Name alias, Table<VotesRecord> aliased) {
         this(alias, aliased, null);
@@ -138,16 +122,7 @@ public class Votes extends TableImpl<VotesRecord> {
 
     @Override
     public List<UniqueKey<VotesRecord>> getKeys() {
-        return Arrays.<UniqueKey<VotesRecord>>asList(Keys.VOTES_PKEY, Keys.VOTES_GUILDID_KEY);
-    }
-
-    @Override
-    public List<ForeignKey<VotesRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<VotesRecord, ?>>asList(Keys.VOTES__VOTES_GUILDID_FKEY);
-    }
-
-    public Guilds guilds() {
-        return new Guilds(this, Keys.VOTES__VOTES_GUILDID_FKEY);
+        return Arrays.<UniqueKey<VotesRecord>>asList(Keys.VOTES_PKEY);
     }
 
     @Override
@@ -177,11 +152,11 @@ public class Votes extends TableImpl<VotesRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, Long, LocalDateTime, String, String, String, Integer, Integer> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row5<Long, Long, Long[], Integer[], Integer> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

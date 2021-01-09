@@ -23,17 +23,17 @@ public class MutesRecord extends UpdatableRecordImpl<MutesRecord> implements Rec
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.mutes.muteid</code>.
+     * Setter for <code>public.mutes.id</code>.
      */
-    public MutesRecord setMuteid(Long value) {
+    public MutesRecord setId(Long value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.mutes.muteid</code>.
+     * Getter for <code>public.mutes.id</code>.
      */
-    public Long getMuteid() {
+    public Long getId() {
         return (Long) get(0);
     }
 
@@ -107,7 +107,7 @@ public class MutesRecord extends UpdatableRecordImpl<MutesRecord> implements Rec
 
     @Override
     public Field<Long> field1() {
-        return Mutes.MUTES.MUTEID;
+        return Mutes.MUTES.ID;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class MutesRecord extends UpdatableRecordImpl<MutesRecord> implements Rec
 
     @Override
     public Long component1() {
-        return getMuteid();
+        return getId();
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MutesRecord extends UpdatableRecordImpl<MutesRecord> implements Rec
 
     @Override
     public Long value1() {
-        return getMuteid();
+        return getId();
     }
 
     @Override
@@ -167,7 +167,7 @@ public class MutesRecord extends UpdatableRecordImpl<MutesRecord> implements Rec
 
     @Override
     public MutesRecord value1(Long value) {
-        setMuteid(value);
+        setId(value);
         return this;
     }
 
@@ -212,10 +212,10 @@ public class MutesRecord extends UpdatableRecordImpl<MutesRecord> implements Rec
     /**
      * Create a detached, initialised MutesRecord
      */
-    public MutesRecord(Long muteid, Long userid, Long guildid, LocalDateTime muteduntil) {
+    public MutesRecord(Long id, Long userid, Long guildid, LocalDateTime muteduntil) {
         super(Mutes.MUTES);
 
-        setMuteid(muteid);
+        setId(id);
         setUserid(userid);
         setGuildid(guildid);
         setMuteduntil(muteduntil);

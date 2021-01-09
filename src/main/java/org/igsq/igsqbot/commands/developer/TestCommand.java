@@ -11,7 +11,7 @@ public class TestCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		//TEST METHOD
+		// TEST METHOD
 	}
 
 	@Override

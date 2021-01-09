@@ -15,35 +15,35 @@ public class Reminders implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long   reminderid;
+    private final Long   id;
     private final Long   guildid;
     private final Long   userid;
     private final String remindertext;
 
     public Reminders(Reminders value) {
-        this.reminderid = value.reminderid;
+        this.id = value.id;
         this.guildid = value.guildid;
         this.userid = value.userid;
         this.remindertext = value.remindertext;
     }
 
     public Reminders(
-        Long   reminderid,
+        Long   id,
         Long   guildid,
         Long   userid,
         String remindertext
     ) {
-        this.reminderid = reminderid;
+        this.id = id;
         this.guildid = guildid;
         this.userid = userid;
         this.remindertext = remindertext;
     }
 
     /**
-     * Getter for <code>public.reminders.reminderid</code>.
+     * Getter for <code>public.reminders.id</code>.
      */
-    public Long getReminderid() {
-        return this.reminderid;
+    public Long getId() {
+        return this.id;
     }
 
     /**
@@ -71,7 +71,7 @@ public class Reminders implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("Reminders (");
 
-        sb.append(reminderid);
+        sb.append(id);
         sb.append(", ").append(guildid);
         sb.append(", ").append(userid);
         sb.append(", ").append(remindertext);

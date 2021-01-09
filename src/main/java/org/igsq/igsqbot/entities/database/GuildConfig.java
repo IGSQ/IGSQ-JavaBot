@@ -98,4 +98,9 @@ public class GuildConfig
 			return -1;
 		}
 	}
+
+	public long getMutedRole()
+	{
+		return getValue(Guilds.GUILDS.MUTEDROLE);
+	}
 }

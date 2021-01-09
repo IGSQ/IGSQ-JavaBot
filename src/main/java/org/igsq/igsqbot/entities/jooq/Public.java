@@ -7,12 +7,12 @@ package org.igsq.igsqbot.entities.jooq;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jooq.Catalog;
-import org.jooq.Sequence;
-import org.jooq.Table;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 import org.igsq.igsqbot.entities.jooq.tables.Mutes;
 import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
+import org.jooq.Catalog;
+import org.jooq.Sequence;
+import org.jooq.Table;
 import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.igsq.igsqbot.entities.jooq.tables.Roles;
@@ -90,12 +90,12 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Sequence<?>> getSequences() {
         return Arrays.<Sequence<?>>asList(
-            Sequences.MUTES_MUTEID_SEQ,
-            Sequences.REACTION_ROLES_REACTIONROLEID_SEQ,
-            Sequences.REMINDERS_REMINDERID_SEQ,
-            Sequences.REPORTS_REPORTID_SEQ,
+            Sequences.MUTES_ID_SEQ,
+            Sequences.REACTION_ROLES_ID_SEQ,
+            Sequences.REMINDERS_ID_SEQ,
+            Sequences.REPORTS_ID_SEQ,
             Sequences.ROLES_ID_SEQ,
-            Sequences.VOTES_VOTEID_SEQ,
+            Sequences.VOTES_ID_SEQ,
             Sequences.WARNINGS_WARNID_SEQ);
     }
 

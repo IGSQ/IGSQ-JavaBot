@@ -19,7 +19,6 @@ dependencies
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'io.github.classgraph:classgraph:4.8.98'
     implementation 'net.jodah:expiringmap:0.5.9'
-    implementation 'com.vdurmont:emoji-java:5.1.1'
 
     implementation 'com.zaxxer:HikariCP:3.4.5'
     implementation 'org.postgresql:postgresql:42.2.18'

@@ -4,8 +4,12 @@ import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.pojos.Mutes;
 
 import java.sql.Connection;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseUtils
 {
@@ -46,5 +50,27 @@ public class DatabaseUtils
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 		}
+	}
+
+	public static List<Mutes> getExpiredMutes(IGSQBot igsqBot)
+	{
+		List<Mutes> result = new ArrayList<>();
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection).selectFrom(Tables.MUTES);
+
+			for(var value : context.fetch())
+			{
+				if(value.getMuteduntil().isBefore(LocalDateTime.now()))
+				{
+					result.add(new Mutes(value.getId(), value.getUserid(), value.getGuildid(), value.getMuteduntil()));
+				}
+			}
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+		}
+		return result;
 	}
 }

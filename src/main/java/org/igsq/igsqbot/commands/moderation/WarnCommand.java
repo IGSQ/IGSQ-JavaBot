@@ -8,12 +8,9 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.database.Warning;
-import org.igsq.igsqbot.util.ArrayUtils;
-import org.igsq.igsqbot.util.CommandUtils;
-import org.igsq.igsqbot.util.EmbedUtils;
-import org.igsq.igsqbot.util.Parser;
+import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
+import org.igsq.igsqbot.util.*;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.OptionalInt;
@@ -44,17 +41,16 @@ public class WarnCommand extends Command
 			}
 			new Parser(args.get(0), ctx).parseAsUser(user ->
 			{
-				List<Warning.Warn> warnings = showWarnings(user, guild, ctx);
+				List<Warnings> warnings = showWarnings(user, guild, ctx);
 				StringBuilder stringBuilder = new StringBuilder();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
 				warnings.forEach(warn -> stringBuilder
 						.append("**ID: ")
-						.append(warn.getWarnId())
+						.append(warn.getWarnid())
 						.append("** ")
-						.append(warn.getWarnText())
+						.append(warn.getWarntext())
 						.append(" - ")
-						.append(warn.getTimeStamp().format(formatter))
+						.append(StringUtils.parseDateTime(warn.getTimestamp()))
 						.append("\n"));
 
 				channel.sendMessage(new EmbedBuilder()
@@ -90,7 +86,7 @@ public class WarnCommand extends Command
 								}
 								else
 								{
-									Warning.Warn warn = new Warning(ctx.getGuild(), user, ctx.getIGSQBot()).getById(warningNumber.getAsInt());
+									Warnings warn = new Warning(ctx.getGuild(), user, ctx.getIGSQBot()).getById(warningNumber.getAsInt());
 
 									if(warn == null)
 									{
@@ -98,8 +94,8 @@ public class WarnCommand extends Command
 									}
 									else
 									{
-										removeWarning(user, guild, ctx, warn.getWarnId());
-										ctx.replySuccess("Removed warning: " + warn.getWarnText());
+										removeWarning(user, guild, ctx, warn.getWarnid());
+										ctx.replySuccess("Removed warning: " + warn.getWarntext());
 									}
 								}
 							});
@@ -129,7 +125,7 @@ public class WarnCommand extends Command
 		ctx.replySuccess("Warned " + user.getAsMention() + " for reason: " + reason);
 	}
 
-	private List<Warning.Warn> showWarnings(User user, Guild guild, CommandContext ctx)
+	private List<Warnings> showWarnings(User user, Guild guild, CommandContext ctx)
 	{
 		return new Warning(guild, user, ctx.getIGSQBot()).get();
 	}

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.MutesRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -22,6 +21,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -49,9 +49,9 @@ public class Mutes extends TableImpl<MutesRecord> {
     }
 
     /**
-     * The column <code>public.mutes.muteid</code>.
+     * The column <code>public.mutes.id</code>.
      */
-    public final TableField<MutesRecord, Long> MUTEID = createField(DSL.name("muteid"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<MutesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.mutes.userid</code>.

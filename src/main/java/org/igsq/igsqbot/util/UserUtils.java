@@ -14,9 +14,9 @@ public class UserUtils
 		//Overrides the default, public constructor
 	}
 
-	public static List<String> getRoleIds(Member member)
+	public static List<Long> getRoleIds(Member member)
 	{
-		return member.getRoles().stream().map(Role::getId).collect(Collectors.toList());
+		return member.getRoles().stream().map(Role::getIdLong).collect(Collectors.toList());
 	}
 
 	public static boolean basicPermCheck(Member user, TextChannel channel)
