@@ -15,7 +15,7 @@ repositories
 }
 dependencies
 {
-    implementation 'net.dv8tion:JDA:4.2.0_225'
+    implementation 'net.dv8tion:JDA:4.2.0_227'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'io.github.classgraph:classgraph:4.8.98'
     implementation 'net.jodah:expiringmap:0.5.9'
