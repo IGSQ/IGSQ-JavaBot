@@ -7,8 +7,7 @@ package org.igsq.igsqbot.entities.jooq.tables;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.RolesRecord;
+import org.igsq.igsqbot.entities.jooq.Keys;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -20,7 +19,8 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
-import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.tables.records.RolesRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -117,7 +117,7 @@ public class Roles extends TableImpl<RolesRecord> {
 
     @Override
     public List<UniqueKey<RolesRecord>> getKeys() {
-        return Arrays.<UniqueKey<RolesRecord>>asList(Keys.ROLES_PKEY, Keys.ROLES_USERID_KEY, Keys.ROLES_GUILDID_KEY);
+        return Arrays.<UniqueKey<RolesRecord>>asList(Keys.ROLES_PKEY);
     }
 
     @Override

@@ -4,11 +4,11 @@
 package org.igsq.igsqbot.entities.jooq.tables;
 
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
+import org.igsq.igsqbot.entities.jooq.Keys;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -20,7 +20,8 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
-import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -58,19 +59,19 @@ public class Votes extends TableImpl<VotesRecord> {
     public final TableField<VotesRecord, Long> VOTEID = createField(DSL.name("voteid"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.votes.allowedroles</code>.
+     * The column <code>public.votes.messageid</code>.
      */
-    public final TableField<VotesRecord, Long[]> ALLOWEDROLES = createField(DSL.name("allowedroles"), SQLDataType.BIGINT.getArrayDataType(), this, "");
+    public final TableField<VotesRecord, Long> MESSAGEID = createField(DSL.name("messageid"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.votes.receivedvotes</code>.
+     * The column <code>public.votes.option</code>.
      */
-    public final TableField<VotesRecord, Integer[]> RECEIVEDVOTES = createField(DSL.name("receivedvotes"), SQLDataType.INTEGER.getArrayDataType(), this, "");
+    public final TableField<VotesRecord, String> OPTION = createField(DSL.name("option"), SQLDataType.CHAR(1).nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.CHAR)), this, "");
 
     /**
-     * The column <code>public.votes.maxvotes</code>.
+     * The column <code>public.votes.timestamp</code>.
      */
-    public final TableField<VotesRecord, Integer> MAXVOTES = createField(DSL.name("maxvotes"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<VotesRecord, LocalDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     private Votes(Name alias, Table<VotesRecord> aliased) {
         this(alias, aliased, null);
@@ -156,7 +157,7 @@ public class Votes extends TableImpl<VotesRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, Long[], Integer[], Integer> fieldsRow() {
+    public Row5<Long, Long, Long, String, LocalDateTime> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 }

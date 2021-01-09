@@ -7,12 +7,12 @@ package org.igsq.igsqbot.entities.jooq;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.igsq.igsqbot.entities.jooq.tables.Mutes;
-import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.jooq.Catalog;
 import org.jooq.Sequence;
 import org.jooq.Table;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.Mutes;
+import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.igsq.igsqbot.entities.jooq.tables.Roles;

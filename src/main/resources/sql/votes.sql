@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS votes
 (
-    id BIGSERIAL PRIMARY KEY NOT NULL,
+    id BIGSERIAL NOT NULL PRIMARY KEY,
     voteId BIGINT NOT NULL,
-    allowedRoles BIGINT[] NOT NULL,
-    receivedVotes INT[] NOT NULL,
-    maxVotes INT NOT NULL
+    messageId BIGINT NOT NULL,
+    option CHAR NOT NULL DEFAULT -1,
+    timeStamp TIMESTAMP NOT NULL
 );

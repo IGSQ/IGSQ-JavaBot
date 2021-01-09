@@ -13,6 +13,7 @@ import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MuteCommand extends Command
 		{
 			new Parser(args.get(0), ctx).parseAsUser(user ->
 			{
-				LocalDateTime muteTime = CommandUtils.parseTime(args.get(1));
+				LocalDateTime muteTime = new Parser(args.get(1), ctx).parseAsDuration();
 				MessageChannel channel = ctx.getChannel();
 				User author = ctx.getAuthor();
 				User selfUser = ctx.getIGSQBot().getSelfUser();
@@ -46,29 +47,22 @@ public class MuteCommand extends Command
 				{
 					CommandUtils.interactionCheck(author, user, ctx, () ->
 					{
-						if(muteTime == null)
+						UserUtils.getMemberFromUser(user, guild).queue(member ->
 						{
-							EmbedUtils.sendError(channel, "INVALID TIME ENTERED");
-						}
-						else
-						{
-							UserUtils.getMemberFromUser(user, guild).queue(member ->
-							{
-								List<Long> roleIds = UserUtils.getRoleIds(member);
-								guild.modifyMemberRoles(member, mutedRole).queue(
-										success ->
-										{
-											new Mute(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot()).add();
-											ctx.replySuccess("Muted " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
-										},
-										error ->
-										{
-											ctx.replyError("An error occurred during mute. Check members roles");
-											new ErrorHandler(new Exception(error));
-										}
-								);
-							});
-						}
+							List<Long> roleIds = UserUtils.getRoleIds(member);
+							guild.modifyMemberRoles(member, mutedRole).queue(
+									success ->
+									{
+										new Mute(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot()).add();
+										ctx.replySuccess("Muted " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
+									},
+									error ->
+									{
+										ctx.replyError("An error occurred during mute. Check members roles");
+										new ErrorHandler(new Exception(error));
+									}
+							);
+						});
 					});
 				});
 			});
@@ -84,7 +78,7 @@ public class MuteCommand extends Command
 	@Override
 	public List<String> getAliases()
 	{
-		return Collections.singletonList("mute");
+		return Arrays.asList("mute", "tempban");
 	}
 
 	@Override

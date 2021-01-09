@@ -3,10 +3,11 @@ package org.igsq.igsqbot.entities.database;
 import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 import org.jooq.Field;
 
 import java.sql.Connection;
+
+import static org.igsq.igsqbot.entities.jooq.tables.Guilds.GUILDS;
 
 public class GuildConfig
 {
@@ -36,11 +37,11 @@ public class GuildConfig
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.select(Guilds.GUILDS.PREFIX)
-					.from(Guilds.GUILDS)
-					.where(Guilds.GUILDS.GUILDID.eq(guildId));
+					.select(GUILDS.PREFIX)
+					.from(GUILDS)
+					.where(GUILDS.GUILDID.eq(guildId));
 
-			String result = context.fetchOne(Guilds.GUILDS.PREFIX);
+			String result = context.fetchOne(GUILDS.PREFIX);
 			context.close();
 			return result;
 		}
@@ -56,9 +57,9 @@ public class GuildConfig
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.update(Guilds.GUILDS)
-					.set(Guilds.GUILDS.PREFIX, prefix)
-					.where(Guilds.GUILDS.GUILDID.eq(guildId));
+					.update(GUILDS)
+					.set(GUILDS.PREFIX, prefix)
+					.where(GUILDS.GUILDID.eq(guildId));
 
 			context.execute();
 			context.close();
@@ -71,12 +72,12 @@ public class GuildConfig
 
 	public long getReportChannel()
 	{
-		return getValue(Guilds.GUILDS.REPORTCHANNEL);
+		return getValue(GUILDS.REPORTCHANNEL);
 	}
 
 	public long getLogChannel()
 	{
-		return getValue(Guilds.GUILDS.LOGCHANNEL);
+		return getValue(GUILDS.LOGCHANNEL);
 	}
 
 	private long getValue(Field<?> value)
@@ -85,8 +86,8 @@ public class GuildConfig
 		{
 			var context = igsqBot.getDatabaseManager().getContext(connection)
 					.select(value)
-					.from(Guilds.GUILDS)
-					.where(Guilds.GUILDS.GUILDID.eq(guildId));
+					.from(GUILDS)
+					.where(GUILDS.GUILDID.eq(guildId));
 
 			long result = Long.parseLong(String.valueOf(context.fetchOne(value)));
 			context.close();
@@ -99,8 +100,13 @@ public class GuildConfig
 		}
 	}
 
+	public long getVoteChannel()
+	{
+		return getValue(GUILDS.VOTECHANNEL);
+	}
+
 	public long getMutedRole()
 	{
-		return getValue(Guilds.GUILDS.MUTEDROLE);
+		return getValue(GUILDS.MUTEDROLE);
 	}
 }

@@ -5,7 +5,7 @@ package org.igsq.igsqbot.entities.jooq.tables.pojos;
 
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.time.LocalDateTime;
 
 
 /**
@@ -16,32 +16,32 @@ public class Votes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long      id;
-    private final Long      voteid;
-    private final Long[]    allowedroles;
-    private final Integer[] receivedvotes;
-    private final Integer   maxvotes;
+    private final Long          id;
+    private final Long          voteid;
+    private final Long          messageid;
+    private final String        option;
+    private final LocalDateTime timestamp;
 
     public Votes(Votes value) {
         this.id = value.id;
         this.voteid = value.voteid;
-        this.allowedroles = value.allowedroles;
-        this.receivedvotes = value.receivedvotes;
-        this.maxvotes = value.maxvotes;
+        this.messageid = value.messageid;
+        this.option = value.option;
+        this.timestamp = value.timestamp;
     }
 
     public Votes(
-        Long      id,
-        Long      voteid,
-        Long[]    allowedroles,
-        Integer[] receivedvotes,
-        Integer   maxvotes
+        Long          id,
+        Long          voteid,
+        Long          messageid,
+        String        option,
+        LocalDateTime timestamp
     ) {
         this.id = id;
         this.voteid = voteid;
-        this.allowedroles = allowedroles;
-        this.receivedvotes = receivedvotes;
-        this.maxvotes = maxvotes;
+        this.messageid = messageid;
+        this.option = option;
+        this.timestamp = timestamp;
     }
 
     /**
@@ -59,24 +59,24 @@ public class Votes implements Serializable {
     }
 
     /**
-     * Getter for <code>public.votes.allowedroles</code>.
+     * Getter for <code>public.votes.messageid</code>.
      */
-    public Long[] getAllowedroles() {
-        return this.allowedroles;
+    public Long getMessageid() {
+        return this.messageid;
     }
 
     /**
-     * Getter for <code>public.votes.receivedvotes</code>.
+     * Getter for <code>public.votes.option</code>.
      */
-    public Integer[] getReceivedvotes() {
-        return this.receivedvotes;
+    public String getOption() {
+        return this.option;
     }
 
     /**
-     * Getter for <code>public.votes.maxvotes</code>.
+     * Getter for <code>public.votes.timestamp</code>.
      */
-    public Integer getMaxvotes() {
-        return this.maxvotes;
+    public LocalDateTime getTimestamp() {
+        return this.timestamp;
     }
 
     @Override
@@ -85,9 +85,9 @@ public class Votes implements Serializable {
 
         sb.append(id);
         sb.append(", ").append(voteid);
-        sb.append(", ").append(Arrays.toString(allowedroles));
-        sb.append(", ").append(Arrays.toString(receivedvotes));
-        sb.append(", ").append(maxvotes);
+        sb.append(", ").append(messageid);
+        sb.append(", ").append(option);
+        sb.append(", ").append(timestamp);
 
         sb.append(")");
         return sb.toString();

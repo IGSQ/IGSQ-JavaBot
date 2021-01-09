@@ -7,7 +7,6 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -27,32 +26,6 @@ public class CommandUtils
 	public static boolean isArgsEmbedCompatible(List<String> args)
 	{
 		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).count() > EmbedUtils.CHARACTER_LIMIT;
-	}
-
-	public static LocalDateTime parseTime(String offset)
-	{
-		if(offset.length() > 3 || offset.isEmpty() || !offset.matches("([0-9][mhdMHD]|[0-9][0-9][mhdMHD])"))
-		{
-			return null;
-		}
-
-		String unit = offset.substring(offset.length() - 1);
-		long quantity = Long.parseLong(offset.substring(0, offset.length() - 1));
-		LocalDateTime result = LocalDateTime.now();
-
-		if(quantity == 0)
-		{
-			return null;
-		}
-
-		return switch(unit.toLowerCase())
-				{
-					case "m" -> result.plusMinutes(quantity);
-					case "h" -> result.plusHours(quantity);
-					case "d" -> result.plusDays(quantity);
-					default -> null;
-				};
-
 	}
 
 	public static boolean isValidCommand(String message, long guildId, IGSQBot igsqBot)

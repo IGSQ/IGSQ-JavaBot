@@ -4,14 +4,28 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.entities.CommandContext;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Parser
 {
-	private static final Pattern ID_REGEX = Pattern.compile("(\\d{17,18})");
+	public static final Pattern ID_REGEX = Pattern.compile("(\\d{17,18})");
+	public static final Pattern periodPattern = Pattern.compile(
+			"([0-9]+) ?-?\\.?,?" +
+					"(" +
+					"mo|mnth|month|months" +
+					"|w|wk|wks|weeks" +
+					"|h|hrs|hours" +
+					"|d|day|days" +
+					"|m|min|mins|minutes" +
+					"|s|sec|secs|seconds" +
+					")");
 	private final String arg;
 	private final CommandContext ctx;
 
@@ -19,6 +33,42 @@ public class Parser
 	{
 		this.arg = arg;
 		this.ctx = ctx;
+	}
+
+	public List<String> parseAsSlashArgs()
+	{
+		return Arrays.stream(arg.split("/")).collect(Collectors.toList());
+	}
+
+	public LocalDateTime parseAsDuration()
+	{
+		Matcher matcher = periodPattern.matcher(arg.toLowerCase());
+		LocalDateTime offset = LocalDateTime.now();
+		while(matcher.find())
+		{
+			int num = Integer.parseInt(matcher.group(1));
+			if(num == 0)
+			{
+				continue;
+			}
+
+			String typ = matcher.group(2);
+			switch(typ)
+			{
+				case "s", "sec", "secs", "seconds" -> offset = offset.plusSeconds(num);
+				case "m", "min", "mins", "minutes" -> offset = offset.plusMinutes(num);
+				case "h", "hrs", "hours" -> offset = offset.plusHours(num);
+				case "d", "day", "days" -> offset = offset.plusDays(num);
+				case "w", "wk", "wks", "weeks" -> offset = offset.plusWeeks(num);
+				case "mo", "mnth", "month", "months" -> offset = offset.plusMonths(num);
+			}
+		}
+
+		if(offset.equals(LocalDateTime.now()))
+		{
+			ctx.replyError("Invalid time entered.");
+		}
+		return offset;
 	}
 
 	public OptionalInt parseAsUnsignedInt()
@@ -29,7 +79,7 @@ public class Parser
 		}
 		catch(NumberFormatException exception)
 		{
-			ctx.replyError("Entered value is either negative or not a number");
+			ctx.replyError("Enter a whole number greater than 0, eg: 1");
 			return OptionalInt.empty();
 		}
 	}

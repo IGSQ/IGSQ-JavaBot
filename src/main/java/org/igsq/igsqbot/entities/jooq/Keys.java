@@ -47,9 +47,7 @@ public class Keys {
     public static final UniqueKey<ReportsRecord> REPORTS_MESSAGEID_KEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_messageid_key"), new TableField[] { Reports.REPORTS.MESSAGEID }, true);
     public static final UniqueKey<ReportsRecord> REPORTS_PKEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_pkey"), new TableField[] { Reports.REPORTS.ID }, true);
     public static final UniqueKey<ReportsRecord> REPORTS_REPORTMESSAGEID_KEY = Internal.createUniqueKey(Reports.REPORTS, DSL.name("reports_reportmessageid_key"), new TableField[] { Reports.REPORTS.REPORTMESSAGEID }, true);
-    public static final UniqueKey<RolesRecord> ROLES_GUILDID_KEY = Internal.createUniqueKey(Roles.ROLES, DSL.name("roles_guildid_key"), new TableField[] { Roles.ROLES.GUILDID }, true);
     public static final UniqueKey<RolesRecord> ROLES_PKEY = Internal.createUniqueKey(Roles.ROLES, DSL.name("roles_pkey"), new TableField[] { Roles.ROLES.ID }, true);
-    public static final UniqueKey<RolesRecord> ROLES_USERID_KEY = Internal.createUniqueKey(Roles.ROLES, DSL.name("roles_userid_key"), new TableField[] { Roles.ROLES.USERID }, true);
     public static final UniqueKey<VotesRecord> VOTES_PKEY = Internal.createUniqueKey(Votes.VOTES, DSL.name("votes_pkey"), new TableField[] { Votes.VOTES.ID }, true);
     public static final UniqueKey<WarningsRecord> WARNINGS_PKEY = Internal.createUniqueKey(Warnings.WARNINGS, DSL.name("warnings_pkey"), new TableField[] { Warnings.WARNINGS.WARNID }, true);
 
