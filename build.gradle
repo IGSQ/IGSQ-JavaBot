@@ -24,7 +24,7 @@ dependencies {
 
     jooqGenerator 'org.postgresql:postgresql:42.2.18'
     jooqGenerator 'mysql:mysql-connector-java:8.0.22'
-
+}
 jooq {
     version = '3.14.4'
     configurations {
@@ -63,6 +63,5 @@ jooq {
         }
     }
 }
-
 
 compileJava.options.encoding = 'UTF-8'

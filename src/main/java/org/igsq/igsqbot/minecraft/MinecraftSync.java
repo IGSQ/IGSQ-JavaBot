@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.Config;
 import org.igsq.igsqbot.entities.ConfigOption;
 
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class MinecraftSync
 	{
 		if(!minecraft.getDatabaseHandler().isOnline())
 		{
-			igsqbot.getLogger().warn("Minecraft syncing stopped.");
+			igsqbot.getLogger().warn("Minecraft syncing stopped. Database not online.");
 		}
 		else
 		{
@@ -41,36 +42,68 @@ public class MinecraftSync
 
 		if(guild == null)
 		{
-			close();
+			close("Homeserver was null.");
 		}
 		else
 		{
 			guild.loadMembers(member ->
 			{
+				if(member.getUser().isBot())
+				{
+					return;
+				}
+
 				List<String> ranks = member.getRoles().stream()
-						.map(Role::getIdLong)
+						.map(Role::getId)
+						.filter(role -> getRanks().containsKey(role))
 						.map(role -> getRanks().get(role))
 						.collect(Collectors.toList());
 
-				if(!ranks.isEmpty())
+				if(ranks.isEmpty())
 				{
-					String id = member.getId();
-					String username = member.getUser().getAsTag();
-					String nickname = member.getEffectiveName();
-					String role = ranks.get(0);
+					ranks.add("default");
 				}
+
+				Config config = igsqbot.getConfig();
+				MinecraftUser minecraftUser = new MinecraftUser();
+				minecraftUser.setId(member.getId());
+				minecraftUser.setUsername(member.getUser().getAsTag());
+				minecraftUser.setNickname(member.getEffectiveName());
+				minecraftUser.setRole(ranks.get(0));
+
+				minecraftUser.setFounder(hasRole(config.getOption(ConfigOption.FOUNDER).split(","), member));
+				minecraftUser.setBirthday(hasRole(config.getOption(ConfigOption.BIRTHDAY).split(","), member));
+				minecraftUser.setNitroboost(hasRole(config.getOption(ConfigOption.NITROBOOST).split(","), member));
+				minecraftUser.setSupporter(hasRole(config.getOption(ConfigOption.SUPPORTER).split(","), member));
+				minecraftUser.setDeveloper(hasRole(config.getOption(ConfigOption.DEVELOPER).split(","), member));
+
+				int isPresent = MinecraftUtils.isMemberPresent(minecraftUser, minecraft);
+				if(isPresent == -1)
+				{
+					return;
+				}
+
+				if(isPresent == 1)
+				{
+					MinecraftUtils.updateMember(minecraftUser, minecraft);
+				}
+				else
+				{
+					MinecraftUtils.insertMember(minecraftUser, minecraft);
+				}
+
 			});
 		}
 	}
 
-	private int hasRole(long role, Member member)
+	private int hasRole(String role, Member member)
 	{
-		return member.getRoles().stream().map(Role::getIdLong).filter(id -> role == id).count() == 1 ? 1 : 0;
+		return member.getRoles().stream().map(Role::getId).filter(role::equals).count() == 1 ? 1 : 0;
 	}
 
-	private int hasRole(List<Long> roles, Member member)
+	private int hasRole(String[] roles, Member member)
 	{
-		for(Long role : roles)
+		for(String role : roles)
 		{
 			if(hasRole(role, member) == 1)
 			{
@@ -80,18 +113,21 @@ public class MinecraftSync
 		return 0;
 	}
 
-	private Map<Long, String> getRanks()
+	private Map<String, String> getRanks()
 	{
-		Map<Long, String> result = new HashMap<>();
-		for(ConfigOption configOption : ConfigOption.getMinecraftOptions())
+		Map<String, String> result = new HashMap<>();
+		for(ConfigOption configOption : ConfigOption.getRanks())
 		{
 			try
 			{
-				result.put(Long.parseLong(igsqbot.getConfig().getOption(configOption)), configOption.getKey());
+				for(String rank : igsqbot.getConfig().getOption(configOption).split(","))
+				{
+					result.put(rank, configOption.getKey());
+				}
 			}
 			catch(Exception exception)
 			{
-				close();
+				close("An error occurred while loading the ranks.");
 			}
 		}
 		return result;
@@ -101,5 +137,11 @@ public class MinecraftSync
 	{
 		igsqbot.getTaskHandler().cancelTask("minecraftSync", false);
 		igsqbot.getLogger().info("Minecraft syncing stopped.");
+	}
+
+	public void close(String message)
+	{
+		igsqbot.getTaskHandler().cancelTask("minecraftSync", false);
+		igsqbot.getLogger().info("Minecraft syncing stopped. " + message);
 	}
 }

@@ -82,6 +82,7 @@
  - [x] Insert time parsing into Parser
  - [x] Use Properties for config options
  - [x] Help menu
+ - [x] Minecraft syncing (with preparedstatements)
 
 ### **TeaEyes**
 None!
