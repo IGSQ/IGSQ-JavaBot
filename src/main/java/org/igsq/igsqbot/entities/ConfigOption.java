@@ -1,9 +1,14 @@
 package org.igsq.igsqbot.entities;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum ConfigOption
 {
 	TOKEN("token", "token", Filename.BOT),
 	PRIVILEGEDUSERS("privilegedusers", "000000000000000000, 000000000000000001, 000000000000000002", Filename.BOT),
+	HOMESERVER("homeserver", "000000000000000000", Filename.BOT),
 
 	LOCALUSERNAME("localusername", "username", Filename.BOT),
 	LOCALPASSWORD("localpassword", "password", Filename.BOT),
@@ -36,8 +41,6 @@ public enum ConfigOption
 	MOD3("mod3", "000000000000000000, 000000000000000001, 000000000000000002", Filename.MINECRAFT),
 	COUNCIL("council", "000000000000000000, 000000000000000001, 000000000000000002", Filename.MINECRAFT);
 
-
-
 	private final String key;
 	private final String defaultValue;
 	private final Filename filename;
@@ -62,5 +65,12 @@ public enum ConfigOption
 	public String getKey()
 	{
 		return key;
+	}
+
+	public static List<ConfigOption> getMinecraftOptions()
+	{
+		return Arrays.stream(values())
+				.filter(configOption -> configOption.getFilename().equals(Filename.MINECRAFT))
+				.collect(Collectors.toList());
 	}
 }

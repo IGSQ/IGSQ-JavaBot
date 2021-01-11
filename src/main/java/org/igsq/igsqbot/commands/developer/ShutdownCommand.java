@@ -18,6 +18,7 @@ public class ShutdownCommand extends Command
 			return;
 		}
 
+		ctx.getIGSQBot().getDatabaseManager().close();
 		ctx.getIGSQBot().getCommandHandler().close();
 		ctx.getIGSQBot().getTaskHandler().close();
 		ctx.getIGSQBot().getMinecraft().close();

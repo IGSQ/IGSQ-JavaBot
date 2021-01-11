@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
@@ -64,6 +65,13 @@ public class CommandHandler
 	public void handle(MessageReceivedEvent event)
 	{
 		if(event.getAuthor().isBot() || event.isWebhookMessage())
+		{
+			return;
+		}
+
+		Message referencedMessage = event.getMessage().getReferencedMessage();
+
+		if(referencedMessage != null && referencedMessage.getAuthor().equals(igsqBot.getSelfUser()))
 		{
 			return;
 		}

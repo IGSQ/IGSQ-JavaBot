@@ -41,7 +41,7 @@ public class LinkCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return true;
+		return ctx.getIGSQBot().getMinecraft().getDatabaseHandler().isOnline();
 	}
 
 	@Override

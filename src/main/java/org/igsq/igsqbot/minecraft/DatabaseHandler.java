@@ -41,6 +41,11 @@ public class DatabaseHandler
 		}
 	}
 
+	public boolean isOnline()
+	{
+		return pool.isRunning();
+	}
+
 	private HikariDataSource initHikari()
 	{
 		HikariConfig hikariConfig = new HikariConfig();
@@ -52,8 +57,8 @@ public class DatabaseHandler
 				config.getOption(ConfigOption.REMOTEPORT) + "/" +
 				config.getOption(ConfigOption.REMOTEDATABASE));
 
-		hikariConfig.setUsername(igsqBot.getConfig().getOption(ConfigOption.LOCALUSERNAME));
-		hikariConfig.setPassword(igsqBot.getConfig().getOption(ConfigOption.LOCALPASSWORD));
+		hikariConfig.setUsername(igsqBot.getConfig().getOption(ConfigOption.REMOTEUSERNAME));
+		hikariConfig.setPassword(igsqBot.getConfig().getOption(ConfigOption.REMOTEPASSWORD));
 
 		hikariConfig.setMaximumPoolSize(30);
 		hikariConfig.setMinimumIdle(10);
@@ -68,11 +73,11 @@ public class DatabaseHandler
 
 	public DSLContext getContext(Connection connection)
 	{
-		return DSL.using(connection, SQLDialect.POSTGRES);
+		return DSL.using(connection, SQLDialect.MYSQL);
 	}
 
-	public void dropConnection(Connection connection)
+	public void close()
 	{
-		pool.evictConnection(connection);
+		pool.close();
 	}
 }

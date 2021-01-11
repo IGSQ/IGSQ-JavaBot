@@ -117,8 +117,8 @@ public class DatabaseHandler
 		return DSL.using(connection, SQLDialect.POSTGRES);
 	}
 
-	public void dropConnection(Connection connection)
+	public void close()
 	{
-		pool.evictConnection(connection);
+		pool.close();
 	}
 }

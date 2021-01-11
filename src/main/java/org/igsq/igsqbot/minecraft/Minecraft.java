@@ -6,10 +6,18 @@ public class Minecraft
 {
 	private final IGSQBot igsqBot;
 	private DatabaseHandler databaseHandler;
+	private MinecraftSync sync;
 
 	public Minecraft(IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
+		start();
+	}
+
+	public void start()
+	{
+		this.sync = new MinecraftSync(this);
+		sync.start();
 	}
 
 	public DatabaseHandler getDatabaseHandler()
@@ -21,10 +29,14 @@ public class Minecraft
 		return databaseHandler;
 	}
 
+	public IGSQBot getIGSQBot()
+	{
+		return igsqBot;
+	}
+
 	public void close()
 	{
-		igsqBot.getTaskHandler().cancelTask("minecraftClean", false);
-		igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
-		igsqBot.getTaskHandler().cancelTask("2FATask", false);
+		sync.close();
+		databaseHandler.close();
 	}
 }
