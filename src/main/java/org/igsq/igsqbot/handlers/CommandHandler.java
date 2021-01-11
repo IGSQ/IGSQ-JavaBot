@@ -96,10 +96,6 @@ public class CommandHandler
 			{
 				String prefix = new GuildConfig(guild.getIdLong(), igsqBot).getPrefix();
 				content = messageContent.substring(prefix.length()).trim();
-				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
-				{
-					event.getMessage().delete().queue(null, error -> { });
-				}
 			}
 			else
 			{

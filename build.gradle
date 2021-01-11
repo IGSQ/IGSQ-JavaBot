@@ -1,5 +1,4 @@
-plugins
-{
+plugins{
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '6.0.0'
@@ -8,13 +7,11 @@ plugins
 mainClassName = 'org.igsq.igsqbot.Main'
 version '0.0.1'
 sourceCompatibility = 14
-repositories
-{
+repositories {
     jcenter()
     maven { url 'https://jitpack.io' }
 }
-dependencies
-{
+dependencies {
     implementation 'net.dv8tion:JDA:4.2.0_227'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'io.github.classgraph:classgraph:4.8.98'

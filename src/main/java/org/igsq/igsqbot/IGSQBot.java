@@ -13,8 +13,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.Config;
 import org.igsq.igsqbot.entities.ConfigOption;
-import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
-import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
 import org.igsq.igsqbot.events.logging.MessageEventsLogging;
 import org.igsq.igsqbot.events.logging.VoiceEventsLogging;
@@ -29,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +44,7 @@ public class IGSQBot
 	private Config config;
 	private JDA jda;
 
-	public void build() throws LoginException, IOException
+	public void build() throws LoginException
 	{
 		this.shardManager = DefaultShardManagerBuilder
 				.create(getConfig().getOption(ConfigOption.TOKEN),
@@ -60,7 +57,6 @@ public class IGSQBot
 						GatewayIntent.GUILD_MESSAGE_REACTIONS,
 						GatewayIntent.GUILD_VOICE_STATES)
 
-
 				.disableCache(
 						CacheFlag.ACTIVITY,
 						CacheFlag.EMOTE,
@@ -72,9 +68,6 @@ public class IGSQBot
 				.setShardsTotal(-1)
 
 				.addEventListeners(
-						new MessageReactionAdd_Help(this),
-						new MessageReactionAdd_Report(this),
-
 						new MessageEventsMain(this),
 						new GuildEventsMain(this),
 

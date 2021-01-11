@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands.misc;
 
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -14,8 +13,7 @@ public class VerificationCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final MessageChannel channel = ctx.getChannel();
-		final Message message = ctx.getMessage();
+		Message message = ctx.getMessage();
 
 		if(args.size() != 1 || message.getMentionedMembers().isEmpty())
 		{

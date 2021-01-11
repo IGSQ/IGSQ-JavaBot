@@ -22,7 +22,6 @@ public class ShutdownCommand extends Command
 		ctx.getIGSQBot().getTaskHandler().close();
 		ctx.getIGSQBot().getMinecraft().close();
 
-		ctx.replySuccess("IGSQBot going down NOW.");
 		ctx.getJDA().shutdown();
 
 		ctx.getIGSQBot().getLogger().warn("-- IGSQBot was shutdown using shutdown command.");

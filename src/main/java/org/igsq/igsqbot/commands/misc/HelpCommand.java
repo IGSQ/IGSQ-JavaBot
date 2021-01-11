@@ -1,37 +1,37 @@
 package org.igsq.igsqbot.commands.misc;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.Parser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalInt;
 
 public class HelpCommand extends Command
 {
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		MessageChannel channel = ctx.getChannel();
-		EmbedBuilder embed = ctx.getIGSQBot().getHelpPages().get(0);
-
-		if(!args.isEmpty())
+		if(args.size() != 1)
 		{
 			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else
 		{
-			channel.sendMessage(embed.build()).queue
-					(
-							message ->
-							{
-								message.addReaction("U+25C0").queue();
-								message.addReaction("U+25B6").queue();
-								message.addReaction("U+274C").queue();
-							}
-					);
+			OptionalInt page = new Parser(args.get(0), ctx).parseAsUnsignedInt();
+			if(page.isPresent())
+			{
+				if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
+				{
+					ctx.replyError("That page does not exist");
+				}
+				else
+				{
+					ctx.getChannel().sendMessage(ctx.getIGSQBot().getHelpPages().get(page.getAsInt() - 1).build()).queue();
+				}
+			}
 		}
 	}
 
@@ -56,7 +56,7 @@ public class HelpCommand extends Command
 	@Override
 	public String getSyntax()
 	{
-		return "[none]";
+		return "[page]";
 	}
 
 	@Override

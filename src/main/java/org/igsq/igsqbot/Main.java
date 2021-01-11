@@ -18,7 +18,7 @@ public class Main
 			bot.getConfig();
 			bot.build();
 			bot.getJDA();
-			bot.getDatabaseManager().createTables();
+			bot.getDatabaseManager();
 			bot.registerGuilds();
 			bot.getMinecraft();
 			bot.getCommandHandler();

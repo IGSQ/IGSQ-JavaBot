@@ -98,7 +98,7 @@ public class CommandContext
 
 	public boolean isDeveloper()
 	{
-		return true;
+		return List.of(igsqBot.getConfig().getOption(ConfigOption.PRIVILEGEDUSERS).split(",")).contains(getAuthor().getId());
 	}
 
 	public boolean hasPermission(List<Permission> permissions)

@@ -7,7 +7,6 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.database.GuildConfig;
-import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 import java.util.Collections;
@@ -34,14 +33,12 @@ public class PrefixCommand extends Command
 		else if(args.get(0).equalsIgnoreCase("reset"))
 		{
 			ctx.replySuccess("Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
+			guildConfig.setPrefix(Constants.DEFAULT_BOT_PREFIX);
 		}
 		else
 		{
-			if(!ArrayUtils.isValueInArray(new String[]{" "}, args.get(0)))
-			{
-				guildConfig.setPrefix(args.get(0));
-				ctx.replySuccess("My new prefix is `" + args.get(0) + "`");
-			}
+			guildConfig.setPrefix(args.get(0));
+			ctx.replySuccess("My new prefix is `" + args.get(0) + "`");
 		}
 	}
 

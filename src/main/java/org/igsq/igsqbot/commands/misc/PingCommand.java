@@ -29,11 +29,6 @@ public class PingCommand extends Command
 			return;
 		}
 
-		if(CooldownHandler.isOnCooldown(author.getId(), this))
-		{
-			return;
-		}
-
 		CooldownHandler.addCooldown(author.getId(), this);
 		jda.getRestPing().queue(
 				time -> channel.sendMessage(new EmbedBuilder()

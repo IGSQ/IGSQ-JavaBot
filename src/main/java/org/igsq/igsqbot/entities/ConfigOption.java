@@ -11,6 +11,7 @@ public enum ConfigOption
 	LOCALADDRESS("localaddress", "localhost", Filename.BOT),
 	LOCALPORT("localport", "5432", Filename.BOT),
 	LOCALDATABASE("localdatabase", "igsqbot", Filename.BOT),
+	LOCALDRIVER("localdriver", "org.postgresql.Driver", Filename.BOT),
 
 	REMOTEUSERNAME("remoteusername", "username", Filename.BOT),
 	REMOTEPASSWORD("remotepassword", "password", Filename.BOT),
@@ -18,6 +19,7 @@ public enum ConfigOption
 	REMOTEADDRESS("remoteaddress", "0.0.0.0", Filename.BOT),
 	REMOTEPORT("remoteport", "5432", Filename.BOT),
 	REMOTEDATABASE("remotedatabase", "igsqbot", Filename.BOT),
+	REMOTEDRIVER("remotedriver", "org.postgresql.Driver", Filename.BOT),
 
 	DEFAULT("default", "000000000000000000, 000000000000000001, 000000000000000002", Filename.MINECRAFT),
 	RISING("rising", "000000000000000000, 000000000000000001, 000000000000000002", Filename.MINECRAFT),
