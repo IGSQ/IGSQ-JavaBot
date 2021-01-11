@@ -93,6 +93,7 @@ None!
  - [ ] ReactionRoles
  - [ ] Message generation garbage
  - [ ] Minecraft syncing etc
+ - [ ] Change to DataObject for configs
  
  - [ ] Debug logging
  - [ ] Switch to longs for IDs
