@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.Config;
+import org.igsq.igsqbot.entities.ConfigOption;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Help;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -28,8 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +44,13 @@ public class IGSQBot
 	private TaskHandler taskHandler;
 	private DatabaseHandler databaseHandler;
 	private Minecraft minecraft;
+	private Config config;
 	private JDA jda;
 
 	public void build() throws LoginException, IOException
 	{
-
 		this.shardManager = DefaultShardManagerBuilder
-				.create(Files.readString(Path.of("token.txt")).strip(),
+				.create(getConfig().getOption(ConfigOption.TOKEN),
 						GatewayIntent.GUILD_MEMBERS,
 
 						GatewayIntent.DIRECT_MESSAGES,
@@ -187,6 +187,15 @@ public class IGSQBot
 			minecraft = new Minecraft(this);
 		}
 		return minecraft;
+	}
+
+	public Config getConfig()
+	{
+		if(config == null)
+		{
+			config = new Config(this);
+		}
+		return config;
 	}
 
 	public CommandHandler getCommandHandler()

@@ -15,6 +15,7 @@ public class Main
 
 		try
 		{
+			bot.getConfig();
 			bot.build();
 			bot.getJDA();
 			bot.getDatabaseManager().createTables();
@@ -24,15 +25,18 @@ public class Main
 		}
 		catch(LoginException exception)
 		{
-			bot.getLogger().error("The provided token was invalid, please ensure you put a valid token in CONFIG.json", exception);
+			bot.getLogger().error("The provided token was invalid, please ensure you put a valid token in bot.properties");
+			System.exit(-1);
 		}
 		catch(IllegalArgumentException exception)
 		{
-			bot.getLogger().error("A provided value was invalid, please double check the values in CONFIG.json", exception);
+			bot.getLogger().error("A provided value was invalid, please double check the values in bot.properties");
+			System.exit(-1);
 		}
 		catch(Exception exception)
 		{
 			bot.getLogger().error("An unhandled exception occurred", exception);
+			System.exit(-1);
 		}
 
 		bot.getLogger().info("  ___ ___ ___  ___  ___      _     ___ _            _          _ ");

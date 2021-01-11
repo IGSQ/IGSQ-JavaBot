@@ -1,5 +1,5 @@
 # project files
-data/
+*.properties
 
 # eclipse files
 .classpath

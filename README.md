@@ -78,19 +78,19 @@
  - [x] Complex args parser ^
  - [x] Muting (Temp ban) (improve time parsing)
  - [x] Remove emoji-java
+ - [x] Improve time parsing
+ - [x] Insert time parsing into Parser
+ - [x] Use Properties for config options
 
 ### **TeaEyes**
 None!
 
 ### **arynxd**
 
- - [ ] Voting (guild / internal)
+ - [ ] Voting (to be debugged)
  - [ ] ReactionRoles
- - [ ] Improve time parsing (https://github.com/oliver276/OliverBot/blob/dev/src/main/java/me/hexillium/discordbot/commands/util/Reminder.java)
- - [ ] Insert time parsing into Parser
  - [ ] Message generation garbage
  - [ ] Minecraft syncing etc
- - [ ] Use Properties for config options
  
  - [ ] Debug logging
  - [ ] Switch to longs for IDs
