@@ -82,6 +82,7 @@
  - [x] Insert time parsing into Parser
  - [x] Help menu
  - [x] Minecraft syncing (with preparedstatements)
+ - [x] Minecraft syncing etc
 
 ### **TeaEyes**
 None!
@@ -91,8 +92,7 @@ None!
  - [ ] Voting (to be debugged)
  - [ ] ReactionRoles
  - [ ] Message generation garbage
- - [ ] Minecraft syncing etc
- 
+
  - [ ] Debug logging
  - [ ] Switch to longs for IDs
  - [ ] **PREPARE FOR PR**
