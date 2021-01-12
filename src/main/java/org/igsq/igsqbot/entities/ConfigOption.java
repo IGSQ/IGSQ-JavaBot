@@ -4,62 +4,50 @@ import java.util.List;
 
 public enum ConfigOption
 {
-	TOKEN("token", "token", Filename.BOT),
-	PRIVILEGEDUSERS("privilegedusers", "0000000000000", Filename.BOT),
-	HOMESERVER("homeserver", "000000000000000000", Filename.BOT),
+	TOKEN("token", "token"),
+	PRIVILEGEDUSERS("privilegedusers", "0000000000000"),
+	HOMESERVER("homeserver", "000000000000000000"),
 
-	LOCALUSERNAME("localusername", "username", Filename.BOT),
-	LOCALPASSWORD("localpassword", "password", Filename.BOT),
-	LOCALTYPE("localtype", "postgresql", Filename.BOT),
-	LOCALADDRESS("localaddress", "localhost", Filename.BOT),
-	LOCALPORT("localport", "5432", Filename.BOT),
-	LOCALDATABASE("localdatabase", "igsqbot", Filename.BOT),
-	LOCALDRIVER("localdriver", "org.postgresql.Driver", Filename.BOT),
+	LOCALUSERNAME("localusername", "username"),
+	LOCALPASSWORD("localpassword", "password"),
+	LOCALDRIVER("localdriver", "org.postgresql.Driver"),
+	LOCALURL("localurl", "jdbc:type://host:port/database"),
 
-	REMOTEUSERNAME("remoteusername", "username", Filename.BOT),
-	REMOTEPASSWORD("remotepassword", "password", Filename.BOT),
-	REMOTETYPE("remotetype", "postgresql", Filename.BOT),
-	REMOTEADDRESS("remoteaddress", "0.0.0.0", Filename.BOT),
-	REMOTEPORT("remoteport", "5432", Filename.BOT),
-	REMOTEDATABASE("remotedatabase", "igsqbot", Filename.BOT),
-	REMOTEDRIVER("remotedriver", "org.postgresql.Driver", Filename.BOT),
+	REMOTEUSERNAME("remoteusername", "username"),
+	REMOTEPASSWORD("remotepassword", "password"),
+	REMOTEDRIVER("remotedriver", "org.postgresql.Driver"),
+	REMOTEURL("remoteurl", "jdbc:type://host:port/database"),
 
-	DEFAULT("default", "0000000000000", Filename.MINECRAFT),
-	RISING("rising", "0000000000000", Filename.MINECRAFT),
-	FLYING("flying", "0000000000000", Filename.MINECRAFT),
-	SOARING("soaring", "0000000000000", Filename.MINECRAFT),
-	EPIC("epic", "0000000000000", Filename.MINECRAFT),
-	EPIC2("epic2", "0000000000000", Filename.MINECRAFT),
-	EPIC3("epic3", "0000000000000", Filename.MINECRAFT),
-	ELITE("elite", "0000000000000", Filename.MINECRAFT),
-	ELITE2("elite2", "0000000000000", Filename.MINECRAFT),
-	ELITE3("elite3", "0000000000000", Filename.MINECRAFT),
-	MOD("mod", "0000000000000", Filename.MINECRAFT),
-	MOD2("mod2", "0000000000000", Filename.MINECRAFT),
-	MOD3("mod3", "0000000000000", Filename.MINECRAFT),
-	COUNCIL("council", "0000000000000", Filename.MINECRAFT),
+	DEFAULT("default", "0000000000000"),
+	RISING("rising", "0000000000000"),
+	FLYING("flying", "0000000000000"),
+	SOARING("soaring", "0000000000000"),
+	EPIC("epic", "0000000000000"),
+	EPIC2("epic2", "0000000000000"),
+	EPIC3("epic3", "0000000000000"),
+	ELITE("elite", "0000000000000"),
+	ELITE2("elite2", "0000000000000"),
+	ELITE3("elite3", "0000000000000"),
+	MOD("mod", "0000000000000"),
+	MOD2("mod2", "0000000000000"),
+	MOD3("mod3", "0000000000000"),
+	COUNCIL("council", "0000000000000"),
 
-	FOUNDER("founder", "0000000000000", Filename.MINECRAFT),
-	BIRTHDAY("birthday", "0000000000000", Filename.MINECRAFT),
-	NITROBOOST("nitroboost", "0000000000000", Filename.MINECRAFT),
-	SUPPORTER("supporter", "0000000000000", Filename.MINECRAFT),
-	DEVELOPER("developer", "0000000000000", Filename.MINECRAFT);
+	FOUNDER("founder", "0000000000000"),
+	BIRTHDAY("birthday", "0000000000000"),
+	NITROBOOST("nitroboost", "0000000000000"),
+	SUPPORTER("supporter", "0000000000000"),
+	DEVELOPER("developer", "0000000000000");
 
 	private final String key;
 	private final String defaultValue;
-	private final Filename filename;
 
-	ConfigOption(String key, String defaultValue, Filename filename)
+	ConfigOption(String path, String defaultValue)
 	{
-		this.key = key;
+		this.key = path;
 		this.defaultValue = defaultValue;
-		this.filename = filename;
 	}
 
-	public Filename getFilename()
-	{
-		return filename;
-	}
 
 	public String getDefaultValue()
 	{

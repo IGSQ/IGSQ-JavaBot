@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.Config;
 import org.igsq.igsqbot.entities.ConfigOption;
+import org.igsq.igsqbot.entities.Configuration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ public class MinecraftSync
 
 	private void sync()
 	{
-		Guild guild = igsqbot.getShardManager().getGuildById(igsqbot.getConfig().getOption(ConfigOption.HOMESERVER));
+		Guild guild = igsqbot.getShardManager().getGuildById(igsqbot.getConfig().getString(ConfigOption.HOMESERVER));
 
 		if(guild == null)
 		{
@@ -64,18 +64,18 @@ public class MinecraftSync
 					ranks.add("default");
 				}
 
-				Config config = igsqbot.getConfig();
+				Configuration configuration = igsqbot.getConfig();
 				MinecraftUser minecraftUser = new MinecraftUser();
 				minecraftUser.setId(member.getId());
 				minecraftUser.setUsername(member.getUser().getAsTag());
 				minecraftUser.setNickname(member.getEffectiveName());
 				minecraftUser.setRole(ranks.get(0));
 
-				minecraftUser.setFounder(hasRole(config.getOption(ConfigOption.FOUNDER).split(","), member));
-				minecraftUser.setBirthday(hasRole(config.getOption(ConfigOption.BIRTHDAY).split(","), member));
-				minecraftUser.setNitroboost(hasRole(config.getOption(ConfigOption.NITROBOOST).split(","), member));
-				minecraftUser.setSupporter(hasRole(config.getOption(ConfigOption.SUPPORTER).split(","), member));
-				minecraftUser.setDeveloper(hasRole(config.getOption(ConfigOption.DEVELOPER).split(","), member));
+				minecraftUser.setFounder(hasRole(configuration.getString(ConfigOption.FOUNDER).split(","), member));
+				minecraftUser.setBirthday(hasRole(configuration.getString(ConfigOption.BIRTHDAY).split(","), member));
+				minecraftUser.setNitroboost(hasRole(configuration.getString(ConfigOption.NITROBOOST).split(","), member));
+				minecraftUser.setSupporter(hasRole(configuration.getString(ConfigOption.SUPPORTER).split(","), member));
+				minecraftUser.setDeveloper(hasRole(configuration.getString(ConfigOption.DEVELOPER).split(","), member));
 
 				int isPresent = MinecraftUtils.isMemberPresent(minecraftUser, minecraft);
 				if(isPresent == -1)
@@ -120,7 +120,7 @@ public class MinecraftSync
 		{
 			try
 			{
-				for(String rank : igsqbot.getConfig().getOption(configOption).split(","))
+				for(String rank : igsqbot.getConfig().getString(configOption).split(","))
 				{
 					result.put(rank, configOption.getKey());
 				}

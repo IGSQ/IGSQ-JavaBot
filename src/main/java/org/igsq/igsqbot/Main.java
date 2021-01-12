@@ -25,12 +25,12 @@ public class Main
 		}
 		catch(LoginException exception)
 		{
-			bot.getLogger().error("The provided token was invalid, please ensure you put a valid token in bot.properties");
+			bot.getLogger().error("The provided token was invalid, please ensure you put a valid token in bot.cfg");
 			System.exit(-1);
 		}
 		catch(IllegalArgumentException exception)
 		{
-			bot.getLogger().error("A provided value was invalid, please double check the values in bot.properties");
+			bot.getLogger().error("A provided value was invalid, please double check the values in bot.cfg");
 			System.exit(-1);
 		}
 		catch(Exception exception)

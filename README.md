@@ -29,13 +29,13 @@
  - [x] Setters for GuildConfig
  - [x] Emote constants, success, failure
  - [x] Check verified role in LinkCommand
- - [x] Class#wipe for config classes - removes all config options
+ - [x] Class#wipe for configuration classes - removes all configuration options
  - [x] Remove raw Database calls (Marked with TODO)
  - [x] Add Database#isOnline
  - [x] Catch empty bot.server option in SyncMinecraft
  - [x] Use MessageChannel where possible - only remaining on in CommandHandler (Required)
  - [x] Custom message class (also added user class)
- - [x] OnGuildRemove removing guild config (+ unavailableGuild)
+ - [x] OnGuildRemove removing guild configuration (+ unavailableGuild)
  - [x] Filename Enum
  - [x] Check required tables in testDatabase
  - [x] Invite command
@@ -45,7 +45,7 @@
  - [x] Throw unsuportedoperation if datacache is used before type setting
  - [x] InstanceOf checks within command mapping
  - [x] Move Command functionality to abstract methods versus constructor calls for increased adaptability
- - [x] config.yml wrapper
+ - [x] configuration.yml wrapper
  - [x] Catch different exceptions during login
  - [x] Catch invalid emojis in RR (regex) ('/[^\w$\x{0080}-\x{FFFF}]+/u')
  - [x] Change command#getPermission to command#canExecute, will implement various perm checks (maybe permcheck class)
@@ -80,7 +80,7 @@
  - [x] Remove emoji-java
  - [x] Improve time parsing
  - [x] Insert time parsing into Parser
- - [x] Use Properties for config options
+ - [x] Use Properties for configuration options
  - [x] Help menu
  - [x] Minecraft syncing (with preparedstatements)
 
@@ -127,7 +127,7 @@ Cloning the project and running a Maven build with the `pom.xml` will build the 
 When running the JAR, JDK 14's `java.exe` must be pointed to (see the example bat).
 
 In order to connect to discord successfully, you must put a valid bot token (see https://discord.com/developers/applications)
-in `bot.token` within the `config` YML file, which is automatically generated on first launch.
+in `bot.token` within the `configuration` YML file, which is automatically generated on first launch.
 
 **Example .bat file**
 

@@ -11,8 +11,8 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.Config;
 import org.igsq.igsqbot.entities.ConfigOption;
+import org.igsq.igsqbot.entities.Configuration;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
 import org.igsq.igsqbot.events.logging.MessageEventsLogging;
 import org.igsq.igsqbot.events.logging.VoiceEventsLogging;
@@ -41,13 +41,13 @@ public class IGSQBot
 	private TaskHandler taskHandler;
 	private DatabaseHandler databaseHandler;
 	private Minecraft minecraft;
-	private Config config;
+	private Configuration configuration;
 	private JDA jda;
 
 	public void build() throws LoginException
 	{
 		this.shardManager = DefaultShardManagerBuilder
-				.create(getConfig().getOption(ConfigOption.TOKEN),
+				.create(getConfig().getString(ConfigOption.TOKEN),
 						GatewayIntent.GUILD_MEMBERS,
 
 						GatewayIntent.DIRECT_MESSAGES,
@@ -182,13 +182,13 @@ public class IGSQBot
 		return minecraft;
 	}
 
-	public Config getConfig()
+	public Configuration getConfig()
 	{
-		if(config == null)
+		if(configuration == null)
 		{
-			config = new Config(this);
+			configuration = new Configuration(this);
 		}
-		return config;
+		return configuration;
 	}
 
 	public CommandHandler getCommandHandler()
