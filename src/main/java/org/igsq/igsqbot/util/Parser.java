@@ -133,6 +133,7 @@ public class Parser
 				else
 				{
 					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("User not found."));
+					return;
 				}
 			}
 			else if(type == Message.MentionType.CHANNEL)
@@ -141,6 +142,7 @@ public class Parser
 				if(channel != null)
 				{
 					consumer.accept((IMentionable) channel);
+					return;
 				}
 				else
 				{
@@ -180,6 +182,7 @@ public class Parser
 			else
 			{
 				consumer.accept(rolesChannelsList.get(0));
+				return;
 			}
 		}
 		ctx.replyError(notFound);

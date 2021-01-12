@@ -110,12 +110,12 @@ public class MinecraftTwoFA
 	public void close()
 	{
 		igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
-		igsqBot.getLogger().info("Minecraft syncing stopped.");
+		igsqBot.getLogger().info("Minecraft 2FA stopped.");
 	}
 
 	public void close(String message)
 	{
 		igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
-		igsqBot.getLogger().info("Minecraft syncing stopped. " + message);
+		igsqBot.getLogger().info("Minecraft 2FA stopped. " + message);
 	}
 }

@@ -17,8 +17,6 @@ public class DatabaseHandler
 	{
 		this.igsqBot = igsqBot;
 		this.pool = initHikari();
-
-		System.getProperties().setProperty("org.jooq.no-logo", "true");
 	}
 
 	public HikariDataSource getPool()

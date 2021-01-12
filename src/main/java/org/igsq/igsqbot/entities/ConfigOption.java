@@ -28,6 +28,7 @@ public enum ConfigOption
 	ELITE("elite", "0000000000000"),
 	ELITE2("elite2", "0000000000000"),
 	ELITE3("elite3", "0000000000000"),
+	CELESTIAL("celestial", "0000000000000"),
 	MOD("mod", "0000000000000"),
 	MOD2("mod2", "0000000000000"),
 	MOD3("mod3", "0000000000000"),
@@ -42,9 +43,9 @@ public enum ConfigOption
 	private final String key;
 	private final String defaultValue;
 
-	ConfigOption(String path, String defaultValue)
+	ConfigOption(String key, String defaultValue)
 	{
-		this.key = path;
+		this.key = key;
 		this.defaultValue = defaultValue;
 	}
 
@@ -62,6 +63,6 @@ public enum ConfigOption
 	public static List<ConfigOption> getRanks()
 	{
 		return List.of(DEFAULT, RISING, FLYING, SOARING, EPIC, EPIC2, EPIC3,
-				ELITE, ELITE2, ELITE3, MOD, MOD2, MOD3, COUNCIL);
+				ELITE, ELITE2, ELITE3, CELESTIAL, MOD, MOD2, MOD3, COUNCIL);
 	}
 }

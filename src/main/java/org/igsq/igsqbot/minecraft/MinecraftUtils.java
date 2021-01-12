@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 
 public class MinecraftUtils
 {
@@ -188,27 +189,126 @@ public class MinecraftUtils
 		}
 	}
 
-	public static LinkState getLinkStatus(String userId, Minecraft minecraft)
+	public static List<Link> getLinks(String userId, Minecraft minecraft)
 	{
 		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
 		{
-			PreparedStatement statement = connection.prepareStatement("SELECT current_status FROM linked_accounts WHERE id = ?");
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM linked_accounts WHERE id = ?");
+			List<Link> result = new ArrayList<>();
 			statement.setString(1, userId);
 			statement.execute();
 			ResultSet resultSet = statement.getResultSet();
+			while(resultSet.next())
+			{
+				result.add(new Link(resultSet.getString(3), resultSet.getString(2), switch(resultSet.getString(4).toUpperCase())
+						{
+							case "MWAIT" -> LinkState.valueOf("MWAIT");
+							case "DWAIT" -> LinkState.valueOf("DWAIT");
+							case "LINKED" -> LinkState.valueOf("LINKED");
+							default -> LinkState.valueOf("UNKNOWN");
+						}));
+			}
+			return result;
+
+		}
+		catch(Exception exception)
+		{
+			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
+			return Collections.emptyList();
+		}
+	}
+
+	public static String getName(String uuid, Minecraft minecraft)
+	{
+		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
+		{
+			PreparedStatement statement = connection.prepareStatement("SELECT username FROM mc_accounts WHERE uuid = ?");
+			statement.setString(1, uuid);
+			statement.execute();
+			ResultSet resultSet = statement.getResultSet();
 			resultSet.next();
-			return switch(resultSet.getString(1).toUpperCase())
-					{
-						case "MWAIT" -> LinkState.valueOf("MWAIT");
-						case "DWAIT" -> LinkState.valueOf("DWAIT");
-						case "LINKED" -> LinkState.valueOf("LINKED");
-						default -> LinkState.valueOf("UNKNOWN");
-					};
+			return resultSet.getString(1);
 		}
 		catch(Exception exception)
 		{
 			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
 			return null;
+		}
+	}
+
+	public static String getUUIDByName(String name, Minecraft minecraft)
+	{
+		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
+		{
+			PreparedStatement statement = connection.prepareStatement("SELECT uuid FROM mc_accounts WHERE username = ?");
+			statement.setString(1, name);
+			statement.execute();
+			ResultSet resultSet = statement.getResultSet();
+			resultSet.next();
+			return resultSet.getString(1);
+		}
+		catch(Exception exception)
+		{
+			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
+			return null;
+		}
+	}
+
+	public static String prettyPrintLinkState(LinkState state)
+	{
+		return switch(state)
+			{
+				case MWAIT -> "Waiting on Minecraft";
+				case DWAIT -> "Waiting on Discord";
+				case LINKED -> "Linked!";
+				default -> "Status missing or corrupted";
+			};
+	}
+
+	public static void insertLink(String uuid, String id, Minecraft minecraft)
+	{
+		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
+		{
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO linked_accounts (uuid, id, current_status) VALUES (?,?,?)");
+			statement.setString(1, uuid);
+			statement.setString(2, id);
+			statement.setString(3, LinkState.MWAIT.toString().toLowerCase());
+			statement.executeUpdate();
+		}
+		catch(Exception exception)
+		{
+			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
+		}
+	}
+
+	public static void removeLink(String uuid, String id, Minecraft minecraft)
+	{
+		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
+		{
+			PreparedStatement statement = connection.prepareStatement("DELETE FROM linked_accounts WHERE uuid = ? AND id = ?");
+			statement.setString(1, uuid);
+			statement.setString(2, id);
+			statement.executeUpdate();
+		}
+		catch(Exception exception)
+		{
+			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
+		}
+	}
+
+	public static void updateLink(String uuid, String id, Minecraft minecraft)
+	{
+		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
+		{
+			PreparedStatement statement = connection.prepareStatement("UPDATE linked_accounts SET current_status = ? WHERE uuid = ? AND id = ?");
+			statement.setString(1, LinkState.LINKED.toString().toLowerCase());
+			statement.setString(2, uuid);
+			statement.setString(3, id);
+			statement.executeUpdate();
+		}
+		catch(Exception exception)
+		{
+			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
 		}
 	}
 
@@ -226,5 +326,34 @@ public class MinecraftUtils
 		DWAIT,
 		LINKED,
 		UNKNOWN
+	}
+
+	public static class Link
+	{
+		private final String id;
+		private final String uuid;
+		private final LinkState linkState;
+
+		public String getId()
+		{
+			return id;
+		}
+
+		public String getUuid()
+		{
+			return uuid;
+		}
+
+		public LinkState getLinkState()
+		{
+			return linkState;
+		}
+
+		public Link(String id, String uuid, LinkState linkState)
+		{
+			this.id = id;
+			this.uuid = uuid;
+			this.linkState = linkState;
+		}
 	}
 }
