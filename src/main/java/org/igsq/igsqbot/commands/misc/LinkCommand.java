@@ -2,6 +2,8 @@ package org.igsq.igsqbot.commands.misc;
 
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.Parser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +13,49 @@ public class LinkCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		//TO BE IMPLEMENTED
+		if(args.size() != 2)
+		{
+			EmbedUtils.sendSyntaxError(ctx);
+		}
+		else
+		{
+			String action = args.get(0);
+
+			if(action.equalsIgnoreCase("add"))
+			{
+				addLink(args.get(1), ctx);
+			}
+			else if(action.equalsIgnoreCase("remove"))
+			{
+				removeLink(args.get(1), ctx);
+			}
+			else if(action.equalsIgnoreCase("show"))
+			{
+				showLink(args.get(1), ctx);
+			}
+			else
+			{
+				EmbedUtils.sendSyntaxError(ctx);
+			}
+		}
+	}
+
+	private void addLink(String arg, CommandContext ctx)
+	{
+
+	}
+
+	private void removeLink(String arg, CommandContext ctx)
+	{
+
+	}
+
+	private void showLink(String arg, CommandContext ctx)
+	{
+		new Parser(arg, ctx).parseAsUser(user ->
+		{
+
+		});
 	}
 
 	@Override
@@ -35,7 +79,7 @@ public class LinkCommand extends Command
 	@Override
 	public String getSyntax()
 	{
-		return "[add|remove][mcName] | [list]";
+		return "[add|remove][mcName] | [show][user]";
 	}
 
 	@Override

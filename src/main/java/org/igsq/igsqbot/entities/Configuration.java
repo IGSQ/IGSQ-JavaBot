@@ -69,13 +69,13 @@ public class Configuration
 
 	private void applyDefaults(List<ConfigurationValue> loadedValues)
 	{
-//		for(ConfigOption configOption : ConfigOption.values())
-//		{
-//			if(loadedValues.stream().map(ConfigurationValue::getKey).noneMatch(key -> configOption.getKey().equals(key)))
-//			{
-//				loadedValues.add(new ConfigurationValue(configOption.getKey(), configOption.getDefaultValue()));
-//			}
-//		}
+		for(ConfigOption configOption : ConfigOption.values())
+		{
+			if(loadedValues.stream().map(ConfigurationValue::getKey).noneMatch(key -> configOption.getKey().equals(key)))
+			{
+				loadedValues.add(new ConfigurationValue(configOption.getKey(), configOption.getDefaultValue()));
+			}
+		}
 		this.configValues = Collections.unmodifiableList(loadedValues);
 		save();
 	}

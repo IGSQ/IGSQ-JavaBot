@@ -7,6 +7,7 @@ public class Minecraft
 	private final IGSQBot igsqBot;
 	private DatabaseHandler databaseHandler;
 	private MinecraftSync sync;
+	private MinecraftTwoFA twoFA;
 
 	public Minecraft(IGSQBot igsqBot)
 	{
@@ -17,7 +18,9 @@ public class Minecraft
 	public void start()
 	{
 		this.sync = new MinecraftSync(this);
+		this.twoFA = new MinecraftTwoFA(this);
 		sync.start();
+		twoFA.start();
 	}
 
 	public DatabaseHandler getDatabaseHandler()
@@ -37,6 +40,7 @@ public class Minecraft
 	public void close()
 	{
 		sync.close();
+		twoFA.close();
 		databaseHandler.close();
 	}
 }

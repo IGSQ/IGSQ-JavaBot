@@ -80,7 +80,6 @@
  - [x] Remove emoji-java
  - [x] Improve time parsing
  - [x] Insert time parsing into Parser
- - [x] Use Properties for configuration options
  - [x] Help menu
  - [x] Minecraft syncing (with preparedstatements)
 
@@ -93,7 +92,6 @@ None!
  - [ ] ReactionRoles
  - [ ] Message generation garbage
  - [ ] Minecraft syncing etc
- - [ ] Change to DataObject for configs
  
  - [ ] Debug logging
  - [ ] Switch to longs for IDs
