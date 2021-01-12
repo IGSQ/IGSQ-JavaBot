@@ -17,8 +17,7 @@ public class Parser
 {
 	public static final Pattern ID_REGEX = Pattern.compile("(\\d{17,18})");
 	public static final Pattern periodPattern = Pattern.compile(
-			"([0-9]+) ?-?\\.?,?" +
-					"(" +
+			"([0-9]+) ?-?\\.?,?(" +
 					"mo|mnth|month|months" +
 					"|w|wk|wks|weeks" +
 					"|h|hrs|hours" +

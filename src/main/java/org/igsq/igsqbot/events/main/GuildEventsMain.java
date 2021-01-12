@@ -18,19 +18,19 @@ public class GuildEventsMain extends ListenerAdapter
 	@Override
 	public void onGuildLeave(GuildLeaveEvent event)
 	{
-		//TO BE IMPLEMENTED
+		//TODO: this
 	}
 
 	@Override
 	public void onUnavailableGuildLeave(UnavailableGuildLeaveEvent event)
 	{
-		//TO BE IMPLEMENTED
+		//TODO: this
 	}
 
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
 	{
-		//TO BE IMPLEMENTED
+		//TODO: this
 	}
 }
 

@@ -19,10 +19,10 @@ public class ClearCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final int amount;
-		final MessageChannel channel = ctx.getChannel();
-		final User author = ctx.getAuthor();
-		final Guild guild = ctx.getGuild();
+		int amount;
+		MessageChannel channel = ctx.getChannel();
+		User author = ctx.getAuthor();
+		Guild guild = ctx.getGuild();
 
 		try
 		{

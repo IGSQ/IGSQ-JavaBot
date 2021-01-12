@@ -2,7 +2,6 @@ package org.igsq.igsqbot.commands.moderation;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.Command;
@@ -31,7 +30,6 @@ public class MuteCommand extends Command
 			new Parser(args.get(0), ctx).parseAsUser(user ->
 			{
 				LocalDateTime muteTime = new Parser(args.get(1), ctx).parseAsDuration();
-				MessageChannel channel = ctx.getChannel();
 				User author = ctx.getAuthor();
 				User selfUser = ctx.getIGSQBot().getSelfUser();
 				Guild guild = ctx.getGuild();

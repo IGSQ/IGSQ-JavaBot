@@ -13,14 +13,14 @@ import java.util.concurrent.TimeUnit;
 public class TaskHandler
 {
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
-	private final List<BotTask> TASKS = new ArrayList<>();
+	private final List<BotTask> tasks = new ArrayList<>();
 	private final List<UUID> currentUUIDs = new ArrayList<>();
 
 	public BotTask addTask(Runnable task, TimeUnit unit, long time)
 	{
 		String taskName = getTaskName();
 		BotTask botTask = new BotTask(scheduler.schedule(task, time, unit), taskName, time, unit);
-		TASKS.add(botTask);
+		tasks.add(botTask);
 		scheduleDeletion(botTask);
 		return botTask;
 	}
@@ -28,7 +28,7 @@ public class TaskHandler
 	public BotTask addTask(Runnable task, String taskName, TimeUnit unit, long time)
 	{
 		BotTask botTask = new BotTask(scheduler.schedule(task, time, unit), taskName, time, unit);
-		TASKS.add(botTask);
+		tasks.add(botTask);
 		scheduleDeletion(botTask);
 		return botTask;
 	}
@@ -36,7 +36,7 @@ public class TaskHandler
 	public BotTask addTask(Callable<?> task, String taskName, TimeUnit unit, long time)
 	{
 		BotTask botTask = new BotTask(scheduler.schedule(task, time, unit), taskName, time, unit);
-		TASKS.add(botTask);
+		tasks.add(botTask);
 		scheduleDeletion(botTask);
 		return botTask;
 	}
@@ -44,7 +44,7 @@ public class TaskHandler
 	public BotTask addRepeatingTask(Runnable task, String taskName, long initialDelay, TimeUnit unit, long period)
 	{
 		BotTask botTask = new BotTask(scheduler.scheduleAtFixedRate(task, initialDelay, period, unit), taskName, period + initialDelay, unit);
-		TASKS.add(botTask);
+		tasks.add(botTask);
 		return botTask;
 	}
 
@@ -60,7 +60,7 @@ public class TaskHandler
 
 	public BotTask getTask(String taskName)
 	{
-		for(BotTask task : TASKS)
+		for(BotTask task : tasks)
 		{
 			if(task.getName().equalsIgnoreCase(taskName))
 			{
@@ -72,7 +72,7 @@ public class TaskHandler
 
 	public boolean cancelTask(String taskName, boolean shouldInterrupt)
 	{
-		for(BotTask task : TASKS)
+		for(BotTask task : tasks)
 		{
 			if(task.getName().equalsIgnoreCase(taskName))
 			{
@@ -84,7 +84,7 @@ public class TaskHandler
 
 	public void close()
 	{
-		for(BotTask task : TASKS)
+		for(BotTask task : tasks)
 		{
 			task.cancel(false);
 		}
@@ -104,13 +104,13 @@ public class TaskHandler
 		}
 	}
 
-	public List<BotTask> getTASKS()
+	public List<BotTask> getTasks()
 	{
-		return TASKS;
+		return tasks;
 	}
 
 	private void scheduleDeletion(BotTask task)
 	{
-		scheduler.schedule(() -> TASKS.remove(task), task.getExpiresAt(), task.getUnit());
+		scheduler.schedule(() -> tasks.remove(task), task.getExpiresAt(), task.getUnit());
 	}
 }

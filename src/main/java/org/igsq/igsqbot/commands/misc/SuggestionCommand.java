@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands.misc;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
@@ -14,14 +13,12 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class SuggestionCommand extends Command
 {
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		final User author = ctx.getAuthor();
-		final MessageChannel channel = ctx.getChannel();
+		User author = ctx.getAuthor();
 
 		if(args.isEmpty())
 		{
