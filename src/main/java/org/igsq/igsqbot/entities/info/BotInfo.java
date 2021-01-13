@@ -64,4 +64,9 @@ public class BotInfo
 	{
 		return igsqBot.getShardManager().getGuildCache().size();
 	}
+
+	public String getMemoryFormatted()
+	{
+		return (getTotalMemory() - getFreeMemory() >> 20) + "MB / " + (getMaxMemory() >> 20) + "MB";
+	}
 }

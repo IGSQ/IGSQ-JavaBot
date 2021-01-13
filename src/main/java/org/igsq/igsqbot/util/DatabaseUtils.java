@@ -18,6 +18,36 @@ public class DatabaseUtils
 		//Overrides the default, public, constructor
 	}
 
+	public static void removeGuild(Guild guild, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection)
+					.deleteFrom(Tables.GUILDS)
+					.where(Guilds.GUILDS.GUILDID.eq(guild.getIdLong()));
+			context.execute();
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+		}
+	}
+
+	public static void removeGuild(long guildId, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection)
+					.deleteFrom(Tables.GUILDS)
+					.where(Guilds.GUILDS.GUILDID.eq(guildId));
+			context.execute();
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+		}
+	}
+
 	public static void registerGuild(Guild guild, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())

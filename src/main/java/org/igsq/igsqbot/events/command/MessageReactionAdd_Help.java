@@ -28,7 +28,7 @@ public class MessageReactionAdd_Help extends ListenerAdapter
 		RestAction.allOf(actions).queue(
 				results ->
 				{
-				//TODO: this
+
 				}
 		);
 	}

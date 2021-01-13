@@ -45,7 +45,8 @@ public class Main
 		bot.getLogger().info(" |___\\___|___/\\__\\_\\___/\\___/\\__| |___/\\__\\__,_|_|  \\__\\___\\__,_|");
 		bot.getLogger().info("");
 		bot.getLogger().info("Account:         " + bot.getSelfUser().getAsTag() + " / " + bot.getSelfUser().getId());
-		bot.getLogger().info("Total Shards:    " + bot.getShardManager().getShardsRunning());
+		bot.getLogger().info("Total Shards:    " + new BotInfo(bot).getTotalShards());
+		bot.getLogger().info("Total Guilds:    " + new BotInfo(bot).getTotalServers());
 		bot.getLogger().info("JDA Version:     " + JDAInfo.VERSION);
 		bot.getLogger().info("IGSQBot Version: " + Constants.VERSION);
 		bot.getLogger().info("JVM Version:     " + new BotInfo(bot).getJavaVersion());

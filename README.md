@@ -83,6 +83,7 @@
  - [x] Help menu
  - [x] Minecraft syncing (with preparedstatements)
  - [x] Minecraft syncing etc
+ - [x] Message generation garbage (in test command for now)
 
 ### **TeaEyes**
 None!
@@ -91,7 +92,7 @@ None!
 
  - [ ] Voting (to be debugged)
  - [ ] ReactionRoles
- - [ ] Message generation garbage
+ - [ ] Register and removal of users
 
  - [ ] Debug logging
  - [ ] Switch to longs for IDs
