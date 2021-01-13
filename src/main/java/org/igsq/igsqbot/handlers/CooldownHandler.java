@@ -16,12 +16,12 @@ public abstract class CooldownHandler
 
 	public static void addCooldown(String userID, Command command)
 	{
-		int cooldown = command.getCooldown();
+		long cooldown = command.getCooldown();
 		if(cooldown == 0)
 		{
 			return;
 		}
-		COOLDOWN_MAP.computeIfAbsent(command, k -> new HashMap<>()).put(userID, System.currentTimeMillis() + (command.getCooldown() * 1000L));
+		COOLDOWN_MAP.computeIfAbsent(command, k -> new HashMap<>()).put(userID, System.currentTimeMillis() + cooldown);
 	}
 
 	public static boolean isOnCooldown(String userID, Command command)
@@ -37,6 +37,6 @@ public abstract class CooldownHandler
 
 	public static long getCooldown(String userID, Command command)
 	{
-		return Math.abs((System.currentTimeMillis() - COOLDOWN_MAP.get(command).get(userID)) / 1000L);
+		return Math.abs(System.currentTimeMillis() - COOLDOWN_MAP.get(command).get(userID));
 	}
 }

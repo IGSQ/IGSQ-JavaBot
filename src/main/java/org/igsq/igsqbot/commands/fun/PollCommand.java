@@ -90,7 +90,7 @@ public class PollCommand extends Command
 	}
 
 	@Override
-	public int getCooldown()
+	public long getCooldown()
 	{
 		return 0;
 	}

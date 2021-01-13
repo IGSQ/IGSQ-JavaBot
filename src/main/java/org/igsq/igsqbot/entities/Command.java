@@ -20,7 +20,7 @@ public abstract class Command
 
 	public abstract boolean isGuildOnly();
 
-	public abstract int getCooldown();
+	public abstract long getCooldown();
 
 	public boolean isDisabled()
 	{

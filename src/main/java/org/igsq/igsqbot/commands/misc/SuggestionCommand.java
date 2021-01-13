@@ -81,7 +81,7 @@ public class SuggestionCommand extends Command
 	}
 
 	@Override
-	public int getCooldown()
+	public long getCooldown()
 	{
 		return 0;
 	}

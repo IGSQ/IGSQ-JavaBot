@@ -45,14 +45,17 @@ public class ClearCommand extends Command
 		{
 			return;
 		}
-
-		channel.getIterableHistory().takeAsync(amount).thenAccept(messages ->
+		else
 		{
-			channel.purgeMessages(messages);
-			ctx.replySuccess("Deleted " + (messages.size()) + " messages");
-			final MessageCache cache = MessageCache.getCache(guild);
-			messages.stream().filter(cache::isInCache).forEach(cache::remove);
-		});
+			channel.getIterableHistory().takeAsync(amount).thenAccept(messages ->
+			{
+				CooldownHandler.addCooldown(author.getId(), this);
+				channel.purgeMessages(messages);
+				ctx.replySuccess("Deleted " + (messages.size()) + " messages");
+				MessageCache cache = MessageCache.getCache(guild);
+				messages.stream().filter(cache::isInCache).forEach(cache::remove);
+			});
+		}
 	}
 
 	@Override
@@ -92,8 +95,8 @@ public class ClearCommand extends Command
 	}
 
 	@Override
-	public int getCooldown()
+	public long getCooldown()
 	{
-		return 10;
+		return 10000;
 	}
 }

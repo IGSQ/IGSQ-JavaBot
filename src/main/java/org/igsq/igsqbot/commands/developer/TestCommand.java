@@ -107,9 +107,33 @@ public class TestCommand extends Command
 				"\n" +
 				"• By joining our server, you agree to follow our <#767657829401231360>.\n" +
 				"\n" +
-				"• Below you can see an example of a previous member who just joined the server. **Please type your answer below the example, and you'll be verified as soon as possible.** This is usually in less than a minute, but if nobody is online, it can take a couple hours.")
-				.setColor(Constants.IGSQ_PURPLE);
+				"• Below you can see an example of a previous member who just joined the server. **Please type your answer below the example, and you'll be verified as soon as possible.** This is usually in less than a minute, but if nobody is online, it can take a couple hours.");
 
+		EmbedBuilder ROLEINFO = new EmbedBuilder().setTitle("**Roles**:").setDescription("" +
+				"<@&558697600375848970> are the administrators of the server.\n" +
+				"\n" +
+				"<@&742059848983904387> are the moderators of the server.\n" +
+				"\n" +
+				"<@&701141500029042718> are trusted members of the community that help us keep the server clean.\n" +
+				"\n" +
+				"<@&798626642125783050> celestial description.\n" +
+				"\n" +
+				"<@&798626642125783050> is a unique role granted to the most elite members of our server. Over time they have shown that they care for and love the server so much they deserve the highest non-staff role!\n" +
+				"\n" +
+				"<@&558698050256633868> are some of our most dedicated members. It's granted on an individual basis to people for various reasons.\n" +
+				"\n" +
+				"<@&636453797723504669> are people that reached MEE6 level 10.\n" +
+				"\n" +
+				"<@&579888281840386049> are people that reached MEE6 level 6. It grants you the DJ role, giving more options for the music bots.\n" +
+				"\n" +
+				"<@&558698195878936588> are people that reached MEE6 level 3.\n" +
+				"\n" +
+				"<@&558698326099492865> are the regular but highly valued members of the community!");
+
+		EmbedBuilder OTHERROLES = new EmbedBuilder()
+				.setTitle("**Other Roles | Intergalactic Squirrels™**")
+				.setDescription("You can select as many roles as you want!")
+				.addField("**Events**", "<@&636487094520250368>", false);
 
 		switch(args.get(0))
 		{
@@ -129,6 +153,16 @@ public class TestCommand extends Command
 					.build()).queue();
 
 			case "punishment" -> ctx.getChannel().sendMessage(PUNISHMENT
+					.setColor(Constants.IGSQ_PURPLE)
+					.setFooter("© 2020 The Intergalactic Squirrels™")
+					.build()).queue();
+
+			case "roleinfo" -> ctx.getChannel().sendMessage(ROLEINFO
+					.setColor(Constants.IGSQ_PURPLE)
+					.setFooter("© 2020 The Intergalactic Squirrels™")
+					.build()).queue();
+
+			case "otherroles" -> ctx.getChannel().sendMessage(OTHERROLES
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
@@ -173,7 +207,7 @@ public class TestCommand extends Command
 	}
 
 	@Override
-	public int getCooldown()
+	public long getCooldown()
 	{
 		return 0;
 	}

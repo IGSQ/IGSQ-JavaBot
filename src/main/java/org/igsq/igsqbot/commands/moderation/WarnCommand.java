@@ -172,7 +172,7 @@ public class WarnCommand extends Command
 	}
 
 	@Override
-	public int getCooldown()
+	public long getCooldown()
 	{
 		return 0;
 	}

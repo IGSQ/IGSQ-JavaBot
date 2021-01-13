@@ -104,7 +104,7 @@ public class MuteCommand extends Command
 	}
 
 	@Override
-	public int getCooldown()
+	public long getCooldown()
 	{
 		return 60;
 	}

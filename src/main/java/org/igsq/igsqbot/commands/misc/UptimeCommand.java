@@ -68,7 +68,7 @@ public class UptimeCommand extends Command
 	}
 
 	@Override
-	public int getCooldown()
+	public long getCooldown()
 	{
 		return 0;
 	}
