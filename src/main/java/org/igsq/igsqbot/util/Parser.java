@@ -39,6 +39,18 @@ public class Parser
 		return Arrays.stream(arg.split("/")).collect(Collectors.toList());
 	}
 
+	public Guild parseAsGuild()
+	{
+		for(Guild guild : ctx.getIGSQBot().getShardManager().getGuilds())
+		{
+			if(guild.getId().equalsIgnoreCase(arg))
+			{
+				return guild;
+			}
+		}
+		return null;
+	}
+
 	public LocalDateTime parseAsDuration()
 	{
 		Matcher matcher = periodPattern.matcher(arg.toLowerCase());
@@ -104,7 +116,6 @@ public class Parser
 		Guild guild = ctx.getGuild();
 		User author = ctx.getAuthor();
 		String typeName = type.name().toLowerCase();
-		String notFound = typeName.toUpperCase() + " not found";
 		Matcher idMatcher = ID_REGEX.matcher(arg);
 		JDA jda = ctx.getJDA();
 		SelfUser selfUser = jda.getSelfUser();
@@ -148,6 +159,19 @@ public class Parser
 					ctx.replyError("Channel not found / i do not have permissions to see it.");
 				}
 			}
+			else if(type == Message.MentionType.ROLE)
+			{
+				Role role = jda.getRoleById(mentionableId);
+				if(role != null)
+				{
+					consumer.accept(role);
+					return;
+				}
+				else
+				{
+					ctx.replyError("Role not found");
+				}
+			}
 		}
 
 		if(arg.length() >= 2 && arg.length() <= 32) //Named users
@@ -184,6 +208,5 @@ public class Parser
 				return;
 			}
 		}
-		ctx.replyError(notFound);
 	}
 }

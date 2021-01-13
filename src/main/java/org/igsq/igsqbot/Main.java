@@ -2,6 +2,7 @@ package org.igsq.igsqbot;
 
 import net.dv8tion.jda.api.JDAInfo;
 import org.igsq.igsqbot.entities.database.Mute;
+import org.igsq.igsqbot.entities.info.BotInfo;
 import org.igsq.igsqbot.util.DatabaseUtils;
 
 import javax.security.auth.login.LoginException;
@@ -47,7 +48,7 @@ public class Main
 		bot.getLogger().info("Total Shards:    " + bot.getShardManager().getShardsRunning());
 		bot.getLogger().info("JDA Version:     " + JDAInfo.VERSION);
 		bot.getLogger().info("IGSQBot Version: " + Constants.VERSION);
-		bot.getLogger().info("JVM Version:     " + System.getProperty("java.version"));
+		bot.getLogger().info("JVM Version:     " + new BotInfo(bot).getJavaVersion());
 
 		bot.getTaskHandler().addRepeatingTask(() -> DatabaseUtils.getExpiredMutes(bot).forEach(mute -> Mute.removeMuteById(mute.getUserid(), bot)), TimeUnit.SECONDS, 15);
 	}

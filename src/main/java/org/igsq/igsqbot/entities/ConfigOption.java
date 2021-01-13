@@ -49,7 +49,6 @@ public enum ConfigOption
 		this.defaultValue = defaultValue;
 	}
 
-
 	public String getDefaultValue()
 	{
 		return defaultValue;
