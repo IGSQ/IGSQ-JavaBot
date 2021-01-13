@@ -124,8 +124,8 @@ public class Report
 			context.close();
 			if(!result.isEmpty())
 			{
-				var warn = result.get(0);
-				return new Report(warn.getMessageid(), warn.getReportmessageid(), warn.getChannelid(), warn.getGuildid(), warn.getUserid(), warn.getReporttext(), igsqBot);
+				var report = result.get(0);
+				return new Report(report.getMessageid(), report.getReportmessageid(), report.getChannelid(), report.getGuildid(), report.getUserid(), report.getReporttext(), igsqBot);
 			}
 			else
 			{

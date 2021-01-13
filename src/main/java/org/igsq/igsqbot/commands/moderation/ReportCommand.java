@@ -33,19 +33,18 @@ public class ReportCommand extends Command
 			ctx.replyError("There is no report channel setup");
 			return;
 		}
-		reportChannel.sendMessage("ooga booga").queue();
 
 		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
 			args.remove(0);
 			String reason = ArrayUtils.arrayCompile(args, " ");
 			String messageLink = StringUtils.getMessageLink(ctx.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
-//			if(user.isBot())
-//			{
-//				ctx.replyError("You may not report bots.");
-//			}
-//			else
-//			{
+			if(user.isBot())
+			{
+				ctx.replyError("You may not report bots.");
+			}
+			else
+			{
 				CommandUtils.interactionCheck(author, user, ctx, () ->
 				{
 					UserUtils.getMemberFromUser(user, guild).queue(
@@ -70,7 +69,7 @@ public class ReportCommand extends Command
 							}
 					);
 				});
-			//}
+			}
 		});
 	}
 

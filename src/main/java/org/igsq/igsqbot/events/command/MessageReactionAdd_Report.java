@@ -1,10 +1,7 @@
 package org.igsq.igsqbot.events.command;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
@@ -53,14 +50,16 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 
 		actions.add(event.retrieveMessage());
 		actions.add(event.retrieveUser());
+		actions.add(event.retrieveMember());
 
 		RestAction.allOf(actions).queue(
 				results ->
 				{
 					Message message = (Message) results.get(0);
 					User user = (User) results.get(1);
+					Member member = (Member) results.get(2);
 
-					if(!user.equals(igsqBot.getJDA().getSelfUser()))
+					if(user.equals(igsqBot.getJDA().getSelfUser()))
 					{
 						return;
 					}
@@ -69,16 +68,31 @@ public class MessageReactionAdd_Report extends ListenerAdapter
 						return;
 					}
 
-					Report report = Report.getById(user.getIdLong(), igsqBot);
-
-					EmbedBuilder newEmbed = new EmbedBuilder(message.getEmbeds().get(0))
-							.setColor(Color.GREEN)
-							.setFooter("This report was dealt with by " + user.getAsTag());
+					Report report = Report.getById(message.getIdLong(), igsqBot);
 
 					if(report != null)
 					{
-						EmbedUtils.sendReplacedEmbed(message, newEmbed);
+						Member reportedMember = guild.getMemberById(report.getReportedUserId());
+						if(reportedMember == null)
+						{
+							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+									.setColor(Color.GREEN)
+									.setFooter("This report was dealt with by " + user.getAsTag() + " the reported member left."));
+							report.remove();
+							return;
+						}
+
+						if(!member.canInteract(reportedMember))
+						{
+							message.removeReaction(Constants.THUMB_UP, user).queue();
+							return;
+						}
+
+						EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
+								.setColor(Color.GREEN)
+								.setFooter("This report was dealt with by " + user.getAsTag()));
 						report.remove();
+						message.clearReactions().queue();
 					}
 				});
 	}

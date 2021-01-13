@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.ConfigOption;
 import org.igsq.igsqbot.entities.Configuration;
+import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
 import org.igsq.igsqbot.events.logging.MessageEventsLogging;
 import org.igsq.igsqbot.events.logging.VoiceEventsLogging;
@@ -70,6 +71,8 @@ public class IGSQBot
 				.addEventListeners(
 						new MessageEventsMain(this),
 						new GuildEventsMain(this),
+
+						new MessageReactionAdd_Report(this),
 
 						new VoiceEventsLogging(this),
 						new MessageEventsLogging(this),

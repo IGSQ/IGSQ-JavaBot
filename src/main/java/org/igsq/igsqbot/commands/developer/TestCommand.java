@@ -30,7 +30,7 @@ public class TestCommand extends Command
 						":one: Warning\n" +
 						":two: Warning\n" +
 						":three: Tempban (1 Day)\n" +
-						":four: Tempban (2 Days)\n" +
+						":four: Tempban (3 Days)\n" +
 						":five: Tempban (7 Days)\n" +
 						":six: Permanent Ban\n" +
 						"\n" +
