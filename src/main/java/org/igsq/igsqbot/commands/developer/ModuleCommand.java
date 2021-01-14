@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.commands.developer;
 
-import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.ArrayUtils;
@@ -14,28 +13,26 @@ public class ModuleCommand extends Command
 	@Override
 	public void execute(List<String> args, CommandContext ctx)
 	{
-		MessageChannel channel = ctx.getChannel();
 		if(args.size() != 2)
 		{
 			EmbedUtils.sendSyntaxError(ctx);
 		}
 		else if(ArrayUtils.isValueInArray(this.getAliases().toArray(), args.get(1).toLowerCase()))
 		{
-			EmbedUtils.sendError(channel, "You cannot disable that command.");
+			ctx.replyError("You cannot disable that command.");
 		}
 		else if(args.get(0).equalsIgnoreCase("enable"))
 		{
-			enableModule(args.get(1), channel, ctx);
+			enableModule(args.get(1), ctx);
 		}
 		else if(args.get(0).equalsIgnoreCase("disable"))
 		{
-			disableModule(args.get(1), channel, ctx);
+			disableModule(args.get(1), ctx);
 		}
 		else
 		{
 			EmbedUtils.sendSyntaxError(ctx);
 		}
-
 	}
 
 	@Override
@@ -80,33 +77,33 @@ public class ModuleCommand extends Command
 		return 0;
 	}
 
-	private void enableModule(String moduleName, MessageChannel channel, CommandContext ctx)
+	private void enableModule(String moduleName, CommandContext ctx)
 	{
 		Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 		if(cmd == null)
 		{
-			EmbedUtils.sendError(channel, "The specified module: `" + moduleName + "` was not found");
+			ctx.replyError("The specified module: `" + moduleName + "` was not found");
 		}
 		else
 		{
 			cmd.setDisabled(false);
-			EmbedUtils.sendSuccess(channel, "Enabled module: `" + cmd.getName() + "`.");
+			ctx.replySuccess("Enabled module: `" + cmd.getName() + "`.");
 			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was enabled.");
 		}
 	}
 
-	private void disableModule(String moduleName, MessageChannel channel, CommandContext ctx)
+	private void disableModule(String moduleName, CommandContext ctx)
 	{
 		Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 		if(cmd == null)
 		{
-			EmbedUtils.sendError(channel, "The specified module: `" + moduleName + "` was not found");
+			ctx.getIGSQBot().getLogger().warn("Module " + moduleName + " was enabled.");
 		}
 		else
 		{
 			cmd.setDisabled(true);
-			EmbedUtils.sendSuccess(channel, "Disabled module: `" + cmd.getName() + "`.");
-			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was disabled.");
+			ctx.replySuccess("Disabled module: `" + cmd.getName() + "`.");
+			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was enabled.");
 		}
 	}
 }

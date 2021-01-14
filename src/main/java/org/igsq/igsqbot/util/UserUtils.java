@@ -26,7 +26,12 @@ public class UserUtils
 
 	public static String getAsMention(String userId)
 	{
-	return "<@!" + userId + ">";
+		return "<@!" + userId + ">";
+	}
+
+	public static String getAsMention(long userId)
+	{
+		return "<@!" + userId + ">";
 	}
 
 

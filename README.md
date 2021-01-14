@@ -90,7 +90,7 @@ None!
 
 ### **arynxd**
 
- - [ ] Voting (to be debugged)
+ - [ ] Voting (need to move out of DM) :(
  - [ ] ReactionRoles
  - [ ] Register and removal of users
 
