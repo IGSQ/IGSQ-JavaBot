@@ -3,11 +3,10 @@ package org.igsq.igsqbot.entities.database;
 import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.jooq.Field;
 
 import java.sql.Connection;
-
-import static org.igsq.igsqbot.entities.jooq.tables.Guilds.GUILDS;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class GuildConfig
 {
@@ -36,14 +35,17 @@ public class GuildConfig
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.select(GUILDS.PREFIX)
-					.from(GUILDS)
-					.where(GUILDS.GUILDID.eq(guildId));
-
-			String result = context.fetchOne(GUILDS.PREFIX);
-			context.close();
-			return result;
+			PreparedStatement statement = connection.prepareStatement("SELECT prefix FROM guilds WHERE guildId = ?");
+			statement.setLong(1, guildId);
+			if(statement.execute())
+			{
+				ResultSet resultSet = statement.getResultSet();
+				if(resultSet.next())
+				{
+					return resultSet.getString(1);
+				}
+			}
+			return ".";
 		}
 		catch(Exception exception)
 		{
@@ -56,13 +58,9 @@ public class GuildConfig
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.update(GUILDS)
-					.set(GUILDS.PREFIX, prefix)
-					.where(GUILDS.GUILDID.eq(guildId));
-
-			context.execute();
-			context.close();
+			PreparedStatement statement = connection.prepareStatement("UPDATE guilds SET prefix = ?");
+			statement.setString(1, prefix);
+			statement.executeUpdate();
 		}
 		catch(Exception exception)
 		{
@@ -72,26 +70,31 @@ public class GuildConfig
 
 	public long getReportChannel()
 	{
-		return getValue(GUILDS.REPORTCHANNEL);
+		return getValue("reportChannel");
 	}
 
 	public long getLogChannel()
 	{
-		return getValue(GUILDS.LOGCHANNEL);
+		return getValue("logChannel");
 	}
 
-	private long getValue(Field<?> value)
+	private long getValue(String field)
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.select(value)
-					.from(GUILDS)
-					.where(GUILDS.GUILDID.eq(guildId));
+			PreparedStatement statement = connection.prepareStatement("SELECT ? FROM guilds WHERE guildId = ?");
+			statement.setString(1, field);
+			statement.setLong(2, guildId);
 
-			long result = Long.parseLong(String.valueOf(context.fetchOne(value)));
-			context.close();
-			return result;
+			if(statement.execute())
+			{
+				ResultSet resultSet = statement.getResultSet();
+				if(resultSet.next())
+				{
+					return resultSet.getLong(1);
+				}
+			}
+			return -1;
 		}
 		catch(Exception exception)
 		{
@@ -102,11 +105,11 @@ public class GuildConfig
 
 	public long getVoteChannel()
 	{
-		return getValue(GUILDS.VOTECHANNEL);
+		return getValue("voteChannel");
 	}
 
 	public long getMutedRole()
 	{
-		return getValue(GUILDS.MUTEDROLE);
+		return getValue("mutedRole");
 	}
 }

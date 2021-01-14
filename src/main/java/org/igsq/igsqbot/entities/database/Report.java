@@ -8,6 +8,10 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 import static org.igsq.igsqbot.entities.jooq.tables.Reports.REPORTS;
 
@@ -20,6 +24,7 @@ public class Report
 	private final long reportedUserId;
 	private final String reason;
 	private final IGSQBot igsqBot;
+	private final Timestamp timestamp;
 
 	public Report(Message message, Message commandMessage, MessageChannel channel, Guild guild, User reportedUser, String reason, IGSQBot igsqBot)
 	{
@@ -28,17 +33,19 @@ public class Report
 		this.channelId = channel.getIdLong();
 		this.guildId = guild.getIdLong();
 		this.reportedUserId = reportedUser.getIdLong();
+		this.timestamp = Timestamp.from(Instant.now());
 		this.reason = reason;
 		this.igsqBot = igsqBot;
 	}
 
-	public Report(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, String reason, IGSQBot igsqBot)
+	public Report(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, Timestamp timestamp, String reason, IGSQBot igsqBot)
 	{
 		this.messageId = messageId;
 		this.commandMessageId = commandMessageId;
 		this.channelId = channelId;
 		this.guildId = guildId;
 		this.reportedUserId = reportedUserId;
+		this.timestamp = timestamp;
 		this.reason = reason;
 		this.igsqBot = igsqBot;
 	}
@@ -112,25 +119,27 @@ public class Report
 		return igsqBot;
 	}
 
+	public Timestamp getTimestamp()
+	{
+		return timestamp;
+	}
+
 	public static Report getById(long messageId, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.selectFrom(REPORTS)
-					.where(REPORTS.MESSAGEID.eq(messageId));
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM reports WHERE messageId = ?");
+			statement.setLong(1, messageId);
 
-			var result = context.fetch();
-			context.close();
-			if(!result.isEmpty())
+			if(statement.execute())
 			{
-				var report = result.get(0);
-				return new Report(report.getMessageid(), report.getReportmessageid(), report.getChannelid(), report.getGuildid(), report.getUserid(), report.getReporttext(), igsqBot);
+				ResultSet resultSet = statement.getResultSet();
+				if(resultSet.next())
+				{
+					return new Report(resultSet.getLong(2), resultSet.getLong(3), resultSet.getLong(4), resultSet.getLong(5), resultSet.getLong(6), resultSet.getTimestamp(7), resultSet.getString(8), igsqBot);
+				}
 			}
-			else
-			{
-				return null;
-			}
+			return null;
 		}
 		catch(Exception exception)
 		{
