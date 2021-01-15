@@ -61,7 +61,7 @@ public class MinecraftSync
 
 				if(ranks.isEmpty())
 				{
-					ranks.add("default");
+					ranks.add("group.default");
 				}
 
 				Configuration configuration = igsqbot.getConfig();
