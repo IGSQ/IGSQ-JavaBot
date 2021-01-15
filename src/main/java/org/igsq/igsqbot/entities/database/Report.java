@@ -5,15 +5,12 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.jooq.Tables;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.Instant;
-
-import static org.igsq.igsqbot.entities.jooq.tables.Reports.REPORTS;
 
 public class Report
 {
@@ -50,16 +47,27 @@ public class Report
 		this.igsqBot = igsqBot;
 	}
 
+
 	public void add()
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(Tables.REPORTS)
-					.columns(REPORTS.MESSAGEID, REPORTS.REPORTMESSAGEID, REPORTS.CHANNELID, REPORTS.GUILDID, REPORTS.USERID, REPORTS.REPORTTEXT)
-					.values(messageId, commandMessageId, channelId, guildId, reportedUserId, reason);
+			PreparedStatement insertReport = connection.prepareStatement("INSERT INTO reports " +
+					"(messageId," +
+					" reportMessageId," +
+					" channelId," +
+					" guildId," +
+					" userId," +
+					" timeStamp," +
+					" reportText) VALUES (?,?,?,?,?,?,?)");
 
-			context.execute();
+			insertReport.setLong(1, messageId);
+			insertReport.setLong(2, commandMessageId);
+			insertReport.setLong(3, channelId);
+			insertReport.setLong(4, guildId);
+			insertReport.setLong(5, reportedUserId);
+			insertReport.setString(6, reason);
+			insertReport.executeUpdate();
 		}
 		catch(Exception exception)
 		{
@@ -71,12 +79,9 @@ public class Report
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.REPORTS)
-					.where(REPORTS.MESSAGEID.eq(messageId));
-
-			context.execute();
-			context.close();
+			PreparedStatement deleteReport = connection.prepareStatement("DELETE FROM reports WHERE messageId = ?");
+			deleteReport.setLong(1, messageId);
+			deleteReport.executeUpdate();
 		}
 		catch(Exception exception)
 		{

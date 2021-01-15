@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.util.EmbedUtils;
-import org.jooq.DSLContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -48,11 +47,6 @@ public class CommandContext
 	public Guild getGuild()
 	{
 		return event.isFromGuild() ? event.getGuild() : null;
-	}
-
-	public DSLContext getDBContext()
-	{
-		return getIGSQBot().getDatabaseManager().getContext();
 	}
 
 	public User getAuthor()
