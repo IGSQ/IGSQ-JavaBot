@@ -53,13 +53,13 @@ public class Report
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
 			PreparedStatement insertReport = connection.prepareStatement("INSERT INTO reports " +
-					"(messageId," +
-					" reportMessageId," +
-					" channelId," +
-					" guildId," +
-					" userId," +
+					"(messageid," +
+					" reportmessageid," +
+					" channelid," +
+					" guildid," +
+					" userid," +
 					" timeStamp," +
-					" reportText) VALUES (?,?,?,?,?,?,?)");
+					" reporttext) VALUES (?,?,?,?,?,?,?)");
 
 			insertReport.setLong(1, messageId);
 			insertReport.setLong(2, commandMessageId);
@@ -79,7 +79,7 @@ public class Report
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			PreparedStatement deleteReport = connection.prepareStatement("DELETE FROM reports WHERE messageId = ?");
+			PreparedStatement deleteReport = connection.prepareStatement("DELETE FROM reports WHERE messageid = ?");
 			deleteReport.setLong(1, messageId);
 			deleteReport.executeUpdate();
 		}

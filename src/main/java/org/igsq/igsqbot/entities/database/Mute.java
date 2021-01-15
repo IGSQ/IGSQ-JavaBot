@@ -31,7 +31,7 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			PreparedStatement existCheck = connection.prepareStatement("SELECT * FROM mutes WHERE userId = ?");
+			PreparedStatement existCheck = connection.prepareStatement("SELECT * FROM mutes WHERE userid = ?");
 			existCheck.setLong(1, memberId);
 			if(!existCheck.execute())
 			{
@@ -41,7 +41,7 @@ public class Mute
 			for(long roleId : roleIds)
 			{
 
-				PreparedStatement insertRole = connection.prepareStatement("INSERT INTO roles (guildId, userId, roleId) VALUES (?, ?, ?)");
+				PreparedStatement insertRole = connection.prepareStatement("INSERT INTO roles (guildid, userid, roleid) VALUES (?, ?, ?)");
 				insertRole.setLong(1, guild.getIdLong());
 				insertRole.setLong(2, memberId);
 				insertRole.setLong(3, roleId);
@@ -49,7 +49,7 @@ public class Mute
 			}
 
 
-			PreparedStatement insertMute = connection.prepareStatement("INSERT INTO mutes (guildId, userId, mutedUntil) VALUES (?,?,?)");
+			PreparedStatement insertMute = connection.prepareStatement("INSERT INTO mutes (guildid, userid, muteduntil) VALUES (?,?,?)");
 			insertMute.setLong(1, guild.getIdLong());
 			insertMute.setLong(2, memberId);
 			insertMute.setTimestamp(3, mutedUntil);
@@ -67,11 +67,11 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			PreparedStatement removeMute = connection.prepareStatement("DELETE FROM mutes WHERE userId = ?");
+			PreparedStatement removeMute = connection.prepareStatement("DELETE FROM mutes WHERE userid = ?");
 			removeMute.setLong(1, memberId);
 			removeMute.executeUpdate();
 
-			PreparedStatement removeRoles = connection.prepareStatement("DELETE FROM roles WHERE userId = ?");
+			PreparedStatement removeRoles = connection.prepareStatement("DELETE FROM roles WHERE userid = ?");
 			removeRoles.setLong(1, memberId);
 			removeRoles.executeUpdate();
 		}
@@ -85,7 +85,7 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			PreparedStatement getRoles = connection.prepareStatement("SELECT * FROM roles WHERE userId = ?");
+			PreparedStatement getRoles = connection.prepareStatement("SELECT * FROM roles WHERE userid = ?");
 			getRoles.setLong(1, userId);
 			if(getRoles.execute())
 			{
@@ -105,11 +105,11 @@ public class Mute
 				}
 			}
 
-			PreparedStatement removeMute = connection.prepareStatement("DELETE FROM mutes WHERE userId = ?");
+			PreparedStatement removeMute = connection.prepareStatement("DELETE FROM mutes WHERE userid = ?");
 			removeMute.setLong(1, userId);
 			removeMute.executeUpdate();
 
-			PreparedStatement removeRoles = connection.prepareStatement("DELETE FROM roles WHERE userId = ?");
+			PreparedStatement removeRoles = connection.prepareStatement("DELETE FROM roles WHERE userid = ?");
 			removeRoles.setLong(1, userId);
 			removeRoles.executeUpdate();
 		}

@@ -70,21 +70,20 @@ public class GuildConfig
 
 	public long getReportChannel()
 	{
-		return getValue("reportChannel");
+		return getValue("reportchannel");
 	}
 
 	public long getLogChannel()
 	{
-		return getValue("logChannel");
+		return getValue("logchannel");
 	}
 
 	private long getValue(String field)
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			PreparedStatement statement = connection.prepareStatement("SELECT ? FROM guilds WHERE guildId = ?");
-			statement.setString(1, field);
-			statement.setLong(2, guildId);
+			PreparedStatement statement = connection.prepareStatement("SELECT " + field + " FROM guilds WHERE guildId = ?");
+			statement.setLong(1, guildId);
 
 			if(statement.execute())
 			{
@@ -105,11 +104,11 @@ public class GuildConfig
 
 	public long getVoteChannel()
 	{
-		return getValue("voteChannel");
+		return getValue("votechannel");
 	}
 
 	public long getMutedRole()
 	{
-		return getValue("mutedRole");
+		return getValue("mutedrole");
 	}
 }

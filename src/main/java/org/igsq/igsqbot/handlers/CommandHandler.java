@@ -4,9 +4,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -95,10 +93,6 @@ public class CommandHandler
 			if(startsWithId)
 			{
 				content = idTrimmed;
-				if(guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
-				{
-					event.getMessage().delete().queue(null, error -> { });
-				}
 			}
 			else if(messageContent.startsWith(new GuildConfig(guild.getIdLong(), igsqBot).getPrefix()))
 			{
