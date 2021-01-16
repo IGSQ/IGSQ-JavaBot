@@ -27,7 +27,7 @@ public class InfoCommand extends NewCommand
     @Override
     public void run(List<String> args, CommandContext ctx)
     {
-        if(args.isEmpty())
+        if (args.isEmpty())
         {
             MemberInfo memberInfo = new MemberInfo(ctx.getMember());
             ctx.getChannel().sendMessage(new EmbedBuilder()

@@ -4,21 +4,15 @@
 package org.igsq.igsqbot.entities.jooq;
 
 
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.igsq.igsqbot.entities.jooq.tables.Mutes;
-import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
-import org.igsq.igsqbot.entities.jooq.tables.Reminders;
-import org.igsq.igsqbot.entities.jooq.tables.Reports;
-import org.igsq.igsqbot.entities.jooq.tables.Roles;
-import org.igsq.igsqbot.entities.jooq.tables.Votes;
-import org.igsq.igsqbot.entities.jooq.tables.Warnings;
+import org.igsq.igsqbot.entities.jooq.tables.*;
 
 
 /**
  * Convenience access to all tables in public.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class Tables {
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
+public class Tables
+{
 
     /**
      * The table <code>public.guilds</code>.

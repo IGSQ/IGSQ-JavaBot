@@ -2,14 +2,13 @@ package org.igsq.igsqbot.commands2.commands.fun;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.NewCommand;
-
-import java.util.List;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -29,16 +28,16 @@ public class PollCommand extends NewCommand
         User author = ctx.getAuthor();
         List<String> reactions = new ArrayList<>();
 
-        if(args.size() != 1 || CommandUtils.isArgsEmbedCompatible(args))
+        if (args.size() != 1 || CommandUtils.isArgsEmbedCompatible(args))
         {
             EmbedUtils.sendSyntaxError(ctx);
             return;
         }
         List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
-        if(slashArgs.size() >= 3 && !CommandUtils.isArgsEmbedCompatible(args))
+        if (slashArgs.size() >= 3 && !CommandUtils.isArgsEmbedCompatible(args))
         {
             String topic = slashArgs.get(0);
-            for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
+            for (int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
             {
                 options.append(slashArgs.get(i)).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n\n");
                 reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i - 1));

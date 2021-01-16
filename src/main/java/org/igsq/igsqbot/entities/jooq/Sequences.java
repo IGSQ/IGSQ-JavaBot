@@ -12,8 +12,9 @@ import org.jooq.impl.SQLDataType;
 /**
  * Convenience access to all sequences in public.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class Sequences {
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
+public class Sequences
+{
 
     /**
      * The sequence <code>public.mutes_id_seq</code>

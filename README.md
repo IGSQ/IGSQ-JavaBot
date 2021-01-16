@@ -84,6 +84,9 @@
  - [x] Minecraft syncing (with preparedstatements)
  - [x] Minecraft syncing etc
  - [x] Message generation garbage (in test command for now)
+ - [x] Child / Sub commands system
+ - [x] Rewrite the event waiter (Deprecated)
+ - [x] Info command (Info objects, UserInfo, BotInfo, RoleInfo, GuildInfo)
 
 ### **TeaEyes**
 None!
@@ -99,13 +102,10 @@ None!
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**
- - [ ] Rewrite the event waiter
  - [ ] Translation
  - [ ] XP system
  - [ ] Implement slash commands when they release
- - [ ] Child / Sub commands system
  - [ ] Restarting of the bot
- - [ ] Info command (Info objects, UserInfo, BotInfo, RoleInfo, GuildInfo)
  - [ ] Consider switch usage (replace with elif)
 
 ## Known Issues

@@ -1,5 +1,8 @@
 package org.igsq.igsqbot.commands2.commands.fun;
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.Random;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
@@ -9,10 +12,6 @@ import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.FileUtils;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.Random;
-
 public class MockCommand extends NewCommand
 {
     public MockCommand()
@@ -20,19 +19,20 @@ public class MockCommand extends NewCommand
         super("Mock", "Mocks the specified text", "[text]");
         addAliases("mock");
     }
+
     @Override
     public void run(List<String> args, CommandContext ctx)
     {
         MessageChannel channel = ctx.getChannel();
 
-        if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
+        if (args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
         {
             EmbedUtils.sendSyntaxError(ctx);
         }
         else
         {
             InputStream file = FileUtils.getResourceFile("mock.jpg");
-            if(file != null)
+            if (file != null)
             {
                 channel.sendFile(file, "mock.jpg").embed(new EmbedBuilder()
                         .setTitle(mockText(args))
@@ -54,7 +54,7 @@ public class MockCommand extends NewCommand
         mockText.append('"');
         args.forEach(word ->
         {
-            for(String selectedChar : word.split(""))
+            for (String selectedChar : word.split(""))
             {
                 mockText.append(random.nextBoolean() ? selectedChar.toUpperCase() : selectedChar.toLowerCase());
             }

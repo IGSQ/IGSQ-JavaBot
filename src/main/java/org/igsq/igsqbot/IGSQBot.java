@@ -1,5 +1,9 @@
 package org.igsq.igsqbot;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.security.auth.login.LoginException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
@@ -10,9 +14,9 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.ConfigOption;
 import org.igsq.igsqbot.entities.Configuration;
+import org.igsq.igsqbot.entities.NewCommand;
 import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
 import org.igsq.igsqbot.events.logging.MessageEventsLogging;
@@ -26,11 +30,6 @@ import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.util.DatabaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.security.auth.login.LoginException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class IGSQBot
 {
@@ -133,8 +132,8 @@ public class IGSQBot
 	{
 		if(helpPages.isEmpty())
 		{
-			List<Command> commands = new ArrayList<>();
-			for(Command cmd : getCommandHandler().getCommandMap().values())
+			List<NewCommand> commands = new ArrayList<>();
+			for(NewCommand cmd : getCommandHandler().getCommandMap().values())
 			{
 				if(!commands.contains(cmd))
 				{
@@ -145,7 +144,7 @@ public class IGSQBot
 			EmbedBuilder embedBuilder = new EmbedBuilder();
 			int fieldCount = 0;
 			int page = 1;
-			for(Command cmd : commands)
+			for(NewCommand cmd : commands)
 			{
 				if(fieldCount < 6)
 				{

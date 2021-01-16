@@ -1,9 +1,8 @@
 package org.igsq.igsqbot.entities;
 
-import net.dv8tion.jda.api.Permission;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.dv8tion.jda.api.Permission;
 
 public abstract class NewCommand
 {
@@ -54,15 +53,15 @@ public abstract class NewCommand
 
     public void process(List<String> args, CommandContext ctx)
     {
-        if(!ctx.hasPermission(requiredPermissions))
+        if (!ctx.hasPermission(requiredPermissions))
         {
 
         }
-        else if(isGuildOnly && !ctx.isFromGuild())
+        else if (isGuildOnly && !ctx.isFromGuild())
         {
 
         }
-        else if(isDeveloperOnly && !ctx.isDeveloper())
+        else if (isDeveloperOnly && !ctx.isDeveloper())
         {
 
         }

@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands2.commands.fun;
 
+import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -8,8 +9,6 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.NewCommand;
 import org.igsq.igsqbot.util.EmbedUtils;
-
-import java.util.List;
 
 public class AvatarCommand extends NewCommand
 {
@@ -27,11 +26,11 @@ public class AvatarCommand extends NewCommand
         MessageChannel channel = ctx.getChannel();
         User author = message.getAuthor();
 
-        if(message.getMentionedMembers().size() > 3)
+        if (message.getMentionedMembers().size() > 3)
         {
             EmbedUtils.sendSyntaxError(ctx);
         }
-        else if(!message.getMentionedMembers().isEmpty())
+        else if (!message.getMentionedMembers().isEmpty())
         {
             message.getMentionedMembers().forEach(member ->
                     channel.sendMessage(new EmbedBuilder()

@@ -12,63 +12,63 @@ import org.igsq.igsqbot.entities.cache.MessageCache;
 
 public class MessageEventsMain extends ListenerAdapter
 {
-	private final IGSQBot igsqBot;
+    private final IGSQBot igsqBot;
 
-	public MessageEventsMain(IGSQBot igsqBot)
-	{
-		this.igsqBot = igsqBot;
-	}
+    public MessageEventsMain(IGSQBot igsqBot)
+    {
+        this.igsqBot = igsqBot;
+    }
 
-	@Override
-	public void onMessageReactionAdd(MessageReactionAddEvent event)
-	{
-		if(event.isFromType(ChannelType.TEXT))
-		{
-			event.retrieveUser().queue(
-					user ->
-					{
-						if(!user.isBot())
-						{
-							//TO BE IMPLEMENTED
-						}
-					}
-			);
-		}
-	}
-
-
-	@Override
-	public void onMessageReactionRemove(MessageReactionRemoveEvent event)
-	{
-		if(event.isFromType(ChannelType.TEXT))
-		{
-			event.retrieveUser().queue(
-					user ->
-					{
-						if(!user.isBot())
-						{
-							//TO BE IMPLEMENTED
-						}
-					}
-			);
-		}
-	}
-
-	@Override
-	public void onMessageReceived(MessageReceivedEvent event)
-	{
-		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot())
-		{
-			MessageCache.getCache(event.getGuild()).set(new CachedMessage(event.getMessage()));
-		}
-		igsqBot.getCommandHandler().handle(event);
-	}
+    @Override
+    public void onMessageReactionAdd(MessageReactionAddEvent event)
+    {
+        if (event.isFromType(ChannelType.TEXT))
+        {
+            event.retrieveUser().queue(
+                    user ->
+                    {
+                        if (!user.isBot())
+                        {
+                            //TO BE IMPLEMENTED
+                        }
+                    }
+            );
+        }
+    }
 
 
-	@Override
-	public void onMessageDelete(MessageDeleteEvent event)
-	{
-		//TO BE IMPLEMENTED
-	}
+    @Override
+    public void onMessageReactionRemove(MessageReactionRemoveEvent event)
+    {
+        if (event.isFromType(ChannelType.TEXT))
+        {
+            event.retrieveUser().queue(
+                    user ->
+                    {
+                        if (!user.isBot())
+                        {
+                            //TO BE IMPLEMENTED
+                        }
+                    }
+            );
+        }
+    }
+
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event)
+    {
+        if (event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot())
+        {
+            MessageCache.getCache(event.getGuild()).set(new CachedMessage(event.getMessage()));
+        }
+        igsqBot.getCommandHandler().handle(event);
+    }
+
+
+    @Override
+    public void onMessageDelete(MessageDeleteEvent event)
+    {
+        //TO BE IMPLEMENTED
+    }
 }
 

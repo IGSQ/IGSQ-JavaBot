@@ -32,19 +32,19 @@ public class UwUCommand extends NewCommand
         StringBuilder finalSentence = new StringBuilder();
         User author = ctx.getAuthor();
 
-        if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
+        if (args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
         {
             EmbedUtils.sendSyntaxError(ctx);
         }
-        else if(ctx.getChannelType().equals(ChannelType.TEXT) && !UserUtils.basicPermCheck(ctx.getGuild().getSelfMember(), (TextChannel) channel))
+        else if (ctx.getChannelType().equals(ChannelType.TEXT) && !UserUtils.basicPermCheck(ctx.getGuild().getSelfMember(), (TextChannel) channel))
         {
             EmbedUtils.sendPermissionError(ctx);
         }
         else
         {
-            for(String selectedChar : chars)
+            for (String selectedChar : chars)
             {
-                switch(selectedChar)
+                switch (selectedChar)
                 {
                     case "r", "l" -> finalSentence.append("w");
                     case "o" -> finalSentence.append("wo");

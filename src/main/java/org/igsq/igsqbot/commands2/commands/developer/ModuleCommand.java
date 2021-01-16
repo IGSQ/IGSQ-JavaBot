@@ -1,11 +1,9 @@
 package org.igsq.igsqbot.commands2.commands.developer;
 
-import org.igsq.igsqbot.entities.Command;
+import java.util.List;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.NewCommand;
 import org.igsq.igsqbot.util.EmbedUtils;
-
-import java.util.List;
 
 public class ModuleCommand extends NewCommand
 {
@@ -14,8 +12,8 @@ public class ModuleCommand extends NewCommand
         super("Module", "Disables / Enables the specified module.", "[enable|disable] [module]");
         addAliases("module", "command");
         addChildren(
-                new ModuleEnable(this),
-                new ModuleDisable(this)
+                new ModuleEnableCommand(this),
+                new ModuleDisableCommand(this)
                 );
         developerOnly();
     }
@@ -26,9 +24,9 @@ public class ModuleCommand extends NewCommand
         EmbedUtils.sendSyntaxError(ctx);
     }
 
-    public static class ModuleEnable extends NewCommand
+    public static class ModuleEnableCommand extends NewCommand
     {
-        public ModuleEnable(NewCommand parent)
+        public ModuleEnableCommand(NewCommand parent)
         {
             super(parent, "enable", "Enables a module", "[module-name]");
         }
@@ -42,7 +40,7 @@ public class ModuleCommand extends NewCommand
                 return;
             }
             String moduleName = args.get(0);
-            Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
+            NewCommand cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
             if(cmd == null)
             {
                 ctx.getIGSQBot().getLogger().warn("Module " + moduleName + " was enabled.");
@@ -56,9 +54,9 @@ public class ModuleCommand extends NewCommand
         }
     }
 
-    public static class ModuleDisable extends NewCommand
+    public static class ModuleDisableCommand extends NewCommand
     {
-        public ModuleDisable(NewCommand parent)
+        public ModuleDisableCommand(NewCommand parent)
         {
             super(parent, "disable", "Disables a module", "[module-name]");
         }
@@ -72,7 +70,7 @@ public class ModuleCommand extends NewCommand
                 return;
             }
             String moduleName = args.get(0);
-            Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
+            NewCommand cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
             if(cmd == null)
             {
                 ctx.getIGSQBot().getLogger().warn("Module " + moduleName + " was enabled.");

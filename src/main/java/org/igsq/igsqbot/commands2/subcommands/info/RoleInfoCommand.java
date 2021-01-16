@@ -24,7 +24,7 @@ public class RoleInfoCommand extends NewCommand
         }
         else
         {
-            new Parser(ArrayUtils.arrayCompile(args.subList(1, args.size()), " "), ctx).parseAsRole(role ->
+            new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), ctx).parseAsRole(role ->
             {
                 org.igsq.igsqbot.entities.info.RoleInfo roleInfo = new org.igsq.igsqbot.entities.info.RoleInfo(role);
 

@@ -22,6 +22,7 @@ public class Main
 			bot.registerGuilds();
 			bot.getMinecraft();
 			bot.getCommandHandler();
+			bot.getStartTimestamp();
 		}
 		catch(LoginException exception)
 		{

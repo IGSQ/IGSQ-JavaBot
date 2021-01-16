@@ -14,19 +14,20 @@ public class HelpCommand extends NewCommand
         super("Help", "Shows the help menu for this bot", "[page]");
         addAliases("help", "?", "howto", "commands");
     }
+
     @Override
     public void run(List<String> args, CommandContext ctx)
     {
-        if(args.isEmpty())
+        if (args.isEmpty())
         {
             EmbedUtils.sendSyntaxError(ctx);
         }
         else
         {
             OptionalInt page = new Parser(args.get(0), ctx).parseAsUnsignedInt();
-            if(page.isPresent())
+            if (page.isPresent())
             {
-                if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
+                if (page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
                 {
                     ctx.replyError("That page does not exist");
                 }

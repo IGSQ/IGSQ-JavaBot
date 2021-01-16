@@ -28,7 +28,7 @@ public class UserInfoCommand extends NewCommand
         else
         {
             Guild guild = ctx.getGuild();
-            new Parser(ArrayUtils.arrayCompile(args.subList(1, args.size()), " "), ctx).parseAsUser(user ->
+            new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), ctx).parseAsUser(user ->
                     UserUtils.getMemberFromUser(user, guild).queue(member ->
                             {
                                 MemberInfo memberInfo = new MemberInfo(member);

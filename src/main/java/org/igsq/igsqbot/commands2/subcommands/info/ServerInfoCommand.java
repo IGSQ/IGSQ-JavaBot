@@ -13,6 +13,7 @@ public class ServerInfoCommand extends NewCommand
     public ServerInfoCommand(NewCommand parent)
     {
         super(parent, "server", "Shows information about a server", "[server]");
+        guildOnly();
     }
 
     @Override
