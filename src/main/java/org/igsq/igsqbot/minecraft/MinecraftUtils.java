@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MinecraftUtils
 {
@@ -257,12 +259,12 @@ public class MinecraftUtils
 	public static String prettyPrintLinkState(LinkState state)
 	{
 		return switch(state)
-			{
-				case MWAIT -> "Waiting on Minecraft";
-				case DWAIT -> "Waiting on Discord";
-				case LINKED -> "Linked!";
-				default -> "Status missing or corrupted";
-			};
+				{
+					case MWAIT -> "Waiting on Minecraft";
+					case DWAIT -> "Waiting on Discord";
+					case LINKED -> "Linked!";
+					default -> "Status missing or corrupted";
+				};
 	}
 
 	public static void insertLink(String uuid, String id, Minecraft minecraft)
@@ -334,6 +336,13 @@ public class MinecraftUtils
 		private final String uuid;
 		private final LinkState linkState;
 
+		public Link(String id, String uuid, LinkState linkState)
+		{
+			this.id = id;
+			this.uuid = uuid;
+			this.linkState = linkState;
+		}
+
 		public String getId()
 		{
 			return id;
@@ -347,13 +356,6 @@ public class MinecraftUtils
 		public LinkState getLinkState()
 		{
 			return linkState;
-		}
-
-		public Link(String id, String uuid, LinkState linkState)
-		{
-			this.id = id;
-			this.uuid = uuid;
-			this.linkState = linkState;
 		}
 	}
 }

@@ -24,141 +24,141 @@ import org.jooq.impl.TableImpl;
 public class Votes extends TableImpl<VotesRecord>
 {
 
-    /**
-     * The reference instance of <code>public.votes</code>
-     */
-    public static final Votes VOTES = new Votes();
-    private static final long serialVersionUID = 1L;
-    /**
-     * The column <code>public.votes.id</code>.
-     */
-    public final TableField<VotesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
-    /**
-     * The column <code>public.votes.voteid</code>.
-     */
-    public final TableField<VotesRecord, Long> VOTEID = createField(DSL.name("voteid"), SQLDataType.BIGINT.nullable(false), this, "");
-    /**
-     * The column <code>public.votes.messageid</code>.
-     */
-    public final TableField<VotesRecord, Long> MESSAGEID = createField(DSL.name("messageid"), SQLDataType.BIGINT.nullable(false), this, "");
-    /**
-     * The column <code>public.votes.option</code>.
-     */
-    public final TableField<VotesRecord, String> OPTION = createField(DSL.name("option"), SQLDataType.CHAR(1).nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.CHAR)), this, "");
-    /**
-     * The column <code>public.votes.timestamp</code>.
-     */
-    public final TableField<VotesRecord, LocalDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
+	/**
+	 * The reference instance of <code>public.votes</code>
+	 */
+	public static final Votes VOTES = new Votes();
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The column <code>public.votes.id</code>.
+	 */
+	public final TableField<VotesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+	/**
+	 * The column <code>public.votes.voteid</code>.
+	 */
+	public final TableField<VotesRecord, Long> VOTEID = createField(DSL.name("voteid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.votes.messageid</code>.
+	 */
+	public final TableField<VotesRecord, Long> MESSAGEID = createField(DSL.name("messageid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.votes.option</code>.
+	 */
+	public final TableField<VotesRecord, String> OPTION = createField(DSL.name("option"), SQLDataType.CHAR(1).nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.CHAR)), this, "");
+	/**
+	 * The column <code>public.votes.timestamp</code>.
+	 */
+	public final TableField<VotesRecord, LocalDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
-    private Votes(Name alias, Table<VotesRecord> aliased)
-    {
-        this(alias, aliased, null);
-    }
+	private Votes(Name alias, Table<VotesRecord> aliased)
+	{
+		this(alias, aliased, null);
+	}
 
-    private Votes(Name alias, Table<VotesRecord> aliased, Field<?>[] parameters)
-    {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+	private Votes(Name alias, Table<VotesRecord> aliased, Field<?>[] parameters)
+	{
+		super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+	}
 
-    /**
-     * Create an aliased <code>public.votes</code> table reference
-     */
-    public Votes(String alias)
-    {
-        this(DSL.name(alias), VOTES);
-    }
+	/**
+	 * Create an aliased <code>public.votes</code> table reference
+	 */
+	public Votes(String alias)
+	{
+		this(DSL.name(alias), VOTES);
+	}
 
-    /**
-     * Create an aliased <code>public.votes</code> table reference
-     */
-    public Votes(Name alias)
-    {
-        this(alias, VOTES);
-    }
+	/**
+	 * Create an aliased <code>public.votes</code> table reference
+	 */
+	public Votes(Name alias)
+	{
+		this(alias, VOTES);
+	}
 
-    /**
-     * Create a <code>public.votes</code> table reference
-     */
-    public Votes()
-    {
-        this(DSL.name("votes"), null);
-    }
+	/**
+	 * Create a <code>public.votes</code> table reference
+	 */
+	public Votes()
+	{
+		this(DSL.name("votes"), null);
+	}
 
-    public <O extends Record> Votes(Table<O> child, ForeignKey<O, VotesRecord> key)
-    {
-        super(child, key, VOTES);
-    }
+	public <O extends Record> Votes(Table<O> child, ForeignKey<O, VotesRecord> key)
+	{
+		super(child, key, VOTES);
+	}
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<VotesRecord> getRecordType()
-    {
-        return VotesRecord.class;
-    }
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<VotesRecord> getRecordType()
+	{
+		return VotesRecord.class;
+	}
 
-    @Override
-    public Schema getSchema()
-    {
-        return Public.PUBLIC;
-    }
+	@Override
+	public Schema getSchema()
+	{
+		return Public.PUBLIC;
+	}
 
-    @Override
-    public Identity<VotesRecord, Long> getIdentity()
-    {
-        return (Identity<VotesRecord, Long>) super.getIdentity();
-    }
+	@Override
+	public Identity<VotesRecord, Long> getIdentity()
+	{
+		return (Identity<VotesRecord, Long>) super.getIdentity();
+	}
 
-    @Override
-    public UniqueKey<VotesRecord> getPrimaryKey()
-    {
-        return Keys.VOTES_PKEY;
-    }
+	@Override
+	public UniqueKey<VotesRecord> getPrimaryKey()
+	{
+		return Keys.VOTES_PKEY;
+	}
 
-    @Override
-    public List<UniqueKey<VotesRecord>> getKeys()
-    {
-        return Arrays.<UniqueKey<VotesRecord>>asList(Keys.VOTES_PKEY);
-    }
+	@Override
+	public List<UniqueKey<VotesRecord>> getKeys()
+	{
+		return Arrays.<UniqueKey<VotesRecord>>asList(Keys.VOTES_PKEY);
+	}
 
-    @Override
-    public Votes as(String alias)
-    {
-        return new Votes(DSL.name(alias), this);
-    }
+	@Override
+	public Votes as(String alias)
+	{
+		return new Votes(DSL.name(alias), this);
+	}
 
-    @Override
-    public Votes as(Name alias)
-    {
-        return new Votes(alias, this);
-    }
+	@Override
+	public Votes as(Name alias)
+	{
+		return new Votes(alias, this);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public Votes rename(String name)
-    {
-        return new Votes(DSL.name(name), null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public Votes rename(String name)
+	{
+		return new Votes(DSL.name(name), null);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public Votes rename(Name name)
-    {
-        return new Votes(name, null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public Votes rename(Name name)
+	{
+		return new Votes(name, null);
+	}
 
-    // -------------------------------------------------------------------------
-    // Row5 type methods
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Row5 type methods
+	// -------------------------------------------------------------------------
 
-    @Override
-    public Row5<Long, Long, Long, String, LocalDateTime> fieldsRow()
-    {
-        return (Row5) super.fieldsRow();
-    }
+	@Override
+	public Row5<Long, Long, Long, String, LocalDateTime> fieldsRow()
+	{
+		return (Row5) super.fieldsRow();
+	}
 }

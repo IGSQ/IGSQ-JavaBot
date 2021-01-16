@@ -2,11 +2,10 @@ package org.igsq.igsqbot.minecraft;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import java.sql.Connection;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.ConfigOption;
 import org.igsq.igsqbot.entities.Configuration;
-
-import java.sql.Connection;
 
 public class DatabaseHandler
 {

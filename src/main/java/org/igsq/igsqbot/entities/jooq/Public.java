@@ -20,90 +20,90 @@ import org.jooq.impl.SchemaImpl;
 public class Public extends SchemaImpl
 {
 
-    /**
-     * The reference instance of <code>public</code>
-     */
-    public static final Public PUBLIC = new Public();
-    private static final long serialVersionUID = 1L;
-    /**
-     * The table <code>public.guilds</code>.
-     */
-    public final Guilds GUILDS = Guilds.GUILDS;
+	/**
+	 * The reference instance of <code>public</code>
+	 */
+	public static final Public PUBLIC = new Public();
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The table <code>public.guilds</code>.
+	 */
+	public final Guilds GUILDS = Guilds.GUILDS;
 
-    /**
-     * The table <code>public.mutes</code>.
-     */
-    public final Mutes MUTES = Mutes.MUTES;
+	/**
+	 * The table <code>public.mutes</code>.
+	 */
+	public final Mutes MUTES = Mutes.MUTES;
 
-    /**
-     * The table <code>public.reaction_roles</code>.
-     */
-    public final ReactionRoles REACTION_ROLES = ReactionRoles.REACTION_ROLES;
+	/**
+	 * The table <code>public.reaction_roles</code>.
+	 */
+	public final ReactionRoles REACTION_ROLES = ReactionRoles.REACTION_ROLES;
 
-    /**
-     * The table <code>public.reminders</code>.
-     */
-    public final Reminders REMINDERS = Reminders.REMINDERS;
+	/**
+	 * The table <code>public.reminders</code>.
+	 */
+	public final Reminders REMINDERS = Reminders.REMINDERS;
 
-    /**
-     * The table <code>public.reports</code>.
-     */
-    public final Reports REPORTS = Reports.REPORTS;
+	/**
+	 * The table <code>public.reports</code>.
+	 */
+	public final Reports REPORTS = Reports.REPORTS;
 
-    /**
-     * The table <code>public.roles</code>.
-     */
-    public final Roles ROLES = Roles.ROLES;
+	/**
+	 * The table <code>public.roles</code>.
+	 */
+	public final Roles ROLES = Roles.ROLES;
 
-    /**
-     * The table <code>public.votes</code>.
-     */
-    public final Votes VOTES = Votes.VOTES;
+	/**
+	 * The table <code>public.votes</code>.
+	 */
+	public final Votes VOTES = Votes.VOTES;
 
-    /**
-     * The table <code>public.warnings</code>.
-     */
-    public final Warnings WARNINGS = Warnings.WARNINGS;
+	/**
+	 * The table <code>public.warnings</code>.
+	 */
+	public final Warnings WARNINGS = Warnings.WARNINGS;
 
-    /**
-     * No further instances allowed
-     */
-    private Public()
-    {
-        super("public", null);
-    }
+	/**
+	 * No further instances allowed
+	 */
+	private Public()
+	{
+		super("public", null);
+	}
 
 
-    @Override
-    public Catalog getCatalog()
-    {
-        return DefaultCatalog.DEFAULT_CATALOG;
-    }
+	@Override
+	public Catalog getCatalog()
+	{
+		return DefaultCatalog.DEFAULT_CATALOG;
+	}
 
-    @Override
-    public final List<Sequence<?>> getSequences()
-    {
-        return Arrays.<Sequence<?>>asList(
-                Sequences.MUTES_ID_SEQ,
-                Sequences.REACTION_ROLES_ID_SEQ,
-                Sequences.REMINDERS_ID_SEQ,
-                Sequences.REPORTS_ID_SEQ,
-                Sequences.ROLES_ID_SEQ,
-                Sequences.VOTES_ID_SEQ,
-                Sequences.WARNINGS_WARNID_SEQ);
-    }
+	@Override
+	public final List<Sequence<?>> getSequences()
+	{
+		return Arrays.<Sequence<?>>asList(
+				Sequences.MUTES_ID_SEQ,
+				Sequences.REACTION_ROLES_ID_SEQ,
+				Sequences.REMINDERS_ID_SEQ,
+				Sequences.REPORTS_ID_SEQ,
+				Sequences.ROLES_ID_SEQ,
+				Sequences.VOTES_ID_SEQ,
+				Sequences.WARNINGS_WARNID_SEQ);
+	}
 
-    @Override
-    public final List<Table<?>> getTables()
-    {
-        return Arrays.<Table<?>>asList(
-                Guilds.GUILDS,
-                Mutes.MUTES,
-                ReactionRoles.REACTION_ROLES,
-                Reminders.REMINDERS,
-                Reports.REPORTS,
-                Roles.ROLES,
-                Votes.VOTES,
-                Warnings.WARNINGS);
-    }
+	@Override
+	public final List<Table<?>> getTables()
+	{
+		return Arrays.<Table<?>>asList(
+				Guilds.GUILDS,
+				Mutes.MUTES,
+				ReactionRoles.REACTION_ROLES,
+				Reminders.REMINDERS,
+				Reports.REPORTS,
+				Roles.ROLES,
+				Votes.VOTES,
+				Warnings.WARNINGS);
+	}
 }

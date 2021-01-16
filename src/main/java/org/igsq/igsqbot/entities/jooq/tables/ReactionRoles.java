@@ -23,148 +23,148 @@ import org.jooq.impl.TableImpl;
 public class ReactionRoles extends TableImpl<ReactionRolesRecord>
 {
 
-    /**
-     * The reference instance of <code>public.reaction_roles</code>
-     */
-    public static final ReactionRoles REACTION_ROLES = new ReactionRoles();
-    private static final long serialVersionUID = 1L;
-    /**
-     * The column <code>public.reaction_roles.id</code>.
-     */
-    public final TableField<ReactionRolesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
-    /**
-     * The column <code>public.reaction_roles.guildid</code>.
-     */
-    public final TableField<ReactionRolesRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
-    /**
-     * The column <code>public.reaction_roles.emoteid</code>.
-     */
-    public final TableField<ReactionRolesRecord, String> EMOTEID = createField(DSL.name("emoteid"), SQLDataType.VARCHAR(25), this, "");
-    /**
-     * The column <code>public.reaction_roles.roleid</code>.
-     */
-    public final TableField<ReactionRolesRecord, Long> ROLEID = createField(DSL.name("roleid"), SQLDataType.BIGINT, this, "");
+	/**
+	 * The reference instance of <code>public.reaction_roles</code>
+	 */
+	public static final ReactionRoles REACTION_ROLES = new ReactionRoles();
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The column <code>public.reaction_roles.id</code>.
+	 */
+	public final TableField<ReactionRolesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+	/**
+	 * The column <code>public.reaction_roles.guildid</code>.
+	 */
+	public final TableField<ReactionRolesRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.reaction_roles.emoteid</code>.
+	 */
+	public final TableField<ReactionRolesRecord, String> EMOTEID = createField(DSL.name("emoteid"), SQLDataType.VARCHAR(25), this, "");
+	/**
+	 * The column <code>public.reaction_roles.roleid</code>.
+	 */
+	public final TableField<ReactionRolesRecord, Long> ROLEID = createField(DSL.name("roleid"), SQLDataType.BIGINT, this, "");
 
-    private ReactionRoles(Name alias, Table<ReactionRolesRecord> aliased)
-    {
-        this(alias, aliased, null);
-    }
+	private ReactionRoles(Name alias, Table<ReactionRolesRecord> aliased)
+	{
+		this(alias, aliased, null);
+	}
 
-    private ReactionRoles(Name alias, Table<ReactionRolesRecord> aliased, Field<?>[] parameters)
-    {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+	private ReactionRoles(Name alias, Table<ReactionRolesRecord> aliased, Field<?>[] parameters)
+	{
+		super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+	}
 
-    /**
-     * Create an aliased <code>public.reaction_roles</code> table reference
-     */
-    public ReactionRoles(String alias)
-    {
-        this(DSL.name(alias), REACTION_ROLES);
-    }
+	/**
+	 * Create an aliased <code>public.reaction_roles</code> table reference
+	 */
+	public ReactionRoles(String alias)
+	{
+		this(DSL.name(alias), REACTION_ROLES);
+	}
 
-    /**
-     * Create an aliased <code>public.reaction_roles</code> table reference
-     */
-    public ReactionRoles(Name alias)
-    {
-        this(alias, REACTION_ROLES);
-    }
+	/**
+	 * Create an aliased <code>public.reaction_roles</code> table reference
+	 */
+	public ReactionRoles(Name alias)
+	{
+		this(alias, REACTION_ROLES);
+	}
 
-    /**
-     * Create a <code>public.reaction_roles</code> table reference
-     */
-    public ReactionRoles()
-    {
-        this(DSL.name("reaction_roles"), null);
-    }
+	/**
+	 * Create a <code>public.reaction_roles</code> table reference
+	 */
+	public ReactionRoles()
+	{
+		this(DSL.name("reaction_roles"), null);
+	}
 
-    public <O extends Record> ReactionRoles(Table<O> child, ForeignKey<O, ReactionRolesRecord> key)
-    {
-        super(child, key, REACTION_ROLES);
-    }
+	public <O extends Record> ReactionRoles(Table<O> child, ForeignKey<O, ReactionRolesRecord> key)
+	{
+		super(child, key, REACTION_ROLES);
+	}
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ReactionRolesRecord> getRecordType()
-    {
-        return ReactionRolesRecord.class;
-    }
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<ReactionRolesRecord> getRecordType()
+	{
+		return ReactionRolesRecord.class;
+	}
 
-    @Override
-    public Schema getSchema()
-    {
-        return Public.PUBLIC;
-    }
+	@Override
+	public Schema getSchema()
+	{
+		return Public.PUBLIC;
+	}
 
-    @Override
-    public Identity<ReactionRolesRecord, Long> getIdentity()
-    {
-        return (Identity<ReactionRolesRecord, Long>) super.getIdentity();
-    }
+	@Override
+	public Identity<ReactionRolesRecord, Long> getIdentity()
+	{
+		return (Identity<ReactionRolesRecord, Long>) super.getIdentity();
+	}
 
-    @Override
-    public UniqueKey<ReactionRolesRecord> getPrimaryKey()
-    {
-        return Keys.REACTION_ROLES_PKEY;
-    }
+	@Override
+	public UniqueKey<ReactionRolesRecord> getPrimaryKey()
+	{
+		return Keys.REACTION_ROLES_PKEY;
+	}
 
-    @Override
-    public List<UniqueKey<ReactionRolesRecord>> getKeys()
-    {
-        return Arrays.<UniqueKey<ReactionRolesRecord>>asList(Keys.REACTION_ROLES_PKEY);
-    }
+	@Override
+	public List<UniqueKey<ReactionRolesRecord>> getKeys()
+	{
+		return Arrays.<UniqueKey<ReactionRolesRecord>>asList(Keys.REACTION_ROLES_PKEY);
+	}
 
-    @Override
-    public List<ForeignKey<ReactionRolesRecord, ?>> getReferences()
-    {
-        return Arrays.<ForeignKey<ReactionRolesRecord, ?>>asList(Keys.REACTION_ROLES__REACTION_ROLES_GUILDID_FKEY);
-    }
+	@Override
+	public List<ForeignKey<ReactionRolesRecord, ?>> getReferences()
+	{
+		return Arrays.<ForeignKey<ReactionRolesRecord, ?>>asList(Keys.REACTION_ROLES__REACTION_ROLES_GUILDID_FKEY);
+	}
 
-    public Guilds guilds()
-    {
-        return new Guilds(this, Keys.REACTION_ROLES__REACTION_ROLES_GUILDID_FKEY);
-    }
+	public Guilds guilds()
+	{
+		return new Guilds(this, Keys.REACTION_ROLES__REACTION_ROLES_GUILDID_FKEY);
+	}
 
-    @Override
-    public ReactionRoles as(String alias)
-    {
-        return new ReactionRoles(DSL.name(alias), this);
-    }
+	@Override
+	public ReactionRoles as(String alias)
+	{
+		return new ReactionRoles(DSL.name(alias), this);
+	}
 
-    @Override
-    public ReactionRoles as(Name alias)
-    {
-        return new ReactionRoles(alias, this);
-    }
+	@Override
+	public ReactionRoles as(Name alias)
+	{
+		return new ReactionRoles(alias, this);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public ReactionRoles rename(String name)
-    {
-        return new ReactionRoles(DSL.name(name), null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public ReactionRoles rename(String name)
+	{
+		return new ReactionRoles(DSL.name(name), null);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public ReactionRoles rename(Name name)
-    {
-        return new ReactionRoles(name, null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public ReactionRoles rename(Name name)
+	{
+		return new ReactionRoles(name, null);
+	}
 
-    // -------------------------------------------------------------------------
-    // Row4 type methods
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Row4 type methods
+	// -------------------------------------------------------------------------
 
-    @Override
-    public Row4<Long, Long, String, Long> fieldsRow()
-    {
-        return (Row4) super.fieldsRow();
-    }
+	@Override
+	public Row4<Long, Long, String, Long> fieldsRow()
+	{
+		return (Row4) super.fieldsRow();
+	}
 }

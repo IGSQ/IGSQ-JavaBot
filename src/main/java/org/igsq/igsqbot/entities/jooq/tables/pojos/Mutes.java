@@ -15,77 +15,77 @@ import java.time.LocalDateTime;
 public class Mutes implements Serializable
 {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final Long id;
-    private final Long userid;
-    private final Long guildid;
-    private final LocalDateTime muteduntil;
+	private final Long id;
+	private final Long userid;
+	private final Long guildid;
+	private final LocalDateTime muteduntil;
 
-    public Mutes(Mutes value)
-    {
-        this.id = value.id;
-        this.userid = value.userid;
-        this.guildid = value.guildid;
-        this.muteduntil = value.muteduntil;
-    }
+	public Mutes(Mutes value)
+	{
+		this.id = value.id;
+		this.userid = value.userid;
+		this.guildid = value.guildid;
+		this.muteduntil = value.muteduntil;
+	}
 
-    public Mutes(
-            Long id,
-            Long userid,
-            Long guildid,
-            LocalDateTime muteduntil
-    )
-    {
-        this.id = id;
-        this.userid = userid;
-        this.guildid = guildid;
-        this.muteduntil = muteduntil;
-    }
+	public Mutes(
+			Long id,
+			Long userid,
+			Long guildid,
+			LocalDateTime muteduntil
+	)
+	{
+		this.id = id;
+		this.userid = userid;
+		this.guildid = guildid;
+		this.muteduntil = muteduntil;
+	}
 
-    /**
-     * Getter for <code>public.mutes.id</code>.
-     */
-    public Long getId()
-    {
-        return this.id;
-    }
+	/**
+	 * Getter for <code>public.mutes.id</code>.
+	 */
+	public Long getId()
+	{
+		return this.id;
+	}
 
-    /**
-     * Getter for <code>public.mutes.userid</code>.
-     */
-    public Long getUserid()
-    {
-        return this.userid;
-    }
+	/**
+	 * Getter for <code>public.mutes.userid</code>.
+	 */
+	public Long getUserid()
+	{
+		return this.userid;
+	}
 
-    /**
-     * Getter for <code>public.mutes.guildid</code>.
-     */
-    public Long getGuildid()
-    {
-        return this.guildid;
-    }
+	/**
+	 * Getter for <code>public.mutes.guildid</code>.
+	 */
+	public Long getGuildid()
+	{
+		return this.guildid;
+	}
 
-    /**
-     * Getter for <code>public.mutes.muteduntil</code>.
-     */
-    public LocalDateTime getMuteduntil()
-    {
-        return this.muteduntil;
-    }
+	/**
+	 * Getter for <code>public.mutes.muteduntil</code>.
+	 */
+	public LocalDateTime getMuteduntil()
+	{
+		return this.muteduntil;
+	}
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder("Mutes (");
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder("Mutes (");
 
-        sb.append(id);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(muteduntil);
+		sb.append(id);
+		sb.append(", ").append(userid);
+		sb.append(", ").append(guildid);
+		sb.append(", ").append(muteduntil);
 
-        sb.append(")");
-        return sb.toString();
-    }
+		sb.append(")");
+		return sb.toString();
+	}
 }

@@ -10,35 +10,35 @@ import org.igsq.igsqbot.util.DatabaseUtils;
 
 public class GuildEventsMain extends ListenerAdapter
 {
-    private final IGSQBot igsqBot;
+	private final IGSQBot igsqBot;
 
-    public GuildEventsMain(IGSQBot igsqBot)
-    {
-        this.igsqBot = igsqBot;
-    }
+	public GuildEventsMain(IGSQBot igsqBot)
+	{
+		this.igsqBot = igsqBot;
+	}
 
-    @Override
-    public void onGuildLeave(GuildLeaveEvent event)
-    {
-        DatabaseUtils.removeGuild(event.getGuild(), igsqBot);
-    }
+	@Override
+	public void onGuildLeave(GuildLeaveEvent event)
+	{
+		DatabaseUtils.removeGuild(event.getGuild(), igsqBot);
+	}
 
-    @Override
-    public void onUnavailableGuildLeave(UnavailableGuildLeaveEvent event)
-    {
-        DatabaseUtils.removeGuild(event.getGuildIdLong(), igsqBot);
-    }
+	@Override
+	public void onUnavailableGuildLeave(UnavailableGuildLeaveEvent event)
+	{
+		DatabaseUtils.removeGuild(event.getGuildIdLong(), igsqBot);
+	}
 
-    @Override
-    public void onGuildMemberRemove(GuildMemberRemoveEvent event)
-    {
-        //TO BE IMPLEMENTED
-    }
+	@Override
+	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
+	{
+		//TO BE IMPLEMENTED
+	}
 
-    @Override
-    public void onGuildJoin(GuildJoinEvent event)
-    {
-        DatabaseUtils.registerGuild(event.getGuild(), igsqBot);
-    }
+	@Override
+	public void onGuildJoin(GuildJoinEvent event)
+	{
+		DatabaseUtils.registerGuild(event.getGuild(), igsqBot);
+	}
 }
 

@@ -19,234 +19,234 @@ import org.jooq.impl.UpdatableRecordImpl;
 public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implements Record4<Long, Long, Long, String>
 {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Create a detached RemindersRecord
-     */
-    public RemindersRecord()
-    {
-        super(Reminders.REMINDERS);
-    }
+	/**
+	 * Create a detached RemindersRecord
+	 */
+	public RemindersRecord()
+	{
+		super(Reminders.REMINDERS);
+	}
 
-    /**
-     * Create a detached, initialised RemindersRecord
-     */
-    public RemindersRecord(Long id, Long guildid, Long userid, String remindertext)
-    {
-        super(Reminders.REMINDERS);
+	/**
+	 * Create a detached, initialised RemindersRecord
+	 */
+	public RemindersRecord(Long id, Long guildid, Long userid, String remindertext)
+	{
+		super(Reminders.REMINDERS);
 
-        setId(id);
-        setGuildid(guildid);
-        setUserid(userid);
-        setRemindertext(remindertext);
-    }
+		setId(id);
+		setGuildid(guildid);
+		setUserid(userid);
+		setRemindertext(remindertext);
+	}
 
-    /**
-     * Getter for <code>public.reminders.id</code>.
-     */
-    public Long getId()
-    {
-        return (Long) get(0);
-    }
+	/**
+	 * Getter for <code>public.reminders.id</code>.
+	 */
+	public Long getId()
+	{
+		return (Long) get(0);
+	}
 
-    /**
-     * Setter for <code>public.reminders.id</code>.
-     */
-    public RemindersRecord setId(Long value)
-    {
-        set(0, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.reminders.id</code>.
+	 */
+	public RemindersRecord setId(Long value)
+	{
+		set(0, value);
+		return this;
+	}
 
-    /**
-     * Getter for <code>public.reminders.guildid</code>.
-     */
-    public Long getGuildid()
-    {
-        return (Long) get(1);
-    }
+	/**
+	 * Getter for <code>public.reminders.guildid</code>.
+	 */
+	public Long getGuildid()
+	{
+		return (Long) get(1);
+	}
 
-    /**
-     * Setter for <code>public.reminders.guildid</code>.
-     */
-    public RemindersRecord setGuildid(Long value)
-    {
-        set(1, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.reminders.guildid</code>.
+	 */
+	public RemindersRecord setGuildid(Long value)
+	{
+		set(1, value);
+		return this;
+	}
 
-    /**
-     * Getter for <code>public.reminders.userid</code>.
-     */
-    public Long getUserid()
-    {
-        return (Long) get(2);
-    }
+	/**
+	 * Getter for <code>public.reminders.userid</code>.
+	 */
+	public Long getUserid()
+	{
+		return (Long) get(2);
+	}
 
-    /**
-     * Setter for <code>public.reminders.userid</code>.
-     */
-    public RemindersRecord setUserid(Long value)
-    {
-        set(2, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.reminders.userid</code>.
+	 */
+	public RemindersRecord setUserid(Long value)
+	{
+		set(2, value);
+		return this;
+	}
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Primary key information
+	// -------------------------------------------------------------------------
 
-    /**
-     * Getter for <code>public.reminders.remindertext</code>.
-     */
-    public String getRemindertext()
-    {
-        return (String) get(3);
-    }
+	/**
+	 * Getter for <code>public.reminders.remindertext</code>.
+	 */
+	public String getRemindertext()
+	{
+		return (String) get(3);
+	}
 
-    // -------------------------------------------------------------------------
-    // Record4 type implementation
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Record4 type implementation
+	// -------------------------------------------------------------------------
 
-    /**
-     * Setter for <code>public.reminders.remindertext</code>.
-     */
-    public RemindersRecord setRemindertext(String value)
-    {
-        set(3, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.reminders.remindertext</code>.
+	 */
+	public RemindersRecord setRemindertext(String value)
+	{
+		set(3, value);
+		return this;
+	}
 
-    @Override
-    public Record1<Long> key()
-    {
-        return (Record1) super.key();
-    }
+	@Override
+	public Record1<Long> key()
+	{
+		return (Record1) super.key();
+	}
 
-    @Override
-    public Row4<Long, Long, Long, String> fieldsRow()
-    {
-        return (Row4) super.fieldsRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, String> fieldsRow()
+	{
+		return (Row4) super.fieldsRow();
+	}
 
-    @Override
-    public Row4<Long, Long, Long, String> valuesRow()
-    {
-        return (Row4) super.valuesRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, String> valuesRow()
+	{
+		return (Row4) super.valuesRow();
+	}
 
-    @Override
-    public Field<Long> field1()
-    {
-        return Reminders.REMINDERS.ID;
-    }
+	@Override
+	public Field<Long> field1()
+	{
+		return Reminders.REMINDERS.ID;
+	}
 
-    @Override
-    public Field<Long> field2()
-    {
-        return Reminders.REMINDERS.GUILDID;
-    }
+	@Override
+	public Field<Long> field2()
+	{
+		return Reminders.REMINDERS.GUILDID;
+	}
 
-    @Override
-    public Field<Long> field3()
-    {
-        return Reminders.REMINDERS.USERID;
-    }
+	@Override
+	public Field<Long> field3()
+	{
+		return Reminders.REMINDERS.USERID;
+	}
 
-    @Override
-    public Field<String> field4()
-    {
-        return Reminders.REMINDERS.REMINDERTEXT;
-    }
+	@Override
+	public Field<String> field4()
+	{
+		return Reminders.REMINDERS.REMINDERTEXT;
+	}
 
-    @Override
-    public Long component1()
-    {
-        return getId();
-    }
+	@Override
+	public Long component1()
+	{
+		return getId();
+	}
 
-    @Override
-    public Long component2()
-    {
-        return getGuildid();
-    }
+	@Override
+	public Long component2()
+	{
+		return getGuildid();
+	}
 
-    @Override
-    public Long component3()
-    {
-        return getUserid();
-    }
+	@Override
+	public Long component3()
+	{
+		return getUserid();
+	}
 
-    @Override
-    public String component4()
-    {
-        return getRemindertext();
-    }
+	@Override
+	public String component4()
+	{
+		return getRemindertext();
+	}
 
-    @Override
-    public Long value1()
-    {
-        return getId();
-    }
+	@Override
+	public Long value1()
+	{
+		return getId();
+	}
 
-    @Override
-    public Long value2()
-    {
-        return getGuildid();
-    }
+	@Override
+	public Long value2()
+	{
+		return getGuildid();
+	}
 
-    @Override
-    public Long value3()
-    {
-        return getUserid();
-    }
+	@Override
+	public Long value3()
+	{
+		return getUserid();
+	}
 
-    @Override
-    public String value4()
-    {
-        return getRemindertext();
-    }
+	@Override
+	public String value4()
+	{
+		return getRemindertext();
+	}
 
-    @Override
-    public RemindersRecord value1(Long value)
-    {
-        setId(value);
-        return this;
-    }
+	@Override
+	public RemindersRecord value1(Long value)
+	{
+		setId(value);
+		return this;
+	}
 
-    @Override
-    public RemindersRecord value2(Long value)
-    {
-        setGuildid(value);
-        return this;
-    }
+	@Override
+	public RemindersRecord value2(Long value)
+	{
+		setGuildid(value);
+		return this;
+	}
 
-    @Override
-    public RemindersRecord value3(Long value)
-    {
-        setUserid(value);
-        return this;
-    }
+	@Override
+	public RemindersRecord value3(Long value)
+	{
+		setUserid(value);
+		return this;
+	}
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
 
-    @Override
-    public RemindersRecord value4(String value)
-    {
-        setRemindertext(value);
-        return this;
-    }
+	@Override
+	public RemindersRecord value4(String value)
+	{
+		setRemindertext(value);
+		return this;
+	}
 
-    @Override
-    public RemindersRecord values(Long value1, Long value2, Long value3, String value4)
-    {
-        value1(value1);
-        value2(value2);
-        value3(value3);
-        value4(value4);
-        return this;
-    }
+	@Override
+	public RemindersRecord values(Long value1, Long value2, Long value3, String value4)
+	{
+		value1(value1);
+		value2(value2);
+		value3(value3);
+		value4(value4);
+		return this;
+	}
 }

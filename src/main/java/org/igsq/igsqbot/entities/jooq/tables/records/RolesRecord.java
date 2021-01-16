@@ -19,234 +19,234 @@ import org.jooq.impl.UpdatableRecordImpl;
 public class RolesRecord extends UpdatableRecordImpl<RolesRecord> implements Record4<Long, Long, Long, Long>
 {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Create a detached RolesRecord
-     */
-    public RolesRecord()
-    {
-        super(Roles.ROLES);
-    }
+	/**
+	 * Create a detached RolesRecord
+	 */
+	public RolesRecord()
+	{
+		super(Roles.ROLES);
+	}
 
-    /**
-     * Create a detached, initialised RolesRecord
-     */
-    public RolesRecord(Long id, Long userid, Long guildid, Long roleid)
-    {
-        super(Roles.ROLES);
+	/**
+	 * Create a detached, initialised RolesRecord
+	 */
+	public RolesRecord(Long id, Long userid, Long guildid, Long roleid)
+	{
+		super(Roles.ROLES);
 
-        setId(id);
-        setUserid(userid);
-        setGuildid(guildid);
-        setRoleid(roleid);
-    }
+		setId(id);
+		setUserid(userid);
+		setGuildid(guildid);
+		setRoleid(roleid);
+	}
 
-    /**
-     * Getter for <code>public.roles.id</code>.
-     */
-    public Long getId()
-    {
-        return (Long) get(0);
-    }
+	/**
+	 * Getter for <code>public.roles.id</code>.
+	 */
+	public Long getId()
+	{
+		return (Long) get(0);
+	}
 
-    /**
-     * Setter for <code>public.roles.id</code>.
-     */
-    public RolesRecord setId(Long value)
-    {
-        set(0, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.roles.id</code>.
+	 */
+	public RolesRecord setId(Long value)
+	{
+		set(0, value);
+		return this;
+	}
 
-    /**
-     * Getter for <code>public.roles.userid</code>.
-     */
-    public Long getUserid()
-    {
-        return (Long) get(1);
-    }
+	/**
+	 * Getter for <code>public.roles.userid</code>.
+	 */
+	public Long getUserid()
+	{
+		return (Long) get(1);
+	}
 
-    /**
-     * Setter for <code>public.roles.userid</code>.
-     */
-    public RolesRecord setUserid(Long value)
-    {
-        set(1, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.roles.userid</code>.
+	 */
+	public RolesRecord setUserid(Long value)
+	{
+		set(1, value);
+		return this;
+	}
 
-    /**
-     * Getter for <code>public.roles.guildid</code>.
-     */
-    public Long getGuildid()
-    {
-        return (Long) get(2);
-    }
+	/**
+	 * Getter for <code>public.roles.guildid</code>.
+	 */
+	public Long getGuildid()
+	{
+		return (Long) get(2);
+	}
 
-    /**
-     * Setter for <code>public.roles.guildid</code>.
-     */
-    public RolesRecord setGuildid(Long value)
-    {
-        set(2, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.roles.guildid</code>.
+	 */
+	public RolesRecord setGuildid(Long value)
+	{
+		set(2, value);
+		return this;
+	}
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Primary key information
+	// -------------------------------------------------------------------------
 
-    /**
-     * Getter for <code>public.roles.roleid</code>.
-     */
-    public Long getRoleid()
-    {
-        return (Long) get(3);
-    }
+	/**
+	 * Getter for <code>public.roles.roleid</code>.
+	 */
+	public Long getRoleid()
+	{
+		return (Long) get(3);
+	}
 
-    // -------------------------------------------------------------------------
-    // Record4 type implementation
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Record4 type implementation
+	// -------------------------------------------------------------------------
 
-    /**
-     * Setter for <code>public.roles.roleid</code>.
-     */
-    public RolesRecord setRoleid(Long value)
-    {
-        set(3, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.roles.roleid</code>.
+	 */
+	public RolesRecord setRoleid(Long value)
+	{
+		set(3, value);
+		return this;
+	}
 
-    @Override
-    public Record1<Long> key()
-    {
-        return (Record1) super.key();
-    }
+	@Override
+	public Record1<Long> key()
+	{
+		return (Record1) super.key();
+	}
 
-    @Override
-    public Row4<Long, Long, Long, Long> fieldsRow()
-    {
-        return (Row4) super.fieldsRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, Long> fieldsRow()
+	{
+		return (Row4) super.fieldsRow();
+	}
 
-    @Override
-    public Row4<Long, Long, Long, Long> valuesRow()
-    {
-        return (Row4) super.valuesRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, Long> valuesRow()
+	{
+		return (Row4) super.valuesRow();
+	}
 
-    @Override
-    public Field<Long> field1()
-    {
-        return Roles.ROLES.ID;
-    }
+	@Override
+	public Field<Long> field1()
+	{
+		return Roles.ROLES.ID;
+	}
 
-    @Override
-    public Field<Long> field2()
-    {
-        return Roles.ROLES.USERID;
-    }
+	@Override
+	public Field<Long> field2()
+	{
+		return Roles.ROLES.USERID;
+	}
 
-    @Override
-    public Field<Long> field3()
-    {
-        return Roles.ROLES.GUILDID;
-    }
+	@Override
+	public Field<Long> field3()
+	{
+		return Roles.ROLES.GUILDID;
+	}
 
-    @Override
-    public Field<Long> field4()
-    {
-        return Roles.ROLES.ROLEID;
-    }
+	@Override
+	public Field<Long> field4()
+	{
+		return Roles.ROLES.ROLEID;
+	}
 
-    @Override
-    public Long component1()
-    {
-        return getId();
-    }
+	@Override
+	public Long component1()
+	{
+		return getId();
+	}
 
-    @Override
-    public Long component2()
-    {
-        return getUserid();
-    }
+	@Override
+	public Long component2()
+	{
+		return getUserid();
+	}
 
-    @Override
-    public Long component3()
-    {
-        return getGuildid();
-    }
+	@Override
+	public Long component3()
+	{
+		return getGuildid();
+	}
 
-    @Override
-    public Long component4()
-    {
-        return getRoleid();
-    }
+	@Override
+	public Long component4()
+	{
+		return getRoleid();
+	}
 
-    @Override
-    public Long value1()
-    {
-        return getId();
-    }
+	@Override
+	public Long value1()
+	{
+		return getId();
+	}
 
-    @Override
-    public Long value2()
-    {
-        return getUserid();
-    }
+	@Override
+	public Long value2()
+	{
+		return getUserid();
+	}
 
-    @Override
-    public Long value3()
-    {
-        return getGuildid();
-    }
+	@Override
+	public Long value3()
+	{
+		return getGuildid();
+	}
 
-    @Override
-    public Long value4()
-    {
-        return getRoleid();
-    }
+	@Override
+	public Long value4()
+	{
+		return getRoleid();
+	}
 
-    @Override
-    public RolesRecord value1(Long value)
-    {
-        setId(value);
-        return this;
-    }
+	@Override
+	public RolesRecord value1(Long value)
+	{
+		setId(value);
+		return this;
+	}
 
-    @Override
-    public RolesRecord value2(Long value)
-    {
-        setUserid(value);
-        return this;
-    }
+	@Override
+	public RolesRecord value2(Long value)
+	{
+		setUserid(value);
+		return this;
+	}
 
-    @Override
-    public RolesRecord value3(Long value)
-    {
-        setGuildid(value);
-        return this;
-    }
+	@Override
+	public RolesRecord value3(Long value)
+	{
+		setGuildid(value);
+		return this;
+	}
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
 
-    @Override
-    public RolesRecord value4(Long value)
-    {
-        setRoleid(value);
-        return this;
-    }
+	@Override
+	public RolesRecord value4(Long value)
+	{
+		setRoleid(value);
+		return this;
+	}
 
-    @Override
-    public RolesRecord values(Long value1, Long value2, Long value3, Long value4)
-    {
-        value1(value1);
-        value2(value2);
-        value3(value3);
-        value4(value4);
-        return this;
-    }
+	@Override
+	public RolesRecord values(Long value1, Long value2, Long value3, Long value4)
+	{
+		value1(value1);
+		value2(value2);
+		value3(value3);
+		value4(value4);
+		return this;
+	}
 }

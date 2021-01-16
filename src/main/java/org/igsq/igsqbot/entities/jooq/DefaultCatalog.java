@@ -17,28 +17,28 @@ import org.jooq.impl.CatalogImpl;
 public class DefaultCatalog extends CatalogImpl
 {
 
-    /**
-     * The reference instance of <code>DEFAULT_CATALOG</code>
-     */
-    public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
-    private static final long serialVersionUID = 1L;
-    /**
-     * The schema <code>public</code>.
-     */
-    public final Public PUBLIC = Public.PUBLIC;
+	/**
+	 * The reference instance of <code>DEFAULT_CATALOG</code>
+	 */
+	public static final DefaultCatalog DEFAULT_CATALOG = new DefaultCatalog();
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The schema <code>public</code>.
+	 */
+	public final Public PUBLIC = Public.PUBLIC;
 
-    /**
-     * No further instances allowed
-     */
-    private DefaultCatalog()
-    {
-        super("");
-    }
+	/**
+	 * No further instances allowed
+	 */
+	private DefaultCatalog()
+	{
+		super("");
+	}
 
-    @Override
-    public final List<Schema> getSchemas()
-    {
-        return Arrays.<Schema>asList(
-                Public.PUBLIC);
-    }
+	@Override
+	public final List<Schema> getSchemas()
+	{
+		return Arrays.<Schema>asList(
+				Public.PUBLIC);
+	}
 }

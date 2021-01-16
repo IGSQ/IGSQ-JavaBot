@@ -14,77 +14,77 @@ import java.io.Serializable;
 public class Roles implements Serializable
 {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final Long id;
-    private final Long userid;
-    private final Long guildid;
-    private final Long roleid;
+	private final Long id;
+	private final Long userid;
+	private final Long guildid;
+	private final Long roleid;
 
-    public Roles(Roles value)
-    {
-        this.id = value.id;
-        this.userid = value.userid;
-        this.guildid = value.guildid;
-        this.roleid = value.roleid;
-    }
+	public Roles(Roles value)
+	{
+		this.id = value.id;
+		this.userid = value.userid;
+		this.guildid = value.guildid;
+		this.roleid = value.roleid;
+	}
 
-    public Roles(
-            Long id,
-            Long userid,
-            Long guildid,
-            Long roleid
-    )
-    {
-        this.id = id;
-        this.userid = userid;
-        this.guildid = guildid;
-        this.roleid = roleid;
-    }
+	public Roles(
+			Long id,
+			Long userid,
+			Long guildid,
+			Long roleid
+	)
+	{
+		this.id = id;
+		this.userid = userid;
+		this.guildid = guildid;
+		this.roleid = roleid;
+	}
 
-    /**
-     * Getter for <code>public.roles.id</code>.
-     */
-    public Long getId()
-    {
-        return this.id;
-    }
+	/**
+	 * Getter for <code>public.roles.id</code>.
+	 */
+	public Long getId()
+	{
+		return this.id;
+	}
 
-    /**
-     * Getter for <code>public.roles.userid</code>.
-     */
-    public Long getUserid()
-    {
-        return this.userid;
-    }
+	/**
+	 * Getter for <code>public.roles.userid</code>.
+	 */
+	public Long getUserid()
+	{
+		return this.userid;
+	}
 
-    /**
-     * Getter for <code>public.roles.guildid</code>.
-     */
-    public Long getGuildid()
-    {
-        return this.guildid;
-    }
+	/**
+	 * Getter for <code>public.roles.guildid</code>.
+	 */
+	public Long getGuildid()
+	{
+		return this.guildid;
+	}
 
-    /**
-     * Getter for <code>public.roles.roleid</code>.
-     */
-    public Long getRoleid()
-    {
-        return this.roleid;
-    }
+	/**
+	 * Getter for <code>public.roles.roleid</code>.
+	 */
+	public Long getRoleid()
+	{
+		return this.roleid;
+	}
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder("Roles (");
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder("Roles (");
 
-        sb.append(id);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(roleid);
+		sb.append(id);
+		sb.append(", ").append(userid);
+		sb.append(", ").append(guildid);
+		sb.append(", ").append(roleid);
 
-        sb.append(")");
-        return sb.toString();
-    }
+		sb.append(")");
+		return sb.toString();
+	}
 }

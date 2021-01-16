@@ -20,234 +20,234 @@ import org.jooq.impl.UpdatableRecordImpl;
 public class MutesRecord extends UpdatableRecordImpl<MutesRecord> implements Record4<Long, Long, Long, LocalDateTime>
 {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Create a detached MutesRecord
-     */
-    public MutesRecord()
-    {
-        super(Mutes.MUTES);
-    }
+	/**
+	 * Create a detached MutesRecord
+	 */
+	public MutesRecord()
+	{
+		super(Mutes.MUTES);
+	}
 
-    /**
-     * Create a detached, initialised MutesRecord
-     */
-    public MutesRecord(Long id, Long userid, Long guildid, LocalDateTime muteduntil)
-    {
-        super(Mutes.MUTES);
+	/**
+	 * Create a detached, initialised MutesRecord
+	 */
+	public MutesRecord(Long id, Long userid, Long guildid, LocalDateTime muteduntil)
+	{
+		super(Mutes.MUTES);
 
-        setId(id);
-        setUserid(userid);
-        setGuildid(guildid);
-        setMuteduntil(muteduntil);
-    }
+		setId(id);
+		setUserid(userid);
+		setGuildid(guildid);
+		setMuteduntil(muteduntil);
+	}
 
-    /**
-     * Getter for <code>public.mutes.id</code>.
-     */
-    public Long getId()
-    {
-        return (Long) get(0);
-    }
+	/**
+	 * Getter for <code>public.mutes.id</code>.
+	 */
+	public Long getId()
+	{
+		return (Long) get(0);
+	}
 
-    /**
-     * Setter for <code>public.mutes.id</code>.
-     */
-    public MutesRecord setId(Long value)
-    {
-        set(0, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.mutes.id</code>.
+	 */
+	public MutesRecord setId(Long value)
+	{
+		set(0, value);
+		return this;
+	}
 
-    /**
-     * Getter for <code>public.mutes.userid</code>.
-     */
-    public Long getUserid()
-    {
-        return (Long) get(1);
-    }
+	/**
+	 * Getter for <code>public.mutes.userid</code>.
+	 */
+	public Long getUserid()
+	{
+		return (Long) get(1);
+	}
 
-    /**
-     * Setter for <code>public.mutes.userid</code>.
-     */
-    public MutesRecord setUserid(Long value)
-    {
-        set(1, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.mutes.userid</code>.
+	 */
+	public MutesRecord setUserid(Long value)
+	{
+		set(1, value);
+		return this;
+	}
 
-    /**
-     * Getter for <code>public.mutes.guildid</code>.
-     */
-    public Long getGuildid()
-    {
-        return (Long) get(2);
-    }
+	/**
+	 * Getter for <code>public.mutes.guildid</code>.
+	 */
+	public Long getGuildid()
+	{
+		return (Long) get(2);
+	}
 
-    /**
-     * Setter for <code>public.mutes.guildid</code>.
-     */
-    public MutesRecord setGuildid(Long value)
-    {
-        set(2, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.mutes.guildid</code>.
+	 */
+	public MutesRecord setGuildid(Long value)
+	{
+		set(2, value);
+		return this;
+	}
 
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Primary key information
+	// -------------------------------------------------------------------------
 
-    /**
-     * Getter for <code>public.mutes.muteduntil</code>.
-     */
-    public LocalDateTime getMuteduntil()
-    {
-        return (LocalDateTime) get(3);
-    }
+	/**
+	 * Getter for <code>public.mutes.muteduntil</code>.
+	 */
+	public LocalDateTime getMuteduntil()
+	{
+		return (LocalDateTime) get(3);
+	}
 
-    // -------------------------------------------------------------------------
-    // Record4 type implementation
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Record4 type implementation
+	// -------------------------------------------------------------------------
 
-    /**
-     * Setter for <code>public.mutes.muteduntil</code>.
-     */
-    public MutesRecord setMuteduntil(LocalDateTime value)
-    {
-        set(3, value);
-        return this;
-    }
+	/**
+	 * Setter for <code>public.mutes.muteduntil</code>.
+	 */
+	public MutesRecord setMuteduntil(LocalDateTime value)
+	{
+		set(3, value);
+		return this;
+	}
 
-    @Override
-    public Record1<Long> key()
-    {
-        return (Record1) super.key();
-    }
+	@Override
+	public Record1<Long> key()
+	{
+		return (Record1) super.key();
+	}
 
-    @Override
-    public Row4<Long, Long, Long, LocalDateTime> fieldsRow()
-    {
-        return (Row4) super.fieldsRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, LocalDateTime> fieldsRow()
+	{
+		return (Row4) super.fieldsRow();
+	}
 
-    @Override
-    public Row4<Long, Long, Long, LocalDateTime> valuesRow()
-    {
-        return (Row4) super.valuesRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, LocalDateTime> valuesRow()
+	{
+		return (Row4) super.valuesRow();
+	}
 
-    @Override
-    public Field<Long> field1()
-    {
-        return Mutes.MUTES.ID;
-    }
+	@Override
+	public Field<Long> field1()
+	{
+		return Mutes.MUTES.ID;
+	}
 
-    @Override
-    public Field<Long> field2()
-    {
-        return Mutes.MUTES.USERID;
-    }
+	@Override
+	public Field<Long> field2()
+	{
+		return Mutes.MUTES.USERID;
+	}
 
-    @Override
-    public Field<Long> field3()
-    {
-        return Mutes.MUTES.GUILDID;
-    }
+	@Override
+	public Field<Long> field3()
+	{
+		return Mutes.MUTES.GUILDID;
+	}
 
-    @Override
-    public Field<LocalDateTime> field4()
-    {
-        return Mutes.MUTES.MUTEDUNTIL;
-    }
+	@Override
+	public Field<LocalDateTime> field4()
+	{
+		return Mutes.MUTES.MUTEDUNTIL;
+	}
 
-    @Override
-    public Long component1()
-    {
-        return getId();
-    }
+	@Override
+	public Long component1()
+	{
+		return getId();
+	}
 
-    @Override
-    public Long component2()
-    {
-        return getUserid();
-    }
+	@Override
+	public Long component2()
+	{
+		return getUserid();
+	}
 
-    @Override
-    public Long component3()
-    {
-        return getGuildid();
-    }
+	@Override
+	public Long component3()
+	{
+		return getGuildid();
+	}
 
-    @Override
-    public LocalDateTime component4()
-    {
-        return getMuteduntil();
-    }
+	@Override
+	public LocalDateTime component4()
+	{
+		return getMuteduntil();
+	}
 
-    @Override
-    public Long value1()
-    {
-        return getId();
-    }
+	@Override
+	public Long value1()
+	{
+		return getId();
+	}
 
-    @Override
-    public Long value2()
-    {
-        return getUserid();
-    }
+	@Override
+	public Long value2()
+	{
+		return getUserid();
+	}
 
-    @Override
-    public Long value3()
-    {
-        return getGuildid();
-    }
+	@Override
+	public Long value3()
+	{
+		return getGuildid();
+	}
 
-    @Override
-    public LocalDateTime value4()
-    {
-        return getMuteduntil();
-    }
+	@Override
+	public LocalDateTime value4()
+	{
+		return getMuteduntil();
+	}
 
-    @Override
-    public MutesRecord value1(Long value)
-    {
-        setId(value);
-        return this;
-    }
+	@Override
+	public MutesRecord value1(Long value)
+	{
+		setId(value);
+		return this;
+	}
 
-    @Override
-    public MutesRecord value2(Long value)
-    {
-        setUserid(value);
-        return this;
-    }
+	@Override
+	public MutesRecord value2(Long value)
+	{
+		setUserid(value);
+		return this;
+	}
 
-    @Override
-    public MutesRecord value3(Long value)
-    {
-        setGuildid(value);
-        return this;
-    }
+	@Override
+	public MutesRecord value3(Long value)
+	{
+		setGuildid(value);
+		return this;
+	}
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Constructors
+	// -------------------------------------------------------------------------
 
-    @Override
-    public MutesRecord value4(LocalDateTime value)
-    {
-        setMuteduntil(value);
-        return this;
-    }
+	@Override
+	public MutesRecord value4(LocalDateTime value)
+	{
+		setMuteduntil(value);
+		return this;
+	}
 
-    @Override
-    public MutesRecord values(Long value1, Long value2, Long value3, LocalDateTime value4)
-    {
-        value1(value1);
-        value2(value2);
-        value3(value3);
-        value4(value4);
-        return this;
-    }
+	@Override
+	public MutesRecord values(Long value1, Long value2, Long value3, LocalDateTime value4)
+	{
+		value1(value1);
+		value2(value2);
+		value3(value3);
+		value4(value4);
+		return this;
+	}
 }

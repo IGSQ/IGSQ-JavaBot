@@ -14,77 +14,77 @@ import java.io.Serializable;
 public class ReactionRoles implements Serializable
 {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final Long id;
-    private final Long guildid;
-    private final String emoteid;
-    private final Long roleid;
+	private final Long id;
+	private final Long guildid;
+	private final String emoteid;
+	private final Long roleid;
 
-    public ReactionRoles(ReactionRoles value)
-    {
-        this.id = value.id;
-        this.guildid = value.guildid;
-        this.emoteid = value.emoteid;
-        this.roleid = value.roleid;
-    }
+	public ReactionRoles(ReactionRoles value)
+	{
+		this.id = value.id;
+		this.guildid = value.guildid;
+		this.emoteid = value.emoteid;
+		this.roleid = value.roleid;
+	}
 
-    public ReactionRoles(
-            Long id,
-            Long guildid,
-            String emoteid,
-            Long roleid
-    )
-    {
-        this.id = id;
-        this.guildid = guildid;
-        this.emoteid = emoteid;
-        this.roleid = roleid;
-    }
+	public ReactionRoles(
+			Long id,
+			Long guildid,
+			String emoteid,
+			Long roleid
+	)
+	{
+		this.id = id;
+		this.guildid = guildid;
+		this.emoteid = emoteid;
+		this.roleid = roleid;
+	}
 
-    /**
-     * Getter for <code>public.reaction_roles.id</code>.
-     */
-    public Long getId()
-    {
-        return this.id;
-    }
+	/**
+	 * Getter for <code>public.reaction_roles.id</code>.
+	 */
+	public Long getId()
+	{
+		return this.id;
+	}
 
-    /**
-     * Getter for <code>public.reaction_roles.guildid</code>.
-     */
-    public Long getGuildid()
-    {
-        return this.guildid;
-    }
+	/**
+	 * Getter for <code>public.reaction_roles.guildid</code>.
+	 */
+	public Long getGuildid()
+	{
+		return this.guildid;
+	}
 
-    /**
-     * Getter for <code>public.reaction_roles.emoteid</code>.
-     */
-    public String getEmoteid()
-    {
-        return this.emoteid;
-    }
+	/**
+	 * Getter for <code>public.reaction_roles.emoteid</code>.
+	 */
+	public String getEmoteid()
+	{
+		return this.emoteid;
+	}
 
-    /**
-     * Getter for <code>public.reaction_roles.roleid</code>.
-     */
-    public Long getRoleid()
-    {
-        return this.roleid;
-    }
+	/**
+	 * Getter for <code>public.reaction_roles.roleid</code>.
+	 */
+	public Long getRoleid()
+	{
+		return this.roleid;
+	}
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder("ReactionRoles (");
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder("ReactionRoles (");
 
-        sb.append(id);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(emoteid);
-        sb.append(", ").append(roleid);
+		sb.append(id);
+		sb.append(", ").append(guildid);
+		sb.append(", ").append(emoteid);
+		sb.append(", ").append(roleid);
 
-        sb.append(")");
-        return sb.toString();
-    }
+		sb.append(")");
+		return sb.toString();
+	}
 }

@@ -23,148 +23,148 @@ import org.jooq.impl.TableImpl;
 public class Reminders extends TableImpl<RemindersRecord>
 {
 
-    /**
-     * The reference instance of <code>public.reminders</code>
-     */
-    public static final Reminders REMINDERS = new Reminders();
-    private static final long serialVersionUID = 1L;
-    /**
-     * The column <code>public.reminders.id</code>.
-     */
-    public final TableField<RemindersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
-    /**
-     * The column <code>public.reminders.guildid</code>.
-     */
-    public final TableField<RemindersRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
-    /**
-     * The column <code>public.reminders.userid</code>.
-     */
-    public final TableField<RemindersRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
-    /**
-     * The column <code>public.reminders.remindertext</code>.
-     */
-    public final TableField<RemindersRecord, String> REMINDERTEXT = createField(DSL.name("remindertext"), SQLDataType.CLOB.nullable(false), this, "");
+	/**
+	 * The reference instance of <code>public.reminders</code>
+	 */
+	public static final Reminders REMINDERS = new Reminders();
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The column <code>public.reminders.id</code>.
+	 */
+	public final TableField<RemindersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+	/**
+	 * The column <code>public.reminders.guildid</code>.
+	 */
+	public final TableField<RemindersRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.reminders.userid</code>.
+	 */
+	public final TableField<RemindersRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.reminders.remindertext</code>.
+	 */
+	public final TableField<RemindersRecord, String> REMINDERTEXT = createField(DSL.name("remindertext"), SQLDataType.CLOB.nullable(false), this, "");
 
-    private Reminders(Name alias, Table<RemindersRecord> aliased)
-    {
-        this(alias, aliased, null);
-    }
+	private Reminders(Name alias, Table<RemindersRecord> aliased)
+	{
+		this(alias, aliased, null);
+	}
 
-    private Reminders(Name alias, Table<RemindersRecord> aliased, Field<?>[] parameters)
-    {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+	private Reminders(Name alias, Table<RemindersRecord> aliased, Field<?>[] parameters)
+	{
+		super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+	}
 
-    /**
-     * Create an aliased <code>public.reminders</code> table reference
-     */
-    public Reminders(String alias)
-    {
-        this(DSL.name(alias), REMINDERS);
-    }
+	/**
+	 * Create an aliased <code>public.reminders</code> table reference
+	 */
+	public Reminders(String alias)
+	{
+		this(DSL.name(alias), REMINDERS);
+	}
 
-    /**
-     * Create an aliased <code>public.reminders</code> table reference
-     */
-    public Reminders(Name alias)
-    {
-        this(alias, REMINDERS);
-    }
+	/**
+	 * Create an aliased <code>public.reminders</code> table reference
+	 */
+	public Reminders(Name alias)
+	{
+		this(alias, REMINDERS);
+	}
 
-    /**
-     * Create a <code>public.reminders</code> table reference
-     */
-    public Reminders()
-    {
-        this(DSL.name("reminders"), null);
-    }
+	/**
+	 * Create a <code>public.reminders</code> table reference
+	 */
+	public Reminders()
+	{
+		this(DSL.name("reminders"), null);
+	}
 
-    public <O extends Record> Reminders(Table<O> child, ForeignKey<O, RemindersRecord> key)
-    {
-        super(child, key, REMINDERS);
-    }
+	public <O extends Record> Reminders(Table<O> child, ForeignKey<O, RemindersRecord> key)
+	{
+		super(child, key, REMINDERS);
+	}
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<RemindersRecord> getRecordType()
-    {
-        return RemindersRecord.class;
-    }
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<RemindersRecord> getRecordType()
+	{
+		return RemindersRecord.class;
+	}
 
-    @Override
-    public Schema getSchema()
-    {
-        return Public.PUBLIC;
-    }
+	@Override
+	public Schema getSchema()
+	{
+		return Public.PUBLIC;
+	}
 
-    @Override
-    public Identity<RemindersRecord, Long> getIdentity()
-    {
-        return (Identity<RemindersRecord, Long>) super.getIdentity();
-    }
+	@Override
+	public Identity<RemindersRecord, Long> getIdentity()
+	{
+		return (Identity<RemindersRecord, Long>) super.getIdentity();
+	}
 
-    @Override
-    public UniqueKey<RemindersRecord> getPrimaryKey()
-    {
-        return Keys.REMINDERS_PKEY;
-    }
+	@Override
+	public UniqueKey<RemindersRecord> getPrimaryKey()
+	{
+		return Keys.REMINDERS_PKEY;
+	}
 
-    @Override
-    public List<UniqueKey<RemindersRecord>> getKeys()
-    {
-        return Arrays.<UniqueKey<RemindersRecord>>asList(Keys.REMINDERS_PKEY);
-    }
+	@Override
+	public List<UniqueKey<RemindersRecord>> getKeys()
+	{
+		return Arrays.<UniqueKey<RemindersRecord>>asList(Keys.REMINDERS_PKEY);
+	}
 
-    @Override
-    public List<ForeignKey<RemindersRecord, ?>> getReferences()
-    {
-        return Arrays.<ForeignKey<RemindersRecord, ?>>asList(Keys.REMINDERS__REMINDERS_GUILDID_FKEY);
-    }
+	@Override
+	public List<ForeignKey<RemindersRecord, ?>> getReferences()
+	{
+		return Arrays.<ForeignKey<RemindersRecord, ?>>asList(Keys.REMINDERS__REMINDERS_GUILDID_FKEY);
+	}
 
-    public Guilds guilds()
-    {
-        return new Guilds(this, Keys.REMINDERS__REMINDERS_GUILDID_FKEY);
-    }
+	public Guilds guilds()
+	{
+		return new Guilds(this, Keys.REMINDERS__REMINDERS_GUILDID_FKEY);
+	}
 
-    @Override
-    public Reminders as(String alias)
-    {
-        return new Reminders(DSL.name(alias), this);
-    }
+	@Override
+	public Reminders as(String alias)
+	{
+		return new Reminders(DSL.name(alias), this);
+	}
 
-    @Override
-    public Reminders as(Name alias)
-    {
-        return new Reminders(alias, this);
-    }
+	@Override
+	public Reminders as(Name alias)
+	{
+		return new Reminders(alias, this);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public Reminders rename(String name)
-    {
-        return new Reminders(DSL.name(name), null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public Reminders rename(String name)
+	{
+		return new Reminders(DSL.name(name), null);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public Reminders rename(Name name)
-    {
-        return new Reminders(name, null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public Reminders rename(Name name)
+	{
+		return new Reminders(name, null);
+	}
 
-    // -------------------------------------------------------------------------
-    // Row4 type methods
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Row4 type methods
+	// -------------------------------------------------------------------------
 
-    @Override
-    public Row4<Long, Long, Long, String> fieldsRow()
-    {
-        return (Row4) super.fieldsRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, String> fieldsRow()
+	{
+		return (Row4) super.fieldsRow();
+	}
 }

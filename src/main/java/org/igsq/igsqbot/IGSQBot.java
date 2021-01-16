@@ -14,10 +14,10 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.ConfigOption;
 import org.igsq.igsqbot.entities.Configuration;
-import org.igsq.igsqbot.entities.NewCommand;
-import org.igsq.igsqbot.events.command.MessageReactionAdd_Report;
+import org.igsq.igsqbot.events.command.ReportCommandReactionAdd;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
 import org.igsq.igsqbot.events.logging.MessageEventsLogging;
 import org.igsq.igsqbot.events.logging.VoiceEventsLogging;
@@ -36,12 +36,13 @@ public class IGSQBot
 	private final Logger logger = LoggerFactory.getLogger(IGSQBot.class);
 	private final LocalDateTime startTimestamp = LocalDateTime.now();
 	private final List<EmbedBuilder> helpPages = new ArrayList<>();
-	private CommandHandler commandHandler;
-	private ShardManager shardManager;
-	private TaskHandler taskHandler;
 	private DatabaseHandler databaseHandler;
-	private Minecraft minecraft;
+	private CommandHandler commandHandler;
 	private Configuration configuration;
+	private ShardManager shardManager;
+
+	private TaskHandler taskHandler;
+	private Minecraft minecraft;
 	private JDA jda;
 
 	public void build() throws LoginException
@@ -71,7 +72,7 @@ public class IGSQBot
 						new MessageEventsMain(this),
 						new GuildEventsMain(this),
 
-						new MessageReactionAdd_Report(this),
+						new ReportCommandReactionAdd(this),
 
 						new VoiceEventsLogging(this),
 						new MessageEventsLogging(this),
@@ -132,8 +133,8 @@ public class IGSQBot
 	{
 		if(helpPages.isEmpty())
 		{
-			List<NewCommand> commands = new ArrayList<>();
-			for(NewCommand cmd : getCommandHandler().getCommandMap().values())
+			List<Command> commands = new ArrayList<>();
+			for(Command cmd : getCommandHandler().getCommandMap().values())
 			{
 				if(!commands.contains(cmd))
 				{
@@ -144,15 +145,15 @@ public class IGSQBot
 			EmbedBuilder embedBuilder = new EmbedBuilder();
 			int fieldCount = 0;
 			int page = 1;
-			for(NewCommand cmd : commands)
+			for(int i = 0; i < commands.size(); i++)
 			{
+				Command cmd = commands.get(i);
 				if(fieldCount < 6)
 				{
 					fieldCount++;
 					embedBuilder.setTitle("Help page: " + page);
-					embedBuilder.addField(cmd.getName(), cmd.getDescription() + "\n**" + cmd.getAliases().get(0) + "**`" + cmd.getSyntax() + "`", fieldCount % 2 == 0);
+					embedBuilder.addField(cmd.getName(), cmd.getDescription() + "\n**" + cmd.getAliases().get(0) + "**`" + cmd.getSyntax() + "`", false);
 					embedBuilder.setColor(Constants.IGSQ_PURPLE);
-
 				}
 				else
 				{
@@ -160,6 +161,7 @@ public class IGSQBot
 					embedBuilder = new EmbedBuilder();
 					fieldCount = 0;
 					page++;
+					i--;
 				}
 			}
 		}

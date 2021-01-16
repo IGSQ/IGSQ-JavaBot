@@ -23,148 +23,148 @@ import org.jooq.impl.TableImpl;
 public class Roles extends TableImpl<RolesRecord>
 {
 
-    /**
-     * The reference instance of <code>public.roles</code>
-     */
-    public static final Roles ROLES = new Roles();
-    private static final long serialVersionUID = 1L;
-    /**
-     * The column <code>public.roles.id</code>.
-     */
-    public final TableField<RolesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
-    /**
-     * The column <code>public.roles.userid</code>.
-     */
-    public final TableField<RolesRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
-    /**
-     * The column <code>public.roles.guildid</code>.
-     */
-    public final TableField<RolesRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
-    /**
-     * The column <code>public.roles.roleid</code>.
-     */
-    public final TableField<RolesRecord, Long> ROLEID = createField(DSL.name("roleid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The reference instance of <code>public.roles</code>
+	 */
+	public static final Roles ROLES = new Roles();
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The column <code>public.roles.id</code>.
+	 */
+	public final TableField<RolesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+	/**
+	 * The column <code>public.roles.userid</code>.
+	 */
+	public final TableField<RolesRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.roles.guildid</code>.
+	 */
+	public final TableField<RolesRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.roles.roleid</code>.
+	 */
+	public final TableField<RolesRecord, Long> ROLEID = createField(DSL.name("roleid"), SQLDataType.BIGINT.nullable(false), this, "");
 
-    private Roles(Name alias, Table<RolesRecord> aliased)
-    {
-        this(alias, aliased, null);
-    }
+	private Roles(Name alias, Table<RolesRecord> aliased)
+	{
+		this(alias, aliased, null);
+	}
 
-    private Roles(Name alias, Table<RolesRecord> aliased, Field<?>[] parameters)
-    {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
-    }
+	private Roles(Name alias, Table<RolesRecord> aliased, Field<?>[] parameters)
+	{
+		super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+	}
 
-    /**
-     * Create an aliased <code>public.roles</code> table reference
-     */
-    public Roles(String alias)
-    {
-        this(DSL.name(alias), ROLES);
-    }
+	/**
+	 * Create an aliased <code>public.roles</code> table reference
+	 */
+	public Roles(String alias)
+	{
+		this(DSL.name(alias), ROLES);
+	}
 
-    /**
-     * Create an aliased <code>public.roles</code> table reference
-     */
-    public Roles(Name alias)
-    {
-        this(alias, ROLES);
-    }
+	/**
+	 * Create an aliased <code>public.roles</code> table reference
+	 */
+	public Roles(Name alias)
+	{
+		this(alias, ROLES);
+	}
 
-    /**
-     * Create a <code>public.roles</code> table reference
-     */
-    public Roles()
-    {
-        this(DSL.name("roles"), null);
-    }
+	/**
+	 * Create a <code>public.roles</code> table reference
+	 */
+	public Roles()
+	{
+		this(DSL.name("roles"), null);
+	}
 
-    public <O extends Record> Roles(Table<O> child, ForeignKey<O, RolesRecord> key)
-    {
-        super(child, key, ROLES);
-    }
+	public <O extends Record> Roles(Table<O> child, ForeignKey<O, RolesRecord> key)
+	{
+		super(child, key, ROLES);
+	}
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<RolesRecord> getRecordType()
-    {
-        return RolesRecord.class;
-    }
+	/**
+	 * The class holding records for this type
+	 */
+	@Override
+	public Class<RolesRecord> getRecordType()
+	{
+		return RolesRecord.class;
+	}
 
-    @Override
-    public Schema getSchema()
-    {
-        return Public.PUBLIC;
-    }
+	@Override
+	public Schema getSchema()
+	{
+		return Public.PUBLIC;
+	}
 
-    @Override
-    public Identity<RolesRecord, Long> getIdentity()
-    {
-        return (Identity<RolesRecord, Long>) super.getIdentity();
-    }
+	@Override
+	public Identity<RolesRecord, Long> getIdentity()
+	{
+		return (Identity<RolesRecord, Long>) super.getIdentity();
+	}
 
-    @Override
-    public UniqueKey<RolesRecord> getPrimaryKey()
-    {
-        return Keys.ROLES_PKEY;
-    }
+	@Override
+	public UniqueKey<RolesRecord> getPrimaryKey()
+	{
+		return Keys.ROLES_PKEY;
+	}
 
-    @Override
-    public List<UniqueKey<RolesRecord>> getKeys()
-    {
-        return Arrays.<UniqueKey<RolesRecord>>asList(Keys.ROLES_PKEY);
-    }
+	@Override
+	public List<UniqueKey<RolesRecord>> getKeys()
+	{
+		return Arrays.<UniqueKey<RolesRecord>>asList(Keys.ROLES_PKEY);
+	}
 
-    @Override
-    public List<ForeignKey<RolesRecord, ?>> getReferences()
-    {
-        return Arrays.<ForeignKey<RolesRecord, ?>>asList(Keys.ROLES__ROLES_GUILDID_FKEY);
-    }
+	@Override
+	public List<ForeignKey<RolesRecord, ?>> getReferences()
+	{
+		return Arrays.<ForeignKey<RolesRecord, ?>>asList(Keys.ROLES__ROLES_GUILDID_FKEY);
+	}
 
-    public Guilds guilds()
-    {
-        return new Guilds(this, Keys.ROLES__ROLES_GUILDID_FKEY);
-    }
+	public Guilds guilds()
+	{
+		return new Guilds(this, Keys.ROLES__ROLES_GUILDID_FKEY);
+	}
 
-    @Override
-    public Roles as(String alias)
-    {
-        return new Roles(DSL.name(alias), this);
-    }
+	@Override
+	public Roles as(String alias)
+	{
+		return new Roles(DSL.name(alias), this);
+	}
 
-    @Override
-    public Roles as(Name alias)
-    {
-        return new Roles(alias, this);
-    }
+	@Override
+	public Roles as(Name alias)
+	{
+		return new Roles(alias, this);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public Roles rename(String name)
-    {
-        return new Roles(DSL.name(name), null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public Roles rename(String name)
+	{
+		return new Roles(DSL.name(name), null);
+	}
 
-    /**
-     * Rename this table
-     */
-    @Override
-    public Roles rename(Name name)
-    {
-        return new Roles(name, null);
-    }
+	/**
+	 * Rename this table
+	 */
+	@Override
+	public Roles rename(Name name)
+	{
+		return new Roles(name, null);
+	}
 
-    // -------------------------------------------------------------------------
-    // Row4 type methods
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Row4 type methods
+	// -------------------------------------------------------------------------
 
-    @Override
-    public Row4<Long, Long, Long, Long> fieldsRow()
-    {
-        return (Row4) super.fieldsRow();
-    }
+	@Override
+	public Row4<Long, Long, Long, Long> fieldsRow()
+	{
+		return (Row4) super.fieldsRow();
+	}
 }

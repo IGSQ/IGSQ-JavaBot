@@ -15,90 +15,90 @@ import java.time.LocalDateTime;
 public class Votes implements Serializable
 {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final Long id;
-    private final Long voteid;
-    private final Long messageid;
-    private final String option;
-    private final LocalDateTime timestamp;
+	private final Long id;
+	private final Long voteid;
+	private final Long messageid;
+	private final String option;
+	private final LocalDateTime timestamp;
 
-    public Votes(Votes value)
-    {
-        this.id = value.id;
-        this.voteid = value.voteid;
-        this.messageid = value.messageid;
-        this.option = value.option;
-        this.timestamp = value.timestamp;
-    }
+	public Votes(Votes value)
+	{
+		this.id = value.id;
+		this.voteid = value.voteid;
+		this.messageid = value.messageid;
+		this.option = value.option;
+		this.timestamp = value.timestamp;
+	}
 
-    public Votes(
-            Long id,
-            Long voteid,
-            Long messageid,
-            String option,
-            LocalDateTime timestamp
-    )
-    {
-        this.id = id;
-        this.voteid = voteid;
-        this.messageid = messageid;
-        this.option = option;
-        this.timestamp = timestamp;
-    }
+	public Votes(
+			Long id,
+			Long voteid,
+			Long messageid,
+			String option,
+			LocalDateTime timestamp
+	)
+	{
+		this.id = id;
+		this.voteid = voteid;
+		this.messageid = messageid;
+		this.option = option;
+		this.timestamp = timestamp;
+	}
 
-    /**
-     * Getter for <code>public.votes.id</code>.
-     */
-    public Long getId()
-    {
-        return this.id;
-    }
+	/**
+	 * Getter for <code>public.votes.id</code>.
+	 */
+	public Long getId()
+	{
+		return this.id;
+	}
 
-    /**
-     * Getter for <code>public.votes.voteid</code>.
-     */
-    public Long getVoteid()
-    {
-        return this.voteid;
-    }
+	/**
+	 * Getter for <code>public.votes.voteid</code>.
+	 */
+	public Long getVoteid()
+	{
+		return this.voteid;
+	}
 
-    /**
-     * Getter for <code>public.votes.messageid</code>.
-     */
-    public Long getMessageid()
-    {
-        return this.messageid;
-    }
+	/**
+	 * Getter for <code>public.votes.messageid</code>.
+	 */
+	public Long getMessageid()
+	{
+		return this.messageid;
+	}
 
-    /**
-     * Getter for <code>public.votes.option</code>.
-     */
-    public String getOption()
-    {
-        return this.option;
-    }
+	/**
+	 * Getter for <code>public.votes.option</code>.
+	 */
+	public String getOption()
+	{
+		return this.option;
+	}
 
-    /**
-     * Getter for <code>public.votes.timestamp</code>.
-     */
-    public LocalDateTime getTimestamp()
-    {
-        return this.timestamp;
-    }
+	/**
+	 * Getter for <code>public.votes.timestamp</code>.
+	 */
+	public LocalDateTime getTimestamp()
+	{
+		return this.timestamp;
+	}
 
-    @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder("Votes (");
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder("Votes (");
 
-        sb.append(id);
-        sb.append(", ").append(voteid);
-        sb.append(", ").append(messageid);
-        sb.append(", ").append(option);
-        sb.append(", ").append(timestamp);
+		sb.append(id);
+		sb.append(", ").append(voteid);
+		sb.append(", ").append(messageid);
+		sb.append(", ").append(option);
+		sb.append(", ").append(timestamp);
 
-        sb.append(")");
-        return sb.toString();
-    }
+		sb.append(")");
+		return sb.toString();
+	}
 }

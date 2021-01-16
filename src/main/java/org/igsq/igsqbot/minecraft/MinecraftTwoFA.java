@@ -1,12 +1,5 @@
 package org.igsq.igsqbot.minecraft;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.requests.ErrorResponse;
-import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.IGSQBot;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,6 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
+import net.dv8tion.jda.api.requests.ErrorResponse;
+import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.IGSQBot;
 
 public class MinecraftTwoFA
 {
@@ -57,20 +56,20 @@ public class MinecraftTwoFA
 							.setDescription("Your Minecraft 2FA code: " + code)
 							.setColor(Constants.IGSQ_PURPLE)
 							.build()).queue(
-									message ->
-									{
-										MinecraftUtils.addCode(userId, code, minecraft);
-										igsqBot.getTaskHandler().addTask(() ->
-										{
-											message.editMessage(new EmbedBuilder()
-													.setDescription("Your Minecraft 2FA code: **EXPIRED**")
-													.setColor(Constants.IGSQ_PURPLE)
-													.build()).queue();
+							message ->
+							{
+								MinecraftUtils.addCode(userId, code, minecraft);
+								igsqBot.getTaskHandler().addTask(() ->
+								{
+									message.editMessage(new EmbedBuilder()
+											.setDescription("Your Minecraft 2FA code: **EXPIRED**")
+											.setColor(Constants.IGSQ_PURPLE)
+											.build()).queue();
 
-											MinecraftUtils.removeCode(userId, minecraft);
+									MinecraftUtils.removeCode(userId, minecraft);
 
-										}, TimeUnit.SECONDS, 60);
-									}
+								}, TimeUnit.SECONDS, 60);
+							}
 					);
 				},
 				error -> new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER)

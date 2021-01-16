@@ -14,115 +14,115 @@ import org.jooq.DSLContext;
 
 public class CommandContext
 {
-    private final MessageReceivedEvent event;
-    private final IGSQBot igsqBot;
-    private final NewCommand command;
+	private final MessageReceivedEvent event;
+	private final IGSQBot igsqBot;
+	private final Command command;
 
-    public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot, NewCommand command)
-    {
-        this.event = event;
-        this.igsqBot = igsqBot;
-        this.command = command;
-    }
+	public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot, Command command)
+	{
+		this.event = event;
+		this.igsqBot = igsqBot;
+		this.command = command;
+	}
 
-    public IGSQBot getIGSQBot()
-    {
-        return igsqBot;
-    }
+	public IGSQBot getIGSQBot()
+	{
+		return igsqBot;
+	}
 
-    public NewCommand getCommand()
-    {
-        return command;
-    }
+	public Command getCommand()
+	{
+		return command;
+	}
 
-    public MessageChannel getChannel()
-    {
-        return event.getChannel();
-    }
+	public MessageChannel getChannel()
+	{
+		return event.getChannel();
+	}
 
-    public Message getMessage()
-    {
-        return event.getMessage();
-    }
+	public Message getMessage()
+	{
+		return event.getMessage();
+	}
 
-    public Guild getGuild()
-    {
-        return event.isFromGuild() ? event.getGuild() : null;
-    }
+	public Guild getGuild()
+	{
+		return event.isFromGuild() ? event.getGuild() : null;
+	}
 
-    public DSLContext getDBContext()
-    {
-        return getIGSQBot().getDatabaseManager().getContext();
-    }
+	public DSLContext getDBContext()
+	{
+		return getIGSQBot().getDatabaseManager().getContext();
+	}
 
-    public User getAuthor()
-    {
-        return event.getAuthor();
-    }
+	public User getAuthor()
+	{
+		return event.getAuthor();
+	}
 
-    public JDA getJDA()
-    {
-        return event.getJDA();
-    }
+	public JDA getJDA()
+	{
+		return event.getJDA();
+	}
 
-    public boolean isChild()
-    {
-        return command.getParent() != null;
-    }
+	public boolean isChild()
+	{
+		return command.getParent() != null;
+	}
 
-    public ChannelType getChannelType()
-    {
-        return event.getChannelType();
-    }
+	public ChannelType getChannelType()
+	{
+		return event.getChannelType();
+	}
 
-    public MessageReceivedEvent getEvent()
-    {
-        return event;
-    }
+	public MessageReceivedEvent getEvent()
+	{
+		return event;
+	}
 
-    /**
-     * This member will not be null, due to previous checks
-     *
-     * @return the member for this context
-     */
-    @Nonnull
-    public Member getMember()
-    {
-        return Objects.requireNonNull(event.getMember());
-    }
+	/**
+	 * This member will not be null, due to previous checks
+	 *
+	 * @return the member for this context
+	 */
+	@Nonnull
+	public Member getMember()
+	{
+		return Objects.requireNonNull(event.getMember());
+	}
 
-    public void replyError(String errorText)
-    {
-        EmbedUtils.sendError(getChannel(), errorText);
-    }
+	public void replyError(String errorText)
+	{
+		EmbedUtils.sendError(getChannel(), errorText);
+	}
 
-    public void replySuccess(String successText)
-    {
-        EmbedUtils.sendSuccess(getChannel(), successText);
-    }
+	public void replySuccess(String successText)
+	{
+		EmbedUtils.sendSuccess(getChannel(), successText);
+	}
 
-    public boolean isDeveloper()
-    {
-        return List.of(igsqBot.getConfig().getString(ConfigOption.PRIVILEGEDUSERS).split(",")).contains(getAuthor().getId());
-    }
+	public boolean isDeveloper()
+	{
+		return List.of(igsqBot.getConfig().getString(ConfigOption.PRIVILEGEDUSERS).split(",")).contains(getAuthor().getId());
+	}
 
-    public boolean isFromGuild()
-    {
-        return event.isFromGuild();
-    }
+	public boolean isFromGuild()
+	{
+		return event.isFromGuild();
+	}
 
-    public boolean hasPermission(List<Permission> permissions)
-    {
-        return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
-    }
+	public boolean hasPermission(List<Permission> permissions)
+	{
+		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+	}
 
-    public boolean hasPermission(Set<Permission> permissions)
-    {
-        return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
-    }
+	public boolean hasPermission(Set<Permission> permissions)
+	{
+		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+	}
 
-    public boolean hasPermission(Permission... permissions)
-    {
-        return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
-    }
+	public boolean hasPermission(Permission... permissions)
+	{
+		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+	}
 }

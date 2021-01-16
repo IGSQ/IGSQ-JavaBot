@@ -3,96 +3,93 @@ package org.igsq.igsqbot.util;
 import java.awt.*;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.NewCommand;
 
 public class EmbedUtils
 {
-    public static final int CHARACTER_LIMIT = 2048;
-    public static final int REACTION_LIMIT = 20;
-    public static final int EMBED_TITLE_LIMIT = 256;
+	public static final int CHARACTER_LIMIT = 2048;
+	public static final int REACTION_LIMIT = 20;
+	public static final int EMBED_TITLE_LIMIT = 256;
 
-    private EmbedUtils()
-    {
-        //Overrides the default, public, constructor
-    }
+	private EmbedUtils()
+	{
+		//Overrides the default, public, constructor
+	}
 
-    public static void sendError(MessageChannel channel, String errorText)
-    {
-        sendDeletingEmbed(channel, new EmbedBuilder()
-                .setDescription(Constants.FAILURE + errorText)
-                .setColor(Color.RED)
-                .setTimestamp(Instant.now()));
-    }
+	public static void sendError(MessageChannel channel, String errorText)
+	{
+		sendDeletingEmbed(channel, new EmbedBuilder()
+				.setDescription(Constants.FAILURE + errorText)
+				.setColor(Color.RED)
+				.setTimestamp(Instant.now()));
+	}
 
-    public static void sendSyntaxError(CommandContext ctx)
-    {
-        NewCommand cmd = ctx.getCommand();
-        if (ctx.isChild())
-        {
-            sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-                    .setDescription(Constants.FAILURE + "The provided syntax was incorrect.\n`" + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
-                    .setColor(Color.RED)
-                    .setTimestamp(Instant.now()));
-        }
-        else
-        {
-            sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-                    .setDescription(Constants.FAILURE + "The provided syntax was incorrect.\n`" + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
-                    .setColor(Color.RED)
-                    .setTimestamp(Instant.now()));
-        }
-    }
+	public static void sendSyntaxError(CommandContext ctx)
+	{
+		Command cmd = ctx.getCommand();
+		if(ctx.isChild())
+		{
+			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+					.setDescription(Constants.FAILURE + "The provided syntax was incorrect.\n`" + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
+					.setColor(Color.RED)
+					.setTimestamp(Instant.now()));
+		}
+		else
+		{
+			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+					.setDescription(Constants.FAILURE + "The provided syntax was incorrect.\n`" + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
+					.setColor(Color.RED)
+					.setTimestamp(Instant.now()));
+		}
+	}
 
-    public static void sendPermissionError(CommandContext ctx)
-    {
-        sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-                .setDescription(Constants.FAILURE + " Missing permissions when attempting to execute command:`" + ctx.getCommand().getAliases().get(0) + "`\n")
-                .setColor(Color.RED)
-                .setTimestamp(Instant.now()));
-    }
+	public static void sendPermissionError(CommandContext ctx)
+	{
+		Command cmd = ctx.getCommand();
+		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+				.setDescription(Constants.FAILURE + " Missing permissions when attempting to execute command:`" + cmd.getAliases().get(0) + "`" +
+						cmd.getRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")) + "\n")
+				.setColor(Color.RED)
+				.setTimestamp(Instant.now()));
+	}
 
-    public static void sendSuccess(MessageChannel channel, String successText)
-    {
-        sendDeletingEmbed(channel, new EmbedBuilder()
-                .setDescription(Constants.SUCCESS + successText)
-                .setColor(Color.GREEN)
-                .setTimestamp(Instant.now()));
-    }
+	public static void sendSuccess(MessageChannel channel, String successText)
+	{
+		sendDeletingEmbed(channel, new EmbedBuilder()
+				.setDescription(Constants.SUCCESS + successText)
+				.setColor(Color.GREEN)
+				.setTimestamp(Instant.now()));
+	}
 
-    public static void sendDisabledError(CommandContext ctx) //TODO: redo these methods to show the parents correctly if they exist
-    {
-        sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-                .setDescription(Constants.FAILURE + " `" + ctx.getCommand().getName() + "` is currently disabled!")
-                .setColor(Color.RED)
-                .setTimestamp(Instant.now()));
-    }
+	public static void sendDisabledError(CommandContext ctx)
+	{
+		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
+				.setDescription(Constants.FAILURE + " `" + ctx.getCommand().getName() + "` is currently disabled!")
+				.setColor(Color.RED)
+				.setTimestamp(Instant.now()));
+	}
 
-    public static void sendExecutionError(CommandContext ctx)
-    {
-        sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-                .setDescription(Constants.FAILURE + " `" + ctx.getCommand().getName() + "` could not be executed.")
-                .setColor(Color.RED)
-                .setTimestamp(Instant.now()));
-    }
+	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed, long delay)
+	{
+		channel.sendMessage(embed.build()).queue(message -> message.delete().queueAfter(delay, TimeUnit.MILLISECONDS, null, error ->
+		{
+		}));
+	}
 
-    public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed, long delay)
-    {
-        channel.sendMessage(embed.build()).queue(message -> message.delete().queueAfter(delay, TimeUnit.MILLISECONDS, null, error ->
-        { }));
-    }
+	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed)
+	{
+		sendDeletingEmbed(channel, embed, 10000);
+	}
 
-    public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed)
-    {
-        sendDeletingEmbed(channel, embed, 10000);
-    }
-
-    public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed)
-    {
-        message.editMessage(newEmbed.build()).queue();
-    }
+	public static void sendReplacedEmbed(Message message, EmbedBuilder newEmbed)
+	{
+		message.editMessage(newEmbed.build()).queue();
+	}
 }

@@ -1,12 +1,11 @@
 package org.igsq.igsqbot;
 
+import java.util.concurrent.TimeUnit;
+import javax.security.auth.login.LoginException;
 import net.dv8tion.jda.api.JDAInfo;
-import org.igsq.igsqbot.entities.database.Mute;
+import org.igsq.igsqbot.entities.database.Tempban;
 import org.igsq.igsqbot.entities.info.BotInfo;
 import org.igsq.igsqbot.util.DatabaseUtils;
-
-import javax.security.auth.login.LoginException;
-import java.util.concurrent.TimeUnit;
 
 public class Main
 {
@@ -52,6 +51,6 @@ public class Main
 		bot.getLogger().info("IGSQBot Version: " + Constants.VERSION);
 		bot.getLogger().info("JVM Version:     " + new BotInfo(bot).getJavaVersion());
 
-		bot.getTaskHandler().addRepeatingTask(() -> DatabaseUtils.getExpiredMutes(bot).forEach(mute -> Mute.removeMuteById(mute.getUserid(), bot)), TimeUnit.SECONDS, 15);
+		bot.getTaskHandler().addRepeatingTask(() -> DatabaseUtils.getExpiredMutes(bot).forEach(mute -> Tempban.removeMuteById(mute.getUserid(), bot)), TimeUnit.SECONDS, 15);
 	}
 }
