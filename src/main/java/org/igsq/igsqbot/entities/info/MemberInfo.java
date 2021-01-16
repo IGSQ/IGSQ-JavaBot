@@ -26,6 +26,16 @@ public class MemberInfo
 		return member.getTimeCreated();
 	}
 
+	public OffsetDateTime getBoostingSince()
+	{
+		return member.getTimeBoosted();
+	}
+
+	public String getAvatarURL()
+	{
+		return member.getUser().getEffectiveAvatarUrl();
+	}
+
 	public List<Role> getCondensedRoles()
 	{
 		int size = member.getRoles().size();

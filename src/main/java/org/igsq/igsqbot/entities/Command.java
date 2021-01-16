@@ -6,7 +6,7 @@ public abstract class Command
 {
 	private boolean isDisabled = false;
 
-	public abstract void execute(final List<String> args, CommandContext ctx);
+	public abstract void execute(List<String> args, CommandContext ctx);
 
 	public abstract String getName();
 

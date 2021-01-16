@@ -53,7 +53,7 @@ public class ShutdownCommand extends Command
 	@Override
 	public String getDescription()
 	{
-		return "Shuts the bot down using the proper methods";
+		return "Shuts the bot down gracefully";
 	}
 
 	@Override

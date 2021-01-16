@@ -102,6 +102,11 @@ public class CommandContext
 		return List.of(igsqBot.getConfig().getString(ConfigOption.PRIVILEGEDUSERS).split(",")).contains(getAuthor().getId());
 	}
 
+	public boolean isFromGuild()
+	{
+		return event.isFromGuild();
+	}
+
 	public boolean hasPermission(List<Permission> permissions)
 	{
 		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));

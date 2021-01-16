@@ -2,6 +2,7 @@ package org.igsq.igsqbot.util;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class StringUtils
@@ -89,4 +90,9 @@ public class StringUtils
 	{
 		return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(time);
 	}
+
+    public static String parseDateTime(OffsetDateTime time)
+    {
+		return DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(time);
+    }
 }
