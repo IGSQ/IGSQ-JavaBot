@@ -45,11 +45,10 @@ public class CommandUtils
 					if(member1.canInteract(member2))
 					{
 						onSuccess.run();
-
 					}
 					else
 					{
-						EmbedUtils.sendPermissionError(ctx);
+						ctx.replyError("A hierarchy issue occurred when tried to execute command `" + ctx.getCommand().getName() + "`");
 					}
 				}
 		);

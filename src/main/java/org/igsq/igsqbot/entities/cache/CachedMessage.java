@@ -9,7 +9,7 @@ public class CachedMessage
 	private final String contentRaw;
 	private final CachedUser author;
 	private final String channelId;
-	private final String id;
+	private final long id;
 
 	public CachedMessage(Message message)
 	{
@@ -17,7 +17,7 @@ public class CachedMessage
 		this.contentRaw = message.getContentRaw();
 		this.author = new CachedUser(message.getAuthor());
 		this.channelId = message.getChannel().getId();
-		this.id = message.getId();
+		this.id = message.getIdLong();
 	}
 
 	public OffsetDateTime getTimeCreated()
@@ -40,7 +40,7 @@ public class CachedMessage
 		return channelId;
 	}
 
-	public String getId()
+	public long getId()
 	{
 		return id;
 	}

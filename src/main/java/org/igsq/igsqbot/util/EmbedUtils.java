@@ -54,8 +54,8 @@ public class EmbedUtils
 	{
 		Command cmd = ctx.getCommand();
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Constants.FAILURE + " Missing permissions when attempting to execute command:`" + cmd.getAliases().get(0) + "`" +
-						cmd.getRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")) + "\n")
+				.setDescription(Constants.FAILURE + " You are missing the following permissions for command:`" + cmd.getAliases().get(0) + "`" +
+						cmd.getRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")))
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}

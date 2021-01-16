@@ -2,7 +2,8 @@ package org.igsq.igsqbot.entities.database;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;

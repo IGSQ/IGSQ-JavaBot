@@ -12,12 +12,12 @@ import net.jodah.expiringmap.ExpiringMap;
 
 public class MessageCache
 {
-	private static final Map<String, MessageCache> MESSAGE_CACHES = new ConcurrentHashMap<>();
+	private static final Map<Long, MessageCache> MESSAGE_CACHES = new ConcurrentHashMap<>();
 
-	private final Map<String, CachedMessage> cachedMessages;
-	private final String guildId;
+	private final Map<Long, CachedMessage> cachedMessages;
+	private final long guildId;
 
-	public MessageCache(String guildId)
+	public MessageCache(long guildId)
 	{
 		this.guildId = guildId;
 
@@ -28,7 +28,7 @@ public class MessageCache
 				.build();
 	}
 
-	public static MessageCache getCache(String guildId)
+	public static MessageCache getCache(long guildId)
 	{
 		if(MESSAGE_CACHES.get(guildId) != null)
 		{
@@ -41,12 +41,12 @@ public class MessageCache
 
 	public static MessageCache getCache(Guild guild)
 	{
-		if(MESSAGE_CACHES.get(guild.getId()) != null)
+		if(MESSAGE_CACHES.get(guild.getIdLong()) != null)
 		{
-			return MESSAGE_CACHES.get(guild.getId());
+			return MESSAGE_CACHES.get(guild.getIdLong());
 		}
-		MessageCache newCache = new MessageCache(guild.getId());
-		MESSAGE_CACHES.put(guild.getId(), newCache);
+		MessageCache newCache = new MessageCache(guild.getIdLong());
+		MESSAGE_CACHES.put(guild.getIdLong(), newCache);
 		return newCache;
 	}
 
@@ -71,9 +71,9 @@ public class MessageCache
 		}
 	}
 
-	public CachedMessage get(String messageId)
+	public CachedMessage get(Long messageId)
 	{
-		for(Map.Entry<String, CachedMessage> entry : cachedMessages.entrySet())
+		for(Map.Entry<Long, CachedMessage> entry : cachedMessages.entrySet())
 		{
 			if(entry.getKey().equals(messageId))
 			{
@@ -83,7 +83,7 @@ public class MessageCache
 		return null;
 	}
 
-	public void remove(String messageId)
+	public void remove(long messageId)
 	{
 		cachedMessages.remove(messageId);
 	}
@@ -95,22 +95,22 @@ public class MessageCache
 
 	public void remove(Message message)
 	{
-		cachedMessages.remove(message.getId());
+		cachedMessages.remove(message.getIdLong());
 	}
 
 	public void remove(List<Message> messages)
 	{
-		messages.forEach(message -> cachedMessages.remove(message.getId()));
+		messages.forEach(message -> cachedMessages.remove(message.getIdLong()));
 	}
 
-	public boolean isInCache(String messageId)
+	public boolean isInCache(long messageId)
 	{
 		return cachedMessages.containsKey(messageId);
 	}
 
 	public boolean isInCache(Message message)
 	{
-		return cachedMessages.containsKey(message.getId());
+		return cachedMessages.containsKey(message.getIdLong());
 	}
 
 	public void update(CachedMessage oldMessage, CachedMessage newMessage)
@@ -119,18 +119,18 @@ public class MessageCache
 		set(newMessage);
 	}
 
-	public void update(String oldMessageID, CachedMessage newMessage)
+	public void update(long oldMessageID, CachedMessage newMessage)
 	{
 		cachedMessages.remove(oldMessageID);
 		set(newMessage);
 	}
 
-	public String getID()
+	public long getID()
 	{
 		return guildId;
 	}
 
-	public Map<String, CachedMessage> getCachedMessages()
+	public Map<Long, CachedMessage> getCachedMessages()
 	{
 		return cachedMessages;
 	}

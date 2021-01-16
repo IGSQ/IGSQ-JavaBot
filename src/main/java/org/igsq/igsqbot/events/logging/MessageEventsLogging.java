@@ -32,12 +32,12 @@ public class MessageEventsLogging extends ListenerAdapter
 	{
 		if(event.isFromGuild())
 		{
-			MessageCache cache = MessageCache.getCache(event.getGuild().getId());
+			MessageCache cache = MessageCache.getCache(event.getGuild().getIdLong());
 
 			if(cache.isInCache(event.getMessage()))
 			{
 				Message newMessage = event.getMessage();
-				CachedMessage oldMessage = cache.get(event.getMessageId());
+				CachedMessage oldMessage = cache.get(event.getMessageIdLong());
 				MessageChannel channel = event.getChannel();
 				String oldContent = oldMessage.getContentRaw();
 				String newContent = newMessage.getContentRaw();
@@ -79,9 +79,9 @@ public class MessageEventsLogging extends ListenerAdapter
 		{
 			MessageCache cache = MessageCache.getCache(event.getGuild());
 
-			if(cache.isInCache(event.getMessageId()))
+			if(cache.isInCache(event.getMessageIdLong()))
 			{
-				CachedMessage message = cache.get(event.getMessageId());
+				CachedMessage message = cache.get(event.getMessageIdLong());
 				Guild guild = event.getGuild();
 				MessageChannel channel = event.getChannel();
 				String content = message.getContentRaw();
