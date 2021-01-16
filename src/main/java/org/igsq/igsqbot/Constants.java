@@ -8,11 +8,11 @@ public class Constants
 	public static final String FAILURE = "<:igsqCross:788476443885174834>";
 	public static final String DEFAULT_BOT_PREFIX = ".";
 
-	public static final String IGSQ1 = "<:igsqn1:798965091247587348>";
-	public static final String IGSQ2 = "<:igsqn2:798965111590223892>";
-	public static final String IGSQ3 = "<:igsqn3:798965123494182933>";
-	public static final String IGSQ4 = "<:igsqn4:798965137075470336>";
-	public static final String IGSQ5 = "<:igsqn5:798965148357230662>";
+	public static final String IGSQ1 = "<:bot1:798965091247587348>";
+	public static final String IGSQ2 = "<:bot2:798965111590223892>";
+	public static final String IGSQ3 = "<:bot3:798965123494182933>";
+	public static final String IGSQ4 = "<:bot4:798965137075470336>";
+	public static final String IGSQ5 = "<:bot5:798965148357230662>";
 
 	public static final String THUMB_UP = "\uD83D\uDC4D";
 
