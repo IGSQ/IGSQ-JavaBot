@@ -2,7 +2,7 @@ package org.igsq.igsqbot.entities.database;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
@@ -33,17 +33,28 @@ public class Tempban
 		{
 			var ctx = igsqBot.getDatabaseManager().getContext(connection);
 			var roles = ctx.selectFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(userId));
+			List<Role> collectedRoles = new ArrayList<>();
+			Guild guild = null;
 			for(var row : roles.fetch())
 			{
-				Guild guild = igsqBot.getShardManager().getGuildById(row.getGuildid());
+				guild = igsqBot.getShardManager().getGuildById(row.getGuildid());
 				if(guild != null)
 				{
 					Role role = guild.getRoleById(row.getRoleid());
 					if(role != null)
 					{
-						guild.addRoleToMember(row.getUserid(), role).queue();
+						if(!collectedRoles.contains(role))
+						{
+							collectedRoles.add(role);
+						}
 					}
 				}
+			}
+
+			if(guild != null)
+			{
+				Guild finalGuild = guild;
+				guild.retrieveMemberById(userId).queue(member -> finalGuild.modifyMemberRoles(member, collectedRoles).queue());
 			}
 			ctx.deleteFrom(Tables.MUTES).where(Mutes.MUTES.USERID.eq(userId)).execute();
 			ctx.deleteFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(userId)).execute();
