@@ -3,23 +3,22 @@ package org.igsq.igsqbot.entities.database;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.jooq.Tables;
-import org.igsq.igsqbot.entities.jooq.tables.Mutes;
-import org.igsq.igsqbot.entities.jooq.tables.Roles;
 
 import java.sql.Connection;
-import java.time.LocalDateTime;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class Mute
 {
-	private final LocalDateTime mutedUntil;
+	private final Timestamp mutedUntil;
 	private final IGSQBot igsqBot;
 	private final long memberId;
 	private final Guild guild;
 	private final List<Long> roleIds;
 
-	public Mute(long memberId, List<Long> roleIds, Guild guild, LocalDateTime mutedUntil, IGSQBot igsqBot)
+	public Mute(long memberId, List<Long> roleIds, Guild guild, Timestamp mutedUntil, IGSQBot igsqBot)
 	{
 		this.memberId = memberId;
 		this.roleIds = roleIds;
@@ -32,28 +31,28 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			if(igsqBot.getDatabaseManager().getContext(connection)
-					.select(Mutes.MUTES.USERID)
-					.from(Tables.MUTES)
-					.fetchOne() != null)
+			PreparedStatement existCheck = connection.prepareStatement("SELECT * FROM mutes WHERE userid = ?");
+			existCheck.setLong(1, memberId);
+			if(!existCheck.execute())
 			{
 				return false;
 			}
 
 			for(long roleId : roleIds)
 			{
-				igsqBot.getDatabaseManager().getContext(connection)
-						.insertInto(Tables.ROLES)
-						.columns(Roles.ROLES.GUILDID, Roles.ROLES.USERID, Roles.ROLES.ROLEID)
-						.values(guild.getIdLong(), memberId, roleId)
-						.execute();
+
+				PreparedStatement insertRole = connection.prepareStatement("INSERT INTO roles (guildid, userid, roleid) VALUES (?, ?, ?)");
+				insertRole.setLong(1, guild.getIdLong());
+				insertRole.setLong(2, memberId);
+				insertRole.setLong(3, roleId);
+				insertRole.executeUpdate();
 			}
 
-			igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(Tables.MUTES)
-					.columns(Mutes.MUTES.GUILDID, Mutes.MUTES.USERID, Mutes.MUTES.MUTEDUNTIL)
-					.values(guild.getIdLong(), memberId, mutedUntil)
-					.execute();
+
+			PreparedStatement insertMute = connection.prepareStatement("INSERT INTO mutes (guildid, userid, muteduntil) VALUES (?,?,?)");
+			insertMute.setLong(1, guild.getIdLong());
+			insertMute.setLong(2, memberId);
+			insertMute.setTimestamp(3, mutedUntil);
 
 		}
 		catch(Exception exception)
@@ -68,16 +67,13 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.MUTES)
-					.where(Mutes.MUTES.USERID.eq(memberId))
-					.execute();
+			PreparedStatement removeMute = connection.prepareStatement("DELETE FROM mutes WHERE userid = ?");
+			removeMute.setLong(1, memberId);
+			removeMute.executeUpdate();
 
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.ROLES)
-					.where(Roles.ROLES.USERID.eq(memberId))
-					.execute();
-
+			PreparedStatement removeRoles = connection.prepareStatement("DELETE FROM roles WHERE userid = ?");
+			removeRoles.setLong(1, memberId);
+			removeRoles.executeUpdate();
 		}
 		catch(Exception exception)
 		{
@@ -89,31 +85,33 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var roles = igsqBot.getDatabaseManager().getContext(connection)
-					.selectFrom(Tables.ROLES)
-					.where(Roles.ROLES.USERID.eq(userId));
-
-			for(var value : roles.fetch())
+			PreparedStatement getRoles = connection.prepareStatement("SELECT * FROM roles WHERE userid = ?");
+			getRoles.setLong(1, userId);
+			if(getRoles.execute())
 			{
-				Guild guild = igsqBot.getShardManager().getGuildById(value.getGuildid());
-				if(guild != null)
+				ResultSet roles = getRoles.getResultSet();
+
+				while(roles.next())
 				{
-					Role role = guild.getRoleById(value.getRoleid());
-					if(role != null)
+					Guild guild = igsqBot.getShardManager().getGuildById(roles.getLong(3));
+					if(guild != null)
 					{
-						guild.addRoleToMember(value.getUserid(), role).queue();
+						Role role = guild.getRoleById(roles.getLong(4));
+						if(role != null)
+						{
+							guild.addRoleToMember(roles.getLong(2), role).queue();
+						}
 					}
 				}
 			}
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.MUTES)
-					.where(Mutes.MUTES.USERID.eq(userId))
-					.execute();
 
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.ROLES)
-					.where(Roles.ROLES.USERID.eq(userId))
-					.execute();
+			PreparedStatement removeMute = connection.prepareStatement("DELETE FROM mutes WHERE userid = ?");
+			removeMute.setLong(1, userId);
+			removeMute.executeUpdate();
+
+			PreparedStatement removeRoles = connection.prepareStatement("DELETE FROM roles WHERE userid = ?");
+			removeRoles.setLong(1, userId);
+			removeRoles.executeUpdate();
 		}
 		catch(Exception exception)
 		{

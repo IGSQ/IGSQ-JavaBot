@@ -19,7 +19,6 @@ dependencies {
 
     implementation 'com.zaxxer:HikariCP:3.4.5'
     implementation 'org.postgresql:postgresql:42.2.18'
-    implementation 'org.jooq:jooq:3.14.4'
     implementation 'mysql:mysql-connector-java:8.0.22'
 
     jooqGenerator 'org.postgresql:postgresql:42.2.18'
@@ -62,5 +61,6 @@ jooq {
         }
     }
 }
+
 
 compileJava.options.encoding = 'UTF-8'

@@ -135,7 +135,7 @@ public class MinecraftChecks
 			ResultSet resultSet = statement.getResultSet();
 			if(resultSet.next())
 			{
-				return !resultSet.getString(1).equalsIgnoreCase(MinecraftUtils.LinkState.LINKED.toString());
+				return resultSet.getString(1).equalsIgnoreCase(MinecraftUtils.LinkState.MWAIT.toString());
 			}
 			else
 			{

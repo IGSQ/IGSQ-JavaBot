@@ -96,6 +96,8 @@ None!
 
  - [ ] Debug logging
  - [ ] Switch to longs for IDs
+ - [ ] Redo warnings
+ - [ ] Redo muting (db utils)
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

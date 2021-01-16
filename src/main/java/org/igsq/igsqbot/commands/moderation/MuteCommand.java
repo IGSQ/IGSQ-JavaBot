@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.commands.moderation;
 
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
@@ -11,9 +10,10 @@ import org.igsq.igsqbot.entities.database.Mute;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class MuteCommand extends Command
@@ -51,7 +51,7 @@ public class MuteCommand extends Command
 							guild.modifyMemberRoles(member, mutedRole).queue(
 									success ->
 									{
-										new Mute(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot()).add();
+										new Mute(member.getIdLong(), roleIds, guild, Timestamp.from(muteTime.toInstant(ZoneOffset.UTC)), ctx.getIGSQBot()).add();
 										ctx.replySuccess("Muted " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
 									},
 									error ->
@@ -94,7 +94,7 @@ public class MuteCommand extends Command
 	@Override
 	public boolean canExecute(CommandContext ctx)
 	{
-		return ctx.hasPermission(Collections.singletonList(Permission.MESSAGE_MANAGE));
+		return false;
 	}
 
 	@Override
