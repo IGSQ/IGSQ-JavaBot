@@ -45,7 +45,7 @@ public class CommandHandler
                 Constructor<?>[] constructors = cls.loadClass().getDeclaredConstructors();
                 if (constructors.length == 0)
                 {
-                    igsqBot.getLogger().warn("No constructors found for Command class (" + cls.getSimpleName() + ") found in commands package!");
+                    igsqBot.getLogger().warn("No valid constructors found for Command class (" + cls.getSimpleName() + ")!");
                     continue;
                 }
                 if (constructors[0].getParameterCount() > 0)

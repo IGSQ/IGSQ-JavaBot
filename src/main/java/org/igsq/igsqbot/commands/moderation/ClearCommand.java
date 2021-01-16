@@ -18,43 +18,7 @@ public class ClearCommand extends Command
     @Override
     public void execute(List<String> args, CommandContext ctx)
     {
-        int amount;
-        MessageChannel channel = ctx.getChannel();
-        User author = ctx.getAuthor();
-        Guild guild = ctx.getGuild();
 
-        try
-        {
-            amount = Integer.parseInt(args.get(0));
-        }
-        catch (Exception exception)
-        {
-            EmbedUtils.sendSyntaxError(ctx);
-            return;
-        }
-        if (amount <= 0)
-        {
-            EmbedUtils.sendSyntaxError(ctx);
-        }
-        else if (amount > 51)
-        {
-            EmbedUtils.sendSyntaxError(ctx);
-        }
-        else if (CooldownHandler.isOnCooldown(author.getId(), this))
-        {
-            return;
-        }
-        else
-        {
-            channel.getIterableHistory().takeAsync(amount).thenAccept(messages ->
-            {
-                CooldownHandler.addCooldown(author.getId(), this);
-                channel.purgeMessages(messages);
-                ctx.replySuccess("Deleted " + (messages.size()) + " messages");
-                MessageCache cache = MessageCache.getCache(guild);
-                messages.stream().filter(cache::isInCache).forEach(cache::remove);
-            });
-        }
     }
 
     @Override
@@ -72,7 +36,7 @@ public class ClearCommand extends Command
     @Override
     public String getDescription()
     {
-        return "Clears the channel with the specified amount";
+        return "Clears messages from the current channel";
     }
 
     @Override

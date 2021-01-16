@@ -1,41 +1,67 @@
 package org.igsq.igsqbot.handlers;
 
-import java.util.HashMap;
 import java.util.Map;
-import org.igsq.igsqbot.entities.Command;
+import java.util.concurrent.ConcurrentHashMap;
+import net.dv8tion.jda.api.entities.Member;
+import org.igsq.igsqbot.entities.NewCommand;
 
 public abstract class CooldownHandler
 {
-    private static final Map<Command, Map<String, Long>> COOLDOWN_MAP = new HashMap<>(); // K = Command, V = Map<userId, Timestamp>
+    private static final Map<CooledCommand, Long> COOLDOWN_MAP = new ConcurrentHashMap<>(); //K = userID, guildId, command V = timestamp
 
     private CooldownHandler()
     {
         //Overrides the default, public, constructor
     }
 
-    public static void addCooldown(String userID, Command command)
+    public static boolean isOnCooldown(Member member, NewCommand command)
     {
-        long cooldown = command.getCooldown();
-        if (cooldown == 0)
+        long userId = member.getIdLong();
+        long guildId = member.getGuild().getIdLong();
+        for(Map.Entry<CooledCommand, Long> entry : COOLDOWN_MAP.entrySet())
         {
-            return;
+            CooledCommand cooledCommand = entry.getKey();
+            long expiry = entry.getValue();
+
+            if(cooledCommand.getUserId() == userId && cooledCommand.getGuildId() == guildId && cooledCommand.getCommand().equals(command))
+            {
+                return System.currentTimeMillis() <= expiry;
+            }
         }
-        COOLDOWN_MAP.computeIfAbsent(command, k -> new HashMap<>()).put(userID, System.currentTimeMillis() + cooldown);
+        return false;
     }
 
-    public static boolean isOnCooldown(String userID, Command command)
+    public static void addCooldown(Member member, NewCommand command)
     {
-        Map<String, Long> listEntry = COOLDOWN_MAP.get(command);
-        if (listEntry == null)
-        {
-            return false;
-        }
-        long lastUsed = listEntry.get(userID);
-        return lastUsed != 0 && System.currentTimeMillis() <= lastUsed;
+       COOLDOWN_MAP.put(new CooledCommand(member, command), System.currentTimeMillis() + command.getCooldown());
     }
 
-    public static long getCooldown(String userID, Command command)
+    public static class CooledCommand
     {
-        return Math.abs(System.currentTimeMillis() - COOLDOWN_MAP.get(command).get(userID));
+        private final long userId;
+        private final long guildId;
+        private final NewCommand command;
+
+        public CooledCommand(Member member, NewCommand command)
+        {
+            this.userId = member.getIdLong();
+            this.guildId = member.getGuild().getIdLong();
+            this.command = command;
+        }
+
+        public long getUserId()
+        {
+            return userId;
+        }
+
+        public long getGuildId()
+        {
+            return guildId;
+        }
+
+        public NewCommand getCommand()
+        {
+            return command;
+        }
     }
 }
