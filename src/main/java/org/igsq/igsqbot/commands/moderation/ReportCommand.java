@@ -22,7 +22,7 @@ public class ReportCommand extends Command
 		MessageChannel channel = ctx.getChannel();
 		User author = ctx.getAuthor();
 		Guild guild = ctx.getGuild();
-		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(guild, ctx).getReportChannel());
+		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(ctx).getReportChannel());
 		if(args.size() < 2)
 		{
 			EmbedUtils.sendSyntaxError(ctx);

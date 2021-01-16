@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.database.Vote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +43,6 @@ public class MessageReactionAdd_Vote extends ListenerAdapter
 					}
 
 					String unicode = event.getReactionEmote().getEmoji().substring(0,1);
-					int maxVote = Vote.getMaxOption(message.getIdLong(), igsqBot);
-
-					System.out.println(unicode);
 				}
 		);
 	}

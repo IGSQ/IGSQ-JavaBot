@@ -47,12 +47,12 @@ public class Report
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(Tables.REPORTS)
-					.columns(REPORTS.MESSAGEID, REPORTS.REPORTMESSAGEID, REPORTS.CHANNELID, REPORTS.GUILDID, REPORTS.USERID, REPORTS.REPORTTEXT)
-					.values(messageId, commandMessageId, channelId, guildId, reportedUserId, reason);
+			var ctx = igsqBot.getDatabaseManager().getContext(connection);
 
-			context.execute();
+			ctx.insertInto(Tables.REPORTS)
+					.columns(REPORTS.MESSAGEID, REPORTS.REPORTMESSAGEID, REPORTS.CHANNELID, REPORTS.GUILDID, REPORTS.USERID, REPORTS.REPORTTEXT)
+					.values(messageId, commandMessageId, channelId, guildId, reportedUserId, reason)
+					.execute();
 		}
 		catch(Exception exception)
 		{
@@ -64,12 +64,8 @@ public class Report
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.REPORTS)
-					.where(REPORTS.MESSAGEID.eq(messageId));
-
-			context.execute();
-			context.close();
+			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			ctx.deleteFrom(Tables.REPORTS).where(REPORTS.MESSAGEID.eq(messageId)).execute();
 		}
 		catch(Exception exception)
 		{
@@ -116,12 +112,11 @@ public class Report
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.selectFrom(REPORTS)
-					.where(REPORTS.MESSAGEID.eq(messageId));
-
-			var result = context.fetch();
-			context.close();
+			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var query = context.selectFrom(REPORTS).where(REPORTS.MESSAGEID.eq(messageId));
+			var result = query.fetch();
+			query.close();
+			
 			if(!result.isEmpty())
 			{
 				var report = result.get(0);

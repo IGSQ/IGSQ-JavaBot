@@ -11,6 +11,7 @@ import org.jooq.DSLContext;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class CommandContext
 {
@@ -102,6 +103,11 @@ public class CommandContext
 	}
 
 	public boolean hasPermission(List<Permission> permissions)
+	{
+		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+	}
+
+	public boolean hasPermission(Set<Permission> permissions)
 	{
 		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
 	}

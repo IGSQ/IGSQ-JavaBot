@@ -40,7 +40,7 @@ public class EmbedUtils
 	public static void sendPermissionError(CommandContext ctx)
 	{
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Constants.FAILURE + " A permission error occurred when attempting to execute command:`" + ctx.getCommand().getAliases().get(0) + "`")
+				.setDescription(Constants.FAILURE + " Missing permissions when attempting to execute command:`" + ctx.getCommand().getAliases().get(0) + "`\n")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}

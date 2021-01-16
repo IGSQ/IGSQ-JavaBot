@@ -18,7 +18,7 @@ public class PrefixCommand extends Command
 	public void execute(List<String> args, CommandContext ctx)
 	{
 		MessageChannel channel = ctx.getChannel();
-		GuildConfig guildConfig = new GuildConfig(ctx.getGuild(), ctx);
+		GuildConfig guildConfig = new GuildConfig(ctx);
 
 		if(args.isEmpty())
 		{

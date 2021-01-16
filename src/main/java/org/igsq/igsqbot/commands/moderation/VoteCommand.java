@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.database.GuildConfig;
-import org.igsq.igsqbot.entities.database.Vote;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
@@ -70,8 +69,6 @@ public class VoteCommand extends Command
 				}).onSuccess(members ->
 				{
 					List<Long> id = members.stream().map(Member::getIdLong).collect(Collectors.toList());
-					Vote vote = new Vote(options, id, timestamp, subject, voteChannel, ctx.getIGSQBot());
-					vote.send();
 				});
 			}
 		}

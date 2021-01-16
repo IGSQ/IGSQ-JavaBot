@@ -34,12 +34,9 @@ public class Warning
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(Tables.WARNINGS)
-					.columns(Warnings.WARNINGS.GUILDID, Warnings.WARNINGS.USERID, Warnings.WARNINGS.WARNTEXT)
-					.values(guildId, userId, reason);
-			context.execute();
-			context.close();
+			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var query = context.insertInto(Tables.WARNINGS).columns(Warnings.WARNINGS.GUILDID, Warnings.WARNINGS.USERID, Warnings.WARNINGS.WARNTEXT).values(guildId, userId, reason);
+			query.execute();
 		}
 		catch(Exception exception)
 		{
@@ -51,11 +48,8 @@ public class Warning
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.WARNINGS)
-					.where(Warnings.WARNINGS.WARNID.eq(key));
-			context.execute();
-			context.close();
+			var context = igsqBot.getDatabaseManager().getContext(connection);
+			context.deleteFrom(Tables.WARNINGS).where(Warnings.WARNINGS.WARNID.eq(key)).execute();
 		}
 		catch(Exception exception)
 		{
@@ -68,16 +62,14 @@ public class Warning
 		List<org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings> result = new ArrayList<>();
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.selectFrom(Warnings.WARNINGS)
-					.where(Warnings.WARNINGS.GUILDID.eq(guildId))
-					.and(Warnings.WARNINGS.USERID.eq(userId));
+			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var query = context.selectFrom(Warnings.WARNINGS).where(Warnings.WARNINGS.GUILDID.eq(guildId)).and(Warnings.WARNINGS.USERID.eq(userId));
 
-			for(var value : context.fetch())
+			for(var value : query.fetch())
 			{
 				result.add(new org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings(value.getWarnid(), value.getUserid(), value.getGuildid(), value.getTimestamp(), value.getWarntext()));
 			}
-			context.close();
+
 		}
 		catch(Exception exception)
 		{

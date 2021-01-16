@@ -14,9 +14,9 @@ public class GuildConfig
 	private final IGSQBot igsqBot;
 	private final long guildId;
 
-	public GuildConfig(Guild guild, CommandContext ctx)
+	public GuildConfig(CommandContext ctx)
 	{
-		this.guildId = guild.getIdLong();
+		this.guildId = ctx.getGuild().getIdLong();
 		this.igsqBot = ctx.getIGSQBot();
 	}
 
@@ -36,13 +36,10 @@ public class GuildConfig
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.select(GUILDS.PREFIX)
-					.from(GUILDS)
-					.where(GUILDS.GUILDID.eq(guildId));
-
-			String result = context.fetchOne(GUILDS.PREFIX);
-			context.close();
+			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var query = context.select(GUILDS.PREFIX).from(GUILDS).where(GUILDS.GUILDID.eq(guildId));
+			String result = query.fetchOne(GUILDS.PREFIX);
+			query.close();
 			return result;
 		}
 		catch(Exception exception)
@@ -56,13 +53,9 @@ public class GuildConfig
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.update(GUILDS)
-					.set(GUILDS.PREFIX, prefix)
-					.where(GUILDS.GUILDID.eq(guildId));
-
-			context.execute();
-			context.close();
+			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var query = context.update(GUILDS).set(GUILDS.PREFIX, prefix).where(GUILDS.GUILDID.eq(guildId));
+			query.execute();
 		}
 		catch(Exception exception)
 		{
@@ -80,26 +73,6 @@ public class GuildConfig
 		return getValue(GUILDS.LOGCHANNEL);
 	}
 
-	private long getValue(Field<?> value)
-	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
-		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
-					.select(value)
-					.from(GUILDS)
-					.where(GUILDS.GUILDID.eq(guildId));
-
-			long result = Long.parseLong(String.valueOf(context.fetchOne(value)));
-			context.close();
-			return result;
-		}
-		catch(Exception exception)
-		{
-			igsqBot.getLogger().error("An SQL error occurred", exception);
-			return -1;
-		}
-	}
-
 	public long getVoteChannel()
 	{
 		return getValue(GUILDS.VOTECHANNEL);
@@ -108,5 +81,22 @@ public class GuildConfig
 	public long getMutedRole()
 	{
 		return getValue(GUILDS.MUTEDROLE);
+	}
+
+	private long getValue(Field<?> value)
+	{
+		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		{
+			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var query = context.select(value).from(GUILDS).where(GUILDS.GUILDID.eq(guildId));
+			long result = Long.parseLong(String.valueOf(query.fetchOne(value)));
+			query.close();
+			return result;
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return -1;
+		}
 	}
 }

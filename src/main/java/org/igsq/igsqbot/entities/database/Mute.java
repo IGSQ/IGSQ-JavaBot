@@ -32,28 +32,19 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			if(igsqBot.getDatabaseManager().getContext(connection)
-					.select(Mutes.MUTES.USERID)
-					.from(Tables.MUTES)
-					.fetchOne() != null)
+			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+
+			boolean exists = ctx.select(Mutes.MUTES.USERID).from(Tables.MUTES).fetchOne() != null;
+			if(exists)
 			{
 				return false;
 			}
 
 			for(long roleId : roleIds)
 			{
-				igsqBot.getDatabaseManager().getContext(connection)
-						.insertInto(Tables.ROLES)
-						.columns(Roles.ROLES.GUILDID, Roles.ROLES.USERID, Roles.ROLES.ROLEID)
-						.values(guild.getIdLong(), memberId, roleId)
-						.execute();
+				ctx.insertInto(Tables.ROLES).columns(Roles.ROLES.GUILDID, Roles.ROLES.USERID, Roles.ROLES.ROLEID).values(guild.getIdLong(), memberId, roleId).execute();
 			}
-
-			igsqBot.getDatabaseManager().getContext(connection)
-					.insertInto(Tables.MUTES)
-					.columns(Mutes.MUTES.GUILDID, Mutes.MUTES.USERID, Mutes.MUTES.MUTEDUNTIL)
-					.values(guild.getIdLong(), memberId, mutedUntil)
-					.execute();
+			ctx.insertInto(Tables.MUTES).columns(Mutes.MUTES.GUILDID, Mutes.MUTES.USERID, Mutes.MUTES.MUTEDUNTIL).values(guild.getIdLong(), memberId, mutedUntil).execute();
 
 		}
 		catch(Exception exception)
@@ -68,16 +59,9 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.MUTES)
-					.where(Mutes.MUTES.USERID.eq(memberId))
-					.execute();
-
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.ROLES)
-					.where(Roles.ROLES.USERID.eq(memberId))
-					.execute();
-
+			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			ctx.deleteFrom(Tables.MUTES).where(Mutes.MUTES.USERID.eq(memberId)).execute();
+			ctx.deleteFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(memberId)).execute();
 		}
 		catch(Exception exception)
 		{
@@ -89,31 +73,22 @@ public class Mute
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
 		{
-			var roles = igsqBot.getDatabaseManager().getContext(connection)
-					.selectFrom(Tables.ROLES)
-					.where(Roles.ROLES.USERID.eq(userId));
-
-			for(var value : roles.fetch())
+			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			var roles = ctx.selectFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(userId));
+			for(var row : roles.fetch())
 			{
-				Guild guild = igsqBot.getShardManager().getGuildById(value.getGuildid());
+				Guild guild = igsqBot.getShardManager().getGuildById(row.getGuildid());
 				if(guild != null)
 				{
-					Role role = guild.getRoleById(value.getRoleid());
+					Role role = guild.getRoleById(row.getRoleid());
 					if(role != null)
 					{
-						guild.addRoleToMember(value.getUserid(), role).queue();
+						guild.addRoleToMember(row.getUserid(), role).queue();
 					}
 				}
 			}
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.MUTES)
-					.where(Mutes.MUTES.USERID.eq(userId))
-					.execute();
-
-			igsqBot.getDatabaseManager().getContext(connection)
-					.deleteFrom(Tables.ROLES)
-					.where(Roles.ROLES.USERID.eq(userId))
-					.execute();
+			ctx.deleteFrom(Tables.MUTES).where(Mutes.MUTES.USERID.eq(userId)).execute();
+			ctx.deleteFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(userId)).execute();
 		}
 		catch(Exception exception)
 		{

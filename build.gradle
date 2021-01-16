@@ -32,9 +32,9 @@ jooq {
                 generationTool {
                     logging = org.jooq.meta.jaxb.Logging.WARN
                     jdbc {
-                        url = "jdbc:postgresql://${IGSQBOT_HOST}:${IGSQBOT_PORT}/${IGSQBOT_DATABASE}"
-                        user = "${IGSQBOT_USER}"
-                        password = "${IGSQBOT_PASSWORD}"
+                        url = "jdbc:postgresql://${IGSQBOT_DB_HOST}:${IGSQBOT_DB_PORT}/${IGSQBOT_DB_DATABASE}"
+                        user = IGSQBOT_DB_USER
+                        password = IGSQBOT_DB_PASSWORD
                         driver = 'org.postgresql.Driver'
                     }
                     generator {
