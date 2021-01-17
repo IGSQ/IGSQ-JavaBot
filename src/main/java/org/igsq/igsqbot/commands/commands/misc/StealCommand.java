@@ -14,6 +14,7 @@ public class StealCommand extends Command
 	{
 		super("Steal", "Steals the specified image URL and adds it as an emoji.", "[name{A-Z + _}] [imageURL]");
 		addAliases("steal");
+		guildOnly();
 	}
 
 	@Override

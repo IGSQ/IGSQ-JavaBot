@@ -82,6 +82,11 @@ public class GuildConfig
 		return getValue(GUILDS.MUTEDROLE);
 	}
 
+	public long getSuggestionChannel()
+	{
+		return getValue(GUILDS.SUGGESTIONCHANNEL);
+	}
+
 	private long getValue(Field<?> value)
 	{
 		try(Connection connection = igsqBot.getDatabaseManager().getConnection())

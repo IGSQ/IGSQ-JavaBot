@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands.commands.misc;
 import java.time.Instant;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
@@ -32,13 +33,22 @@ public class SuggestionCommand extends Command
 			return;
 		}
 
-		ctx.getChannel().sendMessage(new EmbedBuilder()
-				.setTitle("Suggestion:")
-				.setDescription(ArrayUtils.arrayCompile(args, " "))
-				.setColor(Constants.IGSQ_PURPLE)
-				.setThumbnail(author.getAvatarUrl())
-				.setFooter("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator() + " | ")
-				.setTimestamp(Instant.now())
-				.build()).queue();
+		MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
+
+		if(suggestionChannel != null)
+		{
+			ctx.getChannel().sendMessage(new EmbedBuilder()
+					.setTitle("Suggestion:")
+					.setDescription(ArrayUtils.arrayCompile(args, " "))
+					.setColor(Constants.IGSQ_PURPLE)
+					.setThumbnail(author.getAvatarUrl())
+					.setFooter("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator() + " | ")
+					.setTimestamp(Instant.now())
+					.build()).queue();
+		}
+		else
+		{
+			ctx.replyError("No suggestion channel setup.");
+		}
 	}
 }

@@ -58,13 +58,13 @@ public abstract class Command
 		{
 			EmbedUtils.sendDisabledError(ctx);
 		}
-		else if(!ctx.hasPermission(getRequiredPermissions()))
-		{
-			EmbedUtils.sendPermissionError(ctx);
-		}
 		else if(isGuildOnly() && !ctx.isFromGuild())
 		{
 			ctx.replyError("This command must be executed in a server.");
+		}
+		else if(!getRequiredPermissions().isEmpty() && !ctx.hasPermission(getRequiredPermissions()))
+		{
+			EmbedUtils.sendPermissionError(ctx);
 		}
 		else if(isDeveloperOnly() && !ctx.isDeveloper())
 		{

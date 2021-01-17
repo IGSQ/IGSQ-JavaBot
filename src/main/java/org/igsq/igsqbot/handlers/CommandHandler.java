@@ -97,7 +97,7 @@ public class CommandHandler
 		String commandText;
 		String content;
 		Command cmd;
-		Guild guild = event.getGuild();
+		Guild guild = event.isFromGuild() ? event.getGuild() : null;
 
 		boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
 		boolean startWithIdSpaced = messageContent.startsWith("<@" + selfID + "> ") || messageContent.startsWith("<@!" + selfID + "> ");
@@ -153,7 +153,7 @@ public class CommandHandler
 				args.remove(0);
 			}
 
-			if(cmd.isAutoDelete() && event.isFromGuild() && guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
+			if(cmd.isAutoDelete() && guild != null && guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 			{
 				event.getMessage().delete().queue();
 			}
