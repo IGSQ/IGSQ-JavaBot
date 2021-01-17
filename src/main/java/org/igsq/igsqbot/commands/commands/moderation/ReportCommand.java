@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
 import org.igsq.igsqbot.util.*;
 
+@SuppressWarnings("unused")
 public class ReportCommand extends Command
 {
 	public ReportCommand()

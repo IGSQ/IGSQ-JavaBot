@@ -40,7 +40,7 @@ public class CachedMessage
 		return channelId;
 	}
 
-	public long getId()
+	public long getIdLong()
 	{
 		return id;
 	}

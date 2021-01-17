@@ -12,6 +12,7 @@ import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.FileUtils;
 
+@SuppressWarnings("unused")
 public class MockCommand extends Command
 {
 	public MockCommand()

@@ -8,19 +8,27 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.igsq.igsqbot.entities.BotTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TaskHandler
 {
-	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
+	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
 	private final List<BotTask> tasks = new ArrayList<>();
 	private final List<UUID> currentUUIDs = new ArrayList<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger(TaskHandler.class);
 
+	public TaskHandler()
+	{
+		LOGGER.debug("Started TaskHandler.");
+	}
 	public BotTask addTask(Runnable task, TimeUnit unit, long time)
 	{
 		String taskName = getTaskName();
 		BotTask botTask = new BotTask(scheduler.schedule(task, time, unit), taskName, time, unit);
 		tasks.add(botTask);
 		scheduleDeletion(botTask);
+		LOGGER.debug("Added new task with name " + taskName + " expires in " + botTask.getExpiresAt() + " " + botTask.getUnit());
 		return botTask;
 	}
 
@@ -29,6 +37,7 @@ public class TaskHandler
 		BotTask botTask = new BotTask(scheduler.schedule(task, time, unit), taskName, time, unit);
 		tasks.add(botTask);
 		scheduleDeletion(botTask);
+		LOGGER.debug("Added new task with name " + taskName + " expires in " + botTask.getExpiresAt() + " " + botTask.getUnit());
 		return botTask;
 	}
 
@@ -37,6 +46,7 @@ public class TaskHandler
 		BotTask botTask = new BotTask(scheduler.schedule(task, time, unit), taskName, time, unit);
 		tasks.add(botTask);
 		scheduleDeletion(botTask);
+		LOGGER.debug("Added new task with name " + taskName + " expires in " + botTask.getExpiresAt() + " " + botTask.getUnit());
 		return botTask;
 	}
 
@@ -69,24 +79,29 @@ public class TaskHandler
 		return null;
 	}
 
-	public boolean cancelTask(String taskName, boolean shouldInterrupt)
+	public void cancelTask(String taskName, boolean shouldInterrupt)
 	{
+		LOGGER.debug("Cancelling task " + taskName);
 		for(BotTask task : tasks)
 		{
 			if(task.getName().equalsIgnoreCase(taskName))
 			{
-				return task.getTask().cancel(shouldInterrupt);
+				LOGGER.debug("Cancelled task " + taskName);
+				task.getTask().cancel(shouldInterrupt);
+				return;
 			}
 		}
-		return false;
+		LOGGER.debug("Task " + taskName + " could not be found");
 	}
 
 	public void close()
 	{
+		LOGGER.debug("Closing TaskHandler");
 		for(BotTask task : tasks)
 		{
 			task.cancel(false);
 		}
+		LOGGER.debug("TaskHandler closed");
 	}
 
 	public String getTaskName()
@@ -110,6 +125,7 @@ public class TaskHandler
 
 	private void scheduleDeletion(BotTask task)
 	{
+		LOGGER.debug("Task " + task.getName() + " scheduled for deletion in " + task.getExpiresAt() + " " + task.getUnit());
 		scheduler.schedule(() -> tasks.remove(task), task.getExpiresAt(), task.getUnit());
 	}
 }

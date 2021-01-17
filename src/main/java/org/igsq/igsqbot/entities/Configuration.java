@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.igsq.igsqbot.IGSQBot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Configuration
 {
@@ -16,6 +18,7 @@ public class Configuration
 	public static final File CONFIG_FILE = new File(CONFIG_FOLDER, "bot.cfg");
 	private final IGSQBot igsqBot;
 	private List<ConfigurationValue> configValues = new CopyOnWriteArrayList<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
 
 	public Configuration(IGSQBot igsqBot)
 	{
@@ -27,14 +30,28 @@ public class Configuration
 
 	private void initFolder()
 	{
-		CONFIG_FOLDER.mkdir();
+		if(CONFIG_FOLDER.mkdir())
+		{
+			LOGGER.debug("Created new config folder.");
+		}
+		else
+		{
+			LOGGER.debug("Config folder exists.");
+		}
 	}
 
 	private void initFiles()
 	{
 		try
 		{
-			CONFIG_FILE.createNewFile();
+			if(CONFIG_FILE.createNewFile())
+			{
+				LOGGER.debug("Created new config file.");
+			}
+			else
+			{
+				LOGGER.debug("Config file exists.");
+			}
 		}
 		catch(Exception exception)
 		{

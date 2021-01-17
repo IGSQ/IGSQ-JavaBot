@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -53,6 +54,7 @@ public class UserInfoCommand extends Command
 				.addField("Roles", memberInfo.getCondensedRoles().stream().map(Role::getAsMention).collect(Collectors.joining(" ")), true)
 				.setThumbnail(memberInfo.getAvatarURL())
 				.setColor(Constants.IGSQ_PURPLE)
+				.setTimestamp(Instant.now())
 				.build()).queue();
 	}
 }

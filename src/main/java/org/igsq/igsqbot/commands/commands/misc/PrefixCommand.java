@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class PrefixCommand extends Command
 {
 	public PrefixCommand()

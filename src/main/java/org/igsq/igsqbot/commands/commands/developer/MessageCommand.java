@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class MessageCommand extends Command
 {
 	public MessageCommand()

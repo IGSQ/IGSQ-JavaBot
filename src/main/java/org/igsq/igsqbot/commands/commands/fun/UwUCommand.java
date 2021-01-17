@@ -16,6 +16,7 @@ import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.UserUtils;
 
+@SuppressWarnings("unused")
 public class UwUCommand extends Command
 {
 	public UwUCommand()

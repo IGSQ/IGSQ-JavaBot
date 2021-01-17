@@ -11,6 +11,7 @@ import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.info.MemberInfo;
 import org.igsq.igsqbot.util.StringUtils;
 
+@SuppressWarnings("unused")
 public class InfoCommand extends Command
 {
 	public InfoCommand()

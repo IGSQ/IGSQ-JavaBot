@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
+import java.time.Instant;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
@@ -11,7 +12,7 @@ public class BotInfoCommand extends Command
 {
 	public BotInfoCommand(Command parent)
 	{
-		super(parent, "bot", "Shows informaton about the bot", "[none]");
+		super(parent, "bot", "Shows information about the bot", "[none]");
 	}
 
 	@Override
@@ -28,8 +29,8 @@ public class BotInfoCommand extends Command
 				.addField("Shard info", ctx.getJDA().getShardInfo().getShardString(), true)
 				.addField("Server count", String.valueOf(BotInfo.getTotalServers(ctx.getJDA().getShardManager())), true)
 				.addBlankField(true)
-
 				.setColor(Constants.IGSQ_PURPLE)
+				.setTimestamp(Instant.now())
 				.build()).queue();
 	}
 }

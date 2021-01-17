@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.OptionalInt;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
+@SuppressWarnings("unused")
 public class HelpCommand extends Command
 {
 	public HelpCommand()
@@ -18,23 +18,24 @@ public class HelpCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
+		OptionalInt page;
 		if(args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(ctx);
+			page = OptionalInt.of(1);
 		}
 		else
 		{
-			OptionalInt page = new Parser(args.get(0), ctx).parseAsUnsignedInt();
-			if(page.isPresent())
+			page = new Parser(args.get(0), ctx).parseAsUnsignedInt();
+		}
+		if(page.isPresent())
+		{
+			if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
 			{
-				if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
-				{
-					ctx.replyError("That page does not exist");
-				}
-				else
-				{
-					ctx.getChannel().sendMessage(ctx.getIGSQBot().getHelpPages().get(page.getAsInt() - 1).build()).queue();
-				}
+				ctx.replyError("That page does not exist");
+			}
+			else
+			{
+				ctx.getChannel().sendMessage(ctx.getIGSQBot().getHelpPages().get(page.getAsInt() - 1).build()).queue();
 			}
 		}
 	}

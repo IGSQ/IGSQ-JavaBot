@@ -9,9 +9,12 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Mutes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseUtils
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseUtils.class);
 	private DatabaseUtils()
 	{
 		//Overrides the default, public, constructor
@@ -19,6 +22,7 @@ public class DatabaseUtils
 
 	public static void removeGuild(Guild guild, IGSQBot igsqBot)
 	{
+		LOGGER.debug("Removed guild " + guild.getId());
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection)
@@ -34,6 +38,7 @@ public class DatabaseUtils
 
 	public static void removeGuild(long guildId, IGSQBot igsqBot)
 	{
+		LOGGER.debug("Removed guild " + guildId);
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection)
@@ -49,6 +54,7 @@ public class DatabaseUtils
 
 	public static void registerGuild(Guild guild, IGSQBot igsqBot)
 	{
+		LOGGER.debug("Registered guild " + guild.getId());
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection)
@@ -66,6 +72,7 @@ public class DatabaseUtils
 
 	public static void registerGuild(long guildId, IGSQBot igsqBot)
 	{
+		LOGGER.debug("Removed guild " + guildId);
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection)

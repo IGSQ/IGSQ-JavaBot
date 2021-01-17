@@ -12,6 +12,7 @@ import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
+@SuppressWarnings("unused")
 public class PollCommand extends Command
 {
 	public PollCommand()

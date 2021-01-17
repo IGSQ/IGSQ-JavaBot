@@ -70,6 +70,11 @@ public abstract class Command
 		}
 	}
 
+	public boolean hasChildren()
+	{
+		return !getChildren().isEmpty();
+	}
+
 	public abstract void run(List<String> args, CommandContext ctx);
 
 	public void addCooldown(long millis)

@@ -6,6 +6,7 @@ import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class ModuleCommand extends Command
 {
 	public ModuleCommand()
@@ -44,7 +45,7 @@ public class ModuleCommand extends Command
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
 			{
-				ctx.getIGSQBot().getLogger().warn("Module " + moduleName + " was enabled.");
+				ctx.replyError("Module " + moduleName + " was not found");
 			}
 			else
 			{
@@ -74,7 +75,7 @@ public class ModuleCommand extends Command
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
 			{
-				ctx.getIGSQBot().getLogger().warn("Module " + moduleName + " was enabled.");
+				ctx.replyError("Module " + moduleName + " was not found");
 			}
 			else
 			{

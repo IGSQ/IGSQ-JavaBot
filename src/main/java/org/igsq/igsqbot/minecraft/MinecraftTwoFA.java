@@ -14,14 +14,18 @@ import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MinecraftTwoFA
 {
 	private final Minecraft minecraft;
 	private final IGSQBot igsqBot;
+	private static final Logger LOGGER = LoggerFactory.getLogger(MinecraftTwoFA.class);
 
 	public MinecraftTwoFA(Minecraft minecraft)
 	{
+		LOGGER.debug("Minecraft 2FA started.");
 		this.minecraft = minecraft;
 		this.igsqBot = minecraft.getIGSQBot();
 	}
@@ -108,13 +112,15 @@ public class MinecraftTwoFA
 
 	public void close()
 	{
-		igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
+		igsqBot.getTaskHandler().cancelTask("minecraft2FA", false);
 		igsqBot.getLogger().info("Minecraft 2FA stopped.");
+		LOGGER.debug("Minecraft 2FA closed.");
 	}
 
 	public void close(String message)
 	{
-		igsqBot.getTaskHandler().cancelTask("minecraftSync", false);
+		igsqBot.getTaskHandler().cancelTask("minecraft2FA", false);
 		igsqBot.getLogger().info("Minecraft 2FA stopped. " + message);
+		LOGGER.debug("Minecraft 2FA closed.");
 	}
 }

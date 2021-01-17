@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
+import java.time.Instant;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
@@ -46,6 +47,7 @@ public class RoleInfoCommand extends Command
 							.setTitle("Information for role **" + role.getName() + "** (" + size + " Members)")
 							.addField("Random members", text.toString(), false)
 							.setColor(Constants.IGSQ_PURPLE)
+							.setTimestamp(Instant.now())
 							.build()).queue();
 				});
 			});

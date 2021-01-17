@@ -14,6 +14,7 @@ import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
+@SuppressWarnings("unused")
 public class ClearCommand extends Command
 {
 	public ClearCommand()

@@ -1,6 +1,5 @@
 package org.igsq.igsqbot.entities.cache;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,10 +8,13 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MessageCache
 {
 	private static final Map<Long, MessageCache> MESSAGE_CACHES = new ConcurrentHashMap<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageCache.class);
 
 	private final Map<Long, CachedMessage> cachedMessages;
 	private final long guildId;
@@ -52,31 +54,27 @@ public class MessageCache
 
 	public void set(CachedMessage message)
 	{
-		if(cachedMessages.size() >= 1000)
-		{
-			clean();
-		}
-		cachedMessages.putIfAbsent(message.getId(), message);
+		LOGGER.debug("Adding message " + message.getIdLong() + " to cache.");
+		cachedMessages.putIfAbsent(message.getIdLong(), message);
 	}
 
 	public void set(List<CachedMessage> messages)
 	{
 		for(CachedMessage selectedMessage : messages)
 		{
-			if(cachedMessages.size() >= 1000)
-			{
-				clean();
-			}
-			cachedMessages.putIfAbsent(selectedMessage.getId(), selectedMessage);
+			LOGGER.debug("Adding message " + selectedMessage.getIdLong() + " to cache.");
+			cachedMessages.putIfAbsent(selectedMessage.getIdLong(), selectedMessage);
 		}
 	}
 
-	public CachedMessage get(Long messageId)
+	public CachedMessage get(long messageId)
 	{
+		LOGGER.debug("Fetching message " + messageId + " from cache.");
 		for(Map.Entry<Long, CachedMessage> entry : cachedMessages.entrySet())
 		{
 			if(entry.getKey().equals(messageId))
 			{
+				LOGGER.debug("returned message " + entry.getValue().getIdLong() + " from cache.");
 				return entry.getValue();
 			}
 		}
@@ -85,22 +83,29 @@ public class MessageCache
 
 	public void remove(long messageId)
 	{
+		LOGGER.debug("Removed message " + messageId + " from cache.");
 		cachedMessages.remove(messageId);
 	}
 
 	public void remove(CachedMessage message)
 	{
-		cachedMessages.remove(message.getId());
+		LOGGER.debug("Removed message " + message.getIdLong() + " from cache.");
+		cachedMessages.remove(message.getIdLong());
 	}
 
 	public void remove(Message message)
 	{
+		LOGGER.debug("Removed message " + message.getIdLong() + " from cache.");
 		cachedMessages.remove(message.getIdLong());
 	}
 
 	public void remove(List<Message> messages)
 	{
-		messages.forEach(message -> cachedMessages.remove(message.getIdLong()));
+		messages.forEach(message ->
+		{
+			LOGGER.debug("Removed message " + message.getIdLong() + " from cache.");
+			cachedMessages.remove(message.getIdLong());
+		});
 	}
 
 	public boolean isInCache(long messageId)
@@ -115,7 +120,8 @@ public class MessageCache
 
 	public void update(CachedMessage oldMessage, CachedMessage newMessage)
 	{
-		cachedMessages.remove(oldMessage.getId());
+		LOGGER.debug("Updating message " + oldMessage.getIdLong() + " -> " + newMessage.getIdLong() + " in cache.");
+		cachedMessages.remove(oldMessage.getIdLong());
 		set(newMessage);
 	}
 
@@ -130,14 +136,9 @@ public class MessageCache
 		return guildId;
 	}
 
-	public Map<Long, CachedMessage> getCachedMessages()
+	public Map<Long, CachedMessage> getCacheView()
 	{
 		return cachedMessages;
-	}
-
-	public void clean()
-	{
-		cachedMessages.entrySet().removeIf(entry -> entry.getValue().getTimeCreated().isBefore(OffsetDateTime.now().minusDays(1)));
 	}
 
 	public void flush()

@@ -14,13 +14,14 @@ import org.igsq.igsqbot.entities.database.Tempban;
 import org.igsq.igsqbot.handlers.ErrorHandler;
 import org.igsq.igsqbot.util.*;
 
+@SuppressWarnings("unused")
 public class TempbanCommand extends Command
 {
 	public TempbanCommand()
 	{
 		super("Tempban", "Temporarily bans a user.", "[user][duration]");
 		addAliases("tempban", "mute");
-		addPermissions(Permission.KICK_MEMBERS);
+		addPermissions(Permission.MESSAGE_MANAGE);
 		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
 	}
 

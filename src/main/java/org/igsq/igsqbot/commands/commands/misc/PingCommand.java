@@ -8,8 +8,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class PingCommand extends Command
 {
 	public PingCommand()
@@ -24,21 +24,13 @@ public class PingCommand extends Command
 		MessageChannel channel = ctx.getChannel();
 		JDA jda = ctx.getJDA();
 
-		if(!args.isEmpty())
-		{
-			EmbedUtils.sendSyntaxError(ctx);
-			return;
-		}
-
 		jda.getRestPing().queue(
-				time -> channel.sendMessage(
-						new EmbedBuilder()
-								.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId()
-										+ "\n**REST Ping**: " + time
-										+ "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
-								.setColor(Constants.IGSQ_PURPLE)
-								.setTimestamp(Instant.now())
-								.build()).queue()
-		);
+				time -> channel.sendMessage(new EmbedBuilder()
+						.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId()
+								+ "\n**REST Ping**: " + time
+								+ "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")
+						.setColor(Constants.IGSQ_PURPLE)
+						.setTimestamp(Instant.now())
+						.build()).queue());
 	}
 }

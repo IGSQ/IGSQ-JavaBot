@@ -1,6 +1,8 @@
 package org.igsq.igsqbot.minecraft;
 
 import org.igsq.igsqbot.IGSQBot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Minecraft
 {
@@ -8,6 +10,7 @@ public class Minecraft
 	private final DatabaseHandler databaseHandler;
 	private MinecraftSync sync;
 	private MinecraftTwoFA twoFA;
+	private static final Logger LOGGER = LoggerFactory.getLogger(Minecraft.class);
 
 	public Minecraft(IGSQBot igsqBot)
 	{
@@ -18,9 +21,13 @@ public class Minecraft
 
 	public void start()
 	{
+		LOGGER.debug("Starting minecraft");
+
 		this.sync = new MinecraftSync(this);
 		this.twoFA = new MinecraftTwoFA(this);
+		LOGGER.debug("Starting sync");
 		sync.start();
+		LOGGER.debug("Starting 2FA");
 		twoFA.start();
 	}
 
@@ -36,6 +43,7 @@ public class Minecraft
 
 	public void close()
 	{
+		LOGGER.debug("Closing Minecraft.");
 		sync.close();
 		twoFA.close();
 		databaseHandler.close();

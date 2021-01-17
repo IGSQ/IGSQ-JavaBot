@@ -11,32 +11,51 @@ import org.igsq.igsqbot.util.FileUtils;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseHandler
 {
 	private final IGSQBot igsqBot;
 	private final HikariDataSource pool;
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseHandler.class);
 
 	public DatabaseHandler(IGSQBot igsqBot)
 	{
+		LOGGER.debug("Starting local database pool.");
 		this.igsqBot = igsqBot;
 		this.pool = initHikari();
-
 		initTables();
 		System.getProperties().setProperty("org.jooq.no-logo", "true");
 	}
 
 	private void initTables()
 	{
+		LOGGER.debug("Initialise table guilds.");
 		initTable("guilds");
 
+		LOGGER.debug("Initialise table roles.");
 		initTable("roles");
+
+		LOGGER.debug("Initialise table mutes.");
 		initTable("mutes");
+
+		LOGGER.debug("Initialise table reaction_roles.");
 		initTable("reaction_roles");
+
+		LOGGER.debug("Initialise table reminders.");
 		initTable("reminders");
+
+		LOGGER.debug("Initialise table reports.");
 		initTable("reports");
+
+		LOGGER.debug("Initialise table warnings.");
 		initTable("warnings");
+
+		LOGGER.debug("Initialise table votes.");
 		initTable("votes");
+
+		LOGGER.debug("Table setup complete.");
 	}
 
 	public HikariDataSource getPool()
@@ -75,6 +94,7 @@ public class DatabaseHandler
 
 	private HikariDataSource initHikari()
 	{
+		LOGGER.debug("Starting local HikariCP setup.");
 		HikariConfig hikariConfig = new HikariConfig();
 		Configuration configuration = igsqBot.getConfig();
 		hikariConfig.setDriverClassName("org.postgresql.Driver");
@@ -86,6 +106,7 @@ public class DatabaseHandler
 		hikariConfig.setMaximumPoolSize(30);
 		hikariConfig.setMinimumIdle(10);
 		hikariConfig.setConnectionTimeout(10000);
+		LOGGER.debug("Local HikariCP setup complete.");
 		return new HikariDataSource(hikariConfig);
 	}
 
@@ -101,6 +122,7 @@ public class DatabaseHandler
 
 	public void close()
 	{
+		LOGGER.debug("Closed local database.");
 		pool.close();
 	}
 }

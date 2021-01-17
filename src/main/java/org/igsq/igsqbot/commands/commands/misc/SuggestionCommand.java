@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class SuggestionCommand extends Command
 {
 	public SuggestionCommand()
@@ -31,25 +32,26 @@ public class SuggestionCommand extends Command
 		if(args.isEmpty())
 		{
 			EmbedUtils.sendSyntaxError(ctx);
-			return;
-		}
-
-		MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
-
-		if(suggestionChannel != null)
-		{
-			ctx.getChannel().sendMessage(new EmbedBuilder()
-					.setTitle("Suggestion:")
-					.setDescription(ArrayUtils.arrayCompile(args, " "))
-					.setColor(Constants.IGSQ_PURPLE)
-					.setThumbnail(author.getAvatarUrl())
-					.setFooter("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator() + " | ")
-					.setTimestamp(Instant.now())
-					.build()).queue();
 		}
 		else
 		{
-			ctx.replyError("No suggestion channel setup.");
+			MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
+
+			if(suggestionChannel != null)
+			{
+				ctx.getChannel().sendMessage(new EmbedBuilder()
+						.setTitle("Suggestion:")
+						.setDescription(ArrayUtils.arrayCompile(args, " "))
+						.setColor(Constants.IGSQ_PURPLE)
+						.setThumbnail(author.getAvatarUrl())
+						.setFooter("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator() + " | ")
+						.setTimestamp(Instant.now())
+						.build()).queue();
+			}
+			else
+			{
+				ctx.replyError("No suggestion channel setup.");
+			}
 		}
 	}
 }

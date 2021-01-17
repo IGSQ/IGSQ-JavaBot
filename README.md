@@ -90,15 +90,14 @@
  - [x] Switch to longs for IDs (as far as i can tell)
  - [x] Register and removal of users (removed with guild)
  - [x] ReactionRoles
+ - [x] Debug logging
  
 ### **TeaEyes**
 None!
 
 ### **arynxd**
-
  - [ ] Voting (need to move out of DM) :(
  - [ ] Improve user feedback
- - [ ] Debug logging
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

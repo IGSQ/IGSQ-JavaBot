@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class InviteCommand extends Command
 {
 	public InviteCommand()

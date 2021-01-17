@@ -9,6 +9,7 @@ import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.FileUtils;
 import org.igsq.igsqbot.util.StringUtils;
 
+@SuppressWarnings("unused")
 public class StealCommand extends Command
 {
 	public StealCommand()

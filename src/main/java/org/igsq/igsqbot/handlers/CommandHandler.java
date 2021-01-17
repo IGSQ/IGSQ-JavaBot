@@ -5,6 +5,7 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import java.lang.reflect.Constructor;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -18,6 +19,7 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -103,6 +105,7 @@ public class CommandHandler
 		boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
 		boolean startWithIdSpaced = messageContent.startsWith("<@" + selfID + "> ") || messageContent.startsWith("<@!" + selfID + "> ");
 		String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
+		String prefix = Constants.DEFAULT_BOT_PREFIX;
 
 		if(event.isFromGuild())
 		{
@@ -112,7 +115,7 @@ public class CommandHandler
 			}
 			else if(messageContent.startsWith(new GuildConfig(guild.getIdLong(), igsqBot).getPrefix()))
 			{
-				String prefix = new GuildConfig(guild.getIdLong(), igsqBot).getPrefix();
+				prefix = new GuildConfig(guild.getIdLong(), igsqBot).getPrefix();
 				content = messageContent.substring(prefix.length()).trim();
 			}
 			else
@@ -122,7 +125,7 @@ public class CommandHandler
 		}
 		else
 		{
-			String prefix = Constants.DEFAULT_BOT_PREFIX;
+			prefix = Constants.DEFAULT_BOT_PREFIX;
 			if(startsWithId)
 			{
 				content = idTrimmed;
@@ -143,7 +146,8 @@ public class CommandHandler
 			cmd = commandMap.get(commandText.toLowerCase());
 			if(cmd == null)
 			{
-				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.");
+				event.getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(success -> event.getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS,null, error -> {}));
+				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.\n Type `" + prefix + "help` for help.");
 				return;
 			}
 			CommandContext ctx = new CommandContext(event, igsqBot, cmd);

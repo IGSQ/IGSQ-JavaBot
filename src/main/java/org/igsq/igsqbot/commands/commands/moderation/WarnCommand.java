@@ -15,6 +15,7 @@ import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
+@SuppressWarnings("unused")
 public class WarnCommand extends Command
 {
 	public WarnCommand()

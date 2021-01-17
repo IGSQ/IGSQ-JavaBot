@@ -5,6 +5,7 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.CommandFlag;
 
+@SuppressWarnings("unused")
 public class ShutdownCommand extends Command
 {
 	public ShutdownCommand()
@@ -18,8 +19,8 @@ public class ShutdownCommand extends Command
 	public void run(List<String> args, CommandContext ctx)
 	{
 		ctx.getIGSQBot().getDatabaseHandler().close();
-		ctx.getIGSQBot().getTaskHandler().close();
 		ctx.getIGSQBot().getMinecraft().close();
+		ctx.getIGSQBot().getTaskHandler().close();
 
 		ctx.getJDA().shutdown();
 

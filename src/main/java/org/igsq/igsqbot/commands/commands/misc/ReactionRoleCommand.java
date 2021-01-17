@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class ReactionRoleCommand extends Command
 {
     public ReactionRoleCommand()

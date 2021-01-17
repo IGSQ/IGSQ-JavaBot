@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.info.BotInfo;
 
+@SuppressWarnings("unused")
 public class UptimeCommand extends Command
 {
 	public UptimeCommand()

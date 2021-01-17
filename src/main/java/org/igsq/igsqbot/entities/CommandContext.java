@@ -3,6 +3,7 @@ package org.igsq.igsqbot.entities;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -13,12 +14,15 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.jooq.DSLContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommandContext
 {
 	private final MessageReceivedEvent event;
 	private final IGSQBot igsqBot;
 	private final Command command;
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommandContext.class);
 
 	public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot, Command command)
 	{
@@ -41,7 +45,18 @@ public class CommandContext
 
 	public void addErrorReaction()
 	{
-		getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue();
+		getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(
+				success -> getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS, null,
+						error -> LOGGER.debug("A command exception occurred", error)),
+				error -> LOGGER.debug("A command exception occurred", error));
+	}
+
+	public void addSuccessReaction()
+	{
+		getMessage().addReaction(Emoji.SUCCESS.getAsReaction()).queue(
+				success -> getMessage().removeReaction(Emoji.SUCCESS.getAsReaction()).queueAfter(10, TimeUnit.SECONDS, null,
+						error -> LOGGER.debug("A command exception occurred", error)),
+				error -> LOGGER.debug("A command exception occurred", error));
 	}
 
 	public IGSQBot getIGSQBot()
@@ -112,11 +127,13 @@ public class CommandContext
 
 	public void replyError(String errorText)
 	{
+		addErrorReaction();
 		EmbedUtils.sendError(getChannel(), errorText);
 	}
 
 	public void replySuccess(String successText)
 	{
+		addSuccessReaction();
 		EmbedUtils.sendSuccess(getChannel(), successText);
 	}
 

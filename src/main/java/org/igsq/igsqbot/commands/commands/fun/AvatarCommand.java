@@ -10,9 +10,9 @@ import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.util.EmbedUtils;
 
+@SuppressWarnings("unused")
 public class AvatarCommand extends Command
 {
-
 	public AvatarCommand()
 	{
 		super("Avatar", "Shows the avatar for the specified user(s).", "<users {3}>");

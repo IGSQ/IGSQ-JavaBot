@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -48,6 +49,7 @@ public class ServerInfoCommand extends Command
 					.setDescription(guildInfo.getDescription())
 					.setThumbnail(guildInfo.getIconURL())
 					.setColor(Constants.IGSQ_PURPLE)
+					.setTimestamp(Instant.now())
 					.build()).queue();
 		}
 

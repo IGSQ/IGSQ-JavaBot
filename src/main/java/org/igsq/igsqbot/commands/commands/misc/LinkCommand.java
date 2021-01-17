@@ -7,6 +7,7 @@ import org.igsq.igsqbot.commands.subcommands.link.LinkShowCommand;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 
+@SuppressWarnings("unused")
 public class LinkCommand extends Command
 {
 	public LinkCommand()

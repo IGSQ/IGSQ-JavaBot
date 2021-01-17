@@ -11,14 +11,18 @@ import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.ConfigOption;
 import org.igsq.igsqbot.entities.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MinecraftSync
 {
 	private final Minecraft minecraft;
 	private final IGSQBot igsqbot;
+	private static final Logger LOGGER = LoggerFactory.getLogger(MinecraftSync.class);
 
 	public MinecraftSync(Minecraft minecraft)
 	{
+		LOGGER.debug("Minecraft sync started.");
 		this.minecraft = minecraft;
 		this.igsqbot = minecraft.getIGSQBot();
 	}
@@ -136,11 +140,13 @@ public class MinecraftSync
 	{
 		igsqbot.getTaskHandler().cancelTask("minecraftSync", false);
 		igsqbot.getLogger().info("Minecraft syncing stopped.");
+		LOGGER.debug("Minecraft syncing closed.");
 	}
 
 	public void close(String message)
 	{
 		igsqbot.getTaskHandler().cancelTask("minecraftSync", false);
 		igsqbot.getLogger().info("Minecraft syncing stopped. " + message);
+		LOGGER.debug("Minecraft syncing closed.");
 	}
 }

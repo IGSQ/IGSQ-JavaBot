@@ -1,16 +1,21 @@
 package org.igsq.igsqbot;
 
 import javax.security.auth.login.LoginException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	public static void main(String[] args)
 	{
 		IGSQBot bot = new IGSQBot();
+		LOGGER.debug("Beginning startup sequence.");
 		try
 		{
 			bot.getConfig();
 			bot.build();
+			LOGGER.debug("Bot built successfully.");
 		}
 		catch(LoginException exception)
 		{
