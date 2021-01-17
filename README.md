@@ -89,6 +89,7 @@
  - [x] Info command (Info objects, UserInfo, BotInfo, RoleInfo, GuildInfo)
  - [x] Switch to longs for IDs (as far as i can tell)
  - [x] Register and removal of users (removed with guild)
+ - [x] ReactionRoles
  
 ### **TeaEyes**
 None!
@@ -96,7 +97,6 @@ None!
 ### **arynxd**
 
  - [ ] Voting (need to move out of DM) :(
- - [ ] ReactionRoles
  - [ ] Improve user feedback
  - [ ] Debug logging
  - [ ] **PREPARE FOR PR**

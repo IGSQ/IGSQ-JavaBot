@@ -93,6 +93,15 @@ public enum Emoji
 		this.isAnimated = false;
 	}
 
+	public String getAsReaction()
+	{
+		if(this.unicode.isBlank())
+		{
+			return "emote:" + this.emote;
+		}
+		return this.unicode;
+	}
+
 	public String getAsMessageable()
 	{
 		if(this.unicode.isBlank())

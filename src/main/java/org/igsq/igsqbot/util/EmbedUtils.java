@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
 import org.igsq.igsqbot.entities.Emoji;
@@ -34,19 +35,22 @@ public class EmbedUtils
 	public static void sendSyntaxError(CommandContext ctx)
 	{
 		Command cmd = ctx.getCommand();
+		ctx.addErrorReaction();
 		if(ctx.isChild())
 		{
 			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-					.setDescription(Emoji.FAILURE.getAsMessageable() + "The provided syntax was incorrect.\n`" + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
-					.setColor(Color.RED)
-					.setTimestamp(Instant.now()));
+					.setTitle("**Invalid syntax for command " + cmd.getParent().getName() + "**")
+					.setDescription("**Correct Syntax**:\n`" + ctx.getPrefix() + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
+					.setTimestamp(Instant.now())
+					.setColor(Constants.IGSQ_PURPLE), 30000);
 		}
 		else
 		{
 			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-					.setDescription(Emoji.FAILURE.getAsMessageable() + "The provided syntax was incorrect.\n`" + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
-					.setColor(Color.RED)
-					.setTimestamp(Instant.now()));
+					.setTitle("**Invalid syntax for command " + cmd.getName() + "**")
+					.setDescription("**Correct Syntax**:\n`" + ctx.getPrefix() + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
+					.setTimestamp(Instant.now())
+					.setColor(Constants.IGSQ_PURPLE), 30000);
 		}
 	}
 

@@ -8,7 +8,9 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.jooq.DSLContext;
 
@@ -23,6 +25,23 @@ public class CommandContext
 		this.event = event;
 		this.igsqBot = igsqBot;
 		this.command = command;
+	}
+
+	public String getPrefix()
+	{
+		if(!isFromGuild())
+		{
+			return Constants.DEFAULT_BOT_PREFIX;
+		}
+		else
+		{
+			return new GuildConfig(this).getPrefix();
+		}
+	}
+
+	public void addErrorReaction()
+	{
+		getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue();
 	}
 
 	public IGSQBot getIGSQBot()
