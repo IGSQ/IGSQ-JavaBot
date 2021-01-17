@@ -28,7 +28,7 @@ public class MinecraftTwoFA
 
 	public void start()
 	{
-		if(!minecraft.getDatabaseHandler().isOnline())
+		if(minecraft.getDatabaseHandler().isOffline())
 		{
 			igsqBot.getLogger().warn("Minecraft 2FA stopped. Database not online.");
 		}

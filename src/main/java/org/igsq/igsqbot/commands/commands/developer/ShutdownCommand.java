@@ -17,7 +17,7 @@ public class ShutdownCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		ctx.getIGSQBot().getDatabaseManager().close();
+		ctx.getIGSQBot().getDatabaseHandler().close();
 		ctx.getIGSQBot().getTaskHandler().close();
 		ctx.getIGSQBot().getMinecraft().close();
 

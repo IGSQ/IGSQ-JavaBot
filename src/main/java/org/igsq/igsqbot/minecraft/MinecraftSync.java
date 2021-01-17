@@ -25,7 +25,7 @@ public class MinecraftSync
 
 	public void start()
 	{
-		if(!minecraft.getDatabaseHandler().isOnline())
+		if(minecraft.getDatabaseHandler().isOffline())
 		{
 			igsqbot.getLogger().warn("Minecraft syncing stopped. Database not online.");
 		}

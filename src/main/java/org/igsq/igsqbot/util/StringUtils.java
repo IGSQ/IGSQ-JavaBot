@@ -12,6 +12,22 @@ public class StringUtils
 		//Overrides the default, public, constructor
 	}
 
+	public static String getEmoteAsMention(String emote)
+	{
+		try
+		{
+			return "<:emote:" + Long.parseLong(emote) + ">";
+		}
+		catch(Exception exception)
+		{
+			return emote;
+		}
+	}
+	public static String getRoleAsMention(long roleId)
+	{
+		return "<@&" + roleId + ">";
+	}
+
 	public static String getChannelAsMention(String channelID)
 	{
 		return "<#" + channelID + ">";

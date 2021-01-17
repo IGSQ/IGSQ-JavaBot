@@ -44,9 +44,9 @@ public class Report
 
 	public static Report getById(long messageId, IGSQBot igsqBot)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context.selectFrom(REPORTS).where(REPORTS.MESSAGEID.eq(messageId));
 			var result = query.fetch();
 			query.close();
@@ -70,9 +70,9 @@ public class Report
 
 	public void add()
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 
 			ctx.insertInto(Tables.REPORTS)
 					.columns(REPORTS.MESSAGEID, REPORTS.REPORTMESSAGEID, REPORTS.CHANNELID, REPORTS.GUILDID, REPORTS.USERID, REPORTS.REPORTTEXT)
@@ -87,9 +87,9 @@ public class Report
 
 	public void remove()
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 			ctx.deleteFrom(Tables.REPORTS).where(REPORTS.MESSAGEID.eq(messageId)).execute();
 		}
 		catch(Exception exception)

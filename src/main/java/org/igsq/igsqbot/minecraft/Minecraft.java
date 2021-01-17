@@ -5,13 +5,14 @@ import org.igsq.igsqbot.IGSQBot;
 public class Minecraft
 {
 	private final IGSQBot igsqBot;
-	private DatabaseHandler databaseHandler;
+	private final DatabaseHandler databaseHandler;
 	private MinecraftSync sync;
 	private MinecraftTwoFA twoFA;
 
 	public Minecraft(IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
+		this.databaseHandler = new DatabaseHandler(igsqBot);
 		start();
 	}
 
@@ -25,10 +26,6 @@ public class Minecraft
 
 	public DatabaseHandler getDatabaseHandler()
 	{
-		if(databaseHandler == null)
-		{
-			databaseHandler = new DatabaseHandler(igsqBot);
-		}
 		return databaseHandler;
 	}
 

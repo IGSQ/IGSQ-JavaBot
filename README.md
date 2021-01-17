@@ -87,7 +87,9 @@
  - [x] Child / Sub commands system
  - [x] Rewrite the event waiter (Deprecated)
  - [x] Info command (Info objects, UserInfo, BotInfo, RoleInfo, GuildInfo)
-
+ - [x] Switch to longs for IDs (as far as i can tell)
+ - [x] Register and removal of users (removed with guild)
+ 
 ### **TeaEyes**
 None!
 
@@ -95,10 +97,8 @@ None!
 
  - [ ] Voting (need to move out of DM) :(
  - [ ] ReactionRoles
- - [ ] Register and removal of users
-
+ - [ ] Improve user feedback
  - [ ] Debug logging
- - [ ] Switch to longs for IDs
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**
@@ -115,7 +115,7 @@ None!
  - [x] discord_accounts table returning errors - fixed with additional error catching
  - [x] 2FA not functioning as intended - unintended feature
  - [x] Muting causing duplicate entries (fixed, was a Map issue)
- - [x] Resource loading fails
+ - [x] Resource loading fails (incorrect method used)
 
 ## Building and Running
 

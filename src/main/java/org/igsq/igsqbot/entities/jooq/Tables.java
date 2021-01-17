@@ -4,53 +4,59 @@
 package org.igsq.igsqbot.entities.jooq;
 
 
-import org.igsq.igsqbot.entities.jooq.tables.*;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.Mutes;
+import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
+import org.igsq.igsqbot.entities.jooq.tables.Reminders;
+import org.igsq.igsqbot.entities.jooq.tables.Reports;
+import org.igsq.igsqbot.entities.jooq.tables.Roles;
+import org.igsq.igsqbot.entities.jooq.tables.Votes;
+import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 
 
 /**
  * Convenience access to all tables in public.
  */
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
-public class Tables
-{
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+public class Tables {
 
-	/**
-	 * The table <code>public.guilds</code>.
-	 */
-	public static final Guilds GUILDS = Guilds.GUILDS;
+    /**
+     * The table <code>public.guilds</code>.
+     */
+    public static final Guilds GUILDS = Guilds.GUILDS;
 
-	/**
-	 * The table <code>public.mutes</code>.
-	 */
-	public static final Mutes MUTES = Mutes.MUTES;
+    /**
+     * The table <code>public.mutes</code>.
+     */
+    public static final Mutes MUTES = Mutes.MUTES;
 
-	/**
-	 * The table <code>public.reaction_roles</code>.
-	 */
-	public static final ReactionRoles REACTION_ROLES = ReactionRoles.REACTION_ROLES;
+    /**
+     * The table <code>public.reaction_roles</code>.
+     */
+    public static final ReactionRoles REACTION_ROLES = ReactionRoles.REACTION_ROLES;
 
-	/**
-	 * The table <code>public.reminders</code>.
-	 */
-	public static final Reminders REMINDERS = Reminders.REMINDERS;
+    /**
+     * The table <code>public.reminders</code>.
+     */
+    public static final Reminders REMINDERS = Reminders.REMINDERS;
 
-	/**
-	 * The table <code>public.reports</code>.
-	 */
-	public static final Reports REPORTS = Reports.REPORTS;
+    /**
+     * The table <code>public.reports</code>.
+     */
+    public static final Reports REPORTS = Reports.REPORTS;
 
-	/**
-	 * The table <code>public.roles</code>.
-	 */
-	public static final Roles ROLES = Roles.ROLES;
+    /**
+     * The table <code>public.roles</code>.
+     */
+    public static final Roles ROLES = Roles.ROLES;
 
-	/**
-	 * The table <code>public.votes</code>.
-	 */
-	public static final Votes VOTES = Votes.VOTES;
+    /**
+     * The table <code>public.votes</code>.
+     */
+    public static final Votes VOTES = Votes.VOTES;
 
-	/**
-	 * The table <code>public.warnings</code>.
-	 */
-	public static final Warnings WARNINGS = Warnings.WARNINGS;
+    /**
+     * The table <code>public.warnings</code>.
+     */
+    public static final Warnings WARNINGS = Warnings.WARNINGS;
 }

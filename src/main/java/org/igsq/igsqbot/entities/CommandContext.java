@@ -52,7 +52,7 @@ public class CommandContext
 
 	public DSLContext getDBContext()
 	{
-		return getIGSQBot().getDatabaseManager().getContext();
+		return getIGSQBot().getDatabaseHandler().getContext();
 	}
 
 	public User getAuthor()

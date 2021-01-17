@@ -26,7 +26,7 @@ public class EmbedUtils
 	public static void sendError(MessageChannel channel, String errorText)
 	{
 		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsTag() + errorText)
+				.setDescription(Emoji.FAILURE.getAsMessageable() + errorText)
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
@@ -37,14 +37,14 @@ public class EmbedUtils
 		if(ctx.isChild())
 		{
 			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-					.setDescription(Emoji.FAILURE.getAsTag() + "The provided syntax was incorrect.\n`" + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
+					.setDescription(Emoji.FAILURE.getAsMessageable() + "The provided syntax was incorrect.\n`" + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
 					.setColor(Color.RED)
 					.setTimestamp(Instant.now()));
 		}
 		else
 		{
 			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-					.setDescription(Emoji.FAILURE.getAsTag() + "The provided syntax was incorrect.\n`" + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
+					.setDescription(Emoji.FAILURE.getAsMessageable() + "The provided syntax was incorrect.\n`" + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
 					.setColor(Color.RED)
 					.setTimestamp(Instant.now()));
 		}
@@ -54,7 +54,7 @@ public class EmbedUtils
 	{
 		Command cmd = ctx.getCommand();
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsTag() + " You are missing the following permissions for command:`" + cmd.getAliases().get(0) + "`" +
+				.setDescription(Emoji.FAILURE.getAsMessageable() + " You are missing the following permissions for command:`" + cmd.getAliases().get(0) + "`" +
 						cmd.getRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")))
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
@@ -63,7 +63,7 @@ public class EmbedUtils
 	public static void sendSuccess(MessageChannel channel, String successText)
 	{
 		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Emoji.SUCCESS.getAsTag() + successText)
+				.setDescription(Emoji.SUCCESS.getAsMessageable() + successText)
 				.setColor(Color.GREEN)
 				.setTimestamp(Instant.now()));
 	}
@@ -71,7 +71,7 @@ public class EmbedUtils
 	public static void sendDisabledError(CommandContext ctx)
 	{
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsTag() + " `" + ctx.getCommand().getName() + "` is currently disabled!")
+				.setDescription(Emoji.FAILURE.getAsMessageable() + " `" + ctx.getCommand().getName() + "` is currently disabled!")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}

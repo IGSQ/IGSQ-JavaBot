@@ -28,11 +28,11 @@ public class Tempban
 		this.igsqBot = igsqBot;
 	}
 
-	public static void removeMuteById(long userId, IGSQBot igsqBot)
+	public static void removeBanById(long userId, IGSQBot igsqBot)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 			var roles = ctx.selectFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(userId));
 			List<Role> collectedRoles = new ArrayList<>();
 			Guild guild = null;
@@ -68,9 +68,9 @@ public class Tempban
 
 	public boolean add()
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 
 			boolean exists = ctx.select(Mutes.MUTES.USERID).from(Tables.MUTES).fetchOne() != null;
 			if(exists)
@@ -95,9 +95,9 @@ public class Tempban
 
 	public void remove()
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var ctx = igsqBot.getDatabaseManager().getContext(connection);
+			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 			ctx.deleteFrom(Tables.MUTES).where(Mutes.MUTES.USERID.eq(memberId)).execute();
 			ctx.deleteFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(memberId)).execute();
 		}

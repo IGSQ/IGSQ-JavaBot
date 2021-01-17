@@ -1,10 +1,7 @@
 package org.igsq.igsqbot.util;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,11 +31,28 @@ public class Parser
 		this.ctx = ctx;
 	}
 
+	public void getAsEmote(Consumer<String> success)
+	{
+		ctx.getGuild().retrieveEmoteById(arg).queue(listedEmote -> success.accept(listedEmote.getAsMention()), error -> ctx.replyError("Unknown emote"));
+	}
+
 	public List<String> parseAsSlashArgs()
 	{
 		return Arrays.stream(arg.split("/")).collect(Collectors.toList());
 	}
 
+	public OptionalLong parseAsUnsignedLong()
+	{
+		try
+		{
+			return OptionalLong.of(Long.parseUnsignedLong(arg));
+		}
+		catch(Exception exception)
+		{
+			ctx.replyError("Invalid ID entered.");
+			return OptionalLong.empty();
+		}
+	}
 	public Optional<Guild> parseAsGuild()
 	{
 		if(arg.equalsIgnoreCase("this") || arg.equalsIgnoreCase("here"))

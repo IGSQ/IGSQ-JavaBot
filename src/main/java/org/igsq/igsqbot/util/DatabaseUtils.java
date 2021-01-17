@@ -19,9 +19,9 @@ public class DatabaseUtils
 
 	public static void removeGuild(Guild guild, IGSQBot igsqBot)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
+			var context = igsqBot.getDatabaseHandler().getContext(connection)
 					.deleteFrom(Tables.GUILDS)
 					.where(Guilds.GUILDS.GUILDID.eq(guild.getIdLong()));
 			context.execute();
@@ -34,9 +34,9 @@ public class DatabaseUtils
 
 	public static void removeGuild(long guildId, IGSQBot igsqBot)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
+			var context = igsqBot.getDatabaseHandler().getContext(connection)
 					.deleteFrom(Tables.GUILDS)
 					.where(Guilds.GUILDS.GUILDID.eq(guildId));
 			context.execute();
@@ -49,9 +49,9 @@ public class DatabaseUtils
 
 	public static void registerGuild(Guild guild, IGSQBot igsqBot)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
+			var context = igsqBot.getDatabaseHandler().getContext(connection)
 					.insertInto(Tables.GUILDS)
 					.columns(Guilds.GUILDS.GUILDID)
 					.values(guild.getIdLong())
@@ -66,9 +66,9 @@ public class DatabaseUtils
 
 	public static void registerGuild(long guildId, IGSQBot igsqBot)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
+			var context = igsqBot.getDatabaseHandler().getContext(connection)
 					.insertInto(Tables.GUILDS)
 					.columns(Guilds.GUILDS.GUILDID)
 					.values(guildId)
@@ -84,9 +84,9 @@ public class DatabaseUtils
 	public static List<Mutes> getExpiredMutes(IGSQBot igsqBot)
 	{
 		List<Mutes> result = new ArrayList<>();
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection).selectFrom(Tables.MUTES);
+			var context = igsqBot.getDatabaseHandler().getContext(connection).selectFrom(Tables.MUTES);
 
 			for(var value : context.fetch())
 			{

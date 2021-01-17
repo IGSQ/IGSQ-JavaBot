@@ -39,16 +39,28 @@ import org.slf4j.LoggerFactory;
 
 public class IGSQBot extends ListenerAdapter
 {
-	private final Logger logger = LoggerFactory.getLogger(IGSQBot.class);
-	private final LocalDateTime startTimestamp = LocalDateTime.now();
-	private final List<EmbedBuilder> helpPages = new ArrayList<>();
-	private DatabaseHandler databaseHandler;
-	private CommandHandler commandHandler;
-	private Configuration configuration;
+	private final DatabaseHandler databaseHandler;
+	private final CommandHandler commandHandler;
+	private final LocalDateTime startTimestamp;
+	private final List<EmbedBuilder> helpPages;
+	private final Configuration configuration;
+	private final TaskHandler taskHandler;
+	private final Minecraft minecraft;
 	private ShardManager shardManager;
-	private TaskHandler taskHandler;
-	private Minecraft minecraft;
+	private final Logger logger;
 	private JDA jda;
+
+	public IGSQBot()
+	{
+		this.logger = LoggerFactory.getLogger(IGSQBot.class);
+		this.configuration = new Configuration(this);
+		this.databaseHandler = new DatabaseHandler(this);
+		this.commandHandler = new CommandHandler(this);
+		this.startTimestamp = LocalDateTime.now();
+		this.helpPages = new ArrayList<>();
+		this.taskHandler = new TaskHandler();
+		this.minecraft = new Minecraft(this);
+	}
 
 	public void build() throws LoginException
 	{
@@ -74,7 +86,7 @@ public class IGSQBot extends ListenerAdapter
 				.setShardsTotal(-1)
 
 				.addEventListeners(
-						new IGSQBot(),
+						this,
 						
 						new MessageEventsMain(this),
 						new GuildEventsMain(this),
@@ -94,12 +106,9 @@ public class IGSQBot extends ListenerAdapter
 	public void onReady(ReadyEvent event)
 	{
 		this.jda = event.getJDA();
-
-		getDatabaseManager();
-		registerGuilds(event.getJDA().getShardManager());
-		getMinecraft();
-		getCommandHandler();
 		getStartTimestamp();
+
+		registerGuilds(event.getJDA().getShardManager());
 
 		getLogger().info("  ___ ___ ___  ___  ___      _     ___ _            _          _ ");
 		getLogger().info(" |_ _/ __/ __|/ _ \\| _ ) ___| |_  / __| |_ __ _ _ _| |_ ___ __| |");
@@ -113,21 +122,21 @@ public class IGSQBot extends ListenerAdapter
 		getLogger().info("IGSQBot Version: " + Constants.VERSION);
 		getLogger().info("JVM Version:     " + BotInfo.getJavaVersion());
 
-		getTaskHandler().addRepeatingTask(() -> DatabaseUtils.getExpiredMutes(this).forEach(mute -> Tempban.removeMuteById(mute.getUserid(), this)), TimeUnit.SECONDS, 15);
+		getTaskHandler().addRepeatingTask(() -> DatabaseUtils.getExpiredMutes(this).forEach(mute -> Tempban.removeBanById(mute.getUserid(), this)), TimeUnit.SECONDS, 15);
 	}
 
 	public SelfUser getSelfUser()
 	{
-		if(jda == null)
+		if(this.jda == null)
 		{
-			throw new UnsupportedOperationException("No ready shard present.");
+			throw new UnsupportedOperationException("No JDA present.");
 		}
-		return jda.getSelfUser();
+		return this.jda.getSelfUser();
 	}
 
 	public JDA getJDA()
 	{
-		return jda;
+		return this.jda;
 	}
 
 	public void registerGuilds(ShardManager shardManager)
@@ -142,14 +151,26 @@ public class IGSQBot extends ListenerAdapter
 		}
 	}
 
+	public void registerGuilds()
+	{
+		if(this.shardManager == null)
+		{
+			throw new UnsupportedOperationException("Cannot register guilds without a shard manager.");
+		}
+		for(Guild guild : this.shardManager.getGuilds())
+		{
+			DatabaseUtils.registerGuild(guild, this);
+		}
+	}
+
 	public LocalDateTime getStartTimestamp()
 	{
-		return startTimestamp;
+		return this.startTimestamp;
 	}
 
 	public List<EmbedBuilder> getHelpPages()
 	{
-		if(helpPages.isEmpty())
+		if(this.helpPages.isEmpty())
 		{
 			List<Command> commands = new ArrayList<>();
 			for(Command cmd : getCommandHandler().getCommandMap().values())
@@ -175,7 +196,7 @@ public class IGSQBot extends ListenerAdapter
 				}
 				else
 				{
-					helpPages.add(embedBuilder);
+					this.helpPages.add(embedBuilder);
 					embedBuilder = new EmbedBuilder();
 					fieldCount = 0;
 					page++;
@@ -183,65 +204,45 @@ public class IGSQBot extends ListenerAdapter
 				}
 			}
 		}
-		return helpPages;
+		return this.helpPages;
 	}
 
 	public ShardManager getShardManager()
 	{
-		if(shardManager == null)
+		if(this.shardManager == null)
 		{
 			throw new UnsupportedOperationException("Shardmanager is not built.");
 		}
-		return shardManager;
+		return this.shardManager;
 	}
 
 	public Minecraft getMinecraft()
 	{
-		if(minecraft == null)
-		{
-			minecraft = new Minecraft(this);
-		}
-		return minecraft;
+		return this.minecraft;
 	}
 
 	public Configuration getConfig()
 	{
-		if(configuration == null)
-		{
-			configuration = new Configuration(this);
-		}
-		return configuration;
+		return this.configuration;
 	}
 
 	public CommandHandler getCommandHandler()
 	{
-		if(commandHandler == null)
-		{
-			commandHandler = new CommandHandler(this);
-		}
-		return commandHandler;
+		return this.commandHandler;
 	}
 
 	public Logger getLogger()
 	{
-		return logger;
+		return this.logger;
 	}
 
 	public TaskHandler getTaskHandler()
 	{
-		if(taskHandler == null)
-		{
-			taskHandler = new TaskHandler();
-		}
-		return taskHandler;
+		return this.taskHandler;
 	}
 
-	public DatabaseHandler getDatabaseManager()
+	public DatabaseHandler getDatabaseHandler()
 	{
-		if(databaseHandler == null)
-		{
-			databaseHandler = new DatabaseHandler(this);
-		}
-		return databaseHandler;
+		return this.databaseHandler;
 	}
 }

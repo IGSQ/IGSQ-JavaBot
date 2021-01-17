@@ -35,9 +35,9 @@ public class DatabaseHandler
 		}
 	}
 
-	public boolean isOnline()
+	public boolean isOffline()
 	{
-		return pool.isRunning();
+		return !pool.isRunning();
 	}
 
 	private HikariDataSource initHikari()

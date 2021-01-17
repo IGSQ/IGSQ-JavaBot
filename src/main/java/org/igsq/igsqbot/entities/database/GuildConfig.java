@@ -33,9 +33,9 @@ public class GuildConfig
 
 	public String getPrefix()
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context.select(GUILDS.PREFIX).from(GUILDS).where(GUILDS.GUILDID.eq(guildId));
 			String result = query.fetchOne(GUILDS.PREFIX);
 			query.close();
@@ -50,9 +50,9 @@ public class GuildConfig
 
 	public void setPrefix(String prefix)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context.update(GUILDS).set(GUILDS.PREFIX, prefix).where(GUILDS.GUILDID.eq(guildId));
 			query.execute();
 		}
@@ -89,9 +89,9 @@ public class GuildConfig
 
 	private long getValue(Field<?> value)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context.select(value).from(GUILDS).where(GUILDS.GUILDID.eq(guildId));
 			long result = Long.parseLong(String.valueOf(query.fetchOne(value)));
 			query.close();

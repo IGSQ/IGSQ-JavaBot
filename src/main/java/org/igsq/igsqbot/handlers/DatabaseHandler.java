@@ -26,20 +26,6 @@ public class DatabaseHandler
 		System.getProperties().setProperty("org.jooq.no-logo", "true");
 	}
 
-	public void createTables()
-	{
-		Connection connection = getConnection();
-		try
-		{
-			connection.createStatement().execute("");
-		}
-		catch(Exception exception)
-		{
-			igsqBot.getLogger().error("An error occurred while setting up the Database.", exception);
-			System.exit(-1);
-		}
-	}
-
 	private void initTables()
 	{
 		initTable("guilds");

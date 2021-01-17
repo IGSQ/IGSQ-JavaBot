@@ -45,7 +45,7 @@ public class PollCommand extends Command
 			List<Emoji> emojis = Emoji.getPoll();
 			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
 			{
-				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsTag()).append("\n\n");
+				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsMessageable()).append("\n\n");
 				reactions.add(emojis.get(i - 1).getUnicode());
 			}
 

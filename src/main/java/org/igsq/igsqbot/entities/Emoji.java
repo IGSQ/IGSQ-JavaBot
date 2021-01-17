@@ -93,7 +93,7 @@ public enum Emoji
 		this.isAnimated = false;
 	}
 
-	public String getAsTag()
+	public String getAsMessageable()
 	{
 		if(this.unicode.isBlank())
 		{

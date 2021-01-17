@@ -24,7 +24,7 @@ public class Main
 		}
 		catch(Exception exception)
 		{
-			bot.getLogger().error("An unhandled exception occurred", exception);
+			bot.getLogger().error("An unexpected exception occurred", exception);
 			System.exit(1);
 		}
 	}

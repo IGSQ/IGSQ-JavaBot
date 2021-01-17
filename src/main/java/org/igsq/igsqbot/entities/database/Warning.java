@@ -31,9 +31,9 @@ public class Warning
 
 	public void add(String reason)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context.insertInto(Tables.WARNINGS).columns(Warnings.WARNINGS.GUILDID, Warnings.WARNINGS.USERID, Warnings.WARNINGS.WARNTEXT).values(guildId, userId, reason);
 			query.execute();
 		}
@@ -45,9 +45,9 @@ public class Warning
 
 	public void remove(long key)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			context.deleteFrom(Tables.WARNINGS).where(Warnings.WARNINGS.WARNID.eq(key)).execute();
 		}
 		catch(Exception exception)
@@ -59,9 +59,9 @@ public class Warning
 	public List<org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings> get()
 	{
 		List<org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings> result = new ArrayList<>();
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection);
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context.selectFrom(Warnings.WARNINGS).where(Warnings.WARNINGS.GUILDID.eq(guildId)).and(Warnings.WARNINGS.USERID.eq(userId));
 
 			for(var value : query.fetch())
@@ -80,9 +80,9 @@ public class Warning
 
 	public org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings getById(long warnId)
 	{
-		try(Connection connection = igsqBot.getDatabaseManager().getConnection())
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseManager().getContext(connection)
+			var context = igsqBot.getDatabaseHandler().getContext(connection)
 					.selectFrom(Warnings.WARNINGS)
 					.where(Warnings.WARNINGS.WARNID.eq(warnId));
 
