@@ -8,8 +8,8 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
-import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -31,7 +31,7 @@ public class ReportCommandReactionAdd extends ListenerAdapter
 			return;
 		}
 
-		if(!event.getReactionEmote().getEmoji().equalsIgnoreCase(Constants.THUMB_UP))
+		if(!event.getReactionEmote().getEmoji().equalsIgnoreCase(Emoji.THUMB_UP.getUnicode()))
 		{
 			return;
 		}
@@ -83,7 +83,7 @@ public class ReportCommandReactionAdd extends ListenerAdapter
 
 						if(!member.canInteract(reportedMember))
 						{
-							message.removeReaction(Constants.THUMB_UP, user).queue();
+							message.removeReaction(Emoji.THUMB_UP.getUnicode(), user).queue();
 							return;
 						}
 

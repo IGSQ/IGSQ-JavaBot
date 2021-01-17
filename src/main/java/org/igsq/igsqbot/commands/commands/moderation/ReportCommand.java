@@ -5,9 +5,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
 import org.igsq.igsqbot.util.*;
@@ -18,8 +19,7 @@ public class ReportCommand extends Command
 	{
 		super("Report", "Reports the specified member with the specified reason", "[user] [reason]");
 		addAliases("report");
-		guildOnly();
-		autoDelete();
+		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class ReportCommand extends Command
 											message ->
 											{
 												new Report(message, ctx.getMessage(), channel, guild, user, reason, ctx.getIGSQBot()).add();
-												message.addReaction(Constants.THUMB_UP).queue();
+												message.addReaction(Emoji.THUMB_UP.getUnicode()).queue();
 											}
 									);
 						}

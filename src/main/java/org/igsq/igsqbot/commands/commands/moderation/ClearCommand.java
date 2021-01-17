@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -20,8 +21,8 @@ public class ClearCommand extends Command
 		super("Clear", "Clears messages from the current channel", "[amount {50}]");
 		addAliases("clear", "purge");
 		addPermissions(Permission.MESSAGE_MANAGE);
-		guildOnly();
 		addCooldown(10000);
+		addFlags(CommandFlag.GUILD_ONLY);
 	}
 
 	@Override

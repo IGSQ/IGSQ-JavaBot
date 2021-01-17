@@ -20,7 +20,7 @@ public class UptimeCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		Duration uptime = new BotInfo(ctx.getIGSQBot()).getUptime();
+		Duration uptime = BotInfo.getUptime(ctx.getIGSQBot());
 		ctx.getChannel().sendMessage(new EmbedBuilder()
 				.setDescription("Uptime: " + uptime.toDaysPart() + " days, " + uptime.toHoursPart() + " hours, " + uptime.toSecondsPart() + " seconds.")
 				.setColor(Constants.IGSQ_PURPLE)

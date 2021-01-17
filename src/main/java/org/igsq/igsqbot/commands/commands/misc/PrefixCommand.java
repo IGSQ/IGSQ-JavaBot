@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -14,9 +15,9 @@ public class PrefixCommand extends Command
 	public PrefixCommand()
 	{
 		super("Prefix", "Gets and sets the prefix for this server.", "<newPrefix {5}> | <reset> | <none>");
+		addFlags(CommandFlag.GUILD_ONLY);
 		addAliases("prefix");
 		addChildren(new PrefixResetCommand(this));
-		guildOnly();
 	}
 
 	@Override

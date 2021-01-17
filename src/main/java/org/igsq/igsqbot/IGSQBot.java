@@ -3,12 +3,16 @@ package org.igsq.igsqbot;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.security.auth.login.LoginException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -17,6 +21,8 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.ConfigOption;
 import org.igsq.igsqbot.entities.Configuration;
+import org.igsq.igsqbot.entities.database.Tempban;
+import org.igsq.igsqbot.entities.info.BotInfo;
 import org.igsq.igsqbot.events.command.ReportCommandReactionAdd;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
 import org.igsq.igsqbot.events.logging.MessageEventsLogging;
@@ -31,7 +37,7 @@ import org.igsq.igsqbot.util.DatabaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IGSQBot
+public class IGSQBot extends ListenerAdapter
 {
 	private final Logger logger = LoggerFactory.getLogger(IGSQBot.class);
 	private final LocalDateTime startTimestamp = LocalDateTime.now();
@@ -40,7 +46,6 @@ public class IGSQBot
 	private CommandHandler commandHandler;
 	private Configuration configuration;
 	private ShardManager shardManager;
-
 	private TaskHandler taskHandler;
 	private Minecraft minecraft;
 	private JDA jda;
@@ -69,6 +74,8 @@ public class IGSQBot
 				.setShardsTotal(-1)
 
 				.addEventListeners(
+						new IGSQBot(),
+						
 						new MessageEventsMain(this),
 						new GuildEventsMain(this),
 
@@ -83,24 +90,30 @@ public class IGSQBot
 				.build();
 	}
 
-	public JDA getJDA()
+	@Override
+	public void onReady(ReadyEvent event)
 	{
-		if(shardManager == null)
-		{
-			throw new UnsupportedOperationException("Cannot get ready shard without a shard manager.");
-		}
-		else if(jda == null)
-		{
-			try
-			{
-				jda = shardManager.getShards().get(shardManager.getShards().size() - 1).awaitReady();
-			}
-			catch(InterruptedException exception)
-			{
-				getLogger().error("The bot was interrupted at startup.", exception);
-			}
-		}
-		return jda;
+		this.jda = event.getJDA();
+
+		getDatabaseManager();
+		registerGuilds(event.getJDA().getShardManager());
+		getMinecraft();
+		getCommandHandler();
+		getStartTimestamp();
+
+		getLogger().info("  ___ ___ ___  ___  ___      _     ___ _            _          _ ");
+		getLogger().info(" |_ _/ __/ __|/ _ \\| _ ) ___| |_  / __| |_ __ _ _ _| |_ ___ __| |");
+		getLogger().info("  | | (_ \\__ \\ (_) | _ \\/ _ \\  _| \\__ \\  _/ _` | '_|  _/ -_) _` |");
+		getLogger().info(" |___\\___|___/\\__\\_\\___/\\___/\\__| |___/\\__\\__,_|_|  \\__\\___\\__,_|");
+		getLogger().info("");
+		getLogger().info("Account:         " + event.getJDA().getSelfUser().getAsTag() + " / " + event.getJDA().getSelfUser().getAsTag());
+		getLogger().info("Total Shards:    " + BotInfo.getTotalShards(event.getJDA().getShardManager()));
+		getLogger().info("Total Guilds:    " + BotInfo.getTotalServers(event.getJDA().getShardManager()));
+		getLogger().info("JDA Version:     " + JDAInfo.VERSION);
+		getLogger().info("IGSQBot Version: " + Constants.VERSION);
+		getLogger().info("JVM Version:     " + BotInfo.getJavaVersion());
+
+		getTaskHandler().addRepeatingTask(() -> DatabaseUtils.getExpiredMutes(this).forEach(mute -> Tempban.removeMuteById(mute.getUserid(), this)), TimeUnit.SECONDS, 15);
 	}
 
 	public SelfUser getSelfUser()
@@ -112,7 +125,12 @@ public class IGSQBot
 		return jda.getSelfUser();
 	}
 
-	public void registerGuilds()
+	public JDA getJDA()
+	{
+		return jda;
+	}
+
+	public void registerGuilds(ShardManager shardManager)
 	{
 		if(shardManager == null)
 		{

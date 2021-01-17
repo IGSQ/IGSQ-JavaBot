@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 public class MessageCommand extends Command
@@ -12,8 +14,8 @@ public class MessageCommand extends Command
 	public MessageCommand()
 	{
 		super("Message", "Sends default embed messages", "[name]");
+		addFlags(CommandFlag.DEVELOPER_ONLY);
 		addAliases("message");
-		developerOnly();
 	}
 
 	@Override
@@ -106,9 +108,9 @@ public class MessageCommand extends Command
 
 		EmbedBuilder VERIFICATION = new EmbedBuilder().setDescription("This server has a **semi-automatic** verification system. It means the bot will take care of verification, but it will be manually checked by staff first. To give you the correct roles, please tell us in this channel:\n" +
 				"\n" +
-				Constants.IGSQ1 + " What country are you from?\n" +
+				Emoji.IGSQ1 + " What country are you from?\n" +
 				"\n" +
-				Constants.IGSQ2 + " What game(s) did you join for?\n" +
+				Emoji.IGSQ2 + " What game(s) did you join for?\n" +
 				"\n" +
 				"• By joining our server, you agree to follow our <#767657829401231360>.\n" +
 				"\n" +

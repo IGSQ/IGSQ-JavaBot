@@ -4,6 +4,7 @@ import java.util.List;
 import net.dv8tion.jda.api.entities.Icon;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.FileUtils;
 import org.igsq.igsqbot.util.StringUtils;
@@ -13,8 +14,8 @@ public class StealCommand extends Command
 	public StealCommand()
 	{
 		super("Steal", "Steals the specified image URL and adds it as an emoji.", "[name{A-Z + _}] [imageURL]");
+		addFlags(CommandFlag.GUILD_ONLY);
 		addAliases("steal");
-		guildOnly();
 	}
 
 	@Override

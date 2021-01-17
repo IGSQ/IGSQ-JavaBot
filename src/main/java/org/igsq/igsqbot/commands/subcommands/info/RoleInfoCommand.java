@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.info.RoleInfo;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
@@ -27,7 +28,7 @@ public class RoleInfoCommand extends Command
 		{
 			new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), ctx).parseAsRole(role ->
 			{
-				org.igsq.igsqbot.entities.info.RoleInfo roleInfo = new org.igsq.igsqbot.entities.info.RoleInfo(role);
+				RoleInfo roleInfo = new RoleInfo(role);
 
 				roleInfo.getMembers().onSuccess(members ->
 				{
@@ -39,18 +40,11 @@ public class RoleInfoCommand extends Command
 						members = members.subList(0, 5);
 					}
 
-					text.append(roleInfo.getAsMention())
-							.append(" | ")
-							.append(size)
-							.append(" members")
-							.append("\n")
-							.append("**Members:**")
-							.append("\n");
-
 					members.forEach(member -> text.append(member.getAsMention()).append(" "));
 
 					ctx.getChannel().sendMessage(new EmbedBuilder()
-							.setDescription(text.toString())
+							.setTitle("Information for role **" + role.getName() + "** (" + size + " Members)")
+							.addField("Random members", text.toString(), false)
 							.setColor(Constants.IGSQ_PURPLE)
 							.build()).queue();
 				});

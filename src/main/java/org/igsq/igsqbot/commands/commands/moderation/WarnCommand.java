@@ -9,6 +9,7 @@ import org.igsq.igsqbot.commands.subcommands.warning.WarningRemoveCommand;
 import org.igsq.igsqbot.commands.subcommands.warning.WarningShowCommand;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -24,7 +25,7 @@ public class WarnCommand extends Command
 		addChildren(
 				new WarningShowCommand(this),
 				new WarningRemoveCommand(this));
-		autoDelete();
+		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands.commands.developer;
 import java.util.List;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 public class ModuleCommand extends Command
@@ -10,12 +11,12 @@ public class ModuleCommand extends Command
 	public ModuleCommand()
 	{
 		super("Module", "Disables / Enables the specified module.", "[enable|disable] [module]");
+		addFlags(CommandFlag.DEVELOPER_ONLY);
 		addAliases("module", "command");
 		addChildren(
 				new ModuleEnableCommand(this),
 				new ModuleDisableCommand(this)
 		);
-		developerOnly();
 	}
 
 	@Override

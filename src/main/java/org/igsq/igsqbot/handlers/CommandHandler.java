@@ -17,6 +17,7 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -24,8 +25,8 @@ public class CommandHandler
 {
 	public static final String COMMAND_PACKAGE = "org.igsq.igsqbot.commands.commands";
 
-	private final Map<String, Command> commandMap;
 	private final ClassGraph classGraph = new ClassGraph().acceptPackages(COMMAND_PACKAGE);
+	private final Map<String, Command> commandMap;
 	private final IGSQBot igsqBot;
 
 	public CommandHandler(IGSQBot igsqBot)
@@ -153,7 +154,7 @@ public class CommandHandler
 				args.remove(0);
 			}
 
-			if(cmd.isAutoDelete() && guild != null && guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
+			if(cmd.hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && guild != null && guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 			{
 				event.getMessage().delete().queue();
 			}

@@ -3,14 +3,15 @@ package org.igsq.igsqbot.commands.commands.developer;
 import java.util.List;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 
 public class ShutdownCommand extends Command
 {
 	public ShutdownCommand()
 	{
 		super("Shutdown", "Shuts the bot down gracefully", "[none]");
+		addFlags(CommandFlag.DEVELOPER_ONLY);
 		addAliases("shutdown");
-		developerOnly();
 	}
 
 	@Override

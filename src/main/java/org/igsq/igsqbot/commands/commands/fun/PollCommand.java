@@ -1,7 +1,6 @@
 package org.igsq.igsqbot.commands.commands.fun;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -9,8 +8,9 @@ import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.util.CommandUtils;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.Parser;
 
 public class PollCommand extends Command
 {
@@ -28,19 +28,25 @@ public class PollCommand extends Command
 		User author = ctx.getAuthor();
 		List<String> reactions = new ArrayList<>();
 
-		if(args.size() != 1 || CommandUtils.isArgsEmbedCompatible(args))
+		if(args.size() != 1)
 		{
 			EmbedUtils.sendSyntaxError(ctx);
 			return;
 		}
-		List<String> slashArgs = new ArrayList<>(Arrays.asList(args.get(0).split("/")));
-		if(slashArgs.size() >= 3 && !CommandUtils.isArgsEmbedCompatible(args))
+		List<String> slashArgs = new Parser(args.get(0), ctx).parseAsSlashArgs();
+		if(slashArgs.size() < 3)
+		{
+			EmbedUtils.sendSyntaxError(ctx);
+		}
+		else
 		{
 			String topic = slashArgs.get(0);
+
+			List<Emoji> emojis = Emoji.getPoll();
 			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
 			{
-				options.append(slashArgs.get(i)).append(" ").append(CommandUtils.POLL_EMOJIS.get(i - 1)).append("\n\n");
-				reactions.add(CommandUtils.POLL_EMOJIS_UNICODE.get(i - 1));
+				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsTag()).append("\n\n");
+				reactions.add(emojis.get(i - 1).getUnicode());
 			}
 
 			channel.sendMessage(new EmbedBuilder()
@@ -50,10 +56,7 @@ public class PollCommand extends Command
 					.setThumbnail(author.getEffectiveAvatarUrl())
 					.setColor(Constants.IGSQ_PURPLE)
 					.build()).queue(message -> reactions.forEach(reaction -> message.addReaction(reaction).queue()));
-		}
-		else
-		{
-			EmbedUtils.sendSyntaxError(ctx);
+
 		}
 	}
 }

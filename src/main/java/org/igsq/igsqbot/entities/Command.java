@@ -14,11 +14,9 @@ public abstract class Command
 	private final List<Command> children;
 	private final List<String> aliases;
 	private final List<Permission> requiredPermissions;
-	private boolean autoDelete;
-	private boolean isGuildOnly;
 	private boolean isDisabled;
-	private boolean isDeveloperOnly;
 	private long cooldown;
+	private List<CommandFlag> flags;
 
 	protected Command(Command parent, String name, String description, String syntax)
 	{
@@ -28,12 +26,10 @@ public abstract class Command
 		this.syntax = syntax;
 		this.children = new ArrayList<>();
 		this.aliases = new ArrayList<>();
-		this.isGuildOnly = false;
 		this.isDisabled = false;
 		this.requiredPermissions = new ArrayList<>();
-		this.isDeveloperOnly = false;
-		this.autoDelete = false;
 		this.cooldown = 0;
+		this.flags = new ArrayList<>();
 	}
 
 	protected Command(String name, String description, String syntax)
@@ -44,12 +40,10 @@ public abstract class Command
 		this.syntax = syntax;
 		this.children = new ArrayList<>();
 		this.aliases = new ArrayList<>();
-		this.isGuildOnly = false;
 		this.isDisabled = false;
 		this.requiredPermissions = new ArrayList<>();
-		this.isDeveloperOnly = false;
-		this.autoDelete = false;
 		this.cooldown = 0;
+		this.flags = new ArrayList<>();
 	}
 
 	public void process(List<String> args, CommandContext ctx)
@@ -58,7 +52,7 @@ public abstract class Command
 		{
 			EmbedUtils.sendDisabledError(ctx);
 		}
-		else if(isGuildOnly() && !ctx.isFromGuild())
+		else if(hasFlag(CommandFlag.GUILD_ONLY) && !ctx.isFromGuild())
 		{
 			ctx.replyError("This command must be executed in a server.");
 		}
@@ -66,7 +60,7 @@ public abstract class Command
 		{
 			EmbedUtils.sendPermissionError(ctx);
 		}
-		else if(isDeveloperOnly() && !ctx.isDeveloper())
+		else if(hasFlag(CommandFlag.DEVELOPER_ONLY) && !ctx.isDeveloper())
 		{
 			ctx.replyError("This command is for developers only.");
 		}
@@ -128,26 +122,6 @@ public abstract class Command
 		return aliases;
 	}
 
-	public boolean isGuildOnly()
-	{
-		return isGuildOnly;
-	}
-
-	public void guildOnly()
-	{
-		this.isGuildOnly = true;
-	}
-
-	public boolean isDeveloperOnly()
-	{
-		return isDeveloperOnly;
-	}
-
-	public void developerOnly()
-	{
-		this.isDeveloperOnly = true;
-	}
-
 	public void addChildren(Command... children)
 	{
 		this.children.addAll(List.of(children));
@@ -163,18 +137,18 @@ public abstract class Command
 		return requiredPermissions;
 	}
 
-	public boolean isAutoDelete()
-	{
-		return autoDelete;
-	}
-
-	public void autoDelete()
-	{
-		autoDelete = true;
-	}
-
 	public void addPermissions(Permission... permissions)
 	{
 		this.requiredPermissions.addAll(List.of(permissions));
+	}
+
+	public void addFlags(CommandFlag... flags)
+	{
+		this.flags.addAll(List.of(flags));
+	}
+
+	public boolean hasFlag(CommandFlag flag)
+	{
+		return this.flags.contains(flag) || flag.getDefaultValue();
 	}
 }

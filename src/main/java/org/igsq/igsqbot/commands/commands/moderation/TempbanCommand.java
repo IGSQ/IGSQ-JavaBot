@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Tempban;
 import org.igsq.igsqbot.handlers.ErrorHandler;
@@ -19,9 +20,8 @@ public class TempbanCommand extends Command
 	{
 		super("Tempban", "Temporarily bans a user.", "[user][duration]");
 		addAliases("tempban", "mute");
-		guildOnly();
 		addPermissions(Permission.KICK_MEMBERS);
-		autoDelete();
+		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
 	}
 
 	@Override

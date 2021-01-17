@@ -3,6 +3,7 @@ package org.igsq.igsqbot.util;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -38,16 +39,13 @@ public class Parser
 		return Arrays.stream(arg.split("/")).collect(Collectors.toList());
 	}
 
-	public Guild parseAsGuild()
+	public Optional<Guild> parseAsGuild()
 	{
-		for(Guild guild : ctx.getIGSQBot().getShardManager().getGuilds())
+		if(arg.equalsIgnoreCase("this") || arg.equalsIgnoreCase("here"))
 		{
-			if(guild.getId().equalsIgnoreCase(arg))
-			{
-				return guild;
-			}
+			return Optional.of(ctx.getGuild());
 		}
-		return null;
+		return ctx.getIGSQBot().getShardManager().getGuilds().stream().filter(guild -> guild.getId().equals(arg)).findFirst();
 	}
 
 	public LocalDateTime parseAsDuration()
@@ -204,7 +202,6 @@ public class Parser
 			else
 			{
 				consumer.accept(rolesChannelsList.get(0));
-				return;
 			}
 		}
 	}

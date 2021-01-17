@@ -35,6 +35,11 @@ public class MemberInfo
 		return member.getUser().getEffectiveAvatarUrl();
 	}
 
+	public String getAsTag()
+	{
+		return member.getUser().getAsTag();
+	}
+
 	public List<Role> getCondensedRoles()
 	{
 		int size = member.getRoles().size();

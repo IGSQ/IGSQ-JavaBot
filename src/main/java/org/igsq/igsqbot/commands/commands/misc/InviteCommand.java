@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 public class InviteCommand extends Command
@@ -13,8 +14,8 @@ public class InviteCommand extends Command
 	public InviteCommand()
 	{
 		super("Invite", "Shows the best invite for the server.", "[none]");
+		addFlags(CommandFlag.GUILD_ONLY);
 		addAliases("invite");
-		guildOnly();
 	}
 
 	@Override

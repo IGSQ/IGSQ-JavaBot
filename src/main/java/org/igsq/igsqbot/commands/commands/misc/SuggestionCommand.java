@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Command;
 import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -17,8 +18,8 @@ public class SuggestionCommand extends Command
 	public SuggestionCommand()
 	{
 		super("Suggestion", "Suggests an idea in the designated suggestion channel.", "[topic]");
+		addFlags(CommandFlag.GUILD_ONLY);
 		addAliases("suggest", "suggestion", "idea");
-		guildOnly();
 	}
 
 	@Override
