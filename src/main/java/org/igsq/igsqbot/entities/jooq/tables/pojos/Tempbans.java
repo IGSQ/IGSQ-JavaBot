@@ -17,27 +17,27 @@ public class Tempbans implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Long          id;
-    private final Long          userid;
-    private final Long          guildid;
-    private final LocalDateTime muteduntil;
+    private final Long          userId;
+    private final Long          guildId;
+    private final LocalDateTime mutedUntil;
 
     public Tempbans(Tempbans value) {
         this.id = value.id;
-        this.userid = value.userid;
-        this.guildid = value.guildid;
-        this.muteduntil = value.muteduntil;
+        this.userId = value.userId;
+        this.guildId = value.guildId;
+        this.mutedUntil = value.mutedUntil;
     }
 
     public Tempbans(
         Long          id,
-        Long          userid,
-        Long          guildid,
-        LocalDateTime muteduntil
+        Long          userId,
+        Long          guildId,
+        LocalDateTime mutedUntil
     ) {
         this.id = id;
-        this.userid = userid;
-        this.guildid = guildid;
-        this.muteduntil = muteduntil;
+        this.userId = userId;
+        this.guildId = guildId;
+        this.mutedUntil = mutedUntil;
     }
 
     /**
@@ -48,24 +48,24 @@ public class Tempbans implements Serializable {
     }
 
     /**
-     * Getter for <code>public.tempbans.userid</code>.
+     * Getter for <code>public.tempbans.user_id</code>.
      */
-    public Long getUserid() {
-        return this.userid;
+    public Long getUserId() {
+        return this.userId;
     }
 
     /**
-     * Getter for <code>public.tempbans.guildid</code>.
+     * Getter for <code>public.tempbans.guild_id</code>.
      */
-    public Long getGuildid() {
-        return this.guildid;
+    public Long getGuildId() {
+        return this.guildId;
     }
 
     /**
-     * Getter for <code>public.tempbans.muteduntil</code>.
+     * Getter for <code>public.tempbans.muted_until</code>.
      */
-    public LocalDateTime getMuteduntil() {
-        return this.muteduntil;
+    public LocalDateTime getMutedUntil() {
+        return this.mutedUntil;
     }
 
     @Override
@@ -73,9 +73,9 @@ public class Tempbans implements Serializable {
         StringBuilder sb = new StringBuilder("Tempbans (");
 
         sb.append(id);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(muteduntil);
+        sb.append(", ").append(userId);
+        sb.append(", ").append(guildId);
+        sb.append(", ").append(mutedUntil);
 
         sb.append(")");
         return sb.toString();

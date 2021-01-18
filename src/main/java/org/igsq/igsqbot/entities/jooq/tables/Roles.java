@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.igsq.igsqbot.entities.jooq.Keys;
 import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.RolesRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -21,6 +20,9 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
+import org.jooq.generated.Keys;
+import org.jooq.generated.Public;
+import org.jooq.generated.tables.records.RolesRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;

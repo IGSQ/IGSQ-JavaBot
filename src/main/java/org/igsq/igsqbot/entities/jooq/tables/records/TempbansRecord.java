@@ -6,11 +6,12 @@ package org.igsq.igsqbot.entities.jooq.tables.records;
 
 import java.time.LocalDateTime;
 
+import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
 import org.jooq.Row4;
-import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
+import org.jooq.generated.tables.Tempbans;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
@@ -38,47 +39,47 @@ public class TempbansRecord extends UpdatableRecordImpl<TempbansRecord> implemen
     }
 
     /**
-     * Setter for <code>public.tempbans.userid</code>.
+     * Setter for <code>public.tempbans.user_id</code>.
      */
-    public TempbansRecord setUserid(Long value) {
+    public TempbansRecord setUserId(Long value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.tempbans.userid</code>.
+     * Getter for <code>public.tempbans.user_id</code>.
      */
-    public Long getUserid() {
+    public Long getUserId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>public.tempbans.guildid</code>.
+     * Setter for <code>public.tempbans.guild_id</code>.
      */
-    public TempbansRecord setGuildid(Long value) {
+    public TempbansRecord setGuildId(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.tempbans.guildid</code>.
+     * Getter for <code>public.tempbans.guild_id</code>.
      */
-    public Long getGuildid() {
+    public Long getGuildId() {
         return (Long) get(2);
     }
 
     /**
-     * Setter for <code>public.tempbans.muteduntil</code>.
+     * Setter for <code>public.tempbans.muted_until</code>.
      */
-    public TempbansRecord setMuteduntil(LocalDateTime value) {
+    public TempbansRecord setMutedUntil(LocalDateTime value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.tempbans.muteduntil</code>.
+     * Getter for <code>public.tempbans.muted_until</code>.
      */
-    public LocalDateTime getMuteduntil() {
+    public LocalDateTime getMutedUntil() {
         return (LocalDateTime) get(3);
     }
 
@@ -112,17 +113,17 @@ public class TempbansRecord extends UpdatableRecordImpl<TempbansRecord> implemen
 
     @Override
     public Field<Long> field2() {
-        return Tempbans.TEMPBANS.USERID;
+        return Tempbans.TEMPBANS.USER_ID;
     }
 
     @Override
     public Field<Long> field3() {
-        return Tempbans.TEMPBANS.GUILDID;
+        return Tempbans.TEMPBANS.GUILD_ID;
     }
 
     @Override
     public Field<LocalDateTime> field4() {
-        return Tempbans.TEMPBANS.MUTEDUNTIL;
+        return Tempbans.TEMPBANS.MUTED_UNTIL;
     }
 
     @Override
@@ -132,17 +133,17 @@ public class TempbansRecord extends UpdatableRecordImpl<TempbansRecord> implemen
 
     @Override
     public Long component2() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
     public Long component3() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public LocalDateTime component4() {
-        return getMuteduntil();
+        return getMutedUntil();
     }
 
     @Override
@@ -152,17 +153,17 @@ public class TempbansRecord extends UpdatableRecordImpl<TempbansRecord> implemen
 
     @Override
     public Long value2() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
     public Long value3() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public LocalDateTime value4() {
-        return getMuteduntil();
+        return getMutedUntil();
     }
 
     @Override
@@ -173,19 +174,19 @@ public class TempbansRecord extends UpdatableRecordImpl<TempbansRecord> implemen
 
     @Override
     public TempbansRecord value2(Long value) {
-        setUserid(value);
+        setUserId(value);
         return this;
     }
 
     @Override
     public TempbansRecord value3(Long value) {
-        setGuildid(value);
+        setGuildId(value);
         return this;
     }
 
     @Override
     public TempbansRecord value4(LocalDateTime value) {
-        setMuteduntil(value);
+        setMutedUntil(value);
         return this;
     }
 
@@ -212,12 +213,12 @@ public class TempbansRecord extends UpdatableRecordImpl<TempbansRecord> implemen
     /**
      * Create a detached, initialised TempbansRecord
      */
-    public TempbansRecord(Long id, Long userid, Long guildid, LocalDateTime muteduntil) {
+    public TempbansRecord(Long id, Long userId, Long guildId, LocalDateTime mutedUntil) {
         super(Tempbans.TEMPBANS);
 
         setId(id);
-        setUserid(userid);
-        setGuildid(guildid);
-        setMuteduntil(muteduntil);
+        setUserId(userId);
+        setGuildId(guildId);
+        setMutedUntil(mutedUntil);
     }
 }

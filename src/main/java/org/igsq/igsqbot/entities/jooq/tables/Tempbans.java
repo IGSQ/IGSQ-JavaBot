@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.igsq.igsqbot.entities.jooq.Keys;
 import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.TempbansRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -22,6 +21,9 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
+import org.jooq.generated.Keys;
+import org.jooq.generated.Public;
+import org.jooq.generated.tables.records.TempbansRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -54,19 +56,19 @@ public class Tempbans extends TableImpl<TempbansRecord> {
     public final TableField<TempbansRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.tempbans.userid</code>.
+     * The column <code>public.tempbans.user_id</code>.
      */
-    public final TableField<TempbansRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<TempbansRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.tempbans.guildid</code>.
+     * The column <code>public.tempbans.guild_id</code>.
      */
-    public final TableField<TempbansRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<TempbansRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.tempbans.muteduntil</code>.
+     * The column <code>public.tempbans.muted_until</code>.
      */
-    public final TableField<TempbansRecord, LocalDateTime> MUTEDUNTIL = createField(DSL.name("muteduntil"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
+    public final TableField<TempbansRecord, LocalDateTime> MUTED_UNTIL = createField(DSL.name("muted_until"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     private Tempbans(Name alias, Table<TempbansRecord> aliased) {
         this(alias, aliased, null);
@@ -118,7 +120,16 @@ public class Tempbans extends TableImpl<TempbansRecord> {
 
     @Override
     public List<UniqueKey<TempbansRecord>> getKeys() {
-        return Arrays.<UniqueKey<TempbansRecord>>asList(Keys.TEMPBANS_PKEY, Keys.TEMPBANS_USERID_KEY, Keys.TEMPBANS_GUILDID_KEY);
+        return Arrays.<UniqueKey<TempbansRecord>>asList(Keys.TEMPBANS_PKEY, Keys.TEMPBANS_USER_ID_KEY, Keys.TEMPBANS_GUILD_ID_KEY);
+    }
+
+    @Override
+    public List<ForeignKey<TempbansRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<TempbansRecord, ?>>asList(Keys.TEMPBANS__TEMPBANS_GUILD_ID_FKEY);
+    }
+
+    public Guilds guilds() {
+        return new Guilds(this, Keys.TEMPBANS__TEMPBANS_GUILD_ID_FKEY);
     }
 
     @Override

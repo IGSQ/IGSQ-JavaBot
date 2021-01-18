@@ -4,16 +4,16 @@
 package org.igsq.igsqbot.entities.jooq;
 
 
-import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.igsq.igsqbot.entities.jooq.tables.Levels;
-import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
-import org.igsq.igsqbot.entities.jooq.tables.Reminders;
-import org.igsq.igsqbot.entities.jooq.tables.Reports;
-import org.igsq.igsqbot.entities.jooq.tables.Roles;
-import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
-import org.igsq.igsqbot.entities.jooq.tables.Votes;
-import org.igsq.igsqbot.entities.jooq.tables.Warnings;
+import org.jooq.generated.tables.Blacklists;
+import org.jooq.generated.tables.Guilds;
+import org.jooq.generated.tables.Levels;
+import org.jooq.generated.tables.ReactionRoles;
+import org.jooq.generated.tables.Reminders;
+import org.jooq.generated.tables.Reports;
+import org.jooq.generated.tables.Roles;
+import org.jooq.generated.tables.Tempbans;
+import org.jooq.generated.tables.Votes;
+import org.jooq.generated.tables.Warnings;
 
 
 /**

@@ -4,11 +4,12 @@
 package org.igsq.igsqbot.entities.jooq.tables.records;
 
 
+import org.igsq.igsqbot.entities.jooq.tables.Roles;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
 import org.jooq.Row4;
-import org.igsq.igsqbot.entities.jooq.tables.Roles;
+import org.jooq.generated.tables.Roles;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
