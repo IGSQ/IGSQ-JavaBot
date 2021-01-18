@@ -121,15 +121,6 @@ public class Reminders extends TableImpl<RemindersRecord> {
     }
 
     @Override
-    public List<ForeignKey<RemindersRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<RemindersRecord, ?>>asList(Keys.REMINDERS__REMINDERS_GUILD_ID_FKEY);
-    }
-
-    public Guilds guilds() {
-        return new Guilds(this, Keys.REMINDERS__REMINDERS_GUILD_ID_FKEY);
-    }
-
-    @Override
     public Reminders as(String alias) {
         return new Reminders(DSL.name(alias), this);
     }

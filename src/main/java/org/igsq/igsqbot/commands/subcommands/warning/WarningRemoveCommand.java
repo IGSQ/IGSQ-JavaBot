@@ -18,7 +18,7 @@ public class WarningRemoveCommand extends Command
 {
 	public WarningRemoveCommand(Command parent)
 	{
-		super(parent, "remove", "Removes a warning", "[user][id]");
+		super(parent, "remove", "Removes a warning.", "[user][warningID]");
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
 	}
 

@@ -4,7 +4,9 @@
 package org.igsq.igsqbot.entities.jooq;
 
 
+import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.Levels;
 import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.igsq.igsqbot.entities.jooq.tables.Reports;
@@ -21,9 +23,19 @@ import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 public class Tables {
 
     /**
+     * The table <code>public.blacklists</code>.
+     */
+    public static final Blacklists BLACKLISTS = Blacklists.BLACKLISTS;
+
+    /**
      * The table <code>public.guilds</code>.
      */
     public static final Guilds GUILDS = Guilds.GUILDS;
+
+    /**
+     * The table <code>public.levels</code>.
+     */
+    public static final Levels LEVELS = Levels.LEVELS;
 
     /**
      * The table <code>public.reaction_roles</code>.

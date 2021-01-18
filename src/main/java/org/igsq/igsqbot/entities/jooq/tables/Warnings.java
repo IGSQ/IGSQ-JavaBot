@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.WarningsRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -20,8 +22,6 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
-import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -124,15 +124,6 @@ public class Warnings extends TableImpl<WarningsRecord> {
     @Override
     public List<UniqueKey<WarningsRecord>> getKeys() {
         return Arrays.<UniqueKey<WarningsRecord>>asList(Keys.WARNINGS_PKEY);
-    }
-
-    @Override
-    public List<ForeignKey<WarningsRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<WarningsRecord, ?>>asList(Keys.WARNINGS__WARNINGS_GUILD_ID_FKEY);
-    }
-
-    public Guilds guilds() {
-        return new Guilds(this, Keys.WARNINGS__WARNINGS_GUILD_ID_FKEY);
     }
 
     @Override

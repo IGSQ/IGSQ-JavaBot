@@ -8,18 +8,15 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
-import org.igsq.igsqbot.entities.command.CommandFlag;
-import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -158,10 +155,6 @@ public class CommandHandler
 				args.remove(0);
 			}
 			CommandContext ctx = new CommandContext(event, igsqBot, cmd, args);
-			if(cmd.hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && guild != null && guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
-			{
-				event.getMessage().delete().queue();
-			}
 
 			if(args.isEmpty())
 			{

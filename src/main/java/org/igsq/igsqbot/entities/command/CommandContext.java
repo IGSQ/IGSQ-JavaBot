@@ -52,6 +52,11 @@ public class CommandContext
 		}
 	}
 
+	public Member getSelfMember()
+	{
+		return getGuild().getSelfMember();
+	}
+
 	public void addErrorReaction()
 	{
 		getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(

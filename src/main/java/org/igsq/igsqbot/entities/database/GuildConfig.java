@@ -48,6 +48,16 @@ public class GuildConfig
 		}
 	}
 
+	public long getPromoRole()
+	{
+		return getValue(GUILDS.SELF_PROMO_ROLE);
+	}
+
+	public long getLevelUpBot()
+	{
+		return getValue(GUILDS.LEVEL_UP_BOT);
+	}
+
 	public void setPrefix(String prefix)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
@@ -85,6 +95,11 @@ public class GuildConfig
 	public long getSuggestionChannel()
 	{
 		return getValue(GUILDS.SUGGESTION_CHANNEL);
+	}
+
+	public long getPromoChannel()
+	{
+		return getValue(GUILDS.SELF_PROMO_CHANNEL);
 	}
 
 	private long getValue(Field<?> value)

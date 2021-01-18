@@ -13,7 +13,7 @@ public class LinkRemoveCommand extends Command
 {
 	public LinkRemoveCommand(Command parent)
 	{
-		super(parent, "remove", "Removes Minecraft links", "[mcUsername]");
+		super(parent, "remove", "Removes Minecraft links.", "[mcUsername]");
 	}
 
 	@Override

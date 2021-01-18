@@ -1,12 +1,18 @@
 package org.igsq.igsqbot.events.main;
 
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.cache.CachedMessage;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.entities.database.Vote;
+import org.igsq.igsqbot.util.BlacklistUtils;
+import org.igsq.igsqbot.util.CommandUtils;
+import org.igsq.igsqbot.util.DatabaseUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 public class MessageEventsMain extends ListenerAdapter
@@ -21,59 +27,107 @@ public class MessageEventsMain extends ListenerAdapter
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event)
 	{
-		if(event.getChannelType().equals(ChannelType.TEXT) && !event.getAuthor().isBot())
+		MessageChannel channel = event.getChannel();
+		if(event.getChannelType().equals(ChannelType.TEXT))
 		{
-			MessageCache.getCache(event.getGuild()).set(new CachedMessage(event.getMessage()));
-		}
-		else if(event.getChannelType().equals(ChannelType.PRIVATE) && !event.getAuthor().isBot())
-		{
-			if(event.getMessage().getReferencedMessage() != null)
+			Guild guild = event.getGuild();
+			if(!event.getAuthor().isBot())
 			{
-				String content = event.getMessage().getContentRaw();
+				MessageCache.getCache(guild).set(new CachedMessage(event.getMessage()));
+			}
 
-				if(content.startsWith("vote"))
+			if(BlacklistUtils.isAdvertising(event, igsqBot))
+			{
+				EmbedUtils.sendError(channel, "You cannot advertise here.");
+				return;
+			}
+
+			if(!event.isWebhookMessage())
+			{
+				if(CommandUtils.getLevelUp(event, igsqBot) != -1)
 				{
-					String[] opts = content.split(" ");
+					Role newRole = DatabaseUtils.getRoleForLevel(guild, CommandUtils.getLevelUp(event, igsqBot), igsqBot);
 
-					if(opts.length < 2)
+					if(newRole != null)
 					{
-						EmbedUtils.sendError(event.getChannel(), "You need to enter an option to vote for.");
-						return;
+						guild.addRoleToMember(event.getMember(), newRole).queue();
 					}
-					try
-					{
-						long messageId = event.getMessage().getReferencedMessage().getIdLong();
-						int option = Integer.parseInt(opts[1]);
-						int maxOptions = Vote.getMaxVoteById(messageId, igsqBot);
-
-						if(maxOptions == -1)
-						{
-							EmbedUtils.sendError(event.getChannel(), "That vote is closed.");
-							return;
-						}
-						if(option > maxOptions)
-						{
-							EmbedUtils.sendError(event.getChannel(), "Invalid option entered.");
-							return;
-						}
-						if(Vote.castById(messageId, option, igsqBot))
-						{
-							EmbedUtils.sendSuccess(event.getChannel(), "Vote cast!");
-						}
-						else
-						{
-							EmbedUtils.sendError(event.getChannel(), "Could not cast your vote, maybe you have already cast a vote.");
-						}
-					}
-					catch(Exception exception)
-					{
-						EmbedUtils.sendError(event.getChannel(), "Invalid option entered.");
-					}
-
+					return;
 				}
 			}
 		}
+
+		if(handleVote(event))
+		{
+			return;
+		}
+
 		igsqBot.getCommandHandler().handle(event);
+	}
+
+	private boolean handleVote(MessageReceivedEvent event)
+	{
+		if(!event.getChannelType().equals(ChannelType.PRIVATE) && !event.getAuthor().isBot())
+		{
+			return false;
+		}
+		if(event.getMessage().getReferencedMessage() == null)
+		{
+			return false;
+		}
+
+		String content = event.getMessage().getContentRaw();
+		long messageId = event.getMessage().getReferencedMessage().getIdLong();
+		boolean isRunning = Vote.isVoteRunning(messageId, igsqBot);
+
+		if(isRunning)
+		{
+			String[] opts = content.split(" ");
+
+			if(opts.length < 1)
+			{
+				EmbedUtils.sendError(event.getChannel(), "You need to enter an option to vote for.");
+				return true;
+			}
+
+			try
+			{
+				int maxOptions = Vote.getMaxVoteById(messageId, igsqBot);
+				int option;
+
+				if(opts[0].startsWith("abstain"))
+				{
+					option = -2;
+				}
+				else
+				{
+					option = Integer.parseInt(opts[0]);
+					if(option < 0)
+					{
+						EmbedUtils.sendError(event.getChannel(), "Invalid option entered.");
+						return true;
+					}
+					if(option > maxOptions)
+					{
+						EmbedUtils.sendError(event.getChannel(), "Invalid option entered.");
+						return true;
+					}
+				}
+
+				if(Vote.castById(event.getAuthor().getIdLong(), messageId, option, igsqBot))
+				{
+					EmbedUtils.sendSuccess(event.getChannel(), "Vote cast!");
+					return true;
+				}
+			}
+			catch(Exception exception)
+			{
+				EmbedUtils.sendError(event.getChannel(), "Invalid option entered.");
+				return true;
+			}
+		}
+
+		return true;
 	}
 }
 

@@ -17,13 +17,6 @@ public class Warning
 	private final long guildId;
 	private final IGSQBot igsqBot;
 
-	public Warning(long guildId, long userId, IGSQBot igsqBot)
-	{
-		this.guildId = guildId;
-		this.userId = userId;
-		this.igsqBot = igsqBot;
-	}
-
 	public Warning(Guild guild, User user, IGSQBot igsqBot)
 	{
 		this.guildId = guild.getIdLong();
@@ -58,7 +51,7 @@ public class Warning
 		}
 	}
 
-	public List<org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings> get()
+	public List<Warnings> get()
 	{
 		List<org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings> result = new ArrayList<>();
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
@@ -80,7 +73,7 @@ public class Warning
 		return result;
 	}
 
-	public org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings getById(long warnId)
+	public Warnings getById(long warnId)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{

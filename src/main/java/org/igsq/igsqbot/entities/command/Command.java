@@ -3,10 +3,12 @@ package org.igsq.igsqbot.entities.command;
 import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.ConfigurationException;
 import org.igsq.igsqbot.entities.exception.IllegalLengthException;
 import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 public abstract class Command
@@ -58,9 +60,21 @@ public abstract class Command
 		{
 			EmbedUtils.sendDisabledError(ctx);
 		}
+		else if(ctx.isFromGuild() && BlacklistUtils.isBlacklistedPhrase(ctx.getEvent(), ctx.getIGSQBot()) && !hasFlag(CommandFlag.BLACKLIST_BYPASS))
+		{
+			ctx.replyError("Your message contained a blacklisted message.");
+			if(ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
+			{
+				ctx.getMessage().delete().queue();
+			}
+		}
 		else if(hasFlag(CommandFlag.GUILD_ONLY) && !ctx.isFromGuild())
 		{
 			ctx.replyError("This command must be executed in a server.");
+		}
+		if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
+		{
+			ctx.getMessage().delete().queue();
 		}
 		else if(!getMemberRequiredPermissions().isEmpty() && !ctx.memberPermissionCheck(getMemberRequiredPermissions()))
 		{

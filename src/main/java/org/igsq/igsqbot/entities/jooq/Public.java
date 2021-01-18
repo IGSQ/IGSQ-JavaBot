@@ -7,17 +7,19 @@ package org.igsq.igsqbot.entities.jooq;
 import java.util.Arrays;
 import java.util.List;
 
+import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.Levels;
+import org.jooq.Catalog;
+import org.jooq.Sequence;
+import org.jooq.Table;
+import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
+import org.igsq.igsqbot.entities.jooq.tables.Reminders;
+import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.igsq.igsqbot.entities.jooq.tables.Roles;
 import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
 import org.igsq.igsqbot.entities.jooq.tables.Votes;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
-import org.jooq.Catalog;
-import org.jooq.Sequence;
-import org.jooq.Table;
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
-import org.igsq.igsqbot.entities.jooq.tables.Reminders;
-import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.jooq.impl.SchemaImpl;
 
 
@@ -35,9 +37,19 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
+     * The table <code>public.blacklists</code>.
+     */
+    public final Blacklists BLACKLISTS = Blacklists.BLACKLISTS;
+
+    /**
      * The table <code>public.guilds</code>.
      */
     public final Guilds GUILDS = Guilds.GUILDS;
+
+    /**
+     * The table <code>public.levels</code>.
+     */
+    public final Levels LEVELS = Levels.LEVELS;
 
     /**
      * The table <code>public.reaction_roles</code>.
@@ -90,6 +102,8 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Sequence<?>> getSequences() {
         return Arrays.<Sequence<?>>asList(
+            Sequences.BLACKLISTS_ID_SEQ,
+            Sequences.LEVELS_ID_SEQ,
             Sequences.REACTION_ROLES_ID_SEQ,
             Sequences.REMINDERS_ID_SEQ,
             Sequences.REPORTS_ID_SEQ,
@@ -102,7 +116,9 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
+            Blacklists.BLACKLISTS,
             Guilds.GUILDS,
+            Levels.LEVELS,
             ReactionRoles.REACTION_ROLES,
             Reminders.REMINDERS,
             Reports.REPORTS,

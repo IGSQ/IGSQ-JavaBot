@@ -15,7 +15,7 @@ public class LinkShowCommand extends Command
 {
 	public LinkShowCommand(Command parent)
 	{
-		super(parent, "show", "Shows Minecraft links", "[none]");
+		super(parent, "show", "Shows Minecraft links.", "[none]");
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class ReactionRoleRemoveCommand extends Command
 {
 	public ReactionRoleRemoveCommand(Command parent)
 	{
-		super(parent, "remove", "Removes reaction roles", "[messageId][channel][role][emote]");
+		super(parent, "remove", "Removes reaction roles.", "[messageId][channel][role][emote]");
 		addMemberPermissions(Permission.MANAGE_SERVER);
 		addSelfPermissions(Permission.MESSAGE_MANAGE);
 	}

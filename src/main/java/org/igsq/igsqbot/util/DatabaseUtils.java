@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Tempbans;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.igsq.igsqbot.entities.jooq.tables.Guilds.GUILDS;
+import static org.igsq.igsqbot.entities.jooq.tables.Levels.LEVELS;
 
 public class DatabaseUtils
 {
@@ -111,6 +113,31 @@ public class DatabaseUtils
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 		}
 		return result;
+	}
+
+	public static Role getRoleForLevel(Guild guild, int level, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var query = context
+					.selectFrom(Tables.LEVELS)
+					.where(LEVELS.AWARDED_AT.eq(level).and(LEVELS.GUILD_ID.eq(guild.getIdLong())));
+
+			var result = query.fetch();
+
+			if(result.isEmpty())
+			{
+				return null;
+			}
+
+			return guild.getRoleById(result.get(0).getRoleId());
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return null;
+		}
 	}
 
 	public static List<Votes> getExpiredVotes(IGSQBot igsqBot)

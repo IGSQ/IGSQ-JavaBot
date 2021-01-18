@@ -14,7 +14,7 @@ public class MessageCommand extends Command
 {
 	public MessageCommand()
 	{
-		super("Message", "Sends default embed messages", "[name]");
+		super("Message", "Sends default embed messages.", "[name]");
 		addFlags(CommandFlag.DEVELOPER_ONLY);
 		addAliases("message");
 	}

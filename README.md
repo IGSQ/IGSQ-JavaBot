@@ -91,7 +91,8 @@
  - [x] Register and removal of users (removed with guild)
  - [x] ReactionRoles
  - [x] Debug logging
- - [x] Voting (need to move out of DM) :( (needs polished a lot)
+ - [x] Voting (Done!)
+ - [x] Change all database classes to static utils if possible
  
 ### **TeaEyes**
 None!
@@ -100,6 +101,7 @@ None!
  - [ ] Improve user feedback
  - [ ] Add sub commands to help menu.
  - [ ] Check '.' at the end of every command description
+ 
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**
@@ -107,7 +109,6 @@ None!
  - [ ] XP system
  - [ ] Implement slash commands when they release
  - [ ] Restarting of the bot
- - [ ] Consider switch usage (replace with elif)
 
 ## Known Issues
 **Known bugs or issues, these will get patched in the next minor update.**
@@ -140,8 +141,8 @@ pause
 ## Developer Notes
 **Syntax**
 
-[] - REQUIRED
+[] - Required
 
-<> - OPTIONAL
+<> - Optional
 
-{} - MAX AMOUNT
+{} - Quantifier

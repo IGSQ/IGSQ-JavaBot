@@ -14,22 +14,7 @@ import static org.igsq.igsqbot.entities.jooq.tables.Tempbans.TEMPBANS;
 
 public class Tempban
 {
-	private final LocalDateTime mutedUntil;
-	private final IGSQBot igsqBot;
-	private final long memberId;
-	private final Guild guild;
-	private final List<Long> roleIds;
-
-	public Tempban(long memberId, List<Long> roleIds, Guild guild, LocalDateTime mutedUntil, IGSQBot igsqBot)
-	{
-		this.memberId = memberId;
-		this.roleIds = roleIds;
-		this.guild = guild;
-		this.mutedUntil = mutedUntil;
-		this.igsqBot = igsqBot;
-	}
-
-	public static void removeBanById(long userId, IGSQBot igsqBot)
+	public static void remove(long userId, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
@@ -67,7 +52,7 @@ public class Tempban
 		}
 	}
 
-	public boolean add()
+	public static boolean add(long memberId, List<Long> roleIds, Guild guild, LocalDateTime mutedUntil, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
@@ -92,19 +77,5 @@ public class Tempban
 			return false;
 		}
 		return true;
-	}
-
-	public void remove()
-	{
-		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
-		{
-			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
-			ctx.deleteFrom(Tables.TEMPBANS).where(TEMPBANS.USERID.eq(memberId)).execute();
-			ctx.deleteFrom(Tables.ROLES).where(ROLES.USER_ID.eq(memberId)).execute();
-		}
-		catch(Exception exception)
-		{
-			igsqBot.getLogger().error("An SQL error occurred", exception);
-		}
 	}
 }

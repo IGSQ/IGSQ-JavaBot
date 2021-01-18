@@ -126,15 +126,6 @@ public class ReactionRoles extends TableImpl<ReactionRolesRecord> {
     }
 
     @Override
-    public List<ForeignKey<ReactionRolesRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ReactionRolesRecord, ?>>asList(Keys.REACTION_ROLES__REACTION_ROLES_GUILD_ID_FKEY);
-    }
-
-    public Guilds guilds() {
-        return new Guilds(this, Keys.REACTION_ROLES__REACTION_ROLES_GUILD_ID_FKEY);
-    }
-
-    @Override
     public ReactionRoles as(String alias) {
         return new ReactionRoles(DSL.name(alias), this);
     }

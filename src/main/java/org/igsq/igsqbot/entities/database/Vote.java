@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -12,8 +13,10 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.jooq.Tables;
+import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
+import org.jooq.Result;
 
 import static org.igsq.igsqbot.entities.jooq.tables.Votes.VOTES;
 
@@ -49,18 +52,18 @@ public class Vote
 		}
 
 		voteChannel.sendMessage(generateGuildEmbed().build()).queue(
-		message ->
-		{
-			message.editMessage(generateGuildEmbed().setFooter("Vote ID: " + message.getIdLong()).build()).queue();
-			for(Long userId : users)
-			{
-				igsqBot.getShardManager()
-						.retrieveUserById(userId)
-						.flatMap(User::openPrivateChannel)
-						.flatMap(channel -> channel.sendMessage(generateDMEmbed().build()))
-						.queue(dm -> addUserToDatabase(userId, message.getIdLong(), dm.getIdLong()), error -> {});
-			}
-		});
+				message ->
+				{
+					message.editMessage(generateGuildEmbed().setFooter("Vote ID: " + message.getIdLong()).build()).queue();
+					for(Long userId : users)
+					{
+						igsqBot.getShardManager()
+								.retrieveUserById(userId)
+								.flatMap(User::openPrivateChannel)
+								.flatMap(channel -> channel.sendMessage(generateDMEmbed().build()))
+								.queue(dm -> addUserToDatabase(userId, message.getIdLong(), dm.getIdLong()), error -> addUserToDatabase(userId, message.getIdLong(), -1));
+					}
+				});
 	}
 
 	private void addUserToDatabase(long userId, long voteId, long dmId)
@@ -85,7 +88,7 @@ public class Vote
 				.setTitle("You have been called to vote in " + ctx.getGuild().getName())
 				.addField("Expires at", StringUtils.parseDateTime(expiry), false)
 				.setColor(Constants.IGSQ_PURPLE)
-				.setDescription("Reply to this message with `vote [option]` to cast your vote, if you do not respond, you will be considered abstained from this vote."));
+				.setDescription("Subject : **" + subject + "**\n\nReply to this message with 1,2,3.. to cast your vote, or `abstain` to abstain, if you do not respond, you will be considered 'Not voted'."));
 	}
 
 	private EmbedBuilder generateGuildEmbed()
@@ -122,18 +125,6 @@ public class Vote
 	{
 		try(Connection connection = ctx.getIGSQBot().getDatabaseHandler().getConnection())
 		{
-			var context = ctx.getIGSQBot().getDatabaseHandler().getContext(connection);
-			var query = context.selectFrom(Tables.VOTES)
-					.where(VOTES.VOTE_ID.eq(voteId));
-
-			var result = query.fetch();
-			boolean exists = !result.isEmpty();
-
-			if(!exists)
-			{
-				return false;
-			}
-
 			MessageChannel voteChannel = ctx.getGuild().getTextChannelById(new GuildConfig(ctx).getVoteChannel());
 
 			if(voteChannel == null)
@@ -142,41 +133,17 @@ public class Vote
 				return null;
 			}
 
+			var context = ctx.getIGSQBot().getDatabaseHandler().getContext(connection);
+			var query = context.selectFrom(Tables.VOTES).where(VOTES.VOTE_ID.eq(voteId));
+			var result = query.fetch();
 
-			StringBuilder votes = new StringBuilder();
-			for(var row : result)
+			boolean voteExists = !result.isEmpty();
+
+			if(!voteExists)
 			{
-				votes.append(UserUtils.getAsMention(row.getUserId())).append(" -> ").append(parseOption(row.getOption())).append("\n");
+				return false;
 			}
-
-			voteChannel.retrieveMessageById(voteId).queue(message ->
-					{
-						List<MessageEmbed.Field> fields = new ArrayList<>(message.getEmbeds().get(0).getFields());
-						String[] oldUsers = fields.get(0).getValue().split("\n");
-
-						fields.removeIf(field -> !field.getName().startsWith("Option"));
-
-						for(String user : oldUsers)
-						{
-							String mention = user.substring(0, user.indexOf(" "));
-							if(!votes.toString().contains(mention))
-							{
-								votes.append(mention).append(" -> ").append("Abstained").append("\n");
-							}
-						}
-						EmbedBuilder newEmbed = new EmbedBuilder(message.getEmbeds().get(0))
-								.clearFields()
-								.addField("Users", votes.toString(), false)
-								.addField("Expires at:", "**Expired**", false);
-
-						for(MessageEmbed.Field field : fields)
-						{
-							newEmbed.addField(field);
-						}
-						message.editMessage(newEmbed.build()).queue();
-					}
-					, error -> {});
-
+			editVoteMessage(voteId, voteChannel, generateUsers(result));
 			context.deleteFrom(Tables.VOTES).where(VOTES.VOTE_ID.eq(voteId)).execute();
 			return true;
 		}
@@ -187,6 +154,31 @@ public class Vote
 		}
 	}
 
+	private static String generateUsers(Result<VotesRecord> result)
+	{
+		StringBuilder votes = new StringBuilder();
+		for(var row : result)
+		{
+			votes.append(UserUtils.getAsMention(row.getUserId())).append(" -> ");
+
+			if(row.getDirectMessageId() == -1 || row.getOption() == -1)
+			{
+				votes.append(" Never voted ");
+			}
+			else if(row.getOption() == -2)
+			{
+				votes.append(" Abstained ");
+			}
+			else
+			{
+				votes.append(parseOption(row.getOption()));
+			}
+			votes.append("\n");
+		}
+		return votes.toString();
+	}
+
+
 	public static void closeById(long voteId, long guildId, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
@@ -196,9 +188,9 @@ public class Vote
 					.where(VOTES.VOTE_ID.eq(voteId));
 
 			var result = query.fetch();
-			boolean exists = !result.isEmpty();
+			boolean voteExists = !result.isEmpty();
 
-			if(!exists)
+			if(!voteExists)
 			{
 				return;
 			}
@@ -210,40 +202,12 @@ public class Vote
 				return;
 			}
 
-
-			StringBuilder votes = new StringBuilder();
-			for(var row : result)
+			for(var user : result)
 			{
-				votes.append(UserUtils.getAsMention(row.getUserId())).append(" -> ").append(parseOption(row.getOption())).append("\n");
+				clearDM(user.getUserId(), user.getDirectMessageId(), igsqBot);
 			}
 
-			voteChannel.retrieveMessageById(voteId).queue(message ->
-					{
-						List<MessageEmbed.Field> fields = new ArrayList<>(message.getEmbeds().get(0).getFields());
-						String[] oldUsers = fields.get(0).getValue().split("\n");
-
-						fields.removeIf(field -> !field.getName().startsWith("Option"));
-
-						for(String user : oldUsers)
-						{
-							String mention = user.substring(0, user.indexOf(" "));
-							if(!votes.toString().contains(mention))
-							{
-								votes.append(mention).append(" -> ").append("Abstained").append("\n");
-							}
-						}
-						EmbedBuilder newEmbed = new EmbedBuilder(message.getEmbeds().get(0))
-								.clearFields()
-								.addField("Users", votes.toString(), false)
-								.addField("Expires at:", "**Expired**", false);
-
-						for(MessageEmbed.Field field : fields)
-						{
-							newEmbed.addField(field);
-						}
-						message.editMessage(newEmbed.build()).queue();
-					}
-					, error -> {});
+			editVoteMessage(voteId, voteChannel, generateUsers(result));
 
 			context.deleteFrom(Tables.VOTES).where(VOTES.VOTE_ID.eq(voteId)).execute();
 		}
@@ -253,23 +217,59 @@ public class Vote
 		}
 	}
 
-	public static boolean castById(long messageId, int vote, IGSQBot igsqBot)
+	private static void editVoteMessage(long messageId, MessageChannel voteChannel, String newUsers)
+	{
+		voteChannel.retrieveMessageById(messageId).queue(message ->
+				{
+					List<MessageEmbed.Field> fields = new ArrayList<>(message.getEmbeds().get(0).getFields());
+
+					fields.removeIf(field -> (field.getName() == null) || !field.getName().startsWith("Option"));
+
+					EmbedBuilder newEmbed = new EmbedBuilder(message.getEmbeds().get(0))
+							.clearFields()
+							.addField("Users", newUsers, false)
+							.addField("Expires at:", "**Expired**", false);
+
+					for(MessageEmbed.Field field : fields)
+					{
+						newEmbed.addField(field);
+					}
+					message.editMessage(newEmbed.build()).queue();
+				}
+				, error ->
+				{});
+	}
+
+	private static void clearDM(long userId, long messageId, IGSQBot igsqBot)
+	{
+		igsqBot.getShardManager()
+				.retrieveUserById(userId)
+				.flatMap(User::openPrivateChannel)
+				.flatMap(channel -> channel.retrieveMessageById(messageId))
+				.flatMap(Message::delete)
+				.queue(null);
+	}
+
+	public static boolean castById(long userId, long messageId, int vote, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 
-			var state = context.selectFrom(Tables.VOTES).where(VOTES.DIRECT_MESSAGE_ID.eq(messageId)).fetch();
+			var query = context.selectFrom(Tables.VOTES).where(VOTES.DIRECT_MESSAGE_ID.eq(messageId)).fetch();
 
-			if(state.isEmpty() || state.get(0).getHasVoted())
+			if(query.isEmpty() || query.get(0).getHasVoted())
 			{
 				return false;
 			}
 
 			var updateQuery = context.update(Tables.VOTES)
 					.set(VOTES.HAS_VOTED, true)
-					.set(VOTES.OPTION, vote);
+					.set(VOTES.OPTION, vote)
+					.where(VOTES.DIRECT_MESSAGE_ID.eq(messageId));
+
 			updateQuery.execute();
+			clearDM(userId, messageId, igsqBot);
 			return true;
 		}
 		catch(Exception exception)
@@ -297,6 +297,22 @@ public class Vote
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 			return -1;
+		}
+	}
+
+	public static boolean isVoteRunning(long messageId, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var query = context.selectFrom(Tables.VOTES).where(VOTES.DIRECT_MESSAGE_ID.eq(messageId));
+			var result = query.fetch();
+			return result.isNotEmpty();
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return false;
 		}
 	}
 

@@ -125,7 +125,7 @@ public class IGSQBot extends ListenerAdapter
 
 		getTaskHandler().addRepeatingTask(() ->
 		{
-			DatabaseUtils.getExpiredTempbans(this).forEach(tempban -> Tempban.removeBanById(tempban.getUserid(), this));
+			DatabaseUtils.getExpiredTempbans(this).forEach(tempban -> Tempban.remove(tempban.getUserid(), this));
 			DatabaseUtils.getExpiredVotes(this).forEach(vote -> Vote.closeById(vote.getVoteId(),vote.getGuildId(), this));
 		}, TimeUnit.SECONDS, 15);
 	}

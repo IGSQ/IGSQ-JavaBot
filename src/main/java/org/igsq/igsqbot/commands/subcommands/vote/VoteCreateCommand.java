@@ -22,7 +22,7 @@ public class VoteCreateCommand extends Command
 {
     public VoteCreateCommand(Command parent)
     {
-        super(parent, "create", "Creates a vote.", "[]");
+        super(parent, "create", "Creates a vote.", "[role1/role2{6}][option1/option2{3}][duration][subject]");
         addMemberPermissions(Permission.MANAGE_CHANNEL);
     }
 
@@ -72,7 +72,7 @@ public class VoteCreateCommand extends Command
         }
 
 
-        if(options.isEmpty() || options.size() > 6 || expiry == null)
+        if(options.isEmpty() || options.size() > 6 || expiry == null || roles.size() > 3 || users.size() > 10)
         {
             throw new SyntaxException(ctx);
         }
@@ -86,6 +86,15 @@ public class VoteCreateCommand extends Command
                         if(members.isEmpty())
                         {
                             ctx.replyError("No members found for roles " + finalRoles
+                                    .stream()
+                                    .map(Role::getAsMention)
+                                    .collect(Collectors.joining(" ")));
+                            return;
+                        }
+
+                        if(members.size() > 20)
+                        {
+                            ctx.replyError("Too many members found for roles " + finalRoles
                                     .stream()
                                     .map(Role::getAsMention)
                                     .collect(Collectors.joining(" ")));

@@ -15,7 +15,7 @@ public class RoleInfoCommand extends Command
 {
 	public RoleInfoCommand(Command parent)
 	{
-		super(parent, "role", "Shows information about a role", "[role]");
+		super(parent, "role", "Shows information about a role.", "[role]");
 	}
 
 	@Override

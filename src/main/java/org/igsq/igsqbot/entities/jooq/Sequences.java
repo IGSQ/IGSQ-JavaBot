@@ -16,6 +16,16 @@ import org.jooq.impl.SQLDataType;
 public class Sequences {
 
     /**
+     * The sequence <code>public.blacklists_id_seq</code>
+     */
+    public static final Sequence<Long> BLACKLISTS_ID_SEQ = Internal.createSequence("blacklists_id_seq", Public.PUBLIC, SQLDataType.BIGINT.nullable(false), null, null, null, null, false, null);
+
+    /**
+     * The sequence <code>public.levels_id_seq</code>
+     */
+    public static final Sequence<Long> LEVELS_ID_SEQ = Internal.createSequence("levels_id_seq", Public.PUBLIC, SQLDataType.BIGINT.nullable(false), null, null, null, null, false, null);
+
+    /**
      * The sequence <code>public.reaction_roles_id_seq</code>
      */
     public static final Sequence<Long> REACTION_ROLES_ID_SEQ = Internal.createSequence("reaction_roles_id_seq", Public.PUBLIC, SQLDataType.BIGINT.nullable(false), null, null, null, null, false, null);

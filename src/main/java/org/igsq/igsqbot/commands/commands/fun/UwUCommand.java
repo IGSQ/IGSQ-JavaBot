@@ -17,7 +17,7 @@ public class UwUCommand extends Command
 {
 	public UwUCommand()
 	{
-		super("UwU", "UwU's the specified sentence", "[text]");
+		super("UwU", "UwU's the specified sentence.", "[text]");
 		addAliases("uwu", "uwufy", "owo");
 	}
 

@@ -12,7 +12,7 @@ public class ReactionRoleAddCommand extends Command
 {
 	public ReactionRoleAddCommand(Command parent)
 	{
-		super(parent, "add", "Adds a reaction role", "[messageId][channel][role][emote]");
+		super(parent, "add", "Adds a reaction role.", "[messageId][channel][role][emote]");
 		addMemberPermissions(Permission.MANAGE_SERVER);
 		addSelfPermissions(Permission.MESSAGE_ADD_REACTION);
 	}

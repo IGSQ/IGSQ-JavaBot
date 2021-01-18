@@ -15,7 +15,7 @@ public class ReactionRoleShowCommand extends Command
 {
 	public ReactionRoleShowCommand(Command parent)
 	{
-		super(parent, "show", "Shows reaction roles", "[messageId]");
+		super(parent, "show", "Shows reaction roles.", "[messageId]");
 	}
 
 	@Override

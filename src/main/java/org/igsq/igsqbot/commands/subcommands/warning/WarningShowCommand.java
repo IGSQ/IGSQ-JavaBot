@@ -17,7 +17,7 @@ public class WarningShowCommand extends Command
 {
 	public WarningShowCommand(Command parent)
 	{
-		super(parent, "show", "Shows a user's warnings", "[user]");
+		super(parent, "show", "Shows a user's warnings.", "[user]");
 	}
 
 	@Override

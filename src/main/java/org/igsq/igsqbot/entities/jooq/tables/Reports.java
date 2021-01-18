@@ -142,15 +142,6 @@ public class Reports extends TableImpl<ReportsRecord> {
     }
 
     @Override
-    public List<ForeignKey<ReportsRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ReportsRecord, ?>>asList(Keys.REPORTS__REPORTS_GUILD_ID_FKEY);
-    }
-
-    public Guilds guilds() {
-        return new Guilds(this, Keys.REPORTS__REPORTS_GUILD_ID_FKEY);
-    }
-
-    @Override
     public Reports as(String alias) {
         return new Reports(DSL.name(alias), this);
     }

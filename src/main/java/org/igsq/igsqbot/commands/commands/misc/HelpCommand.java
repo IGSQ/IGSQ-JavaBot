@@ -11,7 +11,7 @@ public class HelpCommand extends Command
 {
 	public HelpCommand()
 	{
-		super("Help", "Shows the help menu for this bot", "[page]");
+		super("Help", "Shows the help menu for this bot.", "[page]");
 		addAliases("help", "?", "howto", "commands");
 	}
 

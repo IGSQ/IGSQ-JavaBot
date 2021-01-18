@@ -15,7 +15,7 @@ public class MockCommand extends Command
 {
 	public MockCommand()
 	{
-		super("Mock", "Mocks the specified text", "[text]");
+		super("Mock", "Mocks the specified text.", "[text]");
 		addAliases("mock");
 	}
 

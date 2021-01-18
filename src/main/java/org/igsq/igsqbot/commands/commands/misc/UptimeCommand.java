@@ -14,7 +14,7 @@ public class UptimeCommand extends Command
 {
 	public UptimeCommand()
 	{
-		super("Uptime", "Displays the bots uptime", "[none]");
+		super("Uptime", "Displays the bots uptime.", "[none]");
 		addAliases("uptime");
 	}
 

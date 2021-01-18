@@ -12,7 +12,7 @@ public class BotInfoCommand extends Command
 {
 	public BotInfoCommand(Command parent)
 	{
-		super(parent, "bot", "Shows information about the bot", "[none]");
+		super(parent, "bot", "Shows information about the bot.", "[none]");
 	}
 
 	@Override

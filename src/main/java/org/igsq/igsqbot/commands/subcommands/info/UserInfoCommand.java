@@ -21,7 +21,7 @@ public class UserInfoCommand extends Command
 {
 	public UserInfoCommand(Command parent)
 	{
-		super(parent, "user", "Shows information about a user", "[user]");
+		super(parent, "user", "Shows information about a user.", "[user]");
 		addFlags(CommandFlag.GUILD_ONLY);
 	}
 

@@ -22,6 +22,9 @@ public class Guilds implements Serializable {
     private final Long   reportChannel;
     private final Long   voteChannel;
     private final Long   suggestionChannel;
+    private final Long   selfPromoChannel;
+    private final Long   selfPromoRole;
+    private final Long   levelUpBot;
     private final String prefix;
 
     public Guilds(Guilds value) {
@@ -32,6 +35,9 @@ public class Guilds implements Serializable {
         this.reportChannel = value.reportChannel;
         this.voteChannel = value.voteChannel;
         this.suggestionChannel = value.suggestionChannel;
+        this.selfPromoChannel = value.selfPromoChannel;
+        this.selfPromoRole = value.selfPromoRole;
+        this.levelUpBot = value.levelUpBot;
         this.prefix = value.prefix;
     }
 
@@ -43,6 +49,9 @@ public class Guilds implements Serializable {
         Long   reportChannel,
         Long   voteChannel,
         Long   suggestionChannel,
+        Long   selfPromoChannel,
+        Long   selfPromoRole,
+        Long   levelUpBot,
         String prefix
     ) {
         this.guildId = guildId;
@@ -52,6 +61,9 @@ public class Guilds implements Serializable {
         this.reportChannel = reportChannel;
         this.voteChannel = voteChannel;
         this.suggestionChannel = suggestionChannel;
+        this.selfPromoChannel = selfPromoChannel;
+        this.selfPromoRole = selfPromoRole;
+        this.levelUpBot = levelUpBot;
         this.prefix = prefix;
     }
 
@@ -105,6 +117,27 @@ public class Guilds implements Serializable {
     }
 
     /**
+     * Getter for <code>public.guilds.self_promo_channel</code>.
+     */
+    public Long getSelfPromoChannel() {
+        return this.selfPromoChannel;
+    }
+
+    /**
+     * Getter for <code>public.guilds.self_promo_role</code>.
+     */
+    public Long getSelfPromoRole() {
+        return this.selfPromoRole;
+    }
+
+    /**
+     * Getter for <code>public.guilds.level_up_bot</code>.
+     */
+    public Long getLevelUpBot() {
+        return this.levelUpBot;
+    }
+
+    /**
      * Getter for <code>public.guilds.prefix</code>.
      */
     public String getPrefix() {
@@ -122,6 +155,9 @@ public class Guilds implements Serializable {
         sb.append(", ").append(reportChannel);
         sb.append(", ").append(voteChannel);
         sb.append(", ").append(suggestionChannel);
+        sb.append(", ").append(selfPromoChannel);
+        sb.append(", ").append(selfPromoRole);
+        sb.append(", ").append(levelUpBot);
         sb.append(", ").append(prefix);
 
         sb.append(")");

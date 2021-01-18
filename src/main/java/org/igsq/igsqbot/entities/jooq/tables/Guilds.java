@@ -8,18 +8,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.GuildsRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
+import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.tables.records.GuildsRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -80,6 +80,21 @@ public class Guilds extends TableImpl<GuildsRecord> {
      * The column <code>public.guilds.suggestion_channel</code>.
      */
     public final TableField<GuildsRecord, Long> SUGGESTION_CHANNEL = createField(DSL.name("suggestion_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>public.guilds.self_promo_channel</code>.
+     */
+    public final TableField<GuildsRecord, Long> SELF_PROMO_CHANNEL = createField(DSL.name("self_promo_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>public.guilds.self_promo_role</code>.
+     */
+    public final TableField<GuildsRecord, Long> SELF_PROMO_ROLE = createField(DSL.name("self_promo_role"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>public.guilds.level_up_bot</code>.
+     */
+    public final TableField<GuildsRecord, Long> LEVEL_UP_BOT = createField(DSL.name("level_up_bot"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.guilds.prefix</code>.
@@ -161,11 +176,11 @@ public class Guilds extends TableImpl<GuildsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, Long, Long, Long, Long, Long, Long, String> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row11<Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, String> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }

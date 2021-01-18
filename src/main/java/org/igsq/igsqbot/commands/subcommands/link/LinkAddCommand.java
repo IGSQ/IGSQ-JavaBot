@@ -13,7 +13,7 @@ public class LinkAddCommand extends Command
 {
 	public LinkAddCommand(Command parent)
 	{
-		super(parent, "add", "Adds or confirms Minecraft links", "[mcUsername]");
+		super(parent, "add", "Adds or confirms Minecraft links.", "[mcUsername]");
 	}
 
 	@Override

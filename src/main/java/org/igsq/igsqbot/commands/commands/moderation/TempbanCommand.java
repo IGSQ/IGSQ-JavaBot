@@ -19,8 +19,9 @@ public class TempbanCommand extends Command
 {
 	public TempbanCommand()
 	{
-		super("Tempban", "Temporarily bans a user.", "[user][duration]");
+		super("Tempban", "Temporarily bans a user.", "[user][duration] | [remove][user]");
 		addAliases("tempban", "mute");
+		addChildren(new TempbanRemoveCommand(this));
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
 		addSelfPermissions(Permission.MANAGE_ROLES);
 		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
@@ -51,7 +52,7 @@ public class TempbanCommand extends Command
 						guild.modifyMemberRoles(member, tempBanRole).queue(
 								success ->
 								{
-									new Tempban(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot()).add();
+									Tempban.add(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot());
 									ctx.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
 								},
 								error ->
@@ -64,6 +65,38 @@ public class TempbanCommand extends Command
 				});
 			});
 		});
+	}
 
+	public static class TempbanRemoveCommand extends Command
+	{
+	    public TempbanRemoveCommand(Command parent)
+	    {
+	        super(parent, "remove", "Removes a tempban", "[user]");
+	    }
+
+	    @Override
+	    public void run(List<String> args, CommandContext ctx)
+	    {
+			CommandChecks.argsEmpty(ctx);
+
+			new Parser(args.get(0), ctx).parseAsUser(user ->
+			{
+				User author = ctx.getAuthor();
+				User selfUser = ctx.getIGSQBot().getSelfUser();
+				Guild guild = ctx.getGuild();
+
+				CommandUtils.interactionCheck(selfUser, user, ctx, () ->
+				{
+					CommandUtils.interactionCheck(author, user, ctx, () ->
+					{
+						UserUtils.getMemberFromUser(user, guild).queue(member ->
+						{
+							Tempban.remove(member.getIdLong(), ctx.getIGSQBot());
+							ctx.replySuccess("Removed tempban for user " + UserUtils.getAsMention(member.getIdLong()));
+						});
+					});
+				});
+			});
+	    }
 	}
 }
