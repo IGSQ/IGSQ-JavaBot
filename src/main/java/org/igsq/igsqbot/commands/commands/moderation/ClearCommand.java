@@ -6,13 +6,14 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
-import org.igsq.igsqbot.entities.cache.MessageCache;
+import org.igsq.igsqbot.entities.exception.CooldownException;
+import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.CommandChecks;
-import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
 @SuppressWarnings("unused")
@@ -42,11 +43,11 @@ public class ClearCommand extends Command
 		{
 			if(amount.getAsInt() > 51)
 			{
-				EmbedUtils.sendSyntaxError(ctx);
+				throw new SyntaxException(this);
 			}
 			else if(CooldownHandler.isOnCooldown(member, this))
 			{
-				//Do nothing
+				throw new CooldownException(this);
 			}
 			else
 			{
