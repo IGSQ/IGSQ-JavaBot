@@ -102,9 +102,9 @@ public class DatabaseUtils
 
 			for(var value : context.fetch())
 			{
-				if(value.getMuteduntil().isBefore(LocalDateTime.now()))
+				if(value.getMutedUntil().isBefore(LocalDateTime.now()))
 				{
-					result.add(new Tempbans(value.getId(), value.getUserid(), value.getGuildid(), value.getMuteduntil()));
+					result.add(new Tempbans(value.getId(), value.getUserId(), value.getGuildId(), value.getMutedUntil()));
 				}
 			}
 		}

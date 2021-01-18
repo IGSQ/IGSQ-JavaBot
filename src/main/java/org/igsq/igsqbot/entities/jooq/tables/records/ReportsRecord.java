@@ -11,7 +11,6 @@ import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record8;
 import org.jooq.Row8;
-import org.jooq.generated.tables.Reports;
 import org.jooq.impl.UpdatableRecordImpl;
 
 

@@ -9,7 +9,6 @@ import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Row5;
-import org.jooq.generated.tables.ReactionRoles;
 import org.jooq.impl.UpdatableRecordImpl;
 
 

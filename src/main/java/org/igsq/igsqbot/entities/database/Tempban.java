@@ -43,7 +43,7 @@ public class Tempban
 				Guild finalGuild = guild;
 				guild.retrieveMemberById(userId).queue(member -> finalGuild.modifyMemberRoles(member, collectedRoles).queue());
 			}
-			ctx.deleteFrom(Tables.TEMPBANS).where(TEMPBANS.USERID.eq(userId)).execute();
+			ctx.deleteFrom(Tables.TEMPBANS).where(TEMPBANS.USER_ID.eq(userId)).execute();
 			ctx.deleteFrom(Tables.ROLES).where(ROLES.USER_ID.eq(userId)).execute();
 		}
 		catch(Exception exception)
@@ -58,7 +58,7 @@ public class Tempban
 		{
 			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 
-			boolean exists = ctx.select(TEMPBANS.USERID).from(Tables.TEMPBANS).fetchOne() != null;
+			boolean exists = ctx.select(TEMPBANS.USER_ID).from(Tables.TEMPBANS).fetchOne() != null;
 			if(exists)
 			{
 				return false;
@@ -68,7 +68,7 @@ public class Tempban
 			{
 				ctx.insertInto(Tables.ROLES).columns(ROLES.GUILD_ID, ROLES.USER_ID, ROLES.ROLE_ID).values(guild.getIdLong(), memberId, roleId).execute();
 			}
-			ctx.insertInto(Tables.TEMPBANS).columns(TEMPBANS.GUILDID, TEMPBANS.USERID, TEMPBANS.MUTEDUNTIL).values(guild.getIdLong(), memberId, mutedUntil).execute();
+			ctx.insertInto(Tables.TEMPBANS).columns(TEMPBANS.GUILD_ID, TEMPBANS.USER_ID, TEMPBANS.MUTED_UNTIL).values(guild.getIdLong(), memberId, mutedUntil).execute();
 
 		}
 		catch(Exception exception)

@@ -9,7 +9,6 @@ import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;
 import org.jooq.Row4;
-import org.jooq.generated.tables.Levels;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
