@@ -143,8 +143,7 @@ public class CommandHandler
 			cmd = commandMap.get(commandText.toLowerCase());
 			if(cmd == null)
 			{
-				event.getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(success -> event.getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS, null, error ->
-				{}));
+				event.getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(success -> event.getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS, null, error -> {}), error -> {});
 				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.\n Type `" + prefix + "help` for help.");
 				return;
 			}
