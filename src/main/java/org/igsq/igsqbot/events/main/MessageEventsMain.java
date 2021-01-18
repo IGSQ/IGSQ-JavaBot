@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.events.main;
 
+import java.util.List;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -46,15 +47,20 @@ public class MessageEventsMain extends ListenerAdapter
 			{
 				if(CommandUtils.getLevelUp(event, igsqBot) != -1)
 				{
-					Role newRole = DatabaseUtils.getRoleForLevel(guild, CommandUtils.getLevelUp(event, igsqBot), igsqBot);
+					List<Role> newRoles = DatabaseUtils.getRoleForLevel(guild, CommandUtils.getLevelUp(event, igsqBot), igsqBot);
 
-					if(newRole != null)
+					if(newRoles != null && !newRoles.isEmpty())
 					{
 						if(!event.getMessage().getMentionedMembers().isEmpty())
 						{
-							guild.addRoleToMember(event.getMessage().getMentionedMembers().get(0), newRole).queue();
+							for(Role role : newRoles)
+							{
+								if(role != null)
+								{
+									guild.addRoleToMember(event.getMessage().getMentionedMembers().get(0), role).queue();
+								}
+							}
 						}
-
 					}
 					return;
 				}

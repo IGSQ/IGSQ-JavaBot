@@ -115,7 +115,7 @@ public class DatabaseUtils
 		return result;
 	}
 
-	public static Role getRoleForLevel(Guild guild, int level, IGSQBot igsqBot)
+	public static List<Role> getRoleForLevel(Guild guild, int level, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
@@ -131,7 +131,10 @@ public class DatabaseUtils
 				return null;
 			}
 
-			return guild.getRoleById(result.get(0).getRoleId());
+			List<Role> roles = new ArrayList<>();
+
+			result.forEach(role -> roles.add(guild.getRoleById(role.getRoleId())));
+			return roles;
 		}
 		catch(Exception exception)
 		{
