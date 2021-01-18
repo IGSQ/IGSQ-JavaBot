@@ -26,30 +26,30 @@ public class MessageCache
 		this.cachedMessages = ExpiringMap.builder()
 				.maxSize(1000)
 				.expirationPolicy(ExpirationPolicy.ACCESSED)
-				.expiration(3, TimeUnit.HOURS)
+				.expiration(1, TimeUnit.HOURS)
 				.build();
 	}
 
 	public static MessageCache getCache(long guildId)
 	{
-		if(MESSAGE_CACHES.get(guildId) != null)
+		MessageCache cache = MESSAGE_CACHES.get(guildId);
+		if(MESSAGE_CACHES.get(guildId) == null)
 		{
-			return MESSAGE_CACHES.get(guildId);
+			cache = new MessageCache(guildId);
+			MESSAGE_CACHES.put(guildId, cache);
 		}
-		MessageCache newCache = new MessageCache(guildId);
-		MESSAGE_CACHES.put(guildId, newCache);
-		return newCache;
+		return cache;
 	}
 
 	public static MessageCache getCache(Guild guild)
 	{
-		if(MESSAGE_CACHES.get(guild.getIdLong()) != null)
+		MessageCache cache = MESSAGE_CACHES.get(guild.getIdLong());
+		if(MESSAGE_CACHES.get(guild.getIdLong()) == null)
 		{
-			return MESSAGE_CACHES.get(guild.getIdLong());
+			cache = new MessageCache(guild.getIdLong());
+			MESSAGE_CACHES.put(guild.getIdLong(), cache);
 		}
-		MessageCache newCache = new MessageCache(guild.getIdLong());
-		MESSAGE_CACHES.put(guild.getIdLong(), newCache);
-		return newCache;
+		return cache;
 	}
 
 	public void set(CachedMessage message)
