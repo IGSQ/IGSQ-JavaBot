@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -98,6 +99,11 @@ public class CommandContext
 		return event.isFromGuild() ? event.getGuild() : null;
 	}
 
+	public long getGuildIdLong()
+	{
+		return getGuild().getIdLong();
+	}
+
 	public DSLContext getDBContext()
 	{
 		return getIGSQBot().getDatabaseHandler().getContext();
@@ -179,6 +185,11 @@ public class CommandContext
 	public boolean selfPermissionCheck(Permission... permissions)
 	{
 		return event.getGuild().getSelfMember().hasPermission(permissions);
+	}
+
+	public void sendMessage(EmbedBuilder embed)
+	{
+		getChannel().sendMessage(embed.build()).queue();
 	}
 
 	public boolean selfPermissionCheck(List<Permission> permissions)

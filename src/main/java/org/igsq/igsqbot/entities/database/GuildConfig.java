@@ -4,7 +4,10 @@ import java.sql.Connection;
 import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.jooq.Tables;
+import org.igsq.igsqbot.entities.jooq.tables.records.GuildsRecord;
 import org.jooq.Field;
+import org.jooq.TableField;
 
 import static org.igsq.igsqbot.entities.jooq.tables.Guilds.GUILDS;
 
@@ -107,6 +110,11 @@ public class GuildConfig
 		return getValue(GUILDS.CHANNEL_SUGGESTION_CHANNEL);
 	}
 
+	public void setLevelUpBot(long userId)
+	{
+		setValue(GUILDS.LEVEL_UP_BOT, userId);
+	}
+
 	private long getValue(Field<?> value)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
@@ -121,6 +129,19 @@ public class GuildConfig
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 			return -1;
+		}
+	}
+
+	private void setValue(TableField<? extends GuildsRecord, Long> field, Long value)
+	{
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			context.update(Tables.GUILDS).set(field, value).where(GUILDS.GUILD_ID.eq(guildId)).execute();
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
 		}
 	}
 }

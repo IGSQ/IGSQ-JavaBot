@@ -5,7 +5,7 @@ import java.util.List;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import org.igsq.igsqbot.entities.exception.CommandException;
-import org.igsq.igsqbot.entities.exception.ConfigurationException;
+import org.igsq.igsqbot.entities.exception.MissingConfigurationException;
 import org.igsq.igsqbot.entities.exception.IllegalLengthException;
 import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.util.BlacklistUtils;
@@ -104,7 +104,7 @@ public abstract class Command
 			{
 				EmbedUtils.sendSyntaxError(ctx);
 			}
-			catch(ConfigurationException exception)
+			catch(MissingConfigurationException exception)
 			{
 				ctx.replyError(exception.getText() + " is not setup.");
 			}

@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.command.CommandContext;
-import org.igsq.igsqbot.entities.exception.ConfigurationException;
+import org.igsq.igsqbot.entities.exception.MissingConfigurationException;
 import org.igsq.igsqbot.entities.exception.IllegalLengthException;
 import org.igsq.igsqbot.entities.exception.SyntaxException;
 
@@ -21,7 +22,7 @@ public class CommandChecks
 	{
 		if(channel == null)
 		{
-			throw new ConfigurationException(name);
+			throw new MissingConfigurationException(name);
 		}
 	}
 
@@ -29,7 +30,15 @@ public class CommandChecks
 	{
 		if(role == null)
 		{
-			throw new ConfigurationException(name);
+			throw new MissingConfigurationException(name);
+		}
+	}
+
+	public static void userConfigured(User user, String name)
+	{
+		if(user == null)
+		{
+			throw new MissingConfigurationException(name);
 		}
 	}
 	public static void stringMatches(String input, String regex, CommandContext ctx)
