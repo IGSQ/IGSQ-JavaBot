@@ -1,11 +1,11 @@
 package org.igsq.igsqbot.commands.subcommands.vote;
 
 import java.util.List;
-
 import java.util.OptionalLong;
 import net.dv8tion.jda.api.Permission;
-import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Vote;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;

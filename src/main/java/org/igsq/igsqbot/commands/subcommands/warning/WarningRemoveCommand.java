@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
+import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
@@ -20,16 +21,13 @@ public class WarningRemoveCommand extends Command
 	{
 		super(parent, "remove", "Removes a warning.", "[user][warningID]");
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
+		addFlags(CommandFlag.GUILD_ONLY);
 	}
 
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		if(args.size() != 2)
-		{
-			EmbedUtils.sendSyntaxError(ctx);
-			return;
-		}
+		CommandChecks.argsSizeSubceeds(ctx, 2);
 
 		MessageChannel channel = ctx.getChannel();
 		User author = ctx.getAuthor();
