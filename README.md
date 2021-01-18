@@ -93,6 +93,7 @@
  - [x] Debug logging
  - [x] Voting (Done!)
  - [x] Change all database classes to static utils if possible
+ - [x] Check '.' at the end of every command description
  
 ### **TeaEyes**
 None!
@@ -100,9 +101,9 @@ None!
 ### **arynxd**
  - [ ] Improve user feedback
  - [ ] Add sub commands to help menu.
- - [ ] Check '.' at the end of every command description
  - [ ] Verification
  - [ ] Change mc syncing to events
+ - [ ] Catch config issues at startup
  
  - [ ] **PREPARE FOR PR**
 
