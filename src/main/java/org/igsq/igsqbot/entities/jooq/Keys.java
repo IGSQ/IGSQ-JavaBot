@@ -4,17 +4,16 @@
 package org.igsq.igsqbot.entities.jooq;
 
 
-import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.igsq.igsqbot.entities.jooq.tables.Levels;
-import org.jooq.ForeignKey;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.igsq.igsqbot.entities.jooq.tables.Roles;
 import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
+import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.Levels;
+import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.igsq.igsqbot.entities.jooq.tables.Votes;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 import org.igsq.igsqbot.entities.jooq.tables.records.BlacklistsRecord;
@@ -56,11 +55,4 @@ public class Keys {
     public static final UniqueKey<TempbansRecord> TEMPBANS_USER_ID_KEY = Internal.createUniqueKey(Tempbans.TEMPBANS, DSL.name("tempbans_user_id_key"), new TableField[] { Tempbans.TEMPBANS.USER_ID }, true);
     public static final UniqueKey<VotesRecord> VOTES_PKEY = Internal.createUniqueKey(Votes.VOTES, DSL.name("votes_pkey"), new TableField[] { Votes.VOTES.ID }, true);
     public static final UniqueKey<WarningsRecord> WARNINGS_PKEY = Internal.createUniqueKey(Warnings.WARNINGS, DSL.name("warnings_pkey"), new TableField[] { Warnings.WARNINGS.ID }, true);
-
-    // -------------------------------------------------------------------------
-    // FOREIGN KEY definitions
-    // -------------------------------------------------------------------------
-
-    public static final ForeignKey<BlacklistsRecord, GuildsRecord> BLACKLISTS__BLACKLISTS_GUILD_ID_FKEY = Internal.createForeignKey(Blacklists.BLACKLISTS, DSL.name("blacklists_guild_id_fkey"), new TableField[] { Blacklists.BLACKLISTS.GUILD_ID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
-    public static final ForeignKey<TempbansRecord, GuildsRecord> TEMPBANS__TEMPBANS_GUILD_ID_FKEY = Internal.createForeignKey(Tempbans.TEMPBANS, DSL.name("tempbans_guild_id_fkey"), new TableField[] { Tempbans.TEMPBANS.GUILD_ID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
 }

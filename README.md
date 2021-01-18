@@ -102,6 +102,7 @@ None!
  - [ ] Add sub commands to help menu.
  - [ ] Check '.' at the end of every command description
  - [ ] Verification
+ - [ ] Change mc syncing to events
  
  - [ ] **PREPARE FOR PR**
 

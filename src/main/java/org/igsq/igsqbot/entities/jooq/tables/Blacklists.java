@@ -7,7 +7,7 @@ package org.igsq.igsqbot.entities.jooq.tables;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.Keys;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -19,7 +19,7 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
-import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.BlacklistsRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
@@ -113,15 +113,6 @@ public class Blacklists extends TableImpl<BlacklistsRecord> {
     @Override
     public List<UniqueKey<BlacklistsRecord>> getKeys() {
         return Arrays.<UniqueKey<BlacklistsRecord>>asList(Keys.BLACKLISTS_PKEY);
-    }
-
-    @Override
-    public List<ForeignKey<BlacklistsRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<BlacklistsRecord, ?>>asList(Keys.BLACKLISTS__BLACKLISTS_GUILD_ID_FKEY);
-    }
-
-    public Guilds guilds() {
-        return new Guilds(this, Keys.BLACKLISTS__BLACKLISTS_GUILD_ID_FKEY);
     }
 
     @Override

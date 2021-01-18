@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
@@ -21,6 +19,8 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
+import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.TempbansRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
@@ -119,15 +119,6 @@ public class Tempbans extends TableImpl<TempbansRecord> {
     @Override
     public List<UniqueKey<TempbansRecord>> getKeys() {
         return Arrays.<UniqueKey<TempbansRecord>>asList(Keys.TEMPBANS_PKEY, Keys.TEMPBANS_USER_ID_KEY, Keys.TEMPBANS_GUILD_ID_KEY);
-    }
-
-    @Override
-    public List<ForeignKey<TempbansRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<TempbansRecord, ?>>asList(Keys.TEMPBANS__TEMPBANS_GUILD_ID_FKEY);
-    }
-
-    public Guilds guilds() {
-        return new Guilds(this, Keys.TEMPBANS__TEMPBANS_GUILD_ID_FKEY);
     }
 
     @Override

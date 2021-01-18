@@ -22,6 +22,7 @@ public class Guilds implements Serializable {
     private final Long   reportChannel;
     private final Long   voteChannel;
     private final Long   suggestionChannel;
+    private final Long   channelSuggestionChannel;
     private final Long   selfPromoChannel;
     private final Long   selfPromoRole;
     private final Long   levelUpBot;
@@ -35,6 +36,7 @@ public class Guilds implements Serializable {
         this.reportChannel = value.reportChannel;
         this.voteChannel = value.voteChannel;
         this.suggestionChannel = value.suggestionChannel;
+        this.channelSuggestionChannel = value.channelSuggestionChannel;
         this.selfPromoChannel = value.selfPromoChannel;
         this.selfPromoRole = value.selfPromoRole;
         this.levelUpBot = value.levelUpBot;
@@ -49,6 +51,7 @@ public class Guilds implements Serializable {
         Long   reportChannel,
         Long   voteChannel,
         Long   suggestionChannel,
+        Long   channelSuggestionChannel,
         Long   selfPromoChannel,
         Long   selfPromoRole,
         Long   levelUpBot,
@@ -61,6 +64,7 @@ public class Guilds implements Serializable {
         this.reportChannel = reportChannel;
         this.voteChannel = voteChannel;
         this.suggestionChannel = suggestionChannel;
+        this.channelSuggestionChannel = channelSuggestionChannel;
         this.selfPromoChannel = selfPromoChannel;
         this.selfPromoRole = selfPromoRole;
         this.levelUpBot = levelUpBot;
@@ -117,6 +121,13 @@ public class Guilds implements Serializable {
     }
 
     /**
+     * Getter for <code>public.guilds.channel_suggestion_channel</code>.
+     */
+    public Long getChannelSuggestionChannel() {
+        return this.channelSuggestionChannel;
+    }
+
+    /**
      * Getter for <code>public.guilds.self_promo_channel</code>.
      */
     public Long getSelfPromoChannel() {
@@ -155,6 +166,7 @@ public class Guilds implements Serializable {
         sb.append(", ").append(reportChannel);
         sb.append(", ").append(voteChannel);
         sb.append(", ").append(suggestionChannel);
+        sb.append(", ").append(channelSuggestionChannel);
         sb.append(", ").append(selfPromoChannel);
         sb.append(", ").append(selfPromoRole);
         sb.append(", ").append(levelUpBot);

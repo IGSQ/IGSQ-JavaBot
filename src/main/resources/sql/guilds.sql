@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS guilds
     report_channel BIGINT NOT NULL DEFAULT -1,
     vote_channel BIGINT NOT NULL DEFAULT -1,
     suggestion_channel BIGINT NOT NULL DEFAULT -1,
+    channel_suggestion_channel BIGINT NOT NULL DEFAULT -1,
     self_promo_channel BIGINT NOT NULL DEFAULT -1,
     self_promo_role BIGINT NOT NULL DEFAULT -1,
     level_up_bot BIGINT NOT NULL DEFAULT -1,

@@ -7,18 +7,18 @@ package org.igsq.igsqbot.entities.jooq.tables;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.Keys;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row11;
+import org.jooq.Row12;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
-import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.GuildsRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
@@ -80,6 +80,11 @@ public class Guilds extends TableImpl<GuildsRecord> {
      * The column <code>public.guilds.suggestion_channel</code>.
      */
     public final TableField<GuildsRecord, Long> SUGGESTION_CHANNEL = createField(DSL.name("suggestion_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>public.guilds.channel_suggestion_channel</code>.
+     */
+    public final TableField<GuildsRecord, Long> CHANNEL_SUGGESTION_CHANNEL = createField(DSL.name("channel_suggestion_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.guilds.self_promo_channel</code>.
@@ -176,11 +181,11 @@ public class Guilds extends TableImpl<GuildsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row12 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, String> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row12<Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, String> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 }

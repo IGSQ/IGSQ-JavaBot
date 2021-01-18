@@ -102,6 +102,11 @@ public class GuildConfig
 		return getValue(GUILDS.SELF_PROMO_CHANNEL);
 	}
 
+	public long getChannelSuggestionChannel()
+	{
+		return getValue(GUILDS.CHANNEL_SUGGESTION_CHANNEL);
+	}
+
 	private long getValue(Field<?> value)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
