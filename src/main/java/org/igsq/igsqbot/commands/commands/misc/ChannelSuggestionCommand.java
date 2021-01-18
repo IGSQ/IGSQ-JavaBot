@@ -31,7 +31,6 @@ public class ChannelSuggestionCommand extends Command
 		CommandChecks.argsEmpty(ctx);
 		CommandChecks.argsEmbedCompatible(ctx);
 
-
 		User author = ctx.getAuthor();
 		GuildConfig guildConfig = new GuildConfig(ctx);
 		MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getChannelSuggestionChannel());

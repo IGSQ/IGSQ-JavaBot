@@ -22,11 +22,12 @@ public class AvatarCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
+		CommandChecks.argsSizeExceeds(ctx, 3);
+
 		Message message = ctx.getMessage();
 		MessageChannel channel = ctx.getChannel();
 		User author = message.getAuthor();
 
-		CommandChecks.argsSizeExceeds(ctx, 3);
 		if(message.getMentionedMembers().isEmpty())
 		{
 			channel.sendMessage(new EmbedBuilder()

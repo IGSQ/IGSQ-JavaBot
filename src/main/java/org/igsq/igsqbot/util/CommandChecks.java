@@ -18,6 +18,13 @@ public class CommandChecks
 		//Overrides the default, public, constructor
 	}
 
+	public static void argLengthExceeds(CommandContext ctx, int position, int size)
+	{
+		if(ctx.getArgs().get(position).length() > size)
+		{
+			throw new SyntaxException(ctx);
+		}
+	}
 	public static void channelConfigured(MessageChannel channel, String name)
 	{
 		if(channel == null)

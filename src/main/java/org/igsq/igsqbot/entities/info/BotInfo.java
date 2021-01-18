@@ -1,18 +1,10 @@
 package org.igsq.igsqbot.entities.info;
 
 import java.lang.management.ManagementFactory;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import net.dv8tion.jda.api.sharding.ShardManager;
-import org.igsq.igsqbot.IGSQBot;
 
 public class BotInfo
 {
-	public static Duration getUptime(IGSQBot igsqBot)
-	{
-		return Duration.between(igsqBot.getStartTimestamp(), LocalDateTime.now());
-	}
-
 	public static String getJavaVersion()
 	{
 		return System.getProperty("java.version");

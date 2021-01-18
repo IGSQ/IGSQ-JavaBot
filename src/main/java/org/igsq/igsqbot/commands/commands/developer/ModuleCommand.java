@@ -32,6 +32,7 @@ public class ModuleCommand extends Command
 		public ModuleEnableCommand(Command parent)
 		{
 			super(parent, "enable", "Enables a module", "[module-name]");
+			addFlags(CommandFlag.DEVELOPER_ONLY);
 		}
 
 		@Override
@@ -58,6 +59,7 @@ public class ModuleCommand extends Command
 		public ModuleDisableCommand(Command parent)
 		{
 			super(parent, "disable", "Disables a module", "[module-name]");
+			addFlags(CommandFlag.DEVELOPER_ONLY);
 		}
 
 		@Override

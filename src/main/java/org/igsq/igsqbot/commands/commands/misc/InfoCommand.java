@@ -8,6 +8,7 @@ import org.igsq.igsqbot.commands.subcommands.info.ServerInfoCommand;
 import org.igsq.igsqbot.commands.subcommands.info.UserInfoCommand;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.info.MemberInfo;
 import org.igsq.igsqbot.util.StringUtils;
 
@@ -18,6 +19,7 @@ public class InfoCommand extends Command
 	{
 		super("Info", "Provides information about things.", "[user|server|bot|role]");
 		addAliases("info");
+		addFlags(CommandFlag.GUILD_ONLY);
 		addChildren(
 				new UserInfoCommand(this),
 				new BotInfoCommand(this),
