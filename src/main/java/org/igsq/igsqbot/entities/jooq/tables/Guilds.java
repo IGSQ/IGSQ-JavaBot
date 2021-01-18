@@ -47,39 +47,39 @@ public class Guilds extends TableImpl<GuildsRecord> {
     }
 
     /**
-     * The column <code>public.guilds.guildid</code>.
+     * The column <code>public.guilds.guild_id</code>.
      */
-    public final TableField<GuildsRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<GuildsRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.guilds.logchannel</code>.
+     * The column <code>public.guilds.log_channel</code>.
      */
-    public final TableField<GuildsRecord, Long> LOGCHANNEL = createField(DSL.name("logchannel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+    public final TableField<GuildsRecord, Long> LOG_CHANNEL = createField(DSL.name("log_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>public.guilds.mutedrole</code>.
+     * The column <code>public.guilds.muted_role</code>.
      */
-    public final TableField<GuildsRecord, Long> MUTEDROLE = createField(DSL.name("mutedrole"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+    public final TableField<GuildsRecord, Long> MUTED_ROLE = createField(DSL.name("muted_role"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>public.guilds.verifiedrole</code>.
+     * The column <code>public.guilds.verified_role</code>.
      */
-    public final TableField<GuildsRecord, Long> VERIFIEDROLE = createField(DSL.name("verifiedrole"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+    public final TableField<GuildsRecord, Long> VERIFIED_ROLE = createField(DSL.name("verified_role"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>public.guilds.reportchannel</code>.
+     * The column <code>public.guilds.report_channel</code>.
      */
-    public final TableField<GuildsRecord, Long> REPORTCHANNEL = createField(DSL.name("reportchannel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+    public final TableField<GuildsRecord, Long> REPORT_CHANNEL = createField(DSL.name("report_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>public.guilds.votechannel</code>.
+     * The column <code>public.guilds.vote_channel</code>.
      */
-    public final TableField<GuildsRecord, Long> VOTECHANNEL = createField(DSL.name("votechannel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+    public final TableField<GuildsRecord, Long> VOTE_CHANNEL = createField(DSL.name("vote_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
-     * The column <code>public.guilds.suggestionchannel</code>.
+     * The column <code>public.guilds.suggestion_channel</code>.
      */
-    public final TableField<GuildsRecord, Long> SUGGESTIONCHANNEL = createField(DSL.name("suggestionchannel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
+    public final TableField<GuildsRecord, Long> SUGGESTION_CHANNEL = createField(DSL.name("suggestion_channel"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'-1'::integer", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.guilds.prefix</code>.

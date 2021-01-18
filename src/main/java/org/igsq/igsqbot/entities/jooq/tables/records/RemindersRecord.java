@@ -36,47 +36,47 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
     }
 
     /**
-     * Setter for <code>public.reminders.guildid</code>.
+     * Setter for <code>public.reminders.guild_id</code>.
      */
-    public RemindersRecord setGuildid(Long value) {
+    public RemindersRecord setGuildId(Long value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reminders.guildid</code>.
+     * Getter for <code>public.reminders.guild_id</code>.
      */
-    public Long getGuildid() {
+    public Long getGuildId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>public.reminders.userid</code>.
+     * Setter for <code>public.reminders.user_id</code>.
      */
-    public RemindersRecord setUserid(Long value) {
+    public RemindersRecord setUserId(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reminders.userid</code>.
+     * Getter for <code>public.reminders.user_id</code>.
      */
-    public Long getUserid() {
+    public Long getUserId() {
         return (Long) get(2);
     }
 
     /**
-     * Setter for <code>public.reminders.remindertext</code>.
+     * Setter for <code>public.reminders.reminder_text</code>.
      */
-    public RemindersRecord setRemindertext(String value) {
+    public RemindersRecord setReminderText(String value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reminders.remindertext</code>.
+     * Getter for <code>public.reminders.reminder_text</code>.
      */
-    public String getRemindertext() {
+    public String getReminderText() {
         return (String) get(3);
     }
 
@@ -110,17 +110,17 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public Field<Long> field2() {
-        return Reminders.REMINDERS.GUILDID;
+        return Reminders.REMINDERS.GUILD_ID;
     }
 
     @Override
     public Field<Long> field3() {
-        return Reminders.REMINDERS.USERID;
+        return Reminders.REMINDERS.USER_ID;
     }
 
     @Override
     public Field<String> field4() {
-        return Reminders.REMINDERS.REMINDERTEXT;
+        return Reminders.REMINDERS.REMINDER_TEXT;
     }
 
     @Override
@@ -130,17 +130,17 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public Long component2() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long component3() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
     public String component4() {
-        return getRemindertext();
+        return getReminderText();
     }
 
     @Override
@@ -150,17 +150,17 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public Long value2() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long value3() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
     public String value4() {
-        return getRemindertext();
+        return getReminderText();
     }
 
     @Override
@@ -171,19 +171,19 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
 
     @Override
     public RemindersRecord value2(Long value) {
-        setGuildid(value);
+        setGuildId(value);
         return this;
     }
 
     @Override
     public RemindersRecord value3(Long value) {
-        setUserid(value);
+        setUserId(value);
         return this;
     }
 
     @Override
     public RemindersRecord value4(String value) {
-        setRemindertext(value);
+        setReminderText(value);
         return this;
     }
 
@@ -210,12 +210,12 @@ public class RemindersRecord extends UpdatableRecordImpl<RemindersRecord> implem
     /**
      * Create a detached, initialised RemindersRecord
      */
-    public RemindersRecord(Long id, Long guildid, Long userid, String remindertext) {
+    public RemindersRecord(Long id, Long guildId, Long userId, String reminderText) {
         super(Reminders.REMINDERS);
 
         setId(id);
-        setGuildid(guildid);
-        setUserid(userid);
-        setRemindertext(remindertext);
+        setGuildId(guildId);
+        setUserId(userId);
+        setReminderText(reminderText);
     }
 }

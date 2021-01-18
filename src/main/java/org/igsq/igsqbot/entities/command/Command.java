@@ -1,8 +1,12 @@
-package org.igsq.igsqbot.entities;
+package org.igsq.igsqbot.entities.command;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.api.Permission;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.ConfigurationException;
+import org.igsq.igsqbot.entities.exception.IllegalLengthException;
+import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 public abstract class Command
@@ -13,10 +17,11 @@ public abstract class Command
 	private final String syntax;
 	private final List<Command> children;
 	private final List<String> aliases;
-	private final List<Permission> requiredPermissions;
+	private final List<Permission> memberRequiredPermissions;
+	private final List<Permission> selfRequiredPermissions;
+	private final List<CommandFlag> flags;
 	private boolean isDisabled;
 	private long cooldown;
-	private List<CommandFlag> flags;
 
 	protected Command(Command parent, String name, String description, String syntax)
 	{
@@ -27,7 +32,8 @@ public abstract class Command
 		this.children = new ArrayList<>();
 		this.aliases = new ArrayList<>();
 		this.isDisabled = false;
-		this.requiredPermissions = new ArrayList<>();
+		this.memberRequiredPermissions = new ArrayList<>();
+		this.selfRequiredPermissions = new ArrayList<>();
 		this.cooldown = 0;
 		this.flags = new ArrayList<>();
 	}
@@ -41,12 +47,12 @@ public abstract class Command
 		this.children = new ArrayList<>();
 		this.aliases = new ArrayList<>();
 		this.isDisabled = false;
-		this.requiredPermissions = new ArrayList<>();
+		this.memberRequiredPermissions = new ArrayList<>();
+		this.selfRequiredPermissions = new ArrayList<>();
 		this.cooldown = 0;
 		this.flags = new ArrayList<>();
 	}
-
-	public void process(List<String> args, CommandContext ctx)
+	public void process(CommandContext ctx)
 	{
 		if(isDisabled())
 		{
@@ -56,9 +62,13 @@ public abstract class Command
 		{
 			ctx.replyError("This command must be executed in a server.");
 		}
-		else if(!getRequiredPermissions().isEmpty() && !ctx.hasPermission(getRequiredPermissions()))
+		else if(!getMemberRequiredPermissions().isEmpty() && !ctx.memberPermissionCheck(getMemberRequiredPermissions()))
 		{
-			EmbedUtils.sendPermissionError(ctx);
+			EmbedUtils.sendMemberPermissionError(ctx);
+		}
+		else if(!getSelfRequiredPermissions().isEmpty() && !ctx.selfPermissionCheck(getSelfRequiredPermissions()))
+		{
+			EmbedUtils.sendSelfPermissionError(ctx);
 		}
 		else if(hasFlag(CommandFlag.DEVELOPER_ONLY) && !ctx.isDeveloper())
 		{
@@ -66,7 +76,27 @@ public abstract class Command
 		}
 		else
 		{
-			run(args, ctx);
+			try
+			{
+				run(ctx.getArgs(), ctx);
+			}
+			catch(IllegalLengthException exception)
+			{
+				ctx.replyError("The provided input was too long for an embed.");
+				ctx.getMessage().delete().queue();
+			}
+			catch(SyntaxException exception)
+			{
+				EmbedUtils.sendSyntaxError(ctx);
+			}
+			catch(ConfigurationException exception)
+			{
+				ctx.replyError(exception.getText() + " is not setup.");
+			}
+			catch(CommandException exception)
+			{
+				ctx.replyError("An error occurred while executing command " + getName() + "\n" + exception.getText());
+			}
 		}
 	}
 
@@ -137,14 +167,29 @@ public abstract class Command
 		this.aliases.addAll(List.of(aliases));
 	}
 
-	public List<Permission> getRequiredPermissions()
+	public List<Permission> getMemberRequiredPermissions()
 	{
-		return requiredPermissions;
+		return memberRequiredPermissions;
 	}
 
-	public void addPermissions(Permission... permissions)
+	public void addMemberPermissions(Permission... permissions)
 	{
-		this.requiredPermissions.addAll(List.of(permissions));
+		this.memberRequiredPermissions.addAll(List.of(permissions));
+	}
+
+	public void addSelfPermissions(Permission... permissions)
+	{
+		this.selfRequiredPermissions.addAll(List.of(permissions));
+	}
+
+	public List<Permission> getSelfRequiredPermissions()
+	{
+		return selfRequiredPermissions;
+	}
+
+	public List<CommandFlag> getFlags()
+	{
+		return flags;
 	}
 
 	public void addFlags(CommandFlag... flags)

@@ -36,47 +36,47 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> implements Rec
     }
 
     /**
-     * Setter for <code>public.roles.userid</code>.
+     * Setter for <code>public.roles.user_id</code>.
      */
-    public RolesRecord setUserid(Long value) {
+    public RolesRecord setUserId(Long value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.roles.userid</code>.
+     * Getter for <code>public.roles.user_id</code>.
      */
-    public Long getUserid() {
+    public Long getUserId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>public.roles.guildid</code>.
+     * Setter for <code>public.roles.guild_id</code>.
      */
-    public RolesRecord setGuildid(Long value) {
+    public RolesRecord setGuildId(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.roles.guildid</code>.
+     * Getter for <code>public.roles.guild_id</code>.
      */
-    public Long getGuildid() {
+    public Long getGuildId() {
         return (Long) get(2);
     }
 
     /**
-     * Setter for <code>public.roles.roleid</code>.
+     * Setter for <code>public.roles.role_id</code>.
      */
-    public RolesRecord setRoleid(Long value) {
+    public RolesRecord setRoleId(Long value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.roles.roleid</code>.
+     * Getter for <code>public.roles.role_id</code>.
      */
-    public Long getRoleid() {
+    public Long getRoleId() {
         return (Long) get(3);
     }
 
@@ -110,17 +110,17 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> implements Rec
 
     @Override
     public Field<Long> field2() {
-        return Roles.ROLES.USERID;
+        return Roles.ROLES.USER_ID;
     }
 
     @Override
     public Field<Long> field3() {
-        return Roles.ROLES.GUILDID;
+        return Roles.ROLES.GUILD_ID;
     }
 
     @Override
     public Field<Long> field4() {
-        return Roles.ROLES.ROLEID;
+        return Roles.ROLES.ROLE_ID;
     }
 
     @Override
@@ -130,17 +130,17 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> implements Rec
 
     @Override
     public Long component2() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
     public Long component3() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long component4() {
-        return getRoleid();
+        return getRoleId();
     }
 
     @Override
@@ -150,17 +150,17 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> implements Rec
 
     @Override
     public Long value2() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
     public Long value3() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long value4() {
-        return getRoleid();
+        return getRoleId();
     }
 
     @Override
@@ -171,19 +171,19 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> implements Rec
 
     @Override
     public RolesRecord value2(Long value) {
-        setUserid(value);
+        setUserId(value);
         return this;
     }
 
     @Override
     public RolesRecord value3(Long value) {
-        setGuildid(value);
+        setGuildId(value);
         return this;
     }
 
     @Override
     public RolesRecord value4(Long value) {
-        setRoleid(value);
+        setRoleId(value);
         return this;
     }
 
@@ -210,12 +210,12 @@ public class RolesRecord extends UpdatableRecordImpl<RolesRecord> implements Rec
     /**
      * Create a detached, initialised RolesRecord
      */
-    public RolesRecord(Long id, Long userid, Long guildid, Long roleid) {
+    public RolesRecord(Long id, Long userId, Long guildId, Long roleId) {
         super(Roles.ROLES);
 
         setId(id);
-        setUserid(userid);
-        setGuildid(guildid);
-        setRoleid(roleid);
+        setUserId(userId);
+        setGuildId(guildId);
+        setRoleId(roleId);
     }
 }

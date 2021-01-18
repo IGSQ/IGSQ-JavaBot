@@ -5,8 +5,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -37,9 +37,9 @@ public class WarningShowCommand extends Command
 
 			warnings.forEach(warn -> stringBuilder
 					.append("**ID: ")
-					.append(warn.getWarnid())
+					.append(warn.getId())
 					.append("** ")
-					.append(warn.getWarntext())
+					.append(warn.getWarnText())
 					.append(" - ")
 					.append(StringUtils.parseDateTime(warn.getTimestamp()))
 					.append("\n"));

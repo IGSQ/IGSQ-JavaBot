@@ -10,7 +10,7 @@ public enum Emoji
 	APPLE(":apple:", "U+1F34E"),
 	BANANA(":banana:", "U+1F34C"),
 	AVOCADO(":avocado:", "U+1F951"),
-	EGGPLANT(":eggplant:","U+1F346"),
+	EGGPLANT(":eggplant:", "U+1F346"),
 	KIWI(":kiwi:", "U+1F95D"),
 	GRAPES(":grapes:", "U+1F347"),
 	BLUEBERRIES(":blueberries:", "U+1FAD0"),
@@ -62,16 +62,6 @@ public enum Emoji
 	private final String emote;
 	private final boolean isAnimated;
 
-	public String getUnicode()
-	{
-		return unicode;
-	}
-
-	public String getEmote()
-	{
-		return emote;
-	}
-
 	Emoji(String emote, String unicode, boolean isAnimated)
 	{
 		this.emote = emote;
@@ -91,28 +81,6 @@ public enum Emoji
 		this.emote = emote;
 		this.unicode = "";
 		this.isAnimated = false;
-	}
-
-	public String getAsReaction()
-	{
-		if(this.unicode.isBlank())
-		{
-			return "emote:" + this.emote;
-		}
-		return this.unicode;
-	}
-
-	public String getAsMessageable()
-	{
-		if(this.unicode.isBlank())
-		{
-			if(this.isAnimated)
-			{
-				return "<a:emote:" + this.emote + ">";
-			}
-			return "<:emote:" + this.emote + ">";
-		}
-		return this.unicode;
 	}
 
 	public static List<Emoji> getPoll()
@@ -138,6 +106,38 @@ public enum Emoji
 				GARLIC,
 				CUCUMBER,
 				SQUID);
+	}
+
+	public String getUnicode()
+	{
+		return unicode;
+	}
+
+	public String getEmote()
+	{
+		return emote;
+	}
+
+	public String getAsReaction()
+	{
+		if(this.unicode.isBlank())
+		{
+			return "emote:" + this.emote;
+		}
+		return this.unicode;
+	}
+
+	public String getAsMessageable()
+	{
+		if(this.unicode.isBlank())
+		{
+			if(this.isAnimated)
+			{
+				return "<a:emote:" + this.emote + ">";
+			}
+			return "<:emote:" + this.emote + ">";
+		}
+		return this.emote;
 	}
 
 	public List<Emoji> getIGSQNumbers()

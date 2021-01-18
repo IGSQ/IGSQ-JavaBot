@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.entities;
+package org.igsq.igsqbot.entities.command;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
+import org.igsq.igsqbot.entities.Emoji;
+import org.igsq.igsqbot.entities.bot.ConfigOption;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.jooq.DSLContext;
@@ -19,16 +21,23 @@ import org.slf4j.LoggerFactory;
 
 public class CommandContext
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommandContext.class);
 	private final MessageReceivedEvent event;
 	private final IGSQBot igsqBot;
 	private final Command command;
-	private static final Logger LOGGER = LoggerFactory.getLogger(CommandContext.class);
+	private final List<String> args;
 
-	public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot, Command command)
+	public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot, Command command, List<String> args)
 	{
 		this.event = event;
 		this.igsqBot = igsqBot;
 		this.command = command;
+		this.args = args;
+	}
+
+	public List<String> getArgs()
+	{
+		return args;
 	}
 
 	public String getPrefix()
@@ -147,18 +156,28 @@ public class CommandContext
 		return event.isFromGuild();
 	}
 
-	public boolean hasPermission(List<Permission> permissions)
+	public boolean memberPermissionCheck(List<Permission> permissions)
 	{
-		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+		return (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
 	}
 
-	public boolean hasPermission(Set<Permission> permissions)
+	public boolean memberPermissionCheck(Set<Permission> permissions)
 	{
-		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+		return (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
 	}
 
-	public boolean hasPermission(Permission... permissions)
+	public boolean memberPermissionCheck(Permission... permissions)
 	{
-		return event.getGuild().getSelfMember().hasPermission((GuildChannel) event.getChannel(), permissions) || (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+		return (event.getMember() != null && event.getMember().hasPermission((GuildChannel) event.getChannel(), permissions));
+	}
+
+	public boolean selfPermissionCheck(Permission... permissions)
+	{
+		return event.getGuild().getSelfMember().hasPermission(permissions);
+	}
+
+	public boolean selfPermissionCheck(List<Permission> permissions)
+	{
+		return event.getGuild().getSelfMember().hasPermission(permissions);
 	}
 }

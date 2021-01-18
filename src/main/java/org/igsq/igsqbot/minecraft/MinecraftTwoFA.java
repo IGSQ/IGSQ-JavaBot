@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
 
 public class MinecraftTwoFA
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MinecraftTwoFA.class);
 	private final Minecraft minecraft;
 	private final IGSQBot igsqBot;
-	private static final Logger LOGGER = LoggerFactory.getLogger(MinecraftTwoFA.class);
 
 	public MinecraftTwoFA(Minecraft minecraft)
 	{

@@ -9,16 +9,16 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.ConfigOption;
-import org.igsq.igsqbot.entities.Configuration;
+import org.igsq.igsqbot.entities.bot.ConfigOption;
+import org.igsq.igsqbot.entities.bot.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MinecraftSync
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MinecraftSync.class);
 	private final Minecraft minecraft;
 	private final IGSQBot igsqbot;
-	private static final Logger LOGGER = LoggerFactory.getLogger(MinecraftSync.class);
 
 	public MinecraftSync(Minecraft minecraft)
 	{

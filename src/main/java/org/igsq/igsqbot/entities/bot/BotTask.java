@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.entities;
+package org.igsq.igsqbot.entities.bot;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;

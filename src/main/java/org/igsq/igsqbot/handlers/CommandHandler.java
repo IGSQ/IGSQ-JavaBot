@@ -16,9 +16,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -146,18 +146,18 @@ public class CommandHandler
 			cmd = commandMap.get(commandText.toLowerCase());
 			if(cmd == null)
 			{
-				event.getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(success -> event.getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS,null, error -> {}));
+				event.getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(success -> event.getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS, null, error ->
+				{}));
 				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.\n Type `" + prefix + "help` for help.");
 				return;
 			}
-			CommandContext ctx = new CommandContext(event, igsqBot, cmd);
 
 			args.remove(0);
 			if(startWithIdSpaced)
 			{
 				args.remove(0);
 			}
-
+			CommandContext ctx = new CommandContext(event, igsqBot, cmd, args);
 			if(cmd.hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && guild != null && guild.getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 			{
 				event.getMessage().delete().queue();
@@ -165,7 +165,7 @@ public class CommandHandler
 
 			if(args.isEmpty())
 			{
-				cmd.process(args, ctx);
+				cmd.process(ctx);
 				return;
 			}
 
@@ -175,11 +175,11 @@ public class CommandHandler
 				if(subCommand.equalsIgnoreCase(child.getName()))
 				{
 					args.remove(0);
-					child.process(args, new CommandContext(event, igsqBot, child));
+					child.process(new CommandContext(event, igsqBot, child, args));
 					return;
 				}
 			}
-			cmd.process(args, ctx);
+			cmd.process(ctx);
 		}
 	}
 }

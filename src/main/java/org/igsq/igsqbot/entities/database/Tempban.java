@@ -8,8 +8,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
-import org.igsq.igsqbot.entities.jooq.tables.Mutes;
-import org.igsq.igsqbot.entities.jooq.tables.Roles;
+
+import static org.igsq.igsqbot.entities.jooq.tables.Roles.ROLES;
+import static org.igsq.igsqbot.entities.jooq.tables.Tempbans.TEMPBANS;
 
 public class Tempban
 {
@@ -33,15 +34,15 @@ public class Tempban
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
-			var roles = ctx.selectFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(userId));
+			var roles = ctx.selectFrom(Tables.ROLES).where(ROLES.USER_ID.eq(userId));
 			List<Role> collectedRoles = new ArrayList<>();
 			Guild guild = null;
 			for(var row : roles.fetch())
 			{
-				guild = igsqBot.getShardManager().getGuildById(row.getGuildid());
+				guild = igsqBot.getShardManager().getGuildById(row.getGuildId());
 				if(guild != null)
 				{
-					Role role = guild.getRoleById(row.getRoleid());
+					Role role = guild.getRoleById(row.getRoleId());
 					if(role != null)
 					{
 						if(!collectedRoles.contains(role))
@@ -57,8 +58,8 @@ public class Tempban
 				Guild finalGuild = guild;
 				guild.retrieveMemberById(userId).queue(member -> finalGuild.modifyMemberRoles(member, collectedRoles).queue());
 			}
-			ctx.deleteFrom(Tables.MUTES).where(Mutes.MUTES.USERID.eq(userId)).execute();
-			ctx.deleteFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(userId)).execute();
+			ctx.deleteFrom(Tables.TEMPBANS).where(TEMPBANS.USERID.eq(userId)).execute();
+			ctx.deleteFrom(Tables.ROLES).where(ROLES.USER_ID.eq(userId)).execute();
 		}
 		catch(Exception exception)
 		{
@@ -72,7 +73,7 @@ public class Tempban
 		{
 			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 
-			boolean exists = ctx.select(Mutes.MUTES.USERID).from(Tables.MUTES).fetchOne() != null;
+			boolean exists = ctx.select(TEMPBANS.USERID).from(Tables.TEMPBANS).fetchOne() != null;
 			if(exists)
 			{
 				return false;
@@ -80,9 +81,9 @@ public class Tempban
 
 			for(long roleId : roleIds)
 			{
-				ctx.insertInto(Tables.ROLES).columns(Roles.ROLES.GUILDID, Roles.ROLES.USERID, Roles.ROLES.ROLEID).values(guild.getIdLong(), memberId, roleId).execute();
+				ctx.insertInto(Tables.ROLES).columns(ROLES.GUILD_ID, ROLES.USER_ID, ROLES.ROLE_ID).values(guild.getIdLong(), memberId, roleId).execute();
 			}
-			ctx.insertInto(Tables.MUTES).columns(Mutes.MUTES.GUILDID, Mutes.MUTES.USERID, Mutes.MUTES.MUTEDUNTIL).values(guild.getIdLong(), memberId, mutedUntil).execute();
+			ctx.insertInto(Tables.TEMPBANS).columns(TEMPBANS.GUILDID, TEMPBANS.USERID, TEMPBANS.MUTEDUNTIL).values(guild.getIdLong(), memberId, mutedUntil).execute();
 
 		}
 		catch(Exception exception)
@@ -98,8 +99,8 @@ public class Tempban
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
-			ctx.deleteFrom(Tables.MUTES).where(Mutes.MUTES.USERID.eq(memberId)).execute();
-			ctx.deleteFrom(Tables.ROLES).where(Roles.ROLES.USERID.eq(memberId)).execute();
+			ctx.deleteFrom(Tables.TEMPBANS).where(TEMPBANS.USERID.eq(memberId)).execute();
+			ctx.deleteFrom(Tables.ROLES).where(ROLES.USER_ID.eq(memberId)).execute();
 		}
 		catch(Exception exception)
 		{

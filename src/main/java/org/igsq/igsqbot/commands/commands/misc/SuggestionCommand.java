@@ -6,12 +6,12 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.ArrayUtils;
-import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
 public class SuggestionCommand extends Command
@@ -26,32 +26,27 @@ public class SuggestionCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
+		CommandChecks.argsEmpty(ctx);
+		CommandChecks.argsEmbedCompatible(ctx);
+
 		User author = ctx.getAuthor();
 		GuildConfig guildConfig = new GuildConfig(ctx);
+		MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
 
-		if(args.isEmpty())
+		if(suggestionChannel == null)
 		{
-			EmbedUtils.sendSyntaxError(ctx);
+			ctx.replyError("No suggestion channel setup.");
+			return;
 		}
-		else
-		{
-			MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
 
-			if(suggestionChannel != null)
-			{
-				ctx.getChannel().sendMessage(new EmbedBuilder()
-						.setTitle("Suggestion:")
-						.setDescription(ArrayUtils.arrayCompile(args, " "))
-						.setColor(Constants.IGSQ_PURPLE)
-						.setThumbnail(author.getAvatarUrl())
-						.setFooter("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator() + " | ")
-						.setTimestamp(Instant.now())
-						.build()).queue();
-			}
-			else
-			{
-				ctx.replyError("No suggestion channel setup.");
-			}
-		}
+		suggestionChannel.sendMessage(new EmbedBuilder()
+				.setTitle("Suggestion:")
+				.setDescription(ArrayUtils.arrayCompile(args, " "))
+				.setColor(Constants.IGSQ_PURPLE)
+				.setThumbnail(author.getAvatarUrl())
+				.setFooter("Suggestion by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator() + " | ")
+				.setTimestamp(Instant.now())
+				.build()).queue();
+
 	}
 }

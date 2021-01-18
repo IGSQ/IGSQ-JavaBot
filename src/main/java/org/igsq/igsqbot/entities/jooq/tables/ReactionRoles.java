@@ -53,24 +53,24 @@ public class ReactionRoles extends TableImpl<ReactionRolesRecord> {
     public final TableField<ReactionRolesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.reaction_roles.messageid</code>.
+     * The column <code>public.reaction_roles.message_id</code>.
      */
-    public final TableField<ReactionRolesRecord, Long> MESSAGEID = createField(DSL.name("messageid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReactionRolesRecord, Long> MESSAGE_ID = createField(DSL.name("message_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reaction_roles.guildid</code>.
+     * The column <code>public.reaction_roles.guild_id</code>.
      */
-    public final TableField<ReactionRolesRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReactionRolesRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reaction_roles.emoteid</code>.
+     * The column <code>public.reaction_roles.emote_id</code>.
      */
-    public final TableField<ReactionRolesRecord, String> EMOTEID = createField(DSL.name("emoteid"), SQLDataType.VARCHAR(25), this, "");
+    public final TableField<ReactionRolesRecord, String> EMOTE_ID = createField(DSL.name("emote_id"), SQLDataType.VARCHAR(25), this, "");
 
     /**
-     * The column <code>public.reaction_roles.roleid</code>.
+     * The column <code>public.reaction_roles.role_id</code>.
      */
-    public final TableField<ReactionRolesRecord, Long> ROLEID = createField(DSL.name("roleid"), SQLDataType.BIGINT, this, "");
+    public final TableField<ReactionRolesRecord, Long> ROLE_ID = createField(DSL.name("role_id"), SQLDataType.BIGINT, this, "");
 
     private ReactionRoles(Name alias, Table<ReactionRolesRecord> aliased) {
         this(alias, aliased, null);
@@ -127,11 +127,11 @@ public class ReactionRoles extends TableImpl<ReactionRolesRecord> {
 
     @Override
     public List<ForeignKey<ReactionRolesRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ReactionRolesRecord, ?>>asList(Keys.REACTION_ROLES__REACTION_ROLES_GUILDID_FKEY);
+        return Arrays.<ForeignKey<ReactionRolesRecord, ?>>asList(Keys.REACTION_ROLES__REACTION_ROLES_GUILD_ID_FKEY);
     }
 
     public Guilds guilds() {
-        return new Guilds(this, Keys.REACTION_ROLES__REACTION_ROLES_GUILDID_FKEY);
+        return new Guilds(this, Keys.REACTION_ROLES__REACTION_ROLES_GUILD_ID_FKEY);
     }
 
     @Override

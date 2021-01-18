@@ -6,8 +6,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 
 @SuppressWarnings("unused")
 public class PingCommand extends Command
@@ -26,6 +26,7 @@ public class PingCommand extends Command
 
 		jda.getRestPing().queue(
 				time -> channel.sendMessage(new EmbedBuilder()
+						.setTitle("Pong!")
 						.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId()
 								+ "\n**REST Ping**: " + time
 								+ "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")

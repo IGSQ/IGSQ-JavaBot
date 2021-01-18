@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.entities;
+package org.igsq.igsqbot.entities.bot;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import org.igsq.igsqbot.IGSQBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +15,16 @@ public class Configuration
 {
 	public static final File CONFIG_FOLDER = new File("config");
 	public static final File CONFIG_FILE = new File(CONFIG_FOLDER, "bot.cfg");
-	private final IGSQBot igsqBot;
-	private List<ConfigurationValue> configValues = new CopyOnWriteArrayList<>();
 	private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
+	private final IGSQBot igsqBot;
+	private final List<ConfigurationValue> configValues;
 
 	public Configuration(IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
 		initFolder();
 		initFiles();
-		loadFiles();
+		this.configValues = loadFiles();
 	}
 
 	private void initFolder()
@@ -59,7 +58,7 @@ public class Configuration
 		}
 	}
 
-	private void loadFiles()
+	private List<ConfigurationValue> loadFiles()
 	{
 		List<ConfigurationValue> values = new ArrayList<>();
 		try
@@ -75,15 +74,16 @@ public class Configuration
 				String[] elements = line.split("=");
 				values.add(new ConfigurationValue(elements[0], elements[1]));
 			}
+			return applyDefaults(values);
 		}
 		catch(Exception exception)
 		{
 			igsqBot.getLogger().error("A config error occurred", exception);
+			return Collections.emptyList();
 		}
-		applyDefaults(values);
 	}
 
-	private void applyDefaults(List<ConfigurationValue> loadedValues)
+	private List<ConfigurationValue> applyDefaults(List<ConfigurationValue> loadedValues)
 	{
 		for(ConfigOption configOption : ConfigOption.values())
 		{
@@ -92,11 +92,11 @@ public class Configuration
 				loadedValues.add(new ConfigurationValue(configOption.getKey(), configOption.getDefaultValue()));
 			}
 		}
-		this.configValues = Collections.unmodifiableList(loadedValues);
-		save();
+		save(loadedValues);
+		return Collections.unmodifiableList(loadedValues);
 	}
 
-	private void save()
+	private void save(List<ConfigurationValue> configValues)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		for(ConfigurationValue configurationValue : configValues)
@@ -121,15 +121,17 @@ public class Configuration
 
 	public String getString(ConfigOption configOption)
 	{
-		for(ConfigurationValue configurationValue : configValues)
+		synchronized(configValues)
 		{
-			if(configurationValue.getKey().equals(configOption.getKey()))
+			for(ConfigurationValue configurationValue : configValues)
 			{
-				return configurationValue.getValue();
+				if(configurationValue.getKey().equals(configOption.getKey()))
+				{
+					return configurationValue.getValue();
+				}
 			}
+			return configOption.getDefaultValue();
 		}
-
-		return configOption.getDefaultValue();
 	}
 
 	private static class ConfigurationValue

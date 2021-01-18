@@ -23,47 +23,47 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.warnings.warnid</code>.
+     * Setter for <code>public.warnings.id</code>.
      */
-    public WarningsRecord setWarnid(Long value) {
+    public WarningsRecord setId(Long value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.warnings.warnid</code>.
+     * Getter for <code>public.warnings.id</code>.
      */
-    public Long getWarnid() {
+    public Long getId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>public.warnings.guildid</code>.
+     * Setter for <code>public.warnings.guild_id</code>.
      */
-    public WarningsRecord setGuildid(Long value) {
+    public WarningsRecord setGuildId(Long value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.warnings.guildid</code>.
+     * Getter for <code>public.warnings.guild_id</code>.
      */
-    public Long getGuildid() {
+    public Long getGuildId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>public.warnings.userid</code>.
+     * Setter for <code>public.warnings.user_id</code>.
      */
-    public WarningsRecord setUserid(Long value) {
+    public WarningsRecord setUserId(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.warnings.userid</code>.
+     * Getter for <code>public.warnings.user_id</code>.
      */
-    public Long getUserid() {
+    public Long getUserId() {
         return (Long) get(2);
     }
 
@@ -83,17 +83,17 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
     }
 
     /**
-     * Setter for <code>public.warnings.warntext</code>.
+     * Setter for <code>public.warnings.warn_text</code>.
      */
-    public WarningsRecord setWarntext(String value) {
+    public WarningsRecord setWarnText(String value) {
         set(4, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.warnings.warntext</code>.
+     * Getter for <code>public.warnings.warn_text</code>.
      */
-    public String getWarntext() {
+    public String getWarnText() {
         return (String) get(4);
     }
 
@@ -122,17 +122,17 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
 
     @Override
     public Field<Long> field1() {
-        return Warnings.WARNINGS.WARNID;
+        return Warnings.WARNINGS.ID;
     }
 
     @Override
     public Field<Long> field2() {
-        return Warnings.WARNINGS.GUILDID;
+        return Warnings.WARNINGS.GUILD_ID;
     }
 
     @Override
     public Field<Long> field3() {
-        return Warnings.WARNINGS.USERID;
+        return Warnings.WARNINGS.USER_ID;
     }
 
     @Override
@@ -142,22 +142,22 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
 
     @Override
     public Field<String> field5() {
-        return Warnings.WARNINGS.WARNTEXT;
+        return Warnings.WARNINGS.WARN_TEXT;
     }
 
     @Override
     public Long component1() {
-        return getWarnid();
+        return getId();
     }
 
     @Override
     public Long component2() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long component3() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
@@ -167,22 +167,22 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
 
     @Override
     public String component5() {
-        return getWarntext();
+        return getWarnText();
     }
 
     @Override
     public Long value1() {
-        return getWarnid();
+        return getId();
     }
 
     @Override
     public Long value2() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long value3() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
@@ -192,24 +192,24 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
 
     @Override
     public String value5() {
-        return getWarntext();
+        return getWarnText();
     }
 
     @Override
     public WarningsRecord value1(Long value) {
-        setWarnid(value);
+        setId(value);
         return this;
     }
 
     @Override
     public WarningsRecord value2(Long value) {
-        setGuildid(value);
+        setGuildId(value);
         return this;
     }
 
     @Override
     public WarningsRecord value3(Long value) {
-        setUserid(value);
+        setUserId(value);
         return this;
     }
 
@@ -221,7 +221,7 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
 
     @Override
     public WarningsRecord value5(String value) {
-        setWarntext(value);
+        setWarnText(value);
         return this;
     }
 
@@ -249,13 +249,13 @@ public class WarningsRecord extends UpdatableRecordImpl<WarningsRecord> implemen
     /**
      * Create a detached, initialised WarningsRecord
      */
-    public WarningsRecord(Long warnid, Long guildid, Long userid, LocalDateTime timestamp, String warntext) {
+    public WarningsRecord(Long id, Long guildId, Long userId, LocalDateTime timestamp, String warnText) {
         super(Warnings.WARNINGS);
 
-        setWarnid(warnid);
-        setGuildid(guildid);
-        setUserid(userid);
+        setId(id);
+        setGuildId(guildId);
+        setUserId(userId);
         setTimestamp(timestamp);
-        setWarntext(warntext);
+        setWarnText(warnText);
     }
 }

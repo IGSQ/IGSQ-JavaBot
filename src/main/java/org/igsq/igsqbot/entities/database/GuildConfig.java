@@ -3,7 +3,7 @@ package org.igsq.igsqbot.entities.database;
 import java.sql.Connection;
 import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.jooq.Field;
 
 import static org.igsq.igsqbot.entities.jooq.tables.Guilds.GUILDS;
@@ -36,7 +36,7 @@ public class GuildConfig
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
-			var query = context.select(GUILDS.PREFIX).from(GUILDS).where(GUILDS.GUILDID.eq(guildId));
+			var query = context.select(GUILDS.PREFIX).from(GUILDS).where(GUILDS.GUILD_ID.eq(guildId));
 			String result = query.fetchOne(GUILDS.PREFIX);
 			query.close();
 			return result;
@@ -53,7 +53,7 @@ public class GuildConfig
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
-			var query = context.update(GUILDS).set(GUILDS.PREFIX, prefix).where(GUILDS.GUILDID.eq(guildId));
+			var query = context.update(GUILDS).set(GUILDS.PREFIX, prefix).where(GUILDS.GUILD_ID.eq(guildId));
 			query.execute();
 		}
 		catch(Exception exception)
@@ -64,27 +64,27 @@ public class GuildConfig
 
 	public long getReportChannel()
 	{
-		return getValue(GUILDS.REPORTCHANNEL);
+		return getValue(GUILDS.REPORT_CHANNEL);
 	}
 
 	public long getLogChannel()
 	{
-		return getValue(GUILDS.LOGCHANNEL);
+		return getValue(GUILDS.LOG_CHANNEL);
 	}
 
 	public long getVoteChannel()
 	{
-		return getValue(GUILDS.VOTECHANNEL);
+		return getValue(GUILDS.VOTE_CHANNEL);
 	}
 
-	public long getMutedRole()
+	public long getTempBanRole()
 	{
-		return getValue(GUILDS.MUTEDROLE);
+		return getValue(GUILDS.MUTED_ROLE);
 	}
 
 	public long getSuggestionChannel()
 	{
-		return getValue(GUILDS.SUGGESTIONCHANNEL);
+		return getValue(GUILDS.SUGGESTION_CHANNEL);
 	}
 
 	private long getValue(Field<?> value)
@@ -92,7 +92,7 @@ public class GuildConfig
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
-			var query = context.select(value).from(GUILDS).where(GUILDS.GUILDID.eq(guildId));
+			var query = context.select(value).from(GUILDS).where(GUILDS.GUILD_ID.eq(guildId));
 			long result = Long.parseLong(String.valueOf(query.fetchOne(value)));
 			query.close();
 			return result;

@@ -6,11 +6,12 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.handlers.CooldownHandler;
+import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
 
@@ -21,7 +22,8 @@ public class ClearCommand extends Command
 	{
 		super("Clear", "Clears messages from the current channel", "[amount {50}]");
 		addAliases("clear", "purge");
-		addPermissions(Permission.MESSAGE_MANAGE);
+		addMemberPermissions(Permission.MESSAGE_MANAGE);
+		addSelfPermissions(Permission.MESSAGE_MANAGE);
 		addCooldown(10000);
 		addFlags(CommandFlag.GUILD_ONLY);
 	}
@@ -29,16 +31,11 @@ public class ClearCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
+		CommandChecks.argsEmpty(ctx);
+
 		MessageChannel channel = ctx.getChannel();
 		Member member = ctx.getMember();
 		Guild guild = ctx.getGuild();
-
-		if(args.isEmpty())
-		{
-			EmbedUtils.sendSyntaxError(ctx);
-			return;
-		}
-
 		OptionalInt amount = new Parser(args.get(0), ctx).parseAsUnsignedInt();
 
 		if(amount.isPresent())

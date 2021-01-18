@@ -1,4 +1,4 @@
-package org.igsq.igsqbot.entities;
+package org.igsq.igsqbot.entities.command;
 
 public enum CommandFlag
 {
@@ -6,13 +6,15 @@ public enum CommandFlag
 	DEVELOPER_ONLY(false),
 	AUTO_DELETE_MESSAGE(false);
 
-	public boolean getDefaultValue()
-	{
-		return defaultValue;
-	}
 	private final boolean defaultValue;
+
 	CommandFlag(boolean defaultValue)
 	{
 		this.defaultValue = defaultValue;
+	}
+
+	public boolean getDefaultValue()
+	{
+		return defaultValue;
 	}
 }

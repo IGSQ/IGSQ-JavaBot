@@ -6,9 +6,9 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
 public class AvatarCommand extends Command
@@ -26,26 +26,22 @@ public class AvatarCommand extends Command
 		MessageChannel channel = ctx.getChannel();
 		User author = message.getAuthor();
 
-		if(message.getMentionedMembers().size() > 3)
-		{
-			EmbedUtils.sendSyntaxError(ctx);
-		}
-		else if(!message.getMentionedMembers().isEmpty())
-		{
-			message.getMentionedMembers().forEach(member ->
-					channel.sendMessage(new EmbedBuilder()
-							.setTitle(member.getUser().getAsTag() + "'s Avatar")
-							.setImage(member.getUser().getEffectiveAvatarUrl() + "?size=4096")
-							.setColor(Constants.IGSQ_PURPLE).build()).queue());
-
-		}
-		else
+		CommandChecks.argsSizeExceeds(ctx, 3);
+		if(message.getMentionedMembers().isEmpty())
 		{
 			channel.sendMessage(new EmbedBuilder()
 					.setTitle(author.getAsTag() + "'s Avatar")
 					.setImage(author.getAvatarUrl() + "?size=4096")
 					.setColor(Constants.IGSQ_PURPLE)
 					.build()).queue();
+		}
+		else
+		{
+			message.getMentionedMembers().forEach(member ->
+					channel.sendMessage(new EmbedBuilder()
+							.setTitle(member.getUser().getAsTag() + "'s Avatar")
+							.setImage(member.getUser().getEffectiveAvatarUrl() + "?size=4096")
+							.setColor(Constants.IGSQ_PURPLE).build()).queue());
 		}
 	}
 }

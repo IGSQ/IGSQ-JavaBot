@@ -7,9 +7,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.commands.subcommands.warning.WarningRemoveCommand;
 import org.igsq.igsqbot.commands.subcommands.warning.WarningShowCommand;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.util.CommandUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -22,7 +22,7 @@ public class WarnCommand extends Command
 	{
 		super("Warn", "Handles the user warning system", "[user][reason] | [show][user] | [remove][user][number]");
 		addAliases("warn");
-		addPermissions(Permission.MESSAGE_MANAGE);
+		addMemberPermissions(Permission.MESSAGE_MANAGE);
 		addChildren(
 				new WarningShowCommand(this),
 				new WarningRemoveCommand(this));

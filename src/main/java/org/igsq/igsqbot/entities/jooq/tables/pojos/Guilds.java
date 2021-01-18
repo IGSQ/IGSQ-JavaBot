@@ -15,93 +15,93 @@ public class Guilds implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long   guildid;
-    private final Long   logchannel;
-    private final Long   mutedrole;
-    private final Long   verifiedrole;
-    private final Long   reportchannel;
-    private final Long   votechannel;
-    private final Long   suggestionchannel;
+    private final Long   guildId;
+    private final Long   logChannel;
+    private final Long   mutedRole;
+    private final Long   verifiedRole;
+    private final Long   reportChannel;
+    private final Long   voteChannel;
+    private final Long   suggestionChannel;
     private final String prefix;
 
     public Guilds(Guilds value) {
-        this.guildid = value.guildid;
-        this.logchannel = value.logchannel;
-        this.mutedrole = value.mutedrole;
-        this.verifiedrole = value.verifiedrole;
-        this.reportchannel = value.reportchannel;
-        this.votechannel = value.votechannel;
-        this.suggestionchannel = value.suggestionchannel;
+        this.guildId = value.guildId;
+        this.logChannel = value.logChannel;
+        this.mutedRole = value.mutedRole;
+        this.verifiedRole = value.verifiedRole;
+        this.reportChannel = value.reportChannel;
+        this.voteChannel = value.voteChannel;
+        this.suggestionChannel = value.suggestionChannel;
         this.prefix = value.prefix;
     }
 
     public Guilds(
-        Long   guildid,
-        Long   logchannel,
-        Long   mutedrole,
-        Long   verifiedrole,
-        Long   reportchannel,
-        Long   votechannel,
-        Long   suggestionchannel,
+        Long   guildId,
+        Long   logChannel,
+        Long   mutedRole,
+        Long   verifiedRole,
+        Long   reportChannel,
+        Long   voteChannel,
+        Long   suggestionChannel,
         String prefix
     ) {
-        this.guildid = guildid;
-        this.logchannel = logchannel;
-        this.mutedrole = mutedrole;
-        this.verifiedrole = verifiedrole;
-        this.reportchannel = reportchannel;
-        this.votechannel = votechannel;
-        this.suggestionchannel = suggestionchannel;
+        this.guildId = guildId;
+        this.logChannel = logChannel;
+        this.mutedRole = mutedRole;
+        this.verifiedRole = verifiedRole;
+        this.reportChannel = reportChannel;
+        this.voteChannel = voteChannel;
+        this.suggestionChannel = suggestionChannel;
         this.prefix = prefix;
     }
 
     /**
-     * Getter for <code>public.guilds.guildid</code>.
+     * Getter for <code>public.guilds.guild_id</code>.
      */
-    public Long getGuildid() {
-        return this.guildid;
+    public Long getGuildId() {
+        return this.guildId;
     }
 
     /**
-     * Getter for <code>public.guilds.logchannel</code>.
+     * Getter for <code>public.guilds.log_channel</code>.
      */
-    public Long getLogchannel() {
-        return this.logchannel;
+    public Long getLogChannel() {
+        return this.logChannel;
     }
 
     /**
-     * Getter for <code>public.guilds.mutedrole</code>.
+     * Getter for <code>public.guilds.muted_role</code>.
      */
-    public Long getMutedrole() {
-        return this.mutedrole;
+    public Long getMutedRole() {
+        return this.mutedRole;
     }
 
     /**
-     * Getter for <code>public.guilds.verifiedrole</code>.
+     * Getter for <code>public.guilds.verified_role</code>.
      */
-    public Long getVerifiedrole() {
-        return this.verifiedrole;
+    public Long getVerifiedRole() {
+        return this.verifiedRole;
     }
 
     /**
-     * Getter for <code>public.guilds.reportchannel</code>.
+     * Getter for <code>public.guilds.report_channel</code>.
      */
-    public Long getReportchannel() {
-        return this.reportchannel;
+    public Long getReportChannel() {
+        return this.reportChannel;
     }
 
     /**
-     * Getter for <code>public.guilds.votechannel</code>.
+     * Getter for <code>public.guilds.vote_channel</code>.
      */
-    public Long getVotechannel() {
-        return this.votechannel;
+    public Long getVoteChannel() {
+        return this.voteChannel;
     }
 
     /**
-     * Getter for <code>public.guilds.suggestionchannel</code>.
+     * Getter for <code>public.guilds.suggestion_channel</code>.
      */
-    public Long getSuggestionchannel() {
-        return this.suggestionchannel;
+    public Long getSuggestionChannel() {
+        return this.suggestionChannel;
     }
 
     /**
@@ -115,13 +115,13 @@ public class Guilds implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("Guilds (");
 
-        sb.append(guildid);
-        sb.append(", ").append(logchannel);
-        sb.append(", ").append(mutedrole);
-        sb.append(", ").append(verifiedrole);
-        sb.append(", ").append(reportchannel);
-        sb.append(", ").append(votechannel);
-        sb.append(", ").append(suggestionchannel);
+        sb.append(guildId);
+        sb.append(", ").append(logChannel);
+        sb.append(", ").append(mutedRole);
+        sb.append(", ").append(verifiedRole);
+        sb.append(", ").append(reportChannel);
+        sb.append(", ").append(voteChannel);
+        sb.append(", ").append(suggestionChannel);
         sb.append(", ").append(prefix);
 
         sb.append(")");

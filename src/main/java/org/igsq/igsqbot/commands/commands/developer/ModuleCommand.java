@@ -1,10 +1,11 @@
 package org.igsq.igsqbot.commands.commands.developer;
 
 import java.util.List;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
-import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
 public class ModuleCommand extends Command
@@ -23,7 +24,7 @@ public class ModuleCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		EmbedUtils.sendSyntaxError(ctx);
+		throw new SyntaxException(ctx);
 	}
 
 	public static class ModuleEnableCommand extends Command
@@ -36,11 +37,7 @@ public class ModuleCommand extends Command
 		@Override
 		public void run(List<String> args, CommandContext ctx)
 		{
-			if(args.isEmpty())
-			{
-				EmbedUtils.sendSyntaxError(ctx);
-				return;
-			}
+			CommandChecks.argsEmpty(ctx);
 			String moduleName = args.get(0);
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
@@ -66,11 +63,7 @@ public class ModuleCommand extends Command
 		@Override
 		public void run(List<String> args, CommandContext ctx)
 		{
-			if(args.isEmpty())
-			{
-				EmbedUtils.sendSyntaxError(ctx);
-				return;
-			}
+			CommandChecks.argsEmpty(ctx);
 			String moduleName = args.get(0);
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)

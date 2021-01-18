@@ -7,21 +7,22 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.igsq.igsqbot.entities.BotTask;
+import org.igsq.igsqbot.entities.bot.BotTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TaskHandler
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TaskHandler.class);
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
 	private final List<BotTask> tasks = new ArrayList<>();
 	private final List<UUID> currentUUIDs = new ArrayList<>();
-	private static final Logger LOGGER = LoggerFactory.getLogger(TaskHandler.class);
 
 	public TaskHandler()
 	{
 		LOGGER.debug("Started TaskHandler.");
 	}
+
 	public BotTask addTask(Runnable task, TimeUnit unit, long time)
 	{
 		String taskName = getTaskName();

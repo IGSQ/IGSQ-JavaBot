@@ -4,16 +4,16 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.ConfigOption;
-import org.igsq.igsqbot.entities.Configuration;
+import org.igsq.igsqbot.entities.bot.ConfigOption;
+import org.igsq.igsqbot.entities.bot.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DatabaseHandler
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseHandler.class);
 	private final IGSQBot igsqBot;
 	private final HikariDataSource pool;
-	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseHandler.class);
 
 	public DatabaseHandler(IGSQBot igsqBot)
 	{

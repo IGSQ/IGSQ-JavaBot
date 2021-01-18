@@ -16,53 +16,53 @@ public class Warnings implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long          warnid;
-    private final Long          guildid;
-    private final Long          userid;
+    private final Long          id;
+    private final Long          guildId;
+    private final Long          userId;
     private final LocalDateTime timestamp;
-    private final String        warntext;
+    private final String        warnText;
 
     public Warnings(Warnings value) {
-        this.warnid = value.warnid;
-        this.guildid = value.guildid;
-        this.userid = value.userid;
+        this.id = value.id;
+        this.guildId = value.guildId;
+        this.userId = value.userId;
         this.timestamp = value.timestamp;
-        this.warntext = value.warntext;
+        this.warnText = value.warnText;
     }
 
     public Warnings(
-        Long          warnid,
-        Long          guildid,
-        Long          userid,
+        Long          id,
+        Long          guildId,
+        Long          userId,
         LocalDateTime timestamp,
-        String        warntext
+        String        warnText
     ) {
-        this.warnid = warnid;
-        this.guildid = guildid;
-        this.userid = userid;
+        this.id = id;
+        this.guildId = guildId;
+        this.userId = userId;
         this.timestamp = timestamp;
-        this.warntext = warntext;
+        this.warnText = warnText;
     }
 
     /**
-     * Getter for <code>public.warnings.warnid</code>.
+     * Getter for <code>public.warnings.id</code>.
      */
-    public Long getWarnid() {
-        return this.warnid;
+    public Long getId() {
+        return this.id;
     }
 
     /**
-     * Getter for <code>public.warnings.guildid</code>.
+     * Getter for <code>public.warnings.guild_id</code>.
      */
-    public Long getGuildid() {
-        return this.guildid;
+    public Long getGuildId() {
+        return this.guildId;
     }
 
     /**
-     * Getter for <code>public.warnings.userid</code>.
+     * Getter for <code>public.warnings.user_id</code>.
      */
-    public Long getUserid() {
-        return this.userid;
+    public Long getUserId() {
+        return this.userId;
     }
 
     /**
@@ -73,21 +73,21 @@ public class Warnings implements Serializable {
     }
 
     /**
-     * Getter for <code>public.warnings.warntext</code>.
+     * Getter for <code>public.warnings.warn_text</code>.
      */
-    public String getWarntext() {
-        return this.warntext;
+    public String getWarnText() {
+        return this.warnText;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Warnings (");
 
-        sb.append(warnid);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(userid);
+        sb.append(id);
+        sb.append(", ").append(guildId);
+        sb.append(", ").append(userId);
         sb.append(", ").append(timestamp);
-        sb.append(", ").append(warntext);
+        sb.append(", ").append(warnText);
 
         sb.append(")");
         return sb.toString();

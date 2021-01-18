@@ -5,9 +5,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
@@ -26,26 +26,21 @@ public class ReportCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
+		CommandChecks.argsSizeSubceeds(ctx, 2);
+
 		MessageChannel channel = ctx.getChannel();
 		User author = ctx.getAuthor();
 		Guild guild = ctx.getGuild();
 		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(ctx).getReportChannel());
-		if(args.size() < 2)
-		{
-			EmbedUtils.sendSyntaxError(ctx);
-			return;
-		}
-		if(reportChannel == null)
-		{
-			ctx.replyError("There is no report channel setup");
-			return;
-		}
+
+		CommandChecks.channelConfigured(reportChannel, "Report channel");
 
 		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
 			args.remove(0);
 			String reason = ArrayUtils.arrayCompile(args, " ");
 			String messageLink = StringUtils.getMessageLink(ctx.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
+
 			if(user.isBot())
 			{
 				ctx.replyError("You may not report bots.");

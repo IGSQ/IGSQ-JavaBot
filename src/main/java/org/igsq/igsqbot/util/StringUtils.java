@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import org.igsq.igsqbot.entities.Emoji;
 
 public class StringUtils
 {
@@ -23,6 +24,25 @@ public class StringUtils
 			return emote;
 		}
 	}
+
+	public static String parseToEmote(int number)
+	{
+		return switch(number)
+				{
+					case 1 -> Emoji.ONE.getAsMessageable();
+					case 2 -> Emoji.TWO.getAsMessageable();
+					case 3 -> Emoji.THREE.getAsMessageable();
+					case 4 -> Emoji.FOUR.getAsMessageable();
+					case 5 -> Emoji.FIVE.getAsMessageable();
+					case 6 -> Emoji.SIX.getAsMessageable();
+					case 7 -> Emoji.SEVEN.getAsMessageable();
+					case 8 -> Emoji.EIGHT.getAsMessageable();
+					case 9 -> Emoji.NINE.getAsMessageable();
+					case 0 -> Emoji.ZERO.getAsMessageable();
+					default -> "";
+				};
+	}
+
 	public static String getRoleAsMention(long roleId)
 	{
 		return "<@&" + roleId + ">";
@@ -70,12 +90,6 @@ public class StringUtils
 			}
 		}
 		return score < accuracy;
-	}
-
-	public static String stringDepend(String input, String match, String delimiter)
-	{
-		if(!input.contains(match)) return input;
-		return input.substring(input.startsWith(delimiter) ? 1 : 0, input.indexOf(match)) + input.substring(input.indexOf(match) + match.length());
 	}
 
 	public static String getTimestamp()

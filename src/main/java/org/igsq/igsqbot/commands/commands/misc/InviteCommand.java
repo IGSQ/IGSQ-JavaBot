@@ -4,9 +4,10 @@ import java.util.List;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 @SuppressWarnings("unused")
@@ -24,30 +25,27 @@ public class InviteCommand extends Command
 	{
 		Guild guild = ctx.getGuild();
 
-		if(!args.isEmpty())
+		CommandChecks.argsEmpty(ctx);
+		if(!guild.getSelfMember().hasPermission(Permission.MANAGE_SERVER))
 		{
-			EmbedUtils.sendSyntaxError(ctx);
+			EmbedUtils.sendMemberPermissionError(ctx);
+			return;
 		}
-		else if(!guild.getSelfMember().hasPermission(Permission.MANAGE_SERVER))
-		{
-			EmbedUtils.sendPermissionError(ctx);
-		}
-		else
-		{
-			guild.retrieveInvites().queue(
-					invites ->
+
+		guild.retrieveInvites().queue(
+				invites ->
+				{
+					for(Invite invite : invites)
 					{
-						for(Invite invite : invites)
+						if(invite.getMaxUses() == 0)
 						{
-							if(invite.getMaxUses() == 0)
-							{
-								ctx.replySuccess("Invite found: " + invite.getUrl());
-								return;
-							}
+							ctx.replySuccess("Invite found: " + invite.getUrl());
+							return;
 						}
-						ctx.replyError("No invites found.");
 					}
-			);
-		}
+					ctx.replyError("No invites found.");
+				}
+		);
+
 	}
 }

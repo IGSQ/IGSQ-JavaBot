@@ -7,7 +7,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
-import org.igsq.igsqbot.entities.jooq.tables.Warnings;
+import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
+
+import static org.igsq.igsqbot.entities.jooq.tables.Warnings.WARNINGS;
 
 public class Warning
 {
@@ -34,7 +36,7 @@ public class Warning
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
-			var query = context.insertInto(Tables.WARNINGS).columns(Warnings.WARNINGS.GUILDID, Warnings.WARNINGS.USERID, Warnings.WARNINGS.WARNTEXT).values(guildId, userId, reason);
+			var query = context.insertInto(Tables.WARNINGS).columns(WARNINGS.GUILD_ID, WARNINGS.USER_ID, WARNINGS.WARN_TEXT).values(guildId, userId, reason);
 			query.execute();
 		}
 		catch(Exception exception)
@@ -48,7 +50,7 @@ public class Warning
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
-			context.deleteFrom(Tables.WARNINGS).where(Warnings.WARNINGS.WARNID.eq(key)).execute();
+			context.deleteFrom(Tables.WARNINGS).where(WARNINGS.ID.eq(key)).execute();
 		}
 		catch(Exception exception)
 		{
@@ -62,11 +64,11 @@ public class Warning
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
-			var query = context.selectFrom(Warnings.WARNINGS).where(Warnings.WARNINGS.GUILDID.eq(guildId)).and(Warnings.WARNINGS.USERID.eq(userId));
+			var query = context.selectFrom(Tables.WARNINGS).where(WARNINGS.GUILD_ID.eq(guildId)).and(WARNINGS.USER_ID.eq(userId));
 
 			for(var value : query.fetch())
 			{
-				result.add(new org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings(value.getWarnid(), value.getUserid(), value.getGuildid(), value.getTimestamp(), value.getWarntext()));
+				result.add(new org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings(value.getId(), value.getUserId(), value.getGuildId(), value.getTimestamp(), value.getWarnText()));
 			}
 
 		}
@@ -83,15 +85,15 @@ public class Warning
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection)
-					.selectFrom(Warnings.WARNINGS)
-					.where(Warnings.WARNINGS.WARNID.eq(warnId));
+					.selectFrom(WARNINGS)
+					.where(WARNINGS.ID.eq(warnId));
 
 			var result = context.fetch();
 			context.close();
 			if(!result.isEmpty())
 			{
 				var warn = result.get(0);
-				return new org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings(warn.getWarnid(), warn.getUserid(), warn.getGuildid(), warn.getTimestamp(), warn.getWarntext());
+				return new Warnings(warn.getId(), warn.getUserId(), warn.getGuildId(), warn.getTimestamp(), warn.getWarnText());
 			}
 			else
 			{

@@ -38,77 +38,77 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
     }
 
     /**
-     * Setter for <code>public.reports.messageid</code>.
+     * Setter for <code>public.reports.message_id</code>.
      */
-    public ReportsRecord setMessageid(Long value) {
+    public ReportsRecord setMessageId(Long value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reports.messageid</code>.
+     * Getter for <code>public.reports.message_id</code>.
      */
-    public Long getMessageid() {
+    public Long getMessageId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>public.reports.reportmessageid</code>.
+     * Setter for <code>public.reports.report_message_id</code>.
      */
-    public ReportsRecord setReportmessageid(Long value) {
+    public ReportsRecord setReportMessageId(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reports.reportmessageid</code>.
+     * Getter for <code>public.reports.report_message_id</code>.
      */
-    public Long getReportmessageid() {
+    public Long getReportMessageId() {
         return (Long) get(2);
     }
 
     /**
-     * Setter for <code>public.reports.channelid</code>.
+     * Setter for <code>public.reports.channel_id</code>.
      */
-    public ReportsRecord setChannelid(Long value) {
+    public ReportsRecord setChannelId(Long value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reports.channelid</code>.
+     * Getter for <code>public.reports.channel_id</code>.
      */
-    public Long getChannelid() {
+    public Long getChannelId() {
         return (Long) get(3);
     }
 
     /**
-     * Setter for <code>public.reports.guildid</code>.
+     * Setter for <code>public.reports.guild_id</code>.
      */
-    public ReportsRecord setGuildid(Long value) {
+    public ReportsRecord setGuildId(Long value) {
         set(4, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reports.guildid</code>.
+     * Getter for <code>public.reports.guild_id</code>.
      */
-    public Long getGuildid() {
+    public Long getGuildId() {
         return (Long) get(4);
     }
 
     /**
-     * Setter for <code>public.reports.userid</code>.
+     * Setter for <code>public.reports.user_id</code>.
      */
-    public ReportsRecord setUserid(Long value) {
+    public ReportsRecord setUserId(Long value) {
         set(5, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reports.userid</code>.
+     * Getter for <code>public.reports.user_id</code>.
      */
-    public Long getUserid() {
+    public Long getUserId() {
         return (Long) get(5);
     }
 
@@ -128,17 +128,17 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
     }
 
     /**
-     * Setter for <code>public.reports.reporttext</code>.
+     * Setter for <code>public.reports.report_text</code>.
      */
-    public ReportsRecord setReporttext(String value) {
+    public ReportsRecord setReportText(String value) {
         set(7, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reports.reporttext</code>.
+     * Getter for <code>public.reports.report_text</code>.
      */
-    public String getReporttext() {
+    public String getReportText() {
         return (String) get(7);
     }
 
@@ -172,27 +172,27 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public Field<Long> field2() {
-        return Reports.REPORTS.MESSAGEID;
+        return Reports.REPORTS.MESSAGE_ID;
     }
 
     @Override
     public Field<Long> field3() {
-        return Reports.REPORTS.REPORTMESSAGEID;
+        return Reports.REPORTS.REPORT_MESSAGE_ID;
     }
 
     @Override
     public Field<Long> field4() {
-        return Reports.REPORTS.CHANNELID;
+        return Reports.REPORTS.CHANNEL_ID;
     }
 
     @Override
     public Field<Long> field5() {
-        return Reports.REPORTS.GUILDID;
+        return Reports.REPORTS.GUILD_ID;
     }
 
     @Override
     public Field<Long> field6() {
-        return Reports.REPORTS.USERID;
+        return Reports.REPORTS.USER_ID;
     }
 
     @Override
@@ -202,7 +202,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public Field<String> field8() {
-        return Reports.REPORTS.REPORTTEXT;
+        return Reports.REPORTS.REPORT_TEXT;
     }
 
     @Override
@@ -212,27 +212,27 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public Long component2() {
-        return getMessageid();
+        return getMessageId();
     }
 
     @Override
     public Long component3() {
-        return getReportmessageid();
+        return getReportMessageId();
     }
 
     @Override
     public Long component4() {
-        return getChannelid();
+        return getChannelId();
     }
 
     @Override
     public Long component5() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long component6() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
@@ -242,7 +242,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public String component8() {
-        return getReporttext();
+        return getReportText();
     }
 
     @Override
@@ -252,27 +252,27 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public Long value2() {
-        return getMessageid();
+        return getMessageId();
     }
 
     @Override
     public Long value3() {
-        return getReportmessageid();
+        return getReportMessageId();
     }
 
     @Override
     public Long value4() {
-        return getChannelid();
+        return getChannelId();
     }
 
     @Override
     public Long value5() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long value6() {
-        return getUserid();
+        return getUserId();
     }
 
     @Override
@@ -282,7 +282,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public String value8() {
-        return getReporttext();
+        return getReportText();
     }
 
     @Override
@@ -293,31 +293,31 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public ReportsRecord value2(Long value) {
-        setMessageid(value);
+        setMessageId(value);
         return this;
     }
 
     @Override
     public ReportsRecord value3(Long value) {
-        setReportmessageid(value);
+        setReportMessageId(value);
         return this;
     }
 
     @Override
     public ReportsRecord value4(Long value) {
-        setChannelid(value);
+        setChannelId(value);
         return this;
     }
 
     @Override
     public ReportsRecord value5(Long value) {
-        setGuildid(value);
+        setGuildId(value);
         return this;
     }
 
     @Override
     public ReportsRecord value6(Long value) {
-        setUserid(value);
+        setUserId(value);
         return this;
     }
 
@@ -329,7 +329,7 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
 
     @Override
     public ReportsRecord value8(String value) {
-        setReporttext(value);
+        setReportText(value);
         return this;
     }
 
@@ -360,16 +360,16 @@ public class ReportsRecord extends UpdatableRecordImpl<ReportsRecord> implements
     /**
      * Create a detached, initialised ReportsRecord
      */
-    public ReportsRecord(Long id, Long messageid, Long reportmessageid, Long channelid, Long guildid, Long userid, LocalDateTime timestamp, String reporttext) {
+    public ReportsRecord(Long id, Long messageId, Long reportMessageId, Long channelId, Long guildId, Long userId, LocalDateTime timestamp, String reportText) {
         super(Reports.REPORTS);
 
         setId(id);
-        setMessageid(messageid);
-        setReportmessageid(reportmessageid);
-        setChannelid(channelid);
-        setGuildid(guildid);
-        setUserid(userid);
+        setMessageId(messageId);
+        setReportMessageId(reportMessageId);
+        setChannelId(channelId);
+        setGuildId(guildId);
+        setUserId(userId);
         setTimestamp(timestamp);
-        setReporttext(reporttext);
+        setReportText(reportText);
     }
 }

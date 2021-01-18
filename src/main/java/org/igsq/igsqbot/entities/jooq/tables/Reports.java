@@ -54,29 +54,29 @@ public class Reports extends TableImpl<ReportsRecord> {
     public final TableField<ReportsRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.reports.messageid</code>.
+     * The column <code>public.reports.message_id</code>.
      */
-    public final TableField<ReportsRecord, Long> MESSAGEID = createField(DSL.name("messageid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReportsRecord, Long> MESSAGE_ID = createField(DSL.name("message_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reports.reportmessageid</code>.
+     * The column <code>public.reports.report_message_id</code>.
      */
-    public final TableField<ReportsRecord, Long> REPORTMESSAGEID = createField(DSL.name("reportmessageid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReportsRecord, Long> REPORT_MESSAGE_ID = createField(DSL.name("report_message_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reports.channelid</code>.
+     * The column <code>public.reports.channel_id</code>.
      */
-    public final TableField<ReportsRecord, Long> CHANNELID = createField(DSL.name("channelid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReportsRecord, Long> CHANNEL_ID = createField(DSL.name("channel_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reports.guildid</code>.
+     * The column <code>public.reports.guild_id</code>.
      */
-    public final TableField<ReportsRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReportsRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reports.userid</code>.
+     * The column <code>public.reports.user_id</code>.
      */
-    public final TableField<ReportsRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReportsRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.reports.timestamp</code>.
@@ -84,9 +84,9 @@ public class Reports extends TableImpl<ReportsRecord> {
     public final TableField<ReportsRecord, LocalDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>public.reports.reporttext</code>.
+     * The column <code>public.reports.report_text</code>.
      */
-    public final TableField<ReportsRecord, String> REPORTTEXT = createField(DSL.name("reporttext"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<ReportsRecord, String> REPORT_TEXT = createField(DSL.name("report_text"), SQLDataType.CLOB.nullable(false), this, "");
 
     private Reports(Name alias, Table<ReportsRecord> aliased) {
         this(alias, aliased, null);
@@ -138,16 +138,16 @@ public class Reports extends TableImpl<ReportsRecord> {
 
     @Override
     public List<UniqueKey<ReportsRecord>> getKeys() {
-        return Arrays.<UniqueKey<ReportsRecord>>asList(Keys.REPORTS_PKEY, Keys.REPORTS_MESSAGEID_KEY, Keys.REPORTS_REPORTMESSAGEID_KEY);
+        return Arrays.<UniqueKey<ReportsRecord>>asList(Keys.REPORTS_PKEY, Keys.REPORTS_MESSAGE_ID_KEY, Keys.REPORTS_REPORT_MESSAGE_ID_KEY);
     }
 
     @Override
     public List<ForeignKey<ReportsRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ReportsRecord, ?>>asList(Keys.REPORTS__REPORTS_GUILDID_FKEY);
+        return Arrays.<ForeignKey<ReportsRecord, ?>>asList(Keys.REPORTS__REPORTS_GUILD_ID_FKEY);
     }
 
     public Guilds guilds() {
-        return new Guilds(this, Keys.REPORTS__REPORTS_GUILDID_FKEY);
+        return new Guilds(this, Keys.REPORTS__REPORTS_GUILD_ID_FKEY);
     }
 
     @Override

@@ -21,107 +21,107 @@ public class GuildsRecord extends UpdatableRecordImpl<GuildsRecord> implements R
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.guilds.guildid</code>.
+     * Setter for <code>public.guilds.guild_id</code>.
      */
-    public GuildsRecord setGuildid(Long value) {
+    public GuildsRecord setGuildId(Long value) {
         set(0, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.guilds.guildid</code>.
+     * Getter for <code>public.guilds.guild_id</code>.
      */
-    public Long getGuildid() {
+    public Long getGuildId() {
         return (Long) get(0);
     }
 
     /**
-     * Setter for <code>public.guilds.logchannel</code>.
+     * Setter for <code>public.guilds.log_channel</code>.
      */
-    public GuildsRecord setLogchannel(Long value) {
+    public GuildsRecord setLogChannel(Long value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.guilds.logchannel</code>.
+     * Getter for <code>public.guilds.log_channel</code>.
      */
-    public Long getLogchannel() {
+    public Long getLogChannel() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>public.guilds.mutedrole</code>.
+     * Setter for <code>public.guilds.muted_role</code>.
      */
-    public GuildsRecord setMutedrole(Long value) {
+    public GuildsRecord setMutedRole(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.guilds.mutedrole</code>.
+     * Getter for <code>public.guilds.muted_role</code>.
      */
-    public Long getMutedrole() {
+    public Long getMutedRole() {
         return (Long) get(2);
     }
 
     /**
-     * Setter for <code>public.guilds.verifiedrole</code>.
+     * Setter for <code>public.guilds.verified_role</code>.
      */
-    public GuildsRecord setVerifiedrole(Long value) {
+    public GuildsRecord setVerifiedRole(Long value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.guilds.verifiedrole</code>.
+     * Getter for <code>public.guilds.verified_role</code>.
      */
-    public Long getVerifiedrole() {
+    public Long getVerifiedRole() {
         return (Long) get(3);
     }
 
     /**
-     * Setter for <code>public.guilds.reportchannel</code>.
+     * Setter for <code>public.guilds.report_channel</code>.
      */
-    public GuildsRecord setReportchannel(Long value) {
+    public GuildsRecord setReportChannel(Long value) {
         set(4, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.guilds.reportchannel</code>.
+     * Getter for <code>public.guilds.report_channel</code>.
      */
-    public Long getReportchannel() {
+    public Long getReportChannel() {
         return (Long) get(4);
     }
 
     /**
-     * Setter for <code>public.guilds.votechannel</code>.
+     * Setter for <code>public.guilds.vote_channel</code>.
      */
-    public GuildsRecord setVotechannel(Long value) {
+    public GuildsRecord setVoteChannel(Long value) {
         set(5, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.guilds.votechannel</code>.
+     * Getter for <code>public.guilds.vote_channel</code>.
      */
-    public Long getVotechannel() {
+    public Long getVoteChannel() {
         return (Long) get(5);
     }
 
     /**
-     * Setter for <code>public.guilds.suggestionchannel</code>.
+     * Setter for <code>public.guilds.suggestion_channel</code>.
      */
-    public GuildsRecord setSuggestionchannel(Long value) {
+    public GuildsRecord setSuggestionChannel(Long value) {
         set(6, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.guilds.suggestionchannel</code>.
+     * Getter for <code>public.guilds.suggestion_channel</code>.
      */
-    public Long getSuggestionchannel() {
+    public Long getSuggestionChannel() {
         return (Long) get(6);
     }
 
@@ -165,37 +165,37 @@ public class GuildsRecord extends UpdatableRecordImpl<GuildsRecord> implements R
 
     @Override
     public Field<Long> field1() {
-        return Guilds.GUILDS.GUILDID;
+        return Guilds.GUILDS.GUILD_ID;
     }
 
     @Override
     public Field<Long> field2() {
-        return Guilds.GUILDS.LOGCHANNEL;
+        return Guilds.GUILDS.LOG_CHANNEL;
     }
 
     @Override
     public Field<Long> field3() {
-        return Guilds.GUILDS.MUTEDROLE;
+        return Guilds.GUILDS.MUTED_ROLE;
     }
 
     @Override
     public Field<Long> field4() {
-        return Guilds.GUILDS.VERIFIEDROLE;
+        return Guilds.GUILDS.VERIFIED_ROLE;
     }
 
     @Override
     public Field<Long> field5() {
-        return Guilds.GUILDS.REPORTCHANNEL;
+        return Guilds.GUILDS.REPORT_CHANNEL;
     }
 
     @Override
     public Field<Long> field6() {
-        return Guilds.GUILDS.VOTECHANNEL;
+        return Guilds.GUILDS.VOTE_CHANNEL;
     }
 
     @Override
     public Field<Long> field7() {
-        return Guilds.GUILDS.SUGGESTIONCHANNEL;
+        return Guilds.GUILDS.SUGGESTION_CHANNEL;
     }
 
     @Override
@@ -205,37 +205,37 @@ public class GuildsRecord extends UpdatableRecordImpl<GuildsRecord> implements R
 
     @Override
     public Long component1() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long component2() {
-        return getLogchannel();
+        return getLogChannel();
     }
 
     @Override
     public Long component3() {
-        return getMutedrole();
+        return getMutedRole();
     }
 
     @Override
     public Long component4() {
-        return getVerifiedrole();
+        return getVerifiedRole();
     }
 
     @Override
     public Long component5() {
-        return getReportchannel();
+        return getReportChannel();
     }
 
     @Override
     public Long component6() {
-        return getVotechannel();
+        return getVoteChannel();
     }
 
     @Override
     public Long component7() {
-        return getSuggestionchannel();
+        return getSuggestionChannel();
     }
 
     @Override
@@ -245,37 +245,37 @@ public class GuildsRecord extends UpdatableRecordImpl<GuildsRecord> implements R
 
     @Override
     public Long value1() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public Long value2() {
-        return getLogchannel();
+        return getLogChannel();
     }
 
     @Override
     public Long value3() {
-        return getMutedrole();
+        return getMutedRole();
     }
 
     @Override
     public Long value4() {
-        return getVerifiedrole();
+        return getVerifiedRole();
     }
 
     @Override
     public Long value5() {
-        return getReportchannel();
+        return getReportChannel();
     }
 
     @Override
     public Long value6() {
-        return getVotechannel();
+        return getVoteChannel();
     }
 
     @Override
     public Long value7() {
-        return getSuggestionchannel();
+        return getSuggestionChannel();
     }
 
     @Override
@@ -285,43 +285,43 @@ public class GuildsRecord extends UpdatableRecordImpl<GuildsRecord> implements R
 
     @Override
     public GuildsRecord value1(Long value) {
-        setGuildid(value);
+        setGuildId(value);
         return this;
     }
 
     @Override
     public GuildsRecord value2(Long value) {
-        setLogchannel(value);
+        setLogChannel(value);
         return this;
     }
 
     @Override
     public GuildsRecord value3(Long value) {
-        setMutedrole(value);
+        setMutedRole(value);
         return this;
     }
 
     @Override
     public GuildsRecord value4(Long value) {
-        setVerifiedrole(value);
+        setVerifiedRole(value);
         return this;
     }
 
     @Override
     public GuildsRecord value5(Long value) {
-        setReportchannel(value);
+        setReportChannel(value);
         return this;
     }
 
     @Override
     public GuildsRecord value6(Long value) {
-        setVotechannel(value);
+        setVoteChannel(value);
         return this;
     }
 
     @Override
     public GuildsRecord value7(Long value) {
-        setSuggestionchannel(value);
+        setSuggestionChannel(value);
         return this;
     }
 
@@ -358,16 +358,16 @@ public class GuildsRecord extends UpdatableRecordImpl<GuildsRecord> implements R
     /**
      * Create a detached, initialised GuildsRecord
      */
-    public GuildsRecord(Long guildid, Long logchannel, Long mutedrole, Long verifiedrole, Long reportchannel, Long votechannel, Long suggestionchannel, String prefix) {
+    public GuildsRecord(Long guildId, Long logChannel, Long mutedRole, Long verifiedRole, Long reportChannel, Long voteChannel, Long suggestionChannel, String prefix) {
         super(Guilds.GUILDS);
 
-        setGuildid(guildid);
-        setLogchannel(logchannel);
-        setMutedrole(mutedrole);
-        setVerifiedrole(verifiedrole);
-        setReportchannel(reportchannel);
-        setVotechannel(votechannel);
-        setSuggestionchannel(suggestionchannel);
+        setGuildId(guildId);
+        setLogChannel(logChannel);
+        setMutedRole(mutedRole);
+        setVerifiedRole(verifiedRole);
+        setReportChannel(reportChannel);
+        setVoteChannel(voteChannel);
+        setSuggestionChannel(suggestionChannel);
         setPrefix(prefix);
     }
 }

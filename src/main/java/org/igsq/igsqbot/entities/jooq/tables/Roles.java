@@ -7,8 +7,6 @@ package org.igsq.igsqbot.entities.jooq.tables;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.RolesRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -21,6 +19,8 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
+import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -53,19 +53,19 @@ public class Roles extends TableImpl<RolesRecord> {
     public final TableField<RolesRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.roles.userid</code>.
+     * The column <code>public.roles.user_id</code>.
      */
-    public final TableField<RolesRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<RolesRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.roles.guildid</code>.
+     * The column <code>public.roles.guild_id</code>.
      */
-    public final TableField<RolesRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<RolesRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.roles.roleid</code>.
+     * The column <code>public.roles.role_id</code>.
      */
-    public final TableField<RolesRecord, Long> ROLEID = createField(DSL.name("roleid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<RolesRecord, Long> ROLE_ID = createField(DSL.name("role_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     private Roles(Name alias, Table<RolesRecord> aliased) {
         this(alias, aliased, null);
@@ -122,11 +122,11 @@ public class Roles extends TableImpl<RolesRecord> {
 
     @Override
     public List<ForeignKey<RolesRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<RolesRecord, ?>>asList(Keys.ROLES__ROLES_GUILDID_FKEY);
+        return Arrays.<ForeignKey<RolesRecord, ?>>asList(Keys.ROLES__ROLES_GUILD_ID_FKEY);
     }
 
     public Guilds guilds() {
-        return new Guilds(this, Keys.ROLES__ROLES_GUILDID_FKEY);
+        return new Guilds(this, Keys.ROLES__ROLES_GUILD_ID_FKEY);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandContext;
 
 public class Parser
 {
@@ -31,11 +31,6 @@ public class Parser
 		this.ctx = ctx;
 	}
 
-	public void getAsEmote(Consumer<String> success)
-	{
-		ctx.getGuild().retrieveEmoteById(arg).queue(listedEmote -> success.accept(listedEmote.getAsMention()), error -> ctx.replyError("Unknown emote"));
-	}
-
 	public List<String> parseAsSlashArgs()
 	{
 		return Arrays.stream(arg.split("/")).collect(Collectors.toList());
@@ -53,6 +48,7 @@ public class Parser
 			return OptionalLong.empty();
 		}
 	}
+
 	public Optional<Guild> parseAsGuild()
 	{
 		if(arg.equalsIgnoreCase("this") || arg.equalsIgnoreCase("here"))
@@ -85,10 +81,9 @@ public class Parser
 				case "mo", "mnth", "month", "months" -> offset = offset.plusMonths(num);
 			}
 		}
-
-		if(offset.equals(LocalDateTime.now()))
+		if(offset.isBefore(LocalDateTime.now()))
 		{
-			ctx.replyError("Invalid time entered.");
+			return null;
 		}
 		return offset;
 	}
@@ -97,7 +92,13 @@ public class Parser
 	{
 		try
 		{
-			return OptionalInt.of(Integer.parseUnsignedInt(arg));
+			OptionalInt value = OptionalInt.of(Integer.parseUnsignedInt(arg));
+			if(value.getAsInt() == 0)
+			{
+				ctx.replyError("Enter a whole number greater than 0, eg: 1");
+				return OptionalInt.empty();
+			}
+			return value;
 		}
 		catch(NumberFormatException exception)
 		{

@@ -18,10 +18,11 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.ConfigOption;
-import org.igsq.igsqbot.entities.Configuration;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.bot.ConfigOption;
+import org.igsq.igsqbot.entities.bot.Configuration;
 import org.igsq.igsqbot.entities.database.Tempban;
+import org.igsq.igsqbot.entities.database.Vote;
 import org.igsq.igsqbot.entities.info.BotInfo;
 import org.igsq.igsqbot.events.command.ReportCommandReactionAdd;
 import org.igsq.igsqbot.events.logging.MemberEventsLogging;
@@ -46,8 +47,8 @@ public class IGSQBot extends ListenerAdapter
 	private final Configuration configuration;
 	private final TaskHandler taskHandler;
 	private final Minecraft minecraft;
-	private ShardManager shardManager;
 	private final Logger logger;
+	private ShardManager shardManager;
 	private JDA jda;
 
 	public IGSQBot()
@@ -87,7 +88,7 @@ public class IGSQBot extends ListenerAdapter
 
 				.addEventListeners(
 						this,
-						
+
 						new MessageEventsMain(this),
 						new GuildEventsMain(this),
 
@@ -122,7 +123,11 @@ public class IGSQBot extends ListenerAdapter
 		getLogger().info("IGSQBot Version: " + Constants.VERSION);
 		getLogger().info("JVM Version:     " + BotInfo.getJavaVersion());
 
-		getTaskHandler().addRepeatingTask(() -> DatabaseUtils.getExpiredMutes(this).forEach(mute -> Tempban.removeBanById(mute.getUserid(), this)), TimeUnit.SECONDS, 15);
+		getTaskHandler().addRepeatingTask(() ->
+		{
+			DatabaseUtils.getExpiredTempbans(this).forEach(tempban -> Tempban.removeBanById(tempban.getUserid(), this));
+			DatabaseUtils.getExpiredVotes(this).forEach(vote -> Vote.closeById(vote.getVoteId(),vote.getGuildId(), this));
+		}, TimeUnit.SECONDS, 15);
 	}
 
 	public SelfUser getSelfUser()

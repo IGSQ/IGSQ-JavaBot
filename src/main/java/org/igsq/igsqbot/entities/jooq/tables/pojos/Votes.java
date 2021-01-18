@@ -17,31 +17,47 @@ public class Votes implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Long          id;
-    private final Long          voteid;
-    private final Long          messageid;
-    private final String        option;
-    private final LocalDateTime timestamp;
+    private final Long          voteId;
+    private final Long          guildId;
+    private final Long          directMessageId;
+    private final Long          userId;
+    private final Integer       option;
+    private final Integer       maxOptions;
+    private final LocalDateTime expiry;
+    private final Boolean       hasVoted;
 
     public Votes(Votes value) {
         this.id = value.id;
-        this.voteid = value.voteid;
-        this.messageid = value.messageid;
+        this.voteId = value.voteId;
+        this.guildId = value.guildId;
+        this.directMessageId = value.directMessageId;
+        this.userId = value.userId;
         this.option = value.option;
-        this.timestamp = value.timestamp;
+        this.maxOptions = value.maxOptions;
+        this.expiry = value.expiry;
+        this.hasVoted = value.hasVoted;
     }
 
     public Votes(
         Long          id,
-        Long          voteid,
-        Long          messageid,
-        String        option,
-        LocalDateTime timestamp
+        Long          voteId,
+        Long          guildId,
+        Long          directMessageId,
+        Long          userId,
+        Integer       option,
+        Integer       maxOptions,
+        LocalDateTime expiry,
+        Boolean       hasVoted
     ) {
         this.id = id;
-        this.voteid = voteid;
-        this.messageid = messageid;
+        this.voteId = voteId;
+        this.guildId = guildId;
+        this.directMessageId = directMessageId;
+        this.userId = userId;
         this.option = option;
-        this.timestamp = timestamp;
+        this.maxOptions = maxOptions;
+        this.expiry = expiry;
+        this.hasVoted = hasVoted;
     }
 
     /**
@@ -52,31 +68,59 @@ public class Votes implements Serializable {
     }
 
     /**
-     * Getter for <code>public.votes.voteid</code>.
+     * Getter for <code>public.votes.vote_id</code>.
      */
-    public Long getVoteid() {
-        return this.voteid;
+    public Long getVoteId() {
+        return this.voteId;
     }
 
     /**
-     * Getter for <code>public.votes.messageid</code>.
+     * Getter for <code>public.votes.guild_id</code>.
      */
-    public Long getMessageid() {
-        return this.messageid;
+    public Long getGuildId() {
+        return this.guildId;
+    }
+
+    /**
+     * Getter for <code>public.votes.direct_message_id</code>.
+     */
+    public Long getDirectMessageId() {
+        return this.directMessageId;
+    }
+
+    /**
+     * Getter for <code>public.votes.user_id</code>.
+     */
+    public Long getUserId() {
+        return this.userId;
     }
 
     /**
      * Getter for <code>public.votes.option</code>.
      */
-    public String getOption() {
+    public Integer getOption() {
         return this.option;
     }
 
     /**
-     * Getter for <code>public.votes.timestamp</code>.
+     * Getter for <code>public.votes.max_options</code>.
      */
-    public LocalDateTime getTimestamp() {
-        return this.timestamp;
+    public Integer getMaxOptions() {
+        return this.maxOptions;
+    }
+
+    /**
+     * Getter for <code>public.votes.expiry</code>.
+     */
+    public LocalDateTime getExpiry() {
+        return this.expiry;
+    }
+
+    /**
+     * Getter for <code>public.votes.has_voted</code>.
+     */
+    public Boolean getHasVoted() {
+        return this.hasVoted;
     }
 
     @Override
@@ -84,10 +128,14 @@ public class Votes implements Serializable {
         StringBuilder sb = new StringBuilder("Votes (");
 
         sb.append(id);
-        sb.append(", ").append(voteid);
-        sb.append(", ").append(messageid);
+        sb.append(", ").append(voteId);
+        sb.append(", ").append(guildId);
+        sb.append(", ").append(directMessageId);
+        sb.append(", ").append(userId);
         sb.append(", ").append(option);
-        sb.append(", ").append(timestamp);
+        sb.append(", ").append(maxOptions);
+        sb.append(", ").append(expiry);
+        sb.append(", ").append(hasVoted);
 
         sb.append(")");
         return sb.toString();

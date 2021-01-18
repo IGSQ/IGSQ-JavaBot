@@ -16,27 +16,27 @@ public class Reminders implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Long   id;
-    private final Long   guildid;
-    private final Long   userid;
-    private final String remindertext;
+    private final Long   guildId;
+    private final Long   userId;
+    private final String reminderText;
 
     public Reminders(Reminders value) {
         this.id = value.id;
-        this.guildid = value.guildid;
-        this.userid = value.userid;
-        this.remindertext = value.remindertext;
+        this.guildId = value.guildId;
+        this.userId = value.userId;
+        this.reminderText = value.reminderText;
     }
 
     public Reminders(
         Long   id,
-        Long   guildid,
-        Long   userid,
-        String remindertext
+        Long   guildId,
+        Long   userId,
+        String reminderText
     ) {
         this.id = id;
-        this.guildid = guildid;
-        this.userid = userid;
-        this.remindertext = remindertext;
+        this.guildId = guildId;
+        this.userId = userId;
+        this.reminderText = reminderText;
     }
 
     /**
@@ -47,24 +47,24 @@ public class Reminders implements Serializable {
     }
 
     /**
-     * Getter for <code>public.reminders.guildid</code>.
+     * Getter for <code>public.reminders.guild_id</code>.
      */
-    public Long getGuildid() {
-        return this.guildid;
+    public Long getGuildId() {
+        return this.guildId;
     }
 
     /**
-     * Getter for <code>public.reminders.userid</code>.
+     * Getter for <code>public.reminders.user_id</code>.
      */
-    public Long getUserid() {
-        return this.userid;
+    public Long getUserId() {
+        return this.userId;
     }
 
     /**
-     * Getter for <code>public.reminders.remindertext</code>.
+     * Getter for <code>public.reminders.reminder_text</code>.
      */
-    public String getRemindertext() {
-        return this.remindertext;
+    public String getReminderText() {
+        return this.reminderText;
     }
 
     @Override
@@ -72,9 +72,9 @@ public class Reminders implements Serializable {
         StringBuilder sb = new StringBuilder("Reminders (");
 
         sb.append(id);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(remindertext);
+        sb.append(", ").append(guildId);
+        sb.append(", ").append(userId);
+        sb.append(", ").append(reminderText);
 
         sb.append(")");
         return sb.toString();

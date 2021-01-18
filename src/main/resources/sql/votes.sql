@@ -1,8 +1,12 @@
 CREATE TABLE IF NOT EXISTS votes
 (
     id BIGSERIAL NOT NULL PRIMARY KEY,
-    voteId BIGINT NOT NULL,
-    messageId BIGINT NOT NULL,
-    option CHAR NOT NULL DEFAULT -1,
-    timeStamp TIMESTAMP NOT NULL
+    vote_id BIGINT NOT NULL,
+    guild_id BIGINT NOT NULL UNIQUE REFERENCES guilds(guild_id) ON DELETE CASCADE,
+    direct_message_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    option INT NOT NULL DEFAULT -1,
+    max_options INT NOT NULL,
+    expiry TIMESTAMP NOT NULL,
+    has_voted BOOLEAN NOT NULL DEFAULT FALSE
 );

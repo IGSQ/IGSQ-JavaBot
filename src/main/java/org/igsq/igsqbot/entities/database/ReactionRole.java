@@ -28,6 +28,39 @@ public class ReactionRole
 		this.igsqBot = igsqBot;
 	}
 
+	public static List<ReactionRole> getByMessageId(long messageId, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var query = context
+					.selectFrom(REACTION_ROLES)
+					.where(REACTION_ROLES.MESSAGE_ID.eq(messageId));
+
+			var result = query.fetch();
+			query.close();
+
+			if(result.isEmpty())
+			{
+				return Collections.emptyList();
+			}
+			else
+			{
+				List<ReactionRole> reactionRoles = new ArrayList<>();
+				for(var rr : result)
+				{
+					reactionRoles.add(new ReactionRole(rr.getMessageId(), rr.getRoleId(), rr.getGuildId(), rr.getEmoteId(), igsqBot));
+				}
+				return reactionRoles;
+			}
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return Collections.emptyList();
+		}
+	}
+
 	public void add()
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
@@ -35,7 +68,7 @@ public class ReactionRole
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context
 					.insertInto(REACTION_ROLES)
-					.columns(REACTION_ROLES.GUILDID, REACTION_ROLES.MESSAGEID, REACTION_ROLES.ROLEID, REACTION_ROLES.EMOTEID)
+					.columns(REACTION_ROLES.GUILD_ID, REACTION_ROLES.MESSAGE_ID, REACTION_ROLES.ROLE_ID, REACTION_ROLES.EMOTE_ID)
 					.values(guildId, messageId, roleId, emote);
 			query.execute();
 		}
@@ -98,7 +131,7 @@ public class ReactionRole
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context
 					.deleteFrom(REACTION_ROLES)
-					.where(REACTION_ROLES.MESSAGEID.eq(messageId).and(REACTION_ROLES.ROLEID.eq(roleId)).and(REACTION_ROLES.EMOTEID.eq(emote)));
+					.where(REACTION_ROLES.MESSAGE_ID.eq(messageId).and(REACTION_ROLES.ROLE_ID.eq(roleId)).and(REACTION_ROLES.EMOTE_ID.eq(emote)));
 			query.execute();
 		}
 		catch(Exception exception)
@@ -114,7 +147,7 @@ public class ReactionRole
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context
 					.selectFrom(REACTION_ROLES)
-					.where(REACTION_ROLES.MESSAGEID.eq(messageId).and(REACTION_ROLES.EMOTEID.eq(emote)).and(REACTION_ROLES.ROLEID.eq(roleId)));
+					.where(REACTION_ROLES.MESSAGE_ID.eq(messageId).and(REACTION_ROLES.EMOTE_ID.eq(emote)).and(REACTION_ROLES.ROLE_ID.eq(roleId)));
 
 			var result = query.fetch();
 			query.close();
@@ -124,40 +157,6 @@ public class ReactionRole
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 			return false;
-		}
-	}
-
-
-	public static List<ReactionRole> getByMessageId(long messageId, IGSQBot igsqBot)
-	{
-		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
-		{
-			var context = igsqBot.getDatabaseHandler().getContext(connection);
-			var query = context
-					.selectFrom(REACTION_ROLES)
-					.where(REACTION_ROLES.MESSAGEID.eq(messageId));
-
-			var result = query.fetch();
-			query.close();
-
-			if(result.isEmpty())
-			{
-				return Collections.emptyList();
-			}
-			else
-			{
-				List<ReactionRole> reactionRoles = new ArrayList<>();
-				for(var rr : result)
-				{
-					reactionRoles.add(new ReactionRole(rr.getMessageid(), rr.getRoleid(), rr.getGuildid(), rr.getEmoteid(), igsqBot));
-				}
-				return reactionRoles;
-			}
-		}
-		catch(Exception exception)
-		{
-			igsqBot.getLogger().error("An SQL error occurred", exception);
-			return Collections.emptyList();
 		}
 	}
 }

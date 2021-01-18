@@ -2,11 +2,12 @@ package org.igsq.igsqbot.commands.subcommands.warning;
 
 import java.util.List;
 import java.util.OptionalInt;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
 import org.igsq.igsqbot.util.CommandUtils;
@@ -18,6 +19,7 @@ public class WarningRemoveCommand extends Command
 	public WarningRemoveCommand(Command parent)
 	{
 		super(parent, "remove", "Removes a warning", "[user][id]");
+		addMemberPermissions(Permission.MESSAGE_MANAGE);
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class WarningRemoveCommand extends Command
 								else
 								{
 									new Warning(guild, user, ctx.getIGSQBot()).remove(warningNumber.getAsInt());
-									ctx.replySuccess("Removed warning: " + warn.getWarntext());
+									ctx.replySuccess("Removed warning: " + warn.getWarnText());
 								}
 							}
 						});

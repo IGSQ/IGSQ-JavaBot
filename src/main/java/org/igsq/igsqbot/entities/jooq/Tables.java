@@ -5,11 +5,11 @@ package org.igsq.igsqbot.entities.jooq;
 
 
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.igsq.igsqbot.entities.jooq.tables.Mutes;
 import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.igsq.igsqbot.entities.jooq.tables.Roles;
+import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
 import org.igsq.igsqbot.entities.jooq.tables.Votes;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 
@@ -24,11 +24,6 @@ public class Tables {
      * The table <code>public.guilds</code>.
      */
     public static final Guilds GUILDS = Guilds.GUILDS;
-
-    /**
-     * The table <code>public.mutes</code>.
-     */
-    public static final Mutes MUTES = Mutes.MUTES;
 
     /**
      * The table <code>public.reaction_roles</code>.
@@ -49,6 +44,11 @@ public class Tables {
      * The table <code>public.roles</code>.
      */
     public static final Roles ROLES = Roles.ROLES;
+
+    /**
+     * The table <code>public.tempbans</code>.
+     */
+    public static final Tempbans TEMPBANS = Tempbans.TEMPBANS;
 
     /**
      * The table <code>public.votes</code>.

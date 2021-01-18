@@ -36,62 +36,62 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
     }
 
     /**
-     * Setter for <code>public.reaction_roles.messageid</code>.
+     * Setter for <code>public.reaction_roles.message_id</code>.
      */
-    public ReactionRolesRecord setMessageid(Long value) {
+    public ReactionRolesRecord setMessageId(Long value) {
         set(1, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.messageid</code>.
+     * Getter for <code>public.reaction_roles.message_id</code>.
      */
-    public Long getMessageid() {
+    public Long getMessageId() {
         return (Long) get(1);
     }
 
     /**
-     * Setter for <code>public.reaction_roles.guildid</code>.
+     * Setter for <code>public.reaction_roles.guild_id</code>.
      */
-    public ReactionRolesRecord setGuildid(Long value) {
+    public ReactionRolesRecord setGuildId(Long value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.guildid</code>.
+     * Getter for <code>public.reaction_roles.guild_id</code>.
      */
-    public Long getGuildid() {
+    public Long getGuildId() {
         return (Long) get(2);
     }
 
     /**
-     * Setter for <code>public.reaction_roles.emoteid</code>.
+     * Setter for <code>public.reaction_roles.emote_id</code>.
      */
-    public ReactionRolesRecord setEmoteid(String value) {
+    public ReactionRolesRecord setEmoteId(String value) {
         set(3, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.emoteid</code>.
+     * Getter for <code>public.reaction_roles.emote_id</code>.
      */
-    public String getEmoteid() {
+    public String getEmoteId() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>public.reaction_roles.roleid</code>.
+     * Setter for <code>public.reaction_roles.role_id</code>.
      */
-    public ReactionRolesRecord setRoleid(Long value) {
+    public ReactionRolesRecord setRoleId(Long value) {
         set(4, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.roleid</code>.
+     * Getter for <code>public.reaction_roles.role_id</code>.
      */
-    public Long getRoleid() {
+    public Long getRoleId() {
         return (Long) get(4);
     }
 
@@ -125,22 +125,22 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public Field<Long> field2() {
-        return ReactionRoles.REACTION_ROLES.MESSAGEID;
+        return ReactionRoles.REACTION_ROLES.MESSAGE_ID;
     }
 
     @Override
     public Field<Long> field3() {
-        return ReactionRoles.REACTION_ROLES.GUILDID;
+        return ReactionRoles.REACTION_ROLES.GUILD_ID;
     }
 
     @Override
     public Field<String> field4() {
-        return ReactionRoles.REACTION_ROLES.EMOTEID;
+        return ReactionRoles.REACTION_ROLES.EMOTE_ID;
     }
 
     @Override
     public Field<Long> field5() {
-        return ReactionRoles.REACTION_ROLES.ROLEID;
+        return ReactionRoles.REACTION_ROLES.ROLE_ID;
     }
 
     @Override
@@ -150,22 +150,22 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public Long component2() {
-        return getMessageid();
+        return getMessageId();
     }
 
     @Override
     public Long component3() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public String component4() {
-        return getEmoteid();
+        return getEmoteId();
     }
 
     @Override
     public Long component5() {
-        return getRoleid();
+        return getRoleId();
     }
 
     @Override
@@ -175,22 +175,22 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public Long value2() {
-        return getMessageid();
+        return getMessageId();
     }
 
     @Override
     public Long value3() {
-        return getGuildid();
+        return getGuildId();
     }
 
     @Override
     public String value4() {
-        return getEmoteid();
+        return getEmoteId();
     }
 
     @Override
     public Long value5() {
-        return getRoleid();
+        return getRoleId();
     }
 
     @Override
@@ -201,25 +201,25 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
 
     @Override
     public ReactionRolesRecord value2(Long value) {
-        setMessageid(value);
+        setMessageId(value);
         return this;
     }
 
     @Override
     public ReactionRolesRecord value3(Long value) {
-        setGuildid(value);
+        setGuildId(value);
         return this;
     }
 
     @Override
     public ReactionRolesRecord value4(String value) {
-        setEmoteid(value);
+        setEmoteId(value);
         return this;
     }
 
     @Override
     public ReactionRolesRecord value5(Long value) {
-        setRoleid(value);
+        setRoleId(value);
         return this;
     }
 
@@ -247,13 +247,13 @@ public class ReactionRolesRecord extends UpdatableRecordImpl<ReactionRolesRecord
     /**
      * Create a detached, initialised ReactionRolesRecord
      */
-    public ReactionRolesRecord(Long id, Long messageid, Long guildid, String emoteid, Long roleid) {
+    public ReactionRolesRecord(Long id, Long messageId, Long guildId, String emoteId, Long roleId) {
         super(ReactionRoles.REACTION_ROLES);
 
         setId(id);
-        setMessageid(messageid);
-        setGuildid(guildid);
-        setEmoteid(emoteid);
-        setRoleid(roleid);
+        setMessageId(messageId);
+        setGuildId(guildId);
+        setEmoteId(emoteId);
+        setRoleId(roleId);
     }
 }

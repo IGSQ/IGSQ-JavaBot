@@ -2,8 +2,8 @@ package org.igsq.igsqbot.commands.commands.misc;
 
 import java.util.List;
 import java.util.OptionalInt;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.util.Parser;
 
 @SuppressWarnings("unused")
@@ -27,6 +27,7 @@ public class HelpCommand extends Command
 		{
 			page = new Parser(args.get(0), ctx).parseAsUnsignedInt();
 		}
+
 		if(page.isPresent())
 		{
 			if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)

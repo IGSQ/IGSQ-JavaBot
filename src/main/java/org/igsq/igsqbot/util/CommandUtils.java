@@ -1,15 +1,12 @@
 package org.igsq.igsqbot.util;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 
 public class CommandUtils
@@ -17,11 +14,6 @@ public class CommandUtils
 	private CommandUtils()
 	{
 		// Override the default, public, constructor
-	}
-
-	public static boolean isArgsEmbedCompatible(List<String> args)
-	{
-		return Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).count() > EmbedUtils.CHARACTER_LIMIT;
 	}
 
 	public static boolean isValidCommand(String message, long guildId, IGSQBot igsqBot)
@@ -49,10 +41,5 @@ public class CommandUtils
 					}
 				}
 		);
-	}
-
-	public static ZoneOffset getLocalOffset()
-	{
-		return OffsetDateTime.now().getOffset();
 	}
 }

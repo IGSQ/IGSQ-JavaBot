@@ -4,12 +4,10 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.util.CommandUtils;
-import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.FileUtils;
 
 @SuppressWarnings("unused")
@@ -24,28 +22,23 @@ public class MockCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		MessageChannel channel = ctx.getChannel();
+		CommandChecks.argsEmpty(ctx);
+		CommandChecks.argsEmbedCompatible(ctx);
 
-		if(args.isEmpty() || CommandUtils.isArgsEmbedCompatible(args))
+		InputStream file = FileUtils.getResourceFile("mock.jpg");
+		if(file != null)
 		{
-			EmbedUtils.sendSyntaxError(ctx);
+			ctx.getChannel().sendFile(file, "mock.jpg").embed(new EmbedBuilder()
+					.setTitle(mockText(args))
+					.setColor(Constants.IGSQ_PURPLE)
+					.setImage("attachment://mock.jpg")
+					.build()).queue();
 		}
 		else
 		{
-			InputStream file = FileUtils.getResourceFile("mock.jpg");
-			if(file != null)
-			{
-				channel.sendFile(file, "mock.jpg").embed(new EmbedBuilder()
-						.setTitle(mockText(args))
-						.setColor(Constants.IGSQ_PURPLE)
-						.setImage("attachment://mock.jpg")
-						.build()).queue();
-			}
-			else
-			{
-				ctx.replyError("An error occurred while loading the mock image.");
-			}
+			ctx.replyError("An error occurred while loading the mock image.");
 		}
+
 	}
 
 	private String mockText(List<String> args)

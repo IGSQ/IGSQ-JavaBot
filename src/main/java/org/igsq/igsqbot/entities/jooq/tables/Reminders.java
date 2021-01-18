@@ -53,19 +53,19 @@ public class Reminders extends TableImpl<RemindersRecord> {
     public final TableField<RemindersRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.reminders.guildid</code>.
+     * The column <code>public.reminders.guild_id</code>.
      */
-    public final TableField<RemindersRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<RemindersRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reminders.userid</code>.
+     * The column <code>public.reminders.user_id</code>.
      */
-    public final TableField<RemindersRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<RemindersRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reminders.remindertext</code>.
+     * The column <code>public.reminders.reminder_text</code>.
      */
-    public final TableField<RemindersRecord, String> REMINDERTEXT = createField(DSL.name("remindertext"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<RemindersRecord, String> REMINDER_TEXT = createField(DSL.name("reminder_text"), SQLDataType.CLOB.nullable(false), this, "");
 
     private Reminders(Name alias, Table<RemindersRecord> aliased) {
         this(alias, aliased, null);
@@ -122,11 +122,11 @@ public class Reminders extends TableImpl<RemindersRecord> {
 
     @Override
     public List<ForeignKey<RemindersRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<RemindersRecord, ?>>asList(Keys.REMINDERS__REMINDERS_GUILDID_FKEY);
+        return Arrays.<ForeignKey<RemindersRecord, ?>>asList(Keys.REMINDERS__REMINDERS_GUILD_ID_FKEY);
     }
 
     public Guilds guilds() {
-        return new Guilds(this, Keys.REMINDERS__REMINDERS_GUILDID_FKEY);
+        return new Guilds(this, Keys.REMINDERS__REMINDERS_GUILD_ID_FKEY);
     }
 
     @Override

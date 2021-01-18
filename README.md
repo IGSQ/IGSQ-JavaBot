@@ -91,13 +91,15 @@
  - [x] Register and removal of users (removed with guild)
  - [x] ReactionRoles
  - [x] Debug logging
+ - [x] Voting (need to move out of DM) :( (needs polished a lot)
  
 ### **TeaEyes**
 None!
 
 ### **arynxd**
- - [ ] Voting (need to move out of DM) :(
  - [ ] Improve user feedback
+ - [ ] Add sub commands to help menu.
+ - [ ] Check '.' at the end of every command description
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

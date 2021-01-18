@@ -4,10 +4,11 @@ import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
+import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 @SuppressWarnings("unused")
@@ -32,16 +33,17 @@ public class PrefixCommand extends Command
 			EmbedUtils.sendDeletingEmbed(channel, new EmbedBuilder()
 					.setDescription("My prefix for this server is `" + guildConfig.getPrefix() + "`.")
 					.setColor(Constants.IGSQ_PURPLE), 30000);
+			return;
 		}
-		else if(args.size() > 1 || args.get(0).length() > 5)
+
+		if(args.size() > 1 || args.get(0).length() > 5)
 		{
-			EmbedUtils.sendSyntaxError(ctx);
+			throw new SyntaxException(ctx);
 		}
-		else
-		{
-			guildConfig.setPrefix(args.get(0));
-			ctx.replySuccess("My new prefix is `" + args.get(0) + "`");
-		}
+
+		guildConfig.setPrefix(args.get(0));
+		ctx.replySuccess("My new prefix is `" + args.get(0) + "`");
+
 	}
 
 	public static class PrefixResetCommand extends Command

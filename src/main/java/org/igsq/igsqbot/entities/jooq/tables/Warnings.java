@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
 import org.igsq.igsqbot.entities.jooq.tables.records.WarningsRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -22,6 +20,8 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
+import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -49,19 +49,19 @@ public class Warnings extends TableImpl<WarningsRecord> {
     }
 
     /**
-     * The column <code>public.warnings.warnid</code>.
+     * The column <code>public.warnings.id</code>.
      */
-    public final TableField<WarningsRecord, Long> WARNID = createField(DSL.name("warnid"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<WarningsRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.warnings.guildid</code>.
+     * The column <code>public.warnings.guild_id</code>.
      */
-    public final TableField<WarningsRecord, Long> GUILDID = createField(DSL.name("guildid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<WarningsRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.warnings.userid</code>.
+     * The column <code>public.warnings.user_id</code>.
      */
-    public final TableField<WarningsRecord, Long> USERID = createField(DSL.name("userid"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<WarningsRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.warnings.timestamp</code>.
@@ -69,9 +69,9 @@ public class Warnings extends TableImpl<WarningsRecord> {
     public final TableField<WarningsRecord, LocalDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
 
     /**
-     * The column <code>public.warnings.warntext</code>.
+     * The column <code>public.warnings.warn_text</code>.
      */
-    public final TableField<WarningsRecord, String> WARNTEXT = createField(DSL.name("warntext"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<WarningsRecord, String> WARN_TEXT = createField(DSL.name("warn_text"), SQLDataType.CLOB.nullable(false), this, "");
 
     private Warnings(Name alias, Table<WarningsRecord> aliased) {
         this(alias, aliased, null);
@@ -128,11 +128,11 @@ public class Warnings extends TableImpl<WarningsRecord> {
 
     @Override
     public List<ForeignKey<WarningsRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<WarningsRecord, ?>>asList(Keys.WARNINGS__WARNINGS_GUILDID_FKEY);
+        return Arrays.<ForeignKey<WarningsRecord, ?>>asList(Keys.WARNINGS__WARNINGS_GUILD_ID_FKEY);
     }
 
     public Guilds guilds() {
-        return new Guilds(this, Keys.WARNINGS__WARNINGS_GUILDID_FKEY);
+        return new Guilds(this, Keys.WARNINGS__WARNINGS_GUILD_ID_FKEY);
     }
 
     @Override

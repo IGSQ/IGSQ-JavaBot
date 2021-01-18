@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 
 public class Minecraft
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(Minecraft.class);
 	private final IGSQBot igsqBot;
 	private final DatabaseHandler databaseHandler;
 	private MinecraftSync sync;
 	private MinecraftTwoFA twoFA;
-	private static final Logger LOGGER = LoggerFactory.getLogger(Minecraft.class);
 
 	public Minecraft(IGSQBot igsqBot)
 	{

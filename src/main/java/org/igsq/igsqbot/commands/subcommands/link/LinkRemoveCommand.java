@@ -2,12 +2,12 @@ package org.igsq.igsqbot.commands.subcommands.link;
 
 import java.util.List;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftChecks;
 import org.igsq.igsqbot.minecraft.MinecraftUtils;
-import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.CommandChecks;
 
 public class LinkRemoveCommand extends Command
 {
@@ -19,11 +19,8 @@ public class LinkRemoveCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		if(args.isEmpty())
-		{
-			EmbedUtils.sendSyntaxError(ctx);
-			return;
-		}
+		CommandChecks.argsEmpty(ctx);
+
 		String arg = args.get(0);
 		User author = ctx.getAuthor();
 		Minecraft minecraft = ctx.getIGSQBot().getMinecraft();

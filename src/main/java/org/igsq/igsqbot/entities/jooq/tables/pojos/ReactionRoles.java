@@ -16,31 +16,31 @@ public class ReactionRoles implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Long   id;
-    private final Long   messageid;
-    private final Long   guildid;
-    private final String emoteid;
-    private final Long   roleid;
+    private final Long   messageId;
+    private final Long   guildId;
+    private final String emoteId;
+    private final Long   roleId;
 
     public ReactionRoles(ReactionRoles value) {
         this.id = value.id;
-        this.messageid = value.messageid;
-        this.guildid = value.guildid;
-        this.emoteid = value.emoteid;
-        this.roleid = value.roleid;
+        this.messageId = value.messageId;
+        this.guildId = value.guildId;
+        this.emoteId = value.emoteId;
+        this.roleId = value.roleId;
     }
 
     public ReactionRoles(
         Long   id,
-        Long   messageid,
-        Long   guildid,
-        String emoteid,
-        Long   roleid
+        Long   messageId,
+        Long   guildId,
+        String emoteId,
+        Long   roleId
     ) {
         this.id = id;
-        this.messageid = messageid;
-        this.guildid = guildid;
-        this.emoteid = emoteid;
-        this.roleid = roleid;
+        this.messageId = messageId;
+        this.guildId = guildId;
+        this.emoteId = emoteId;
+        this.roleId = roleId;
     }
 
     /**
@@ -51,31 +51,31 @@ public class ReactionRoles implements Serializable {
     }
 
     /**
-     * Getter for <code>public.reaction_roles.messageid</code>.
+     * Getter for <code>public.reaction_roles.message_id</code>.
      */
-    public Long getMessageid() {
-        return this.messageid;
+    public Long getMessageId() {
+        return this.messageId;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.guildid</code>.
+     * Getter for <code>public.reaction_roles.guild_id</code>.
      */
-    public Long getGuildid() {
-        return this.guildid;
+    public Long getGuildId() {
+        return this.guildId;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.emoteid</code>.
+     * Getter for <code>public.reaction_roles.emote_id</code>.
      */
-    public String getEmoteid() {
-        return this.emoteid;
+    public String getEmoteId() {
+        return this.emoteId;
     }
 
     /**
-     * Getter for <code>public.reaction_roles.roleid</code>.
+     * Getter for <code>public.reaction_roles.role_id</code>.
      */
-    public Long getRoleid() {
-        return this.roleid;
+    public Long getRoleId() {
+        return this.roleId;
     }
 
     @Override
@@ -83,10 +83,10 @@ public class ReactionRoles implements Serializable {
         StringBuilder sb = new StringBuilder("ReactionRoles (");
 
         sb.append(id);
-        sb.append(", ").append(messageid);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(emoteid);
-        sb.append(", ").append(roleid);
+        sb.append(", ").append(messageId);
+        sb.append(", ").append(guildId);
+        sb.append(", ").append(emoteId);
+        sb.append(", ").append(roleId);
 
         sb.append(")");
         return sb.toString();

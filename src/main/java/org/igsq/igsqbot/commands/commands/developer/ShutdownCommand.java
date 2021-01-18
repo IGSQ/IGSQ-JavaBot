@@ -1,9 +1,9 @@
 package org.igsq.igsqbot.commands.commands.developer;
 
 import java.util.List;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
-import org.igsq.igsqbot.entities.CommandFlag;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 
 @SuppressWarnings("unused")
 public class ShutdownCommand extends Command

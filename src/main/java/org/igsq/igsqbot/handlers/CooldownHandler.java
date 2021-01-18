@@ -3,7 +3,7 @@ package org.igsq.igsqbot.handlers;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.dv8tion.jda.api.entities.Member;
-import org.igsq.igsqbot.entities.Command;
+import org.igsq.igsqbot.entities.command.Command;
 
 public abstract class CooldownHandler
 {

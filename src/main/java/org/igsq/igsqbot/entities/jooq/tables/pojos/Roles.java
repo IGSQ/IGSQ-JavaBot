@@ -16,27 +16,27 @@ public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Long id;
-    private final Long userid;
-    private final Long guildid;
-    private final Long roleid;
+    private final Long userId;
+    private final Long guildId;
+    private final Long roleId;
 
     public Roles(Roles value) {
         this.id = value.id;
-        this.userid = value.userid;
-        this.guildid = value.guildid;
-        this.roleid = value.roleid;
+        this.userId = value.userId;
+        this.guildId = value.guildId;
+        this.roleId = value.roleId;
     }
 
     public Roles(
         Long id,
-        Long userid,
-        Long guildid,
-        Long roleid
+        Long userId,
+        Long guildId,
+        Long roleId
     ) {
         this.id = id;
-        this.userid = userid;
-        this.guildid = guildid;
-        this.roleid = roleid;
+        this.userId = userId;
+        this.guildId = guildId;
+        this.roleId = roleId;
     }
 
     /**
@@ -47,24 +47,24 @@ public class Roles implements Serializable {
     }
 
     /**
-     * Getter for <code>public.roles.userid</code>.
+     * Getter for <code>public.roles.user_id</code>.
      */
-    public Long getUserid() {
-        return this.userid;
+    public Long getUserId() {
+        return this.userId;
     }
 
     /**
-     * Getter for <code>public.roles.guildid</code>.
+     * Getter for <code>public.roles.guild_id</code>.
      */
-    public Long getGuildid() {
-        return this.guildid;
+    public Long getGuildId() {
+        return this.guildId;
     }
 
     /**
-     * Getter for <code>public.roles.roleid</code>.
+     * Getter for <code>public.roles.role_id</code>.
      */
-    public Long getRoleid() {
-        return this.roleid;
+    public Long getRoleId() {
+        return this.roleId;
     }
 
     @Override
@@ -72,9 +72,9 @@ public class Roles implements Serializable {
         StringBuilder sb = new StringBuilder("Roles (");
 
         sb.append(id);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(guildid);
-        sb.append(", ").append(roleid);
+        sb.append(", ").append(userId);
+        sb.append(", ").append(guildId);
+        sb.append(", ").append(roleId);
 
         sb.append(")");
         return sb.toString();

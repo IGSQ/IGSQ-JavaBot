@@ -5,8 +5,8 @@ import java.time.Instant;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.Command;
-import org.igsq.igsqbot.entities.CommandContext;
+import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.info.BotInfo;
 
 @SuppressWarnings("unused")
