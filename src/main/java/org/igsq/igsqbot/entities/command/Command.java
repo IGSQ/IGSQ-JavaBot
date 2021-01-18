@@ -93,6 +93,7 @@ public abstract class Command
 			try
 			{
 				run(ctx.getArgs(), ctx);
+				ctx.addSuccessReaction();
 			}
 			catch(IllegalLengthException exception)
 			{
