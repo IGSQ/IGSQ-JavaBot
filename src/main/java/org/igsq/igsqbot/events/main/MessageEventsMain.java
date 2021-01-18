@@ -50,7 +50,11 @@ public class MessageEventsMain extends ListenerAdapter
 
 					if(newRole != null)
 					{
-						guild.addRoleToMember(event.getMember(), newRole).queue();
+						if(!event.getMessage().getMentionedMembers().isEmpty())
+						{
+							guild.addRoleToMember(event.getMessage().getMentionedMembers().get(0), newRole).queue();
+						}
+
 					}
 					return;
 				}

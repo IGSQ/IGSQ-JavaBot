@@ -25,7 +25,7 @@ public class LevelBotCommand extends Command
         user ->
         {
             new GuildConfig(ctx).setLevelUpBot(user.getIdLong());
-            ctx.replySuccess("New level up is " + user.getAsMention());
+            ctx.replySuccess("New level up bot is " + user.getAsMention());
         });
     }
 }
