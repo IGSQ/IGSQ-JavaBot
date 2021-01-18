@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.events.main;
 
 import java.util.List;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.UnavailableGuildLeaveEvent;
@@ -47,7 +48,11 @@ public class GuildEventsMain extends ListenerAdapter
 		{
 			if(reactionRole.getEmote().equals(event.getReactionEmote().getName()))
 			{
-				event.retrieveMember().queue(reactionRole::addRole);
+				Role role = event.getGuild().getRoleById(reactionRole.getRoleId());
+				if(event.getGuild().getSelfMember().canInteract(role))
+				{
+					event.retrieveMember().queue(reactionRole::addRole);
+				}
 			}
 		}
 	}
@@ -61,7 +66,11 @@ public class GuildEventsMain extends ListenerAdapter
 		{
 			if(reactionRole.getEmote().equals(event.getReactionEmote().getName()))
 			{
-				event.retrieveMember().queue(reactionRole::removeRole);
+				Role role = event.getGuild().getRoleById(reactionRole.getRoleId());
+				if(event.getGuild().getSelfMember().canInteract(role))
+				{
+					event.retrieveMember().queue(reactionRole::removeRole);
+				}
 			}
 		}
 	}
