@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandFlag;
@@ -41,8 +42,13 @@ public class ChannelSuggestionCommand extends Command
 				.setDescription(ArrayUtils.arrayCompile(args, " "))
 				.setColor(Constants.IGSQ_PURPLE)
 				.setThumbnail(author.getAvatarUrl())
-				.setFooter("Suggested by: " + ctx.getMember().getEffectiveName() + author.getDiscriminator() + " | ")
+				.setFooter("Suggested by: " + ctx.getAuthor().getAsTag() + " | ")
 				.setTimestamp(Instant.now())
-				.build()).queue();
+				.build()).queue(
+				message ->
+				{
+					message.addReaction(Emoji.THUMB_UP.getAsReaction()).queue();
+					message.addReaction(Emoji.THUMB_DOWN.getAsReaction()).queue();
+				});
     }
 }
