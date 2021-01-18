@@ -96,6 +96,10 @@ public abstract class Command
 			{
 
 			}
+			catch(MemberPermissionException exception)
+			{
+				EmbedUtils.sendMemberPermissionError(ctx);
+			}
 			catch(IllegalLengthException exception)
 			{
 				ctx.replyError("The provided input was too long for an embed.");

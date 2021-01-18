@@ -24,6 +24,7 @@ public class VoteCreateCommand extends Command
     {
         super(parent, "create", "Creates a vote.", "[role1/role2{6}][option1/option2{3}][duration][subject]");
         addMemberPermissions(Permission.MANAGE_CHANNEL);
+        addFlags(CommandFlag.GUILD_ONLY);
     }
 
     @Override

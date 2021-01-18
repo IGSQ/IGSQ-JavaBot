@@ -2,12 +2,14 @@ package org.igsq.igsqbot.commands.commands.misc;
 
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
+import org.igsq.igsqbot.entities.exception.MemberPermissionException;
 import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -41,9 +43,13 @@ public class PrefixCommand extends Command
 			throw new SyntaxException(ctx);
 		}
 
+		if(!ctx.memberPermissionCheck(Permission.MANAGE_SERVER))
+		{
+			throw new MemberPermissionException(this);
+		}
+
 		guildConfig.setPrefix(args.get(0));
 		ctx.replySuccess("My new prefix is `" + args.get(0) + "`");
-
 	}
 
 	public static class PrefixResetCommand extends Command

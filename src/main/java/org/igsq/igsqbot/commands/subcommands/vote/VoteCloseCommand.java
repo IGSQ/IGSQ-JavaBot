@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands.subcommands.vote;
 import java.util.List;
 
 import java.util.OptionalLong;
+import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.database.Vote;
@@ -14,6 +15,8 @@ public class VoteCloseCommand extends Command
     public VoteCloseCommand(Command parent)
     {
         super(parent, "close", "Closes a vote.", "[voteID]");
+        addMemberPermissions(Permission.MANAGE_CHANNEL);
+        addFlags(CommandFlag.GUILD_ONLY);
     }
 
     @Override

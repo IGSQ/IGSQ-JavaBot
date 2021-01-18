@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -18,6 +19,7 @@ public class WarningShowCommand extends Command
 	public WarningShowCommand(Command parent)
 	{
 		super(parent, "show", "Shows a user's warnings.", "[user]");
+		addFlags(CommandFlag.GUILD_ONLY);
 	}
 
 	@Override

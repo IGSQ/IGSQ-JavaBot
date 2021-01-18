@@ -62,6 +62,7 @@ public class EmbedUtils
 				.setTimestamp(Instant.now()));
 	}
 
+
 	public static void sendSelfPermissionError(CommandContext ctx)
 	{
 		ctx.addErrorReaction();

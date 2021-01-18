@@ -5,6 +5,11 @@ import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class BotInfo
 {
+	private BotInfo()
+	{
+		//Overrides the default, public, constructor
+	}
+
 	public static String getJavaVersion()
 	{
 		return System.getProperty("java.version");
