@@ -94,13 +94,13 @@
  - [x] Voting (Done!)
  - [x] Change all database classes to static utils if possible
  - [x] Check '.' at the end of every command description
+ - [x] Add sub commands to help menu.
  
 ### **TeaEyes**
 None!
 
 ### **arynxd**
  - [ ] Improve user feedback
- - [ ] Add sub commands to help menu.
  - [ ] Verification
  - [ ] Change mc syncing to events
  - [ ] Catch config issues at startup
@@ -127,12 +127,12 @@ None!
 
 **In order to run this project, you need JDK 14 or higher.**
 
-Cloning the project and running a Maven build with the `pom.xml` will build the project into a JAR with all required dependencies.
+Cloning the project and running a Gradle build with the `build.gradle` will build the project into a JAR with all required dependencies.
 
 When running the JAR, JDK 14's `java.exe` must be pointed to (see the example bat).
 
 In order to connect to discord successfully, you must put a valid bot token (see https://discord.com/developers/applications)
-in `bot.token` within the `configuration` YML file, which is automatically generated on first launch.
+in `token` within the `bot.cfg` file, within the config subdirectory, which is automatically generated on first launch.
 
 **Example .bat file**
 
@@ -143,10 +143,4 @@ pause
 ```
 
 ## Developer Notes
-**Syntax**
-
-[] - Required
-
-<> - Optional
-
-{} - Quantifier
+None

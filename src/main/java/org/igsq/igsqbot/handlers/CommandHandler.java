@@ -164,11 +164,14 @@ public class CommandHandler
 			String subCommand = args.get(0);
 			for(Command child : cmd.getChildren())
 			{
-				if(subCommand.equalsIgnoreCase(child.getName()))
+				for(String alias : child.getAliases())
 				{
-					args.remove(0);
-					child.process(new CommandContext(event, igsqBot, child, args));
-					return;
+					if(subCommand.equalsIgnoreCase(alias))
+					{
+						args.remove(0);
+						child.process(new CommandContext(event, igsqBot, child, args));
+						return;
+					}
 				}
 			}
 			cmd.process(ctx);

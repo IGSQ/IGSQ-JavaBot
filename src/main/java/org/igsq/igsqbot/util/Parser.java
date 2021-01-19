@@ -109,15 +109,13 @@ public class Parser
 			OptionalInt value = OptionalInt.of(Integer.parseUnsignedInt(arg));
 			if(value.getAsInt() == 0)
 			{
-				ctx.replyError("Enter a whole number greater than 0, eg: 1");
-				return OptionalInt.empty();
+				throw new IllegalArgumentException("Enter a whole number greater than 0, eg: 1");
 			}
 			return value;
 		}
 		catch(NumberFormatException exception)
 		{
-			ctx.replyError("Enter a whole number greater than 0, eg: 1");
-			return OptionalInt.empty();
+			throw new IllegalArgumentException("Enter a whole number greater than 0, eg: 1");
 		}
 	}
 

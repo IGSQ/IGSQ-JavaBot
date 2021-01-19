@@ -15,7 +15,7 @@ public class BlacklistCommand extends Command
 {
     public BlacklistCommand()
     {
-        super("Blacklist", "Controls the blacklists.", "[add | remove | show]");
+        super("Blacklist", "Controls the blacklists.", "[add / remove / show]");
         addAliases("blacklist");
         addMemberPermissions(Permission.MANAGE_SERVER);
         addChildren(

@@ -48,13 +48,7 @@ public class CommandChecks
 			throw new MissingConfigurationException(name);
 		}
 	}
-	public static void stringMatches(String input, String regex, CommandContext ctx)
-	{
-		if(!input.matches(regex))
-		{
-			throw new SyntaxException(ctx);
-		}
-	}
+
 	public static void stringIsURL(String url, CommandContext ctx)
 	{
 		try

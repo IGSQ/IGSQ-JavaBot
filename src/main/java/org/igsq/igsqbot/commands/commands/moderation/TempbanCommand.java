@@ -18,7 +18,7 @@ public class TempbanCommand extends Command
 {
 	public TempbanCommand()
 	{
-		super("Tempban", "Temporarily bans a user.", "[user][duration] | [remove][user]");
+		super("Tempban", "Temporarily bans a user.", "[user][duration] / [remove]");
 		addAliases("tempban", "mute");
 		addChildren(new TempbanRemoveCommand(this));
 		addMemberPermissions(Permission.MESSAGE_MANAGE);

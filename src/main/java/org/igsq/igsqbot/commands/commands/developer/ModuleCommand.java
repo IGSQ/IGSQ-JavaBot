@@ -13,7 +13,7 @@ public class ModuleCommand extends Command
 {
 	public ModuleCommand()
 	{
-		super("Module", "Disables / Enables the specified module.", "[enable|disable] [module]");
+		super("Module", "Disables / Enables the specified module.", "[enable/disable] [module]");
 		addFlags(CommandFlag.DEVELOPER_ONLY);
 		addAliases("module", "command");
 		addChildren(
@@ -61,7 +61,8 @@ public class ModuleCommand extends Command
 	{
 		public ModuleDisableCommand(Command parent)
 		{
-			super(parent, "disable", "Disables a module", "[module-name]");
+			super(parent, "Disable", "Disables a module", "[module-name]");
+			addAliases("disable");
 			addFlags(CommandFlag.DEVELOPER_ONLY);
 		}
 

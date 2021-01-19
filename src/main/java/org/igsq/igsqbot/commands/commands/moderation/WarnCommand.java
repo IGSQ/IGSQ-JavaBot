@@ -20,7 +20,7 @@ public class WarnCommand extends Command
 {
 	public WarnCommand()
 	{
-		super("Warn", "Handles the user warning system", "[user][reason] | [show][user] | [remove][user][number]");
+		super("Warn", "Handles the user warning system", "[user][reason] / [show][user] / [remove][user][number]");
 		addAliases("warn");
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
 		addChildren(

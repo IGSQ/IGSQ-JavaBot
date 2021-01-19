@@ -14,7 +14,7 @@ public class ReactionRoleCommand extends Command
 {
 	public ReactionRoleCommand()
 	{
-		super("Reaction Role", "Controls reaction roles.", "[add | remove | show]");
+		super("Reaction Role", "Controls reaction roles.", "[add / remove / show]");
 		addAliases("rr", "reactionrole");
 		addFlags(CommandFlag.GUILD_ONLY);
 		addChildren(

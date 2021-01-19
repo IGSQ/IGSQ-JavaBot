@@ -14,7 +14,7 @@ public class ChannelIgnoreCommand extends Command
 {
     public ChannelIgnoreCommand(Command parent)
     {
-        super(parent, "ignore", "Controls ignored channels.", "[channel][true | false]");
+        super(parent, "ignore", "Controls ignored channels.", "[channel][true / false]");
     }
 
     @Override

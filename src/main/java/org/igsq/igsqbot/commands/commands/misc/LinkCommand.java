@@ -12,7 +12,7 @@ public class LinkCommand extends Command
 {
 	public LinkCommand()
 	{
-		super("Link", "Controls Minecraft links.", "[add|remove][mcName] | [show][user]");
+		super("Link", "Controls Minecraft links.", "[add/remove][mcName] / [show][user]");
 		addAliases("link", "mclink");
 		addChildren(
 				new LinkAddCommand(this),

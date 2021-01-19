@@ -17,7 +17,7 @@ public class InfoCommand extends Command
 {
 	public InfoCommand()
 	{
-		super("Info", "Provides information about things.", "[user|server|bot|role]");
+		super("Info", "Provides information about things.", "[user/server/bot/role]");
 		addAliases("info");
 		addFlags(CommandFlag.GUILD_ONLY);
 		addChildren(

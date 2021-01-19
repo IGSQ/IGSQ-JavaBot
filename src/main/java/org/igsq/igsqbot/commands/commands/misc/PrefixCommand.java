@@ -17,7 +17,7 @@ public class PrefixCommand extends Command
 {
 	public PrefixCommand()
 	{
-		super("Prefix", "Gets and sets the prefix for this server.", "<newPrefix {5}> | <reset> | <none>");
+		super("Prefix", "Gets and sets the prefix for this server.", "<newPrefix {5}> / <reset> / <none>");
 		addFlags(CommandFlag.GUILD_ONLY);
 		addAliases("prefix");
 		addChildren(new PrefixResetCommand(this));
@@ -56,6 +56,7 @@ public class PrefixCommand extends Command
 		public PrefixResetCommand(Command parent)
 		{
 			super(parent, "reset", "Resets the prefix", "[none]");
+			addFlags(CommandFlag.GUILD_ONLY);
 		}
 
 		@Override

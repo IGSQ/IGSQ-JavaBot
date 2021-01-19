@@ -15,7 +15,7 @@ public class ChannelCommand extends Command
 {
     public ChannelCommand()
     {
-        super("Channel", "Controls channel setup.", "[ignore]");
+        super("Channel", "Controls channel setup.", "[ignore / show]");
         addAliases("channel");
         addFlags(CommandFlag.GUILD_ONLY);
         addMemberPermissions(Permission.MANAGE_SERVER);

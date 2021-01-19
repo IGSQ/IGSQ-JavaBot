@@ -13,7 +13,7 @@ public class VoteCommand extends Command
 {
     public VoteCommand()
     {
-        super("Vote", "Controls voting", "[create | close]");
+        super("Vote", "Controls voting", "[create / close]");
         addAliases("vote");
         addMemberPermissions(Permission.MANAGE_SERVER);
         addChildren(

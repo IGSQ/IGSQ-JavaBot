@@ -15,7 +15,7 @@ public class StealCommand extends Command
 {
 	public StealCommand()
 	{
-		super("Steal", "Steals the specified image URL and adds it as an emoji.", "[name{A-Z + _}] [imageURL]");
+		super("Steal", "Steals an image URL and adds it as an emoji. Emoji names must be A-Z with underscores.", "[name] [imageURL]");
 		addFlags(CommandFlag.GUILD_ONLY);
 		addAliases("steal");
 		addMemberPermissions(Permission.MANAGE_EMOTES);
@@ -27,7 +27,10 @@ public class StealCommand extends Command
 	{
 		CommandChecks.argsSizeSubceeds(ctx, 2);
 		CommandChecks.stringIsURL(args.get(1), ctx);
-		CommandChecks.stringMatches(args.get(0), "([A-Z]|[a-z]|_)\\w+", ctx);
+		if(!args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
+		{
+			throw new IllegalArgumentException("Emoji names must be A-Z with underscores (_)");
+		}
 
 		Icon icon = FileUtils.getIcon(args.get(1));
 		if(icon == null)
