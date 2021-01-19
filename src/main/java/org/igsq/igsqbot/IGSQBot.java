@@ -98,7 +98,7 @@ public class IGSQBot extends ListenerAdapter
 						new MemberEventsLogging(this)
 				)
 
-				.setActivity(Activity.watching("IGSQ | v0.0.1 | igsq.org"))
+				.setActivity(Activity.listening(" for your commands."))
 				.build();
 	}
 
