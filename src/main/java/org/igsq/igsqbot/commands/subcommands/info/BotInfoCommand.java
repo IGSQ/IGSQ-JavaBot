@@ -17,7 +17,7 @@ public class BotInfoCommand extends Command
 	public void run(List<String> args, CommandContext ctx)
 	{
 		ctx.sendMessage(new EmbedBuilder()
-				.setTitle("IGSQBot information")
+				.setTitle(ctx.getJDA().getSelfUser().getAsTag() + " information")
 				.addField("JVM Version", BotInfo.getJavaVersion(), true)
 				.addField("JDA Version", BotInfo.getJDAVersion(), true)
 				.addBlankField(true)
