@@ -116,7 +116,16 @@ public class DatabaseHandler
 		hikariConfig.setMinimumIdle(10);
 		hikariConfig.setConnectionTimeout(10000);
 		LOGGER.debug("Local HikariCP setup complete.");
-		return new HikariDataSource(hikariConfig);
+		try
+		{
+			return new HikariDataSource(hikariConfig);
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("Local database offline, connection failure.");
+			System.exit(1);
+			return null;
+		}
 	}
 
 	public DSLContext getContext()

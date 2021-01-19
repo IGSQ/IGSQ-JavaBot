@@ -41,7 +41,7 @@ public class DatabaseHandler
 
 	public boolean isOffline()
 	{
-		return !pool.isRunning();
+		return pool == null || !pool.isRunning();
 	}
 
 	private HikariDataSource initHikari()
@@ -59,7 +59,15 @@ public class DatabaseHandler
 		hikariConfig.setMinimumIdle(10);
 		hikariConfig.setConnectionTimeout(10000);
 		LOGGER.debug("Minecraft HikariCP setup complete.");
-		return new HikariDataSource(hikariConfig);
+		try
+		{
+			return new HikariDataSource(hikariConfig);
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("Minecraft database offline, connection failure.");
+			return null;
+		}
 	}
 
 	public void close()
