@@ -41,6 +41,10 @@ public class MinecraftSync
 
 	public void syncMember(Member newMember)
 	{
+		if(newMember.getUser().isBot())
+		{
+			return;
+		}
 		LOGGER.debug("Syncing Member " + newMember.getId());
 		List<String> ranks = newMember.getRoles().stream()
 				.map(Role::getId)

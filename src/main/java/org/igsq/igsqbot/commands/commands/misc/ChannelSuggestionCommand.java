@@ -22,7 +22,7 @@ public class ChannelSuggestionCommand extends Command
     {
         super("Channel Suggest", "Suggests new channels", "[suggestion]");
 		addFlags(CommandFlag.GUILD_ONLY);
-		addAliases("channelsuggest", "channesuggestion", "csuggest");
+		addAliases("csuggest", "channelsuggest", "channesuggestion");
     }
 
     @Override
