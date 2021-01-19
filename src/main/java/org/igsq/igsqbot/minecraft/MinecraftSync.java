@@ -3,7 +3,6 @@ package org.igsq.igsqbot.minecraft;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -35,11 +34,62 @@ public class MinecraftSync
 		}
 		else
 		{
-			igsqbot.getTaskHandler().addRepeatingTask(this::sync, "minecraftSync", TimeUnit.SECONDS, 10);
+			LOGGER.debug("Starting initial Sync");
+			initialSync();
 		}
 	}
 
-	private void sync()
+	public void syncMember(Member newMember)
+	{
+		LOGGER.debug("Syncing Member " + newMember.getId());
+		List<String> ranks = newMember.getRoles().stream()
+				.map(Role::getId)
+				.filter(role -> getRanks().containsKey(role))
+				.map(role -> getRanks().get(role))
+				.collect(Collectors.toList());
+
+		if(ranks.isEmpty())
+		{
+			ranks.add("group.default");
+		}
+
+		Configuration configuration = igsqbot.getConfig();
+		MinecraftUser minecraftUser = new MinecraftUser();
+		minecraftUser.setId(newMember.getId());
+		minecraftUser.setUsername(newMember.getUser().getAsTag());
+		minecraftUser.setNickname(newMember.getEffectiveName());
+		minecraftUser.setRole(ranks.get(0));
+
+		minecraftUser.setFounder(hasRole(configuration.getString(ConfigOption.FOUNDER).split(","), newMember));
+		minecraftUser.setBirthday(hasRole(configuration.getString(ConfigOption.BIRTHDAY).split(","), newMember));
+		minecraftUser.setNitroboost(hasRole(configuration.getString(ConfigOption.NITROBOOST).split(","), newMember));
+		minecraftUser.setSupporter(hasRole(configuration.getString(ConfigOption.SUPPORTER).split(","), newMember));
+		minecraftUser.setDeveloper(hasRole(configuration.getString(ConfigOption.DEVELOPER).split(","), newMember));
+
+		int isPresent = MinecraftUtils.isMemberPresent(minecraftUser, minecraft);
+		if(isPresent == -1)
+		{
+			return;
+		}
+
+		if(isPresent == 1)
+		{
+			MinecraftUtils.updateMember(minecraftUser, minecraft);
+		}
+		else
+		{
+			MinecraftUtils.insertMember(minecraftUser, minecraft);
+		}
+
+		LOGGER.debug("Member " + newMember.getId() + " Syncing complete.");
+	}
+
+	public void removeMember(long memberId)
+	{
+		MinecraftUtils.removeMember(memberId, minecraft);
+	}
+
+	private void initialSync()
 	{
 		Guild guild = igsqbot.getShardManager().getGuildById(igsqbot.getConfig().getString(ConfigOption.HOMESERVER));
 
@@ -49,53 +99,34 @@ public class MinecraftSync
 		}
 		else
 		{
-			guild.loadMembers(member ->
+			guild.loadMembers().onSuccess(
+			members ->
 			{
-				if(member.getUser().isBot())
+				members.forEach(
+				member ->
 				{
-					return;
-				}
-
-				List<String> ranks = member.getRoles().stream()
-						.map(Role::getId)
-						.filter(role -> getRanks().containsKey(role))
-						.map(role -> getRanks().get(role))
-						.collect(Collectors.toList());
-
-				if(ranks.isEmpty())
-				{
-					ranks.add("group.default");
-				}
-
-				Configuration configuration = igsqbot.getConfig();
-				MinecraftUser minecraftUser = new MinecraftUser();
-				minecraftUser.setId(member.getId());
-				minecraftUser.setUsername(member.getUser().getAsTag());
-				minecraftUser.setNickname(member.getEffectiveName());
-				minecraftUser.setRole(ranks.get(0));
-
-				minecraftUser.setFounder(hasRole(configuration.getString(ConfigOption.FOUNDER).split(","), member));
-				minecraftUser.setBirthday(hasRole(configuration.getString(ConfigOption.BIRTHDAY).split(","), member));
-				minecraftUser.setNitroboost(hasRole(configuration.getString(ConfigOption.NITROBOOST).split(","), member));
-				minecraftUser.setSupporter(hasRole(configuration.getString(ConfigOption.SUPPORTER).split(","), member));
-				minecraftUser.setDeveloper(hasRole(configuration.getString(ConfigOption.DEVELOPER).split(","), member));
-
-				int isPresent = MinecraftUtils.isMemberPresent(minecraftUser, minecraft);
-				if(isPresent == -1)
-				{
-					return;
-				}
-
-				if(isPresent == 1)
-				{
-					MinecraftUtils.updateMember(minecraftUser, minecraft);
-				}
-				else
-				{
-					MinecraftUtils.insertMember(minecraftUser, minecraft);
-				}
-
+					if(member.getUser().isBot())
+					{
+						return;
+					}
+					syncMember(member);
+				});
+				cleanMembers(members);
 			});
+		}
+	}
+
+	private void cleanMembers(List<Member> members)
+	{
+		List<Long> inDB = MinecraftUtils.getAllMembers(minecraft);
+		List<Long> inGuild = members.stream().map(Member::getIdLong).collect(Collectors.toList());
+
+		for(long id : inDB)
+		{
+			if(!inGuild.contains(id))
+			{
+				removeMember(id);
+			}
 		}
 	}
 

@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.UnavailableGuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
+import net.dv8tion.jda.api.events.guild.member.update.GenericGuildMemberUpdateEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -19,6 +21,18 @@ public class GuildEventsMain extends ListenerAdapter
 	public GuildEventsMain(IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
+	}
+
+	@Override
+	public void onGenericGuildMemberUpdate(GenericGuildMemberUpdateEvent event)
+	{
+		igsqBot.getMinecraft().getSync().syncMember(event.getMember());
+	}
+
+	@Override
+	public void onGuildMemberRemove(GuildMemberRemoveEvent event)
+	{
+		igsqBot.getMinecraft().getSync().removeMember(event.getUser().getIdLong());
 	}
 
 	@Override

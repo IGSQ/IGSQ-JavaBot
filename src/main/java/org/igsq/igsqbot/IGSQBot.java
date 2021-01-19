@@ -46,9 +46,9 @@ public class IGSQBot extends ListenerAdapter
 	private final List<EmbedBuilder> helpPages;
 	private final Configuration configuration;
 	private final TaskHandler taskHandler;
-	private final Minecraft minecraft;
-	private final Logger logger;
 	private ShardManager shardManager;
+	private Minecraft minecraft;
+	private final Logger logger;
 	private JDA jda;
 
 	public IGSQBot()
@@ -60,7 +60,6 @@ public class IGSQBot extends ListenerAdapter
 		this.startTimestamp = LocalDateTime.now();
 		this.helpPages = new ArrayList<>();
 		this.taskHandler = new TaskHandler();
-		this.minecraft = new Minecraft(this);
 	}
 
 	public void build() throws LoginException
@@ -107,6 +106,7 @@ public class IGSQBot extends ListenerAdapter
 	public void onReady(ReadyEvent event)
 	{
 		this.jda = event.getJDA();
+		this.minecraft = new Minecraft(this);
 		getStartTimestamp();
 
 		registerGuilds(event.getJDA().getShardManager());

@@ -92,6 +92,30 @@ public class MinecraftUtils
 		}
 	}
 
+	public static List<Long> getAllMembers(Minecraft minecraft)
+	{
+		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
+		{
+			List<Long> result = new ArrayList<>();
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM discord_accounts");
+
+			preparedStatement.executeQuery();
+
+			ResultSet resultSet = preparedStatement.getResultSet();
+			while(resultSet.next())
+			{
+				result.add(resultSet.getLong(1));
+			}
+			return result;
+		}
+		catch(Exception exception)
+		{
+			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
+			return Collections.emptyList();
+		}
+	}
+
+
 	public static void removeCode(String userId, Minecraft minecraft)
 	{
 		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
@@ -253,6 +277,28 @@ public class MinecraftUtils
 		{
 			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
 			return null;
+		}
+	}
+
+	public static void removeMember(long memberId, Minecraft minecraft)
+	{
+		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
+		{
+			PreparedStatement discordAccounts = connection.prepareStatement("DELETE FROM discord_accounts WHERE id = ?");
+			PreparedStatement discord2FA = connection.prepareStatement("DELETE FROM discord_2fa WHERE id = ?");
+			PreparedStatement linkedAccounts = connection.prepareStatement("DELETE FROM linked_accounts WHERE id = ?");
+
+			discordAccounts.setLong(1, memberId);
+			discord2FA.setLong(1, memberId);
+			linkedAccounts.setLong(1, memberId);
+
+			discordAccounts.executeUpdate();
+			discord2FA.executeUpdate();
+			linkedAccounts.executeUpdate();
+		}
+		catch(Exception exception)
+		{
+			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
 		}
 	}
 

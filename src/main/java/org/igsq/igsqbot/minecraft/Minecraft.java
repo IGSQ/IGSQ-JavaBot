@@ -19,6 +19,11 @@ public class Minecraft
 		start();
 	}
 
+	public MinecraftSync getSync()
+	{
+		return sync;
+	}
+
 	public void start()
 	{
 		LOGGER.debug("Starting minecraft");
