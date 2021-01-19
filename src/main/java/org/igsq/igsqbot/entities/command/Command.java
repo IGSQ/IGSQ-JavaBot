@@ -93,7 +93,10 @@ public abstract class Command
 				run(ctx.getArgs(), ctx);
 				ctx.addSuccessReaction();
 			}
-			catch(CooldownException ignored) { }
+			catch(CooldownException exception)
+			{
+				ctx.replyError(ctx.getAuthor().getAsMention() + " you are on cooldown from this command.");
+			}
 			catch(CommandResultException exception)
 			{
 				ctx.replyError(exception.getText());
