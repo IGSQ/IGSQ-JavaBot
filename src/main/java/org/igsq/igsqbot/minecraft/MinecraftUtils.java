@@ -82,8 +82,11 @@ public class MinecraftUtils
 			preparedStatement.executeQuery();
 
 			ResultSet resultSet = preparedStatement.getResultSet();
-			resultSet.next();
-			return resultSet.getInt(1);
+			if(resultSet.next())
+			{
+				return resultSet.getInt(1);
+			}
+			return -1;
 		}
 		catch(Exception exception)
 		{
@@ -163,13 +166,16 @@ public class MinecraftUtils
 			statement.setString(1, uuid);
 			statement.execute();
 			ResultSet resultSet = statement.getResultSet();
-			resultSet.next();
-			return resultSet.getString(1);
+			if(resultSet.next())
+			{
+				return resultSet.getString(1);
+			}
+			return "";
 		}
 		catch(Exception exception)
 		{
 			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
-			return null;
+			return "";
 		}
 	}
 
@@ -181,13 +187,16 @@ public class MinecraftUtils
 			statement.setString(1, id);
 			statement.execute();
 			ResultSet resultSet = statement.getResultSet();
-			resultSet.next();
-			return resultSet.getString(1);
+			if(resultSet.next())
+			{
+				return resultSet.getString(1);
+			}
+			return "";
 		}
 		catch(Exception exception)
 		{
 			minecraft.getIGSQBot().getLogger().error("An SQL error has occurred", exception);
-			return null;
+			return "";
 		}
 	}
 
