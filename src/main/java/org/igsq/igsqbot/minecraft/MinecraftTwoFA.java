@@ -57,7 +57,7 @@ public class MinecraftTwoFA
 				{
 					String code = generateCode();
 					privateChannel.sendMessage(new EmbedBuilder()
-							.setDescription("Your Minecraft 2FA code: " + code)
+							.setDescription("Your Minecraft 2FA code is `" + code + "`\n If you did not expect this, please change your Minecraft password immediately!")
 							.setColor(Constants.IGSQ_PURPLE)
 							.build()).queue(
 							message ->

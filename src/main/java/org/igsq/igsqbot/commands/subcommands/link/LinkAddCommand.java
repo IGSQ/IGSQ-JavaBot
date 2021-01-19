@@ -46,7 +46,7 @@ public class LinkAddCommand extends Command
 			else if(MinecraftChecks.isPendingDiscord(uuid, minecraft))
 			{
 				MinecraftUtils.updateLink(uuid, author.getId(), minecraft);
-				ctx.replySuccess("Confirmed link for Account **" + account + "**");
+				ctx.replySuccess("Confirmed link for account **" + account + "**");
 			}
 			else if(MinecraftChecks.isUserLinked(author.getId(), minecraft))
 			{
@@ -55,7 +55,7 @@ public class LinkAddCommand extends Command
 			else
 			{
 				MinecraftUtils.insertLink(uuid, author.getId(), minecraft);
-				ctx.replySuccess("Added link for Account **" + account + "** confirm it in Minecraft now.");
+				ctx.replySuccess("Added link for account **" + account + "** confirm it in Minecraft now.");
 			}
 		}
 	}
