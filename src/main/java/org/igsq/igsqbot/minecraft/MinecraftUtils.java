@@ -349,13 +349,13 @@ public class MinecraftUtils
 		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
 		{
 			PreparedStatement update = connection.prepareStatement("UPDATE linked_accounts SET current_status = ? WHERE uuid = ? AND id = ?");
-			PreparedStatement clear = connection.prepareStatement("DELETE FROM linked_accounts WHERE current_status != ? AND uuid = ?");
+			PreparedStatement clear = connection.prepareStatement("DELETE FROM linked_accounts WHERE current_status != ? AND id = ?");
 			update.setString(1, LinkState.LINKED.toString().toLowerCase());
 			update.setString(2, uuid);
 			update.setString(3, id);
 
 			clear.setString(1, LinkState.LINKED.toString().toLowerCase());
-			clear.setString(2, uuid);
+			clear.setString(2, id);
 
 			update.executeUpdate();
 			clear.executeUpdate();
