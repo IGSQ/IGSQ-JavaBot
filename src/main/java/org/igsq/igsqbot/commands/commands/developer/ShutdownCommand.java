@@ -12,7 +12,7 @@ public class ShutdownCommand extends Command
 	{
 		super("Shutdown", "Shuts the bot down gracefully.", "[none]");
 		addFlags(CommandFlag.DEVELOPER_ONLY);
-		addAliases("shutdown");
+		addAliases("shutdown", "die");
 	}
 
 	@Override
