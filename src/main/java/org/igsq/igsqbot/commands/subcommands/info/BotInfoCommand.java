@@ -1,9 +1,7 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
-import java.time.Instant;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
-import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.info.BotInfo;
@@ -18,7 +16,7 @@ public class BotInfoCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		ctx.getChannel().sendMessage(new EmbedBuilder()
+		ctx.sendMessage(new EmbedBuilder()
 				.setTitle("IGSQBot information")
 				.addField("JVM Version", BotInfo.getJavaVersion(), true)
 				.addField("Java Vendor", BotInfo.getJavaVendor(), true)
@@ -27,10 +25,7 @@ public class BotInfoCommand extends Command
 				.addField("Memory Usage", BotInfo.getMemoryFormatted(), true)
 				.addBlankField(true)
 				.addField("Shard info", ctx.getJDA().getShardInfo().getShardString(), true)
-				.addField("Server count", String.valueOf(BotInfo.getTotalServers(ctx.getJDA().getShardManager())), true)
-				.addBlankField(true)
-				.setColor(Constants.IGSQ_PURPLE)
-				.setTimestamp(Instant.now())
-				.build()).queue();
+				.addField("Server count", String.valueOf(BotInfo.getTotalServers(ctx.getIGSQBot().getShardManager())), true)
+				.addBlankField(true));
 	}
 }

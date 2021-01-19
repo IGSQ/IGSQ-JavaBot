@@ -1,10 +1,6 @@
 package org.igsq.igsqbot.entities.database;
 
 import java.sql.Connection;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
 
@@ -20,18 +16,7 @@ public class Report
 	private final String reason;
 	private final IGSQBot igsqBot;
 
-	public Report(Message message, Message commandMessage, MessageChannel channel, Guild guild, User reportedUser, String reason, IGSQBot igsqBot)
-	{
-		this.messageId = message.getIdLong();
-		this.commandMessageId = commandMessage.getIdLong();
-		this.channelId = channel.getIdLong();
-		this.guildId = guild.getIdLong();
-		this.reportedUserId = reportedUser.getIdLong();
-		this.reason = reason;
-		this.igsqBot = igsqBot;
-	}
-
-	public Report(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, String reason, IGSQBot igsqBot)
+	private Report(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, String reason, IGSQBot igsqBot)
 	{
 		this.messageId = messageId;
 		this.commandMessageId = commandMessageId;
@@ -41,7 +26,6 @@ public class Report
 		this.reason = reason;
 		this.igsqBot = igsqBot;
 	}
-
 	public static Report getById(long messageId, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
@@ -68,7 +52,7 @@ public class Report
 		}
 	}
 
-	public void add()
+	public static void add(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, String reason, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
@@ -85,12 +69,12 @@ public class Report
 		}
 	}
 
-	public void remove()
+	public static void remove(long messageId, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
-			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
-			ctx.deleteFrom(Tables.REPORTS).where(REPORTS.MESSAGE_ID.eq(messageId)).execute();
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			context.deleteFrom(Tables.REPORTS).where(REPORTS.MESSAGE_ID.eq(messageId)).execute();
 		}
 		catch(Exception exception)
 		{

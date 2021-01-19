@@ -31,14 +31,13 @@ public class InfoCommand extends Command
 	public void run(List<String> args, CommandContext ctx)
 	{
 		MemberInfo memberInfo = new MemberInfo(ctx.getMember());
-		ctx.getChannel().sendMessage(new EmbedBuilder()
+		ctx.sendMessage(new EmbedBuilder()
 				.setTitle("Info for " + memberInfo.getNickname())
 				.addField("Joined at", StringUtils.parseDateTime(memberInfo.getTimeJoined()), false)
 				.addField("Boosting", memberInfo.isBoosting()
 						? "Since" + StringUtils.parseDateTime(memberInfo.getBoostingSince())
 						: "No", false)
-				.setThumbnail(memberInfo.getAvatarURL())
-				.build()).queue();
+				.setThumbnail(memberInfo.getAvatarURL()));
 	}
 }
 

@@ -1,5 +1,6 @@
 package org.igsq.igsqbot.entities.command;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -189,7 +190,7 @@ public class CommandContext
 
 	public void sendMessage(EmbedBuilder embed)
 	{
-		getChannel().sendMessage(embed.build()).queue();
+		getChannel().sendMessage(embed.setColor(Constants.IGSQ_PURPLE).setTimestamp(Instant.now()).build()).queue();
 	}
 
 	public boolean selfPermissionCheck(List<Permission> permissions)

@@ -29,6 +29,12 @@ public class MessageEventsMain extends ListenerAdapter
 	public void onMessageReceived(MessageReceivedEvent event)
 	{
 		MessageChannel channel = event.getChannel();
+
+		if(BlacklistUtils.isChannelBlacklisted(event, igsqBot))
+		{
+			return;
+		}
+
 		if(event.getChannelType().equals(ChannelType.TEXT))
 		{
 			Guild guild = event.getGuild();

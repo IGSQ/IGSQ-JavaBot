@@ -12,8 +12,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.jooq.Tables;
+import org.igsq.igsqbot.entities.jooq.tables.pojos.ChannelBlacklists;
 
-import static org.igsq.igsqbot.entities.jooq.tables.Blacklists.BLACKLISTS;
+import static org.igsq.igsqbot.entities.jooq.tables.ChannelBlacklists.CHANNEL_BLACKLISTS;
+import static org.igsq.igsqbot.entities.jooq.tables.WordBlacklists.WORD_BLACKLISTS;
 
 public class BlacklistUtils
 {
@@ -40,6 +42,25 @@ public class BlacklistUtils
 		}
 
 		return false;
+	}
+
+	public static boolean isChannelBlacklisted(MessageReceivedEvent event, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var query = context
+					.selectFrom(Tables.CHANNEL_BLACKLISTS)
+					.where(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(event.getChannel().getIdLong())
+					.and(CHANNEL_BLACKLISTS.GUILD_ID.eq(event.getGuild().getIdLong())));
+
+			return query.execute() > 0;
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return false;
+		}
 	}
 
 	public static boolean isAdvertising(MessageReceivedEvent event, IGSQBot igsqBot)
@@ -87,8 +108,8 @@ public class BlacklistUtils
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context
-					.selectFrom(Tables.BLACKLISTS)
-					.where(BLACKLISTS.GUILD_ID.eq(guild.getIdLong()));
+					.selectFrom(Tables.WORD_BLACKLISTS)
+					.where(WORD_BLACKLISTS.GUILD_ID.eq(guild.getIdLong()));
 
 			for(var row : query.fetch())
 			{
@@ -108,8 +129,8 @@ public class BlacklistUtils
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context
-					.insertInto(Tables.BLACKLISTS)
-					.columns(BLACKLISTS.GUILD_ID, BLACKLISTS.PHRASE)
+					.insertInto(Tables.WORD_BLACKLISTS)
+					.columns(WORD_BLACKLISTS.GUILD_ID, WORD_BLACKLISTS.PHRASE)
 					.values(guild.getIdLong(), phrase);
 
 			query.execute();
@@ -120,14 +141,85 @@ public class BlacklistUtils
 		}
 	}
 
+	public static boolean addChannel(MessageChannel channel, Guild guild, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var query = context
+					.insertInto(Tables.CHANNEL_BLACKLISTS)
+					.columns(CHANNEL_BLACKLISTS.GUILD_ID, CHANNEL_BLACKLISTS.CHANNEL_ID)
+					.values(guild.getIdLong(), channel.getIdLong());
+
+			var exists = context
+				.selectFrom(Tables.CHANNEL_BLACKLISTS)
+				.where(CHANNEL_BLACKLISTS.GUILD_ID.eq(guild.getIdLong())
+				.and(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(channel.getIdLong())));
+
+			if(exists.fetch().isNotEmpty())
+			{
+				return false;
+			}
+
+			query.execute();
+			return true;
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return false;
+		}
+	}
+
+	public static List<ChannelBlacklists> getBlacklistedChannels(Guild guild, IGSQBot igsqBot)
+	{
+		List<ChannelBlacklists> result = new ArrayList<>();
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var query = context
+					.selectFrom(Tables.CHANNEL_BLACKLISTS)
+					.where(CHANNEL_BLACKLISTS.GUILD_ID.eq(guild.getIdLong()));
+
+			for(var row : query.fetch())
+			{
+				result.add(new ChannelBlacklists(row.getId(), row.getGuildId(), row.getChannelId()));
+			}
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+		}
+		return result;
+	}
+
+	public static boolean removeChannel(MessageChannel channel, Guild guild, IGSQBot igsqBot)
+	{
+		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		{
+			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var query = context
+					.deleteFrom(Tables.CHANNEL_BLACKLISTS)
+					.where(CHANNEL_BLACKLISTS.GUILD_ID.eq(guild.getIdLong())
+					.and(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(channel.getIdLong())));
+
+			return query.execute() > 0;
+		}
+		catch(Exception exception)
+		{
+			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return false;
+		}
+	}
+
 	public static boolean removePhrase(Guild guild, String phrase, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context
-					.deleteFrom(Tables.BLACKLISTS)
-					.where(BLACKLISTS.GUILD_ID.eq(guild.getIdLong()).and(BLACKLISTS.PHRASE.eq(phrase)));
+					.deleteFrom(Tables.WORD_BLACKLISTS)
+					.where(WORD_BLACKLISTS.GUILD_ID.eq(guild.getIdLong()).and(WORD_BLACKLISTS.PHRASE.eq(phrase)));
 
 			return query.execute() > 0;
 		}

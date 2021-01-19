@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Icon;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.FileUtils;
 
@@ -31,7 +32,7 @@ public class StealCommand extends Command
 		Icon icon = FileUtils.getIcon(args.get(1));
 		if(icon == null)
 		{
-			ctx.replyError("The image / gif provided could not be loaded.");
+			throw new CommandResultException("The image / gif provided could not be loaded.");
 		}
 		else
 		{

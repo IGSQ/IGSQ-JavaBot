@@ -3,24 +3,22 @@ package org.igsq.igsqbot.entities.exception;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 
+
 public class SyntaxException extends CommandException
 {
-	private final Command command;
-
+	/**
+	 * The user entered invalid syntax.
+	 */
 	public SyntaxException(Command command)
 	{
 		super(command);
-		this.command = command;
 	}
 
+	/**
+	 * The user entered invalid syntax.
+	 */
 	public SyntaxException(CommandContext ctx)
 	{
 		super(ctx.getCommand());
-		this.command = ctx.getCommand();
-	}
-
-	public Command getCommand()
-	{
-		return command;
 	}
 }

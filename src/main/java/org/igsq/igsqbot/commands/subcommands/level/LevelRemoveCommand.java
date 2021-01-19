@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Level;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 
@@ -38,7 +39,7 @@ public class LevelRemoveCommand extends Command
                         }
                         else
                         {
-                            ctx.replyError("Level " + level.getAsInt() + " with role " + role.getAsMention() + " was not found.");
+                            throw new CommandResultException("Level " + level.getAsInt() + " with role " + role.getAsMention() + " was not found.");
                         }
                     });
         }

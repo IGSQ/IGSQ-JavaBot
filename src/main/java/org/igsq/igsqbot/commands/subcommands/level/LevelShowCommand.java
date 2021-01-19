@@ -1,12 +1,10 @@
 package org.igsq.igsqbot.commands.subcommands.level;
 
 import java.util.List;
-
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Level;
@@ -39,12 +37,12 @@ public class LevelShowCommand extends Command
                 .append(" awarded at ")
                 .append(levelBot.getAsMention())
                 .append(" level ")
-                .append(level.getAwardedAt());
+                .append(level.getAwardedAt())
+                .append("\n");
         }
 
         ctx.sendMessage(new EmbedBuilder()
             .setTitle("Configured levels for " + ctx.getGuild().getName())
-            .setDescription(text.length() == 0 ? "No levels configured" : text.toString())
-            .setColor(Constants.IGSQ_PURPLE));
+            .setDescription(text.length() == 0 ? "No levels configured" : text.toString()));
     }
 }

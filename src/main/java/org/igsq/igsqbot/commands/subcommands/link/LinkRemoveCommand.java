@@ -4,6 +4,7 @@ import java.util.List;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftChecks;
 import org.igsq.igsqbot.minecraft.MinecraftUtils;
@@ -27,19 +28,18 @@ public class LinkRemoveCommand extends Command
 
 		if(!MinecraftChecks.isAccountExist(arg, minecraft))
 		{
-			ctx.replyError("Account **" + arg + "** does not exist. Please ensure you have played on our server.");
-			return;
+			throw new CommandResultException("Account **" + arg + "** does not exist. Please ensure you have played on our server.");
 		}
 		String uuid = MinecraftUtils.getUUIDByName(arg, minecraft);
 		String account = MinecraftUtils.getName(uuid, minecraft);
 
 		if(!MinecraftChecks.isAccountLinked(uuid, minecraft))
 		{
-			ctx.replyError("Account **" + account + "** is not linked.");
+			throw new CommandResultException("Account **" + account + "** is not linked.");
 		}
 		else if(!MinecraftChecks.isOwnerOfAccount(uuid, author.getId(), minecraft))
 		{
-			ctx.replyError("Account **" + account + "** does not belong to you.");
+			throw new IllegalArgumentException("Account **" + account + "** does not belong to you.");
 		}
 		else
 		{

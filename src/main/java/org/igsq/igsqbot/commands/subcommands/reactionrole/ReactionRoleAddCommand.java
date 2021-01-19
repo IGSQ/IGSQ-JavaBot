@@ -29,8 +29,7 @@ public class ReactionRoleAddCommand extends Command
 		{
 			if(ctx.getMessage().getEmotes().get(0).isAnimated())
 			{
-				ctx.replyError("Animated emotes are not allowed.");
-				return;
+				throw new IllegalArgumentException("Animated emotes are not allowed.");
 			}
 			emote = ctx.getMessage().getEmotes().get(0).getId();
 		}

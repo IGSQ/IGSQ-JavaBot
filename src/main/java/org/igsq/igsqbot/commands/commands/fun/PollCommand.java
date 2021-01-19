@@ -50,7 +50,5 @@ public class PollCommand extends Command
 				.setThumbnail(author.getEffectiveAvatarUrl())
 				.setColor(Constants.IGSQ_PURPLE)
 				.build()).queue(message -> reactions.forEach(reaction -> message.addReaction(reaction).queue()));
-
-
 	}
 }

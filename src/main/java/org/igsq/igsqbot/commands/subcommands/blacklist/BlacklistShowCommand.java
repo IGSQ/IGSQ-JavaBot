@@ -1,11 +1,9 @@
 package org.igsq.igsqbot.commands.subcommands.blacklist;
 
 import java.util.List;
-
 import net.dv8tion.jda.api.EmbedBuilder;
-import org.igsq.igsqbot.Constants;
-import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.util.BlacklistUtils;
 
@@ -32,10 +30,8 @@ public class BlacklistShowCommand extends Command
                 .append("\n");
         }
 
-        ctx.getChannel().sendMessage(new EmbedBuilder()
+        ctx.sendMessage(new EmbedBuilder()
                 .setTitle("Blacklisted words for server " + ctx.getGuild().getName())
-                .setDescription(text.length() == 0 ? "No blacklisted words setup." : text.toString())
-                .setColor(Constants.IGSQ_PURPLE)
-                .build()).queue();
+                .setDescription(text.length() == 0 ? "No blacklisted words setup." : text.toString()));
     }
 }

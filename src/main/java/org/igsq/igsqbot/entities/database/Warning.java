@@ -73,7 +73,7 @@ public class Warning
 		return result;
 	}
 
-	public Warnings getById(long warnId)
+	public Warnings getByWarnId(long warnId)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
@@ -98,5 +98,10 @@ public class Warning
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 			return null;
 		}
+	}
+
+	public boolean isPresent(long warnId)
+	{
+		return getByWarnId(warnId) != null;
 	}
 }

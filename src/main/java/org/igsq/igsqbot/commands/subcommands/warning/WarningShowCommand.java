@@ -10,7 +10,7 @@ import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
-import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
 
@@ -25,11 +25,8 @@ public class WarningShowCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		if(args.isEmpty())
-		{
-			EmbedUtils.sendSyntaxError(ctx);
-			return;
-		}
+		CommandChecks.argsEmpty(ctx);
+
 		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
 			Guild guild = ctx.getGuild();

@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Invite;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
@@ -37,9 +38,8 @@ public class InviteCommand extends Command
 							return;
 						}
 					}
-					ctx.replyError("No invites found.");
+					throw new CommandResultException("No invites found.");
 				}
 		);
-
 	}
 }

@@ -5,10 +5,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
-import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
 import org.igsq.igsqbot.util.*;
@@ -43,37 +43,36 @@ public class ReportCommand extends Command
 
 			if(user.isBot())
 			{
-				ctx.replyError("You may not report bots.");
+				throw new IllegalArgumentException("You may not report bots.");
 			}
-			else
-			{
-				UserUtils.getMemberFromUser(user, guild).queue(
-						member ->
+
+			UserUtils.getMemberFromUser(user, guild).queue(
+					member ->
+					{
+						if(member.isOwner())
 						{
-							if(member.isOwner())
-							{
-								ctx.replyError("You may not report the owner.");
-								return;
-							}
-							reportChannel.sendMessage(new EmbedBuilder()
-									.setTitle("New report by: " + author.getAsTag())
-									.addField("Reporting user:", user.getAsMention(), false)
-									.addField("Description:", reason, false)
-									.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
-									.addField("Message Link:", "[Jump to message](" + messageLink + ")", false)
-									.setColor(member.getColor())
-									.setFooter("This report is unhandled and can only be dealt by members higher than " + member.getRoles().get(0).getName())
-									.build()).queue
-									(
-											message ->
-											{
-												new Report(message, ctx.getMessage(), channel, guild, user, reason, ctx.getIGSQBot()).add();
-												message.addReaction(Emoji.THUMB_UP.getUnicode()).queue();
-											}
-									);
+							ctx.replyError("You may not report the owner.");
+							return;
 						}
-				);
-			}
+						reportChannel.sendMessage(new EmbedBuilder()
+								.setTitle("New report by: " + author.getAsTag())
+								.addField("Reporting user:", user.getAsMention(), false)
+								.addField("Description:", reason, false)
+								.addField("Channel:", StringUtils.getChannelAsMention(channel.getId()), false)
+								.addField("Message Link:", "[Jump to message](" + messageLink + ")", false)
+								.setColor(member.getColor())
+								.setFooter("This report is unhandled and can only be dealt by members higher than " + member.getRoles().get(0).getName())
+								.build()).queue
+								(
+										message ->
+										{
+											Report.add(message.getIdLong(), ctx.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), reason, ctx.getIGSQBot());
+											message.addReaction(Emoji.THUMB_UP.getUnicode()).queue();
+										}
+								);
+					}
+			);
+
 		});
 	}
 }

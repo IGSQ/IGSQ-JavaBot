@@ -77,7 +77,7 @@ public class ReportCommandReactionAdd extends ListenerAdapter
 							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
 									.setColor(Color.GREEN)
 									.setFooter("This report was dealt with by " + user.getAsTag() + " the reported member left."));
-							report.remove();
+							Report.remove(report.getMessageId(), igsqBot);
 							return;
 						}
 
@@ -90,7 +90,7 @@ public class ReportCommandReactionAdd extends ListenerAdapter
 						EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
 								.setColor(Color.GREEN)
 								.setFooter("This report was dealt with by " + user.getAsTag()));
-						report.remove();
+						Report.remove(report.getMessageId(), igsqBot);
 						message.clearReactions().queue();
 					}
 				});

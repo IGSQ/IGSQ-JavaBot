@@ -32,12 +32,10 @@ public class HelpCommand extends Command
 		{
 			if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
 			{
-				ctx.replyError("That page does not exist");
+				throw new IllegalArgumentException("That page does not exist");
 			}
-			else
-			{
-				ctx.getChannel().sendMessage(ctx.getIGSQBot().getHelpPages().get(page.getAsInt() - 1).build()).queue();
-			}
+
+			ctx.sendMessage(ctx.getIGSQBot().getHelpPages().get(page.getAsInt() - 1));
 		}
 	}
 }

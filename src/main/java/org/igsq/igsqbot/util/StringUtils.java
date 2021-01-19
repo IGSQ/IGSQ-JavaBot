@@ -53,6 +53,11 @@ public class StringUtils
 		return "<#" + channelID + ">";
 	}
 
+	public static String getChannelAsMention(long channelID)
+	{
+		return "<#" + channelID + ">";
+	}
+
 	public static boolean isOption(String internal, String input, double accuracy)
 	{
 		if(internal == null || input == null || internal.length() == 0 || input.length() == 0) return false;

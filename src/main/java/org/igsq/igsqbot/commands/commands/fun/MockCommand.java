@@ -1,12 +1,14 @@
 package org.igsq.igsqbot.commands.commands.fun;
 
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.List;
 import java.util.Random;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.FileUtils;
 
@@ -32,13 +34,13 @@ public class MockCommand extends Command
 					.setTitle(mockText(args))
 					.setColor(Constants.IGSQ_PURPLE)
 					.setImage("attachment://mock.jpg")
+					.setTimestamp(Instant.now())
 					.build()).queue();
 		}
 		else
 		{
-			ctx.replyError("An error occurred while loading the mock image.");
+			throw new CommandResultException("An error occurred while loading the mock image.");
 		}
-
 	}
 
 	private String mockText(List<String> args)

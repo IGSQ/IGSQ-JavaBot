@@ -6,7 +6,8 @@ public enum CommandFlag
 	DEVELOPER_ONLY(false),
 	AUTO_DELETE_MESSAGE(false),
 	BLACKLIST_BYPASS(false),
-	DISABLED(false);
+	DISABLED(false),
+	ASYNCHRONOUS_EXCEPTION(false);
 
 	private final boolean defaultValue;
 

@@ -1,9 +1,7 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
-import java.time.Instant;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
-import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.info.RoleInfo;
@@ -43,12 +41,9 @@ public class RoleInfoCommand extends Command
 
 					members.forEach(member -> text.append(member.getAsMention()).append(" "));
 
-					ctx.getChannel().sendMessage(new EmbedBuilder()
+					ctx.sendMessage(new EmbedBuilder()
 							.setTitle("Information for role **" + role.getName() + "** (" + size + " Members)")
-							.addField("Random members", text.toString(), false)
-							.setColor(Constants.IGSQ_PURPLE)
-							.setTimestamp(Instant.now())
-							.build()).queue();
+							.addField("Random members", text.toString(), false));
 				});
 			});
 		}

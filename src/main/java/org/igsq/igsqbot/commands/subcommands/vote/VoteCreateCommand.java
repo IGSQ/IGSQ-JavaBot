@@ -14,6 +14,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Vote;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandChecks;
@@ -87,20 +88,18 @@ public class VoteCreateCommand extends Command
                     {
                         if(members.isEmpty())
                         {
-                            ctx.replyError("No members found for roles " + finalRoles
+                            throw new CommandResultException("No members found for roles " + finalRoles
                                     .stream()
                                     .map(Role::getAsMention)
                                     .collect(Collectors.joining(" ")));
-                            return;
                         }
 
                         if(members.size() > 20)
                         {
-                            ctx.replyError("Too many members found for roles " + finalRoles
+                            throw new CommandResultException("Too many members found for roles " + finalRoles
                                     .stream()
                                     .map(Role::getAsMention)
                                     .collect(Collectors.joining(" ")));
-                            return;
                         }
 
                         Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, ctx);

@@ -93,9 +93,14 @@ public abstract class Command
 				run(ctx.getArgs(), ctx);
 				ctx.addSuccessReaction();
 			}
-			catch(CooldownException ignored)
+			catch(CooldownException ignored) { }
+			catch(CommandResultException exception)
 			{
-
+				ctx.replyError(exception.getText());
+			}
+			catch(IllegalArgumentException exception)
+			{
+				ctx.replyError(exception.getMessage());
 			}
 			catch(MemberPermissionException exception)
 			{

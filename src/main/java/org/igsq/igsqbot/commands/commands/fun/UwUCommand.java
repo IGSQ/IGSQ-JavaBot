@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
@@ -28,7 +27,6 @@ public class UwUCommand extends Command
 		CommandChecks.argsEmbedCompatible(ctx);
 
 		List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
-		MessageChannel channel = ctx.getChannel();
 		StringBuilder finalSentence = new StringBuilder();
 		User author = ctx.getAuthor();
 
@@ -44,11 +42,10 @@ public class UwUCommand extends Command
 			}
 		}
 
-		channel.sendMessage(new EmbedBuilder()
+		ctx.sendMessage(new EmbedBuilder()
 				.setDescription(finalSentence.toString())
 				.setColor(Constants.IGSQ_PURPLE)
-				.setFooter("This sentence was UwU'd by: " + author.getAsTag())
-				.build()).queue();
+				.setFooter("This sentence was UwU'd by: " + author.getAsTag()));
 
 	}
 }

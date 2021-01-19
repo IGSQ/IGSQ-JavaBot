@@ -50,6 +50,19 @@ public class Parser
 		}
 	}
 
+	public Optional<Boolean> parseAsBoolean()
+	{
+		try
+		{
+			return Optional.of(Boolean.parseBoolean(arg));
+		}
+		catch(Exception exception)
+		{
+			ctx.replyError("Invalid true / false entered.");
+			return Optional.empty();
+		}
+	}
+
 	public Optional<Guild> parseAsGuild()
 	{
 		if(arg.equalsIgnoreCase("this") || arg.equalsIgnoreCase("here"))

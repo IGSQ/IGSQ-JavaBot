@@ -5,6 +5,7 @@ import java.util.List;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.CommandChecks;
@@ -28,7 +29,7 @@ public class BlacklistRemoveCommand extends Command
         }
         else
         {
-            ctx.replyError("Phrase ||" + phrase + "|| not found in the blacklist.");
+            throw new CommandResultException("Phrase ||" + phrase + "|| not found in the blacklist.");
         }
     }
 }

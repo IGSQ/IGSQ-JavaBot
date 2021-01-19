@@ -7,6 +7,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Vote;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 
@@ -36,7 +37,7 @@ public class VoteCloseCommand extends Command
 
             if(!success)
             {
-                ctx.replyError("Vote with ID **" + id.getAsLong() + "** not found.");
+                throw new CommandResultException("Vote with ID **" + id.getAsLong() + "** not found.");
             }
             else
             {

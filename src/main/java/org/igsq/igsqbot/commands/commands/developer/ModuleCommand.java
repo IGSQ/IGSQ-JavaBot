@@ -4,6 +4,7 @@ import java.util.List;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.util.CommandChecks;
 
@@ -43,14 +44,12 @@ public class ModuleCommand extends Command
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
 			{
-				ctx.replyError("Module " + moduleName + " was not found");
+				throw new CommandResultException("Module " + moduleName + " was not found");
 			}
-			else
-			{
-				cmd.setDisabled(false);
-				ctx.replySuccess("Disabled module: `" + cmd.getName() + "`.");
-				ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was enabled.");
-			}
+
+			cmd.setDisabled(false);
+			ctx.replySuccess("Disabled module: `" + cmd.getName() + "`.");
+			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was enabled.");
 		}
 	}
 
@@ -70,14 +69,12 @@ public class ModuleCommand extends Command
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
 			{
-				ctx.replyError("Module " + moduleName + " was not found");
+				throw new CommandResultException("Module " + moduleName + " was not found");
 			}
-			else
-			{
-				cmd.setDisabled(true);
-				ctx.replySuccess("Disabled module: `" + cmd.getName() + "`.");
-				ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was disabled.");
-			}
+
+			cmd.setDisabled(true);
+			ctx.replySuccess("Disabled module: `" + cmd.getName() + "`.");
+			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was disabled.");
 		}
 	}
 }
