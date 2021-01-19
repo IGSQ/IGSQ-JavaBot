@@ -36,6 +36,7 @@ public class ChannelSuggestionCommand extends Command
 		MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getChannelSuggestionChannel());
 
 		CommandChecks.channelConfigured(suggestionChannel, "Suggestion channel");
+
 		suggestionChannel.sendMessage(new EmbedBuilder()
 				.setTitle("Channel Suggestion:")
 				.setDescription(ArrayUtils.arrayCompile(args, " "))

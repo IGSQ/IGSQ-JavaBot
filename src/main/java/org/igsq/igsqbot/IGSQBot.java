@@ -116,7 +116,7 @@ public class IGSQBot extends ListenerAdapter
 		getLogger().info("  | | (_ \\__ \\ (_) | _ \\/ _ \\  _| \\__ \\  _/ _` | '_|  _/ -_) _` |");
 		getLogger().info(" |___\\___|___/\\__\\_\\___/\\___/\\__| |___/\\__\\__,_|_|  \\__\\___\\__,_|");
 		getLogger().info("");
-		getLogger().info("Account:         " + event.getJDA().getSelfUser().getAsTag() + " / " + event.getJDA().getSelfUser().getAsTag());
+		getLogger().info("Account:         " + event.getJDA().getSelfUser().getId() + " / " + event.getJDA().getSelfUser().getAsTag());
 		getLogger().info("Total Shards:    " + BotInfo.getTotalShards(event.getJDA().getShardManager()));
 		getLogger().info("Total Guilds:    " + BotInfo.getTotalServers(event.getJDA().getShardManager()));
 		getLogger().info("JDA Version:     " + JDAInfo.VERSION);

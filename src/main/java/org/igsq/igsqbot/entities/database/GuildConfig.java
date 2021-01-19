@@ -5,9 +5,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.jooq.Tables;
-import org.igsq.igsqbot.entities.jooq.tables.records.GuildsRecord;
 import org.jooq.Field;
-import org.jooq.TableField;
 
 import static org.igsq.igsqbot.entities.jooq.tables.Guilds.GUILDS;
 
@@ -53,12 +51,12 @@ public class GuildConfig
 
 	public long getPromoRole()
 	{
-		return getValue(GUILDS.SELF_PROMO_ROLE);
+		return getLong(GUILDS.SELF_PROMO_ROLE);
 	}
 
 	public long getLevelUpBot()
 	{
-		return getValue(GUILDS.LEVEL_UP_BOT);
+		return getLong(GUILDS.LEVEL_UP_BOT);
 	}
 
 	public void setPrefix(String prefix)
@@ -77,37 +75,37 @@ public class GuildConfig
 
 	public long getReportChannel()
 	{
-		return getValue(GUILDS.REPORT_CHANNEL);
+		return getLong(GUILDS.REPORT_CHANNEL);
 	}
 
 	public long getLogChannel()
 	{
-		return getValue(GUILDS.LOG_CHANNEL);
+		return getLong(GUILDS.LOG_CHANNEL);
 	}
 
 	public long getVoteChannel()
 	{
-		return getValue(GUILDS.VOTE_CHANNEL);
+		return getLong(GUILDS.VOTE_CHANNEL);
 	}
 
 	public long getTempBanRole()
 	{
-		return getValue(GUILDS.MUTED_ROLE);
+		return getLong(GUILDS.MUTED_ROLE);
 	}
 
 	public long getSuggestionChannel()
 	{
-		return getValue(GUILDS.SUGGESTION_CHANNEL);
+		return getLong(GUILDS.SUGGESTION_CHANNEL);
 	}
 
 	public long getPromoChannel()
 	{
-		return getValue(GUILDS.SELF_PROMO_CHANNEL);
+		return getLong(GUILDS.SELF_PROMO_CHANNEL);
 	}
 
 	public long getChannelSuggestionChannel()
 	{
-		return getValue(GUILDS.CHANNEL_SUGGESTION_CHANNEL);
+		return getLong(GUILDS.CHANNEL_SUGGESTION_CHANNEL);
 	}
 
 	public void setLevelUpBot(long userId)
@@ -115,7 +113,7 @@ public class GuildConfig
 		setValue(GUILDS.LEVEL_UP_BOT, userId);
 	}
 
-	private long getValue(Field<?> value)
+	private long getLong(Field<?> value)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
@@ -132,7 +130,7 @@ public class GuildConfig
 		}
 	}
 
-	private void setValue(TableField<? extends GuildsRecord, Long> field, Long value)
+	private <T> void setValue(Field<T> field, T value)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{

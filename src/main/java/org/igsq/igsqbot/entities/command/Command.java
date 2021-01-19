@@ -51,9 +51,10 @@ public abstract class Command
 		this.cooldown = 0;
 		this.flags = new ArrayList<>();
 	}
+
 	public void process(CommandContext ctx)
 	{
-		if(isDisabled())
+		if(isDisabled() || hasFlag(CommandFlag.DISABLED))
 		{
 			EmbedUtils.sendDisabledError(ctx);
 		}
@@ -69,7 +70,7 @@ public abstract class Command
 		{
 			ctx.replyError("This command must be executed in a server.");
 		}
-		if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
+		else if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
 		{
 			ctx.getMessage().delete().queue();
 		}
@@ -115,7 +116,7 @@ public abstract class Command
 			}
 			catch(CommandException exception)
 			{
-				ctx.replyError("An error occurred while executing command " + getName() + "\n" + exception.getText());
+				ctx.replyError("An unexpected error occurred while executing command " + getName() + "\n" + exception.getText());
 			}
 		}
 	}

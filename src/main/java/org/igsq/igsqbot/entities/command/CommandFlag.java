@@ -5,7 +5,8 @@ public enum CommandFlag
 	GUILD_ONLY(false),
 	DEVELOPER_ONLY(false),
 	AUTO_DELETE_MESSAGE(false),
-	BLACKLIST_BYPASS(false);
+	BLACKLIST_BYPASS(false),
+	DISABLED(false);
 
 	private final boolean defaultValue;
 

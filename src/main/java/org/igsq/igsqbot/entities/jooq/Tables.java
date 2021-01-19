@@ -4,7 +4,7 @@
 package org.igsq.igsqbot.entities.jooq;
 
 
-import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
+import org.igsq.igsqbot.entities.jooq.tables.ChannelBlacklists;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 import org.igsq.igsqbot.entities.jooq.tables.Levels;
 import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
@@ -14,6 +14,7 @@ import org.igsq.igsqbot.entities.jooq.tables.Roles;
 import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
 import org.igsq.igsqbot.entities.jooq.tables.Votes;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
+import org.igsq.igsqbot.entities.jooq.tables.WordBlacklists;
 
 
 /**
@@ -23,9 +24,9 @@ import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 public class Tables {
 
     /**
-     * The table <code>public.blacklists</code>.
+     * The table <code>public.channel_blacklists</code>.
      */
-    public static final Blacklists BLACKLISTS = Blacklists.BLACKLISTS;
+    public static final ChannelBlacklists CHANNEL_BLACKLISTS = ChannelBlacklists.CHANNEL_BLACKLISTS;
 
     /**
      * The table <code>public.guilds</code>.
@@ -71,4 +72,9 @@ public class Tables {
      * The table <code>public.warnings</code>.
      */
     public static final Warnings WARNINGS = Warnings.WARNINGS;
+
+    /**
+     * The table <code>public.word_blacklists</code>.
+     */
+    public static final WordBlacklists WORD_BLACKLISTS = WordBlacklists.WORD_BLACKLISTS;
 }

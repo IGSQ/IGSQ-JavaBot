@@ -5,6 +5,7 @@ import java.util.OptionalLong;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.ReactionRole;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
@@ -15,6 +16,7 @@ public class ReactionRoleRemoveCommand extends Command
 	public ReactionRoleRemoveCommand(Command parent)
 	{
 		super(parent, "remove", "Removes reaction roles.", "[messageId][channel][role][emote]");
+		addFlags(CommandFlag.GUILD_ONLY);
 		addMemberPermissions(Permission.MANAGE_SERVER);
 		addSelfPermissions(Permission.MESSAGE_MANAGE);
 	}

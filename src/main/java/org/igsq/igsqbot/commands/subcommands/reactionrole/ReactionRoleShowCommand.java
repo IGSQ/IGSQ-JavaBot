@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.ReactionRole;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
@@ -16,6 +17,7 @@ public class ReactionRoleShowCommand extends Command
 	public ReactionRoleShowCommand(Command parent)
 	{
 		super(parent, "show", "Shows reaction roles.", "[messageId]");
+		addFlags(CommandFlag.GUILD_ONLY);
 	}
 
 	@Override

@@ -4,11 +4,11 @@
 package org.igsq.igsqbot.entities.jooq.tables.records;
 
 
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record12;
 import org.jooq.Row12;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 import org.jooq.impl.UpdatableRecordImpl;
 
 

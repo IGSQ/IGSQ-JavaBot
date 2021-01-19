@@ -55,8 +55,11 @@ public class DatabaseHandler
 		LOGGER.debug("Initialise table votes.");
 		initTable("votes");
 
-		LOGGER.debug("Initialise table blacklists.");
-		initTable("blacklists");
+		LOGGER.debug("Initialise table word_blacklists.");
+		initTable("word_blacklists");
+
+		LOGGER.debug("Initialise table channel_blacklists.");
+		initTable("channel_blacklists");
 
 		LOGGER.debug("Initialise table levels.");
 		initTable("levels");

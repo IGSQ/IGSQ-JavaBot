@@ -22,6 +22,7 @@ public class Parser
 					"|m|min|mins|minutes" +
 					"|s|sec|secs|seconds" +
 					")");
+
 	private final String arg;
 	private final CommandContext ctx;
 

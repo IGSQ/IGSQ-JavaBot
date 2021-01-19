@@ -8,7 +8,6 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.util.CommandChecks;
-import org.igsq.igsqbot.util.EmbedUtils;
 
 @SuppressWarnings("unused")
 public class InviteCommand extends Command
@@ -17,20 +16,15 @@ public class InviteCommand extends Command
 	{
 		super("Invite", "Shows the best invite for the server.", "[none]");
 		addFlags(CommandFlag.GUILD_ONLY);
+		addSelfPermissions(Permission.MANAGE_SERVER);
 		addAliases("invite");
 	}
 
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		Guild guild = ctx.getGuild();
-
 		CommandChecks.argsEmpty(ctx);
-		if(!guild.getSelfMember().hasPermission(Permission.MANAGE_SERVER))
-		{
-			EmbedUtils.sendMemberPermissionError(ctx);
-			return;
-		}
+		Guild guild = ctx.getGuild();
 
 		guild.retrieveInvites().queue(
 				invites ->

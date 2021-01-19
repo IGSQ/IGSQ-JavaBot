@@ -6,11 +6,11 @@ package org.igsq.igsqbot.entities.jooq.tables.records;
 
 import java.time.LocalDateTime;
 
-import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Row5;
+import org.igsq.igsqbot.entities.jooq.tables.Warnings;
 import org.jooq.impl.UpdatableRecordImpl;
 
 

@@ -4,19 +4,21 @@
 package org.igsq.igsqbot.entities.jooq;
 
 
+import org.jooq.ForeignKey;
+import org.jooq.TableField;
+import org.jooq.UniqueKey;
+import org.igsq.igsqbot.entities.jooq.tables.ChannelBlacklists;
+import org.igsq.igsqbot.entities.jooq.tables.Guilds;
+import org.igsq.igsqbot.entities.jooq.tables.Levels;
+import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.igsq.igsqbot.entities.jooq.tables.Reminders;
 import org.igsq.igsqbot.entities.jooq.tables.Reports;
 import org.igsq.igsqbot.entities.jooq.tables.Roles;
 import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
-import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
-import org.igsq.igsqbot.entities.jooq.tables.Guilds;
-import org.igsq.igsqbot.entities.jooq.tables.Levels;
-import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
 import org.igsq.igsqbot.entities.jooq.tables.Votes;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
-import org.igsq.igsqbot.entities.jooq.tables.records.BlacklistsRecord;
+import org.igsq.igsqbot.entities.jooq.tables.WordBlacklists;
+import org.igsq.igsqbot.entities.jooq.tables.records.ChannelBlacklistsRecord;
 import org.igsq.igsqbot.entities.jooq.tables.records.GuildsRecord;
 import org.igsq.igsqbot.entities.jooq.tables.records.LevelsRecord;
 import org.igsq.igsqbot.entities.jooq.tables.records.ReactionRolesRecord;
@@ -26,6 +28,7 @@ import org.igsq.igsqbot.entities.jooq.tables.records.RolesRecord;
 import org.igsq.igsqbot.entities.jooq.tables.records.TempbansRecord;
 import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
 import org.igsq.igsqbot.entities.jooq.tables.records.WarningsRecord;
+import org.igsq.igsqbot.entities.jooq.tables.records.WordBlacklistsRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
@@ -41,7 +44,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<BlacklistsRecord> BLACKLISTS_PKEY = Internal.createUniqueKey(Blacklists.BLACKLISTS, DSL.name("blacklists_pkey"), new TableField[] { Blacklists.BLACKLISTS.ID }, true);
+    public static final UniqueKey<ChannelBlacklistsRecord> CHANNEL_BLACKLISTS_PKEY = Internal.createUniqueKey(ChannelBlacklists.CHANNEL_BLACKLISTS, DSL.name("channel_blacklists_pkey"), new TableField[] { ChannelBlacklists.CHANNEL_BLACKLISTS.ID }, true);
     public static final UniqueKey<GuildsRecord> GUILDS_PKEY = Internal.createUniqueKey(Guilds.GUILDS, DSL.name("guilds_pkey"), new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
     public static final UniqueKey<LevelsRecord> LEVELS_PKEY = Internal.createUniqueKey(Levels.LEVELS, DSL.name("levels_pkey"), new TableField[] { Levels.LEVELS.ID }, true);
     public static final UniqueKey<ReactionRolesRecord> REACTION_ROLES_PKEY = Internal.createUniqueKey(ReactionRoles.REACTION_ROLES, DSL.name("reaction_roles_pkey"), new TableField[] { ReactionRoles.REACTION_ROLES.ID }, true);
@@ -55,4 +58,12 @@ public class Keys {
     public static final UniqueKey<TempbansRecord> TEMPBANS_USER_ID_KEY = Internal.createUniqueKey(Tempbans.TEMPBANS, DSL.name("tempbans_user_id_key"), new TableField[] { Tempbans.TEMPBANS.USER_ID }, true);
     public static final UniqueKey<VotesRecord> VOTES_PKEY = Internal.createUniqueKey(Votes.VOTES, DSL.name("votes_pkey"), new TableField[] { Votes.VOTES.ID }, true);
     public static final UniqueKey<WarningsRecord> WARNINGS_PKEY = Internal.createUniqueKey(Warnings.WARNINGS, DSL.name("warnings_pkey"), new TableField[] { Warnings.WARNINGS.ID }, true);
+    public static final UniqueKey<WordBlacklistsRecord> WORD_BLACKLISTS_PKEY = Internal.createUniqueKey(WordBlacklists.WORD_BLACKLISTS, DSL.name("word_blacklists_pkey"), new TableField[] { WordBlacklists.WORD_BLACKLISTS.ID }, true);
+
+    // -------------------------------------------------------------------------
+    // FOREIGN KEY definitions
+    // -------------------------------------------------------------------------
+
+    public static final ForeignKey<ChannelBlacklistsRecord, GuildsRecord> CHANNEL_BLACKLISTS__CHANNEL_BLACKLISTS_GUILD_ID_FKEY = Internal.createForeignKey(ChannelBlacklists.CHANNEL_BLACKLISTS, DSL.name("channel_blacklists_guild_id_fkey"), new TableField[] { ChannelBlacklists.CHANNEL_BLACKLISTS.GUILD_ID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
+    public static final ForeignKey<WordBlacklistsRecord, GuildsRecord> WORD_BLACKLISTS__WORD_BLACKLISTS_GUILD_ID_FKEY = Internal.createForeignKey(WordBlacklists.WORD_BLACKLISTS, DSL.name("word_blacklists_guild_id_fkey"), new TableField[] { WordBlacklists.WORD_BLACKLISTS.GUILD_ID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
 }

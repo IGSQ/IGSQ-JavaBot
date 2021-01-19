@@ -10,7 +10,7 @@ import java.util.List;
 import org.jooq.Catalog;
 import org.jooq.Sequence;
 import org.jooq.Table;
-import org.igsq.igsqbot.entities.jooq.tables.Blacklists;
+import org.igsq.igsqbot.entities.jooq.tables.ChannelBlacklists;
 import org.igsq.igsqbot.entities.jooq.tables.Guilds;
 import org.igsq.igsqbot.entities.jooq.tables.Levels;
 import org.igsq.igsqbot.entities.jooq.tables.ReactionRoles;
@@ -20,6 +20,7 @@ import org.igsq.igsqbot.entities.jooq.tables.Roles;
 import org.igsq.igsqbot.entities.jooq.tables.Tempbans;
 import org.igsq.igsqbot.entities.jooq.tables.Votes;
 import org.igsq.igsqbot.entities.jooq.tables.Warnings;
+import org.igsq.igsqbot.entities.jooq.tables.WordBlacklists;
 import org.jooq.impl.SchemaImpl;
 
 
@@ -37,9 +38,9 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.blacklists</code>.
+     * The table <code>public.channel_blacklists</code>.
      */
-    public final Blacklists BLACKLISTS = Blacklists.BLACKLISTS;
+    public final ChannelBlacklists CHANNEL_BLACKLISTS = ChannelBlacklists.CHANNEL_BLACKLISTS;
 
     /**
      * The table <code>public.guilds</code>.
@@ -87,6 +88,11 @@ public class Public extends SchemaImpl {
     public final Warnings WARNINGS = Warnings.WARNINGS;
 
     /**
+     * The table <code>public.word_blacklists</code>.
+     */
+    public final WordBlacklists WORD_BLACKLISTS = WordBlacklists.WORD_BLACKLISTS;
+
+    /**
      * No further instances allowed
      */
     private Public() {
@@ -102,7 +108,7 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Sequence<?>> getSequences() {
         return Arrays.<Sequence<?>>asList(
-            Sequences.BLACKLISTS_ID_SEQ,
+            Sequences.CHANNEL_BLACKLISTS_ID_SEQ,
             Sequences.LEVELS_ID_SEQ,
             Sequences.REACTION_ROLES_ID_SEQ,
             Sequences.REMINDERS_ID_SEQ,
@@ -110,13 +116,14 @@ public class Public extends SchemaImpl {
             Sequences.ROLES_ID_SEQ,
             Sequences.TEMPBANS_ID_SEQ,
             Sequences.VOTES_ID_SEQ,
-            Sequences.WARNINGS_ID_SEQ);
+            Sequences.WARNINGS_ID_SEQ,
+            Sequences.WORD_BLACKLISTS_ID_SEQ);
     }
 
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
-            Blacklists.BLACKLISTS,
+            ChannelBlacklists.CHANNEL_BLACKLISTS,
             Guilds.GUILDS,
             Levels.LEVELS,
             ReactionRoles.REACTION_ROLES,
@@ -125,6 +132,7 @@ public class Public extends SchemaImpl {
             Roles.ROLES,
             Tempbans.TEMPBANS,
             Votes.VOTES,
-            Warnings.WARNINGS);
+            Warnings.WARNINGS,
+            WordBlacklists.WORD_BLACKLISTS);
     }
 }
