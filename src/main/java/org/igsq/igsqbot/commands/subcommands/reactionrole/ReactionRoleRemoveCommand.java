@@ -42,14 +42,12 @@ public class ReactionRoleRemoveCommand extends Command
 
 										if(!reactionRole.isPresent())
 										{
-											ctx.replyError("That reaction role does not exist");
+											throw new IllegalArgumentException("That reaction role does not exist");
 										}
-										else
-										{
-											reactionRole.remove();
-											ctx.replySuccess("Removed reaction role for role " + StringUtils.getRoleAsMention(role.getIdLong()));
-											message.clearReactions(emote).queue();
-										}
+
+										reactionRole.remove();
+										ctx.replySuccess("Removed reaction role for role " + StringUtils.getRoleAsMention(role.getIdLong()));
+										message.clearReactions(emote).queue();
 									},
 									error -> ctx.replyError("That message does not exist"));
 						});

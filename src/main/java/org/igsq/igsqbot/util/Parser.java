@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 
 public class Parser
 {
@@ -166,8 +167,10 @@ public class Parser
 				}
 				else
 				{
-					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("User not found."));
-					return;
+					jda.retrieveUserById(mentionableId).queue(consumer, failure ->
+					{
+						throw new CommandResultException("User not found.");
+					});
 				}
 			}
 			else if(type == Message.MentionType.CHANNEL)
@@ -180,7 +183,7 @@ public class Parser
 				}
 				else
 				{
-					ctx.replyError("Channel not found / i do not have permissions to see it.");
+					throw new CommandResultException("Channel not found / i do not have permissions to see it.");
 				}
 			}
 			else if(type == Message.MentionType.ROLE)
@@ -193,7 +196,7 @@ public class Parser
 				}
 				else
 				{
-					ctx.replyError("Role not found");
+					throw new CommandResultException("Role not found");
 				}
 			}
 		}
@@ -212,7 +215,7 @@ public class Parser
 						{
 							if(members.isEmpty())
 							{
-								ctx.replyError("User not found.");
+								throw new CommandResultException("User not found.");
 							}
 							else
 							{
@@ -224,7 +227,7 @@ public class Parser
 			var rolesChannelsList = type == Message.MentionType.CHANNEL ? guild.getTextChannelsByName(arg, true) : guild.getRolesByName(arg, true);
 			if(rolesChannelsList.isEmpty()) //Role / Channel
 			{
-				ctx.replyError("No " + typeName.toLowerCase() + "s with that name found");
+				throw new CommandResultException("No " + typeName.toLowerCase() + "s with that name found");
 			}
 			else
 			{

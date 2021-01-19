@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
@@ -51,8 +52,7 @@ public class ReportCommand extends Command
 					{
 						if(member.isOwner())
 						{
-							ctx.replyError("You may not report the owner.");
-							return;
+							throw new HierarchyException("You may not report the owner.");
 						}
 						reportChannel.sendMessage(new EmbedBuilder()
 								.setTitle("New report by: " + author.getAsTag())

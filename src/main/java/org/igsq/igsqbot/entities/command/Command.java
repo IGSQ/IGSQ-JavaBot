@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.igsq.igsqbot.entities.exception.*;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -91,7 +92,6 @@ public abstract class Command
 			try
 			{
 				run(ctx.getArgs(), ctx);
-				ctx.addSuccessReaction();
 			}
 			catch(CooldownException exception)
 			{
@@ -101,7 +101,7 @@ public abstract class Command
 			{
 				ctx.replyError(exception.getText());
 			}
-			catch(IllegalArgumentException exception)
+			catch(IllegalArgumentException | HierarchyException exception)
 			{
 				ctx.replyError(exception.getMessage());
 			}

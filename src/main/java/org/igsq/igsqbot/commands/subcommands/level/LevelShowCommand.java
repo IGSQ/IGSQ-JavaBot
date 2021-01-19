@@ -16,7 +16,7 @@ public class LevelShowCommand extends Command
 {
     public LevelShowCommand(Command parent)
     {
-        super(parent, "show", "Shows all levels.", "[none]");
+        super(parent, "show", "Shows information about the levels.", "[none]");
         addFlags(CommandFlag.GUILD_ONLY);
     }
 

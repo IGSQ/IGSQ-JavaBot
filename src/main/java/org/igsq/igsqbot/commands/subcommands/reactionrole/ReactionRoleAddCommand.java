@@ -6,6 +6,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.ReactionRole;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 
@@ -49,8 +50,7 @@ public class ReactionRoleAddCommand extends Command
 									{
 										if(!ctx.getSelfMember().canInteract(role) || !ctx.getMember().canInteract(role))
 										{
-											ctx.replyError("A hierarchy issue occurred when tried to execute command `" + ctx.getCommand().getName() + "`");
-											return;
+											throw new CommandResultException("A hierarchy issue occurred when tried to execute command `" + ctx.getCommand().getName() + "`");
 										}
 
 										message.addReaction(emote).queue(

@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.command.CommandContext;
@@ -39,7 +40,7 @@ public class CommandUtils
 					}
 					else
 					{
-						ctx.replyError("A hierarchy issue occurred when tried to execute command `" + ctx.getCommand().getName() + "`");
+						throw new HierarchyException("A hierarchy issue occurred when tried to execute command `" + ctx.getCommand().getName() + "`");
 					}
 				}
 		);
