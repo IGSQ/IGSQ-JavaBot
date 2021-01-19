@@ -15,7 +15,7 @@ public class LevelCommand extends Command
 {
     public LevelCommand()
     {
-        super("level", "Controls automatic role granting.", "[add | show | remove | bot]");
+        super("Level", "Controls automatic role granting.", "[add | show | remove | bot]");
         addAliases("level");
         addFlags(CommandFlag.GUILD_ONLY);
         addChildren(

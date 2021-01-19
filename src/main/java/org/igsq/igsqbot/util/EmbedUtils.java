@@ -56,7 +56,7 @@ public class EmbedUtils
 		ctx.addErrorReaction();
 		Command cmd = ctx.getCommand();
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() + " You do not have the following required permissions for command:`" + cmd.getAliases().get(0) + "`" +
+				.setDescription(Emoji.FAILURE.getAsMessageable() + " You do not have the following required permissions for command:`" + cmd.getName() + "`" +
 						cmd.getMemberRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")))
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
@@ -68,7 +68,7 @@ public class EmbedUtils
 		ctx.addErrorReaction();
 		Command cmd = ctx.getCommand();
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() + " I do not have the following required permissions for command:`" + cmd.getAliases().get(0) + "`" +
+				.setDescription(Emoji.FAILURE.getAsMessageable() + " I do not have the following required permissions for command:`" + cmd.getName() + "`" +
 						cmd.getMemberRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")))
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));

@@ -10,7 +10,6 @@ import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.exception.MemberPermissionException;
-import org.igsq.igsqbot.entities.exception.SyntaxException;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 @SuppressWarnings("unused")
@@ -40,7 +39,7 @@ public class PrefixCommand extends Command
 
 		if(args.size() > 1 || args.get(0).length() > 5)
 		{
-			throw new SyntaxException(ctx);
+			throw new IllegalArgumentException("Prefix was too long or contained spaces.");
 		}
 
 		if(!ctx.memberPermissionCheck(Permission.MANAGE_SERVER))

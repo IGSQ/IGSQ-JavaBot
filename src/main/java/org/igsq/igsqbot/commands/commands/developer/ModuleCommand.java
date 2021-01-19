@@ -47,8 +47,12 @@ public class ModuleCommand extends Command
 				throw new CommandResultException("Module " + moduleName + " was not found");
 			}
 
+			if(!cmd.isDisabled())
+			{
+				throw new CommandResultException("Module " + cmd.getName() + " was already enabled.");
+			}
 			cmd.setDisabled(false);
-			ctx.replySuccess("Disabled module: `" + cmd.getName() + "`.");
+			ctx.replySuccess("Enabled module: `" + cmd.getName() + "`.");
 			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was enabled.");
 		}
 	}
@@ -70,6 +74,10 @@ public class ModuleCommand extends Command
 			if(cmd == null)
 			{
 				throw new CommandResultException("Module " + moduleName + " was not found");
+			}
+			if(cmd.isDisabled())
+			{
+				throw new CommandResultException("Module " + cmd.getName() + " was already disabled.");
 			}
 
 			cmd.setDisabled(true);
