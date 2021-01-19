@@ -8,7 +8,6 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandContext;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
-import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
 public class InviteCommand extends Command
@@ -24,7 +23,6 @@ public class InviteCommand extends Command
 	@Override
 	public void run(List<String> args, CommandContext ctx)
 	{
-		CommandChecks.argsEmpty(ctx);
 		Guild guild = ctx.getGuild();
 
 		guild.retrieveInvites().queue(

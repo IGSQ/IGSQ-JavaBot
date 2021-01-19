@@ -51,6 +51,5 @@ public class WarnCommand extends Command
 				ctx.replySuccess("Warned " + user.getAsMention() + " for reason: " + reason);
 			});
 		});
-
 	}
 }

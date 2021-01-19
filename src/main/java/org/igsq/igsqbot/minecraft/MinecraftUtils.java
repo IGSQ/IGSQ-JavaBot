@@ -285,11 +285,11 @@ public class MinecraftUtils
 		try(Connection connection = minecraft.getDatabaseHandler().getConnection())
 		{
 			PreparedStatement discordAccounts = connection.prepareStatement("DELETE FROM discord_accounts WHERE id = ?");
-			PreparedStatement discord2FA = connection.prepareStatement("DELETE FROM discord_2fa WHERE id = ?");
+			PreparedStatement discord2FA = connection.prepareStatement("DELETE FROM discord_2fa WHERE uuid = ?");
 			PreparedStatement linkedAccounts = connection.prepareStatement("DELETE FROM linked_accounts WHERE id = ?");
 
 			discordAccounts.setLong(1, memberId);
-			discord2FA.setLong(1, memberId);
+			discord2FA.setString(1, getUUID(String.valueOf(memberId), minecraft));
 			linkedAccounts.setLong(1, memberId);
 
 			discordAccounts.executeUpdate();

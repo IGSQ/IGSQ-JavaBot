@@ -70,10 +70,6 @@ public abstract class Command
 		{
 			ctx.replyError("This command must be executed in a server.");
 		}
-		else if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
-		{
-			ctx.getMessage().delete().queue();
-		}
 		else if(!getMemberRequiredPermissions().isEmpty() && !ctx.memberPermissionCheck(getMemberRequiredPermissions()))
 		{
 			EmbedUtils.sendMemberPermissionError(ctx);
@@ -88,6 +84,10 @@ public abstract class Command
 		}
 		else
 		{
+			if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
+			{
+				ctx.getMessage().delete().queue();
+			}
 			try
 			{
 				run(ctx.getArgs(), ctx);
