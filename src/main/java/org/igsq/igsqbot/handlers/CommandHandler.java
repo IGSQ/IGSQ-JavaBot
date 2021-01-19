@@ -36,7 +36,7 @@ public class CommandHandler
 
 	private Map<String, Command> loadCommands()
 	{
-		Map<String, Command> commands = new HashMap<>();
+		Map<String, Command> commands = new LinkedHashMap<>();
 		try(ScanResult result = classGraph.scan())
 		{
 			for(ClassInfo cls : result.getAllClasses())
@@ -164,14 +164,11 @@ public class CommandHandler
 			String subCommand = args.get(0);
 			for(Command child : cmd.getChildren())
 			{
-				for(String alias : child.getAliases())
+				if(subCommand.equalsIgnoreCase(child.getName()))
 				{
-					if(subCommand.equalsIgnoreCase(alias))
-					{
-						args.remove(0);
-						child.process(new CommandContext(event, igsqBot, child, args));
-						return;
-					}
+					args.remove(0);
+					child.process(new CommandContext(event, igsqBot, child, args));
+					return;
 				}
 			}
 			cmd.process(ctx);
