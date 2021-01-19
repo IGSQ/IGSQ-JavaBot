@@ -19,7 +19,7 @@ public class BotInfoCommand extends Command
 		ctx.sendMessage(new EmbedBuilder()
 				.setTitle("IGSQBot information")
 				.addField("JVM Version", BotInfo.getJavaVersion(), true)
-				.addField("Java Vendor", BotInfo.getJavaVendor(), true)
+				.addField("JDA Version", BotInfo.getJDAVersion(), true)
 				.addBlankField(true)
 				.addField("Thread Count", String.valueOf(BotInfo.getThreadCount()), true)
 				.addField("Memory Usage", BotInfo.getMemoryFormatted(), true)

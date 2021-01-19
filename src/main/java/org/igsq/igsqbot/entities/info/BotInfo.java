@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.entities.info;
 
 import java.lang.management.ManagementFactory;
+import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.sharding.ShardManager;
 
 public class BotInfo
@@ -8,6 +9,10 @@ public class BotInfo
 	private BotInfo()
 	{
 		//Overrides the default, public, constructor
+	}
+	public static String getJDAVersion()
+	{
+		return JDAInfo.VERSION;
 	}
 
 	public static String getJavaVersion()
