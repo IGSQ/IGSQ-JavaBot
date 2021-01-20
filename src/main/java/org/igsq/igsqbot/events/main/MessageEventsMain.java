@@ -76,16 +76,23 @@ public class MessageEventsMain extends ListenerAdapter
 				if(CommandUtils.getLevelUp(event, igsqBot) != -1)
 				{
 					List<Role> newRoles = DatabaseUtils.getRoleForLevel(guild, CommandUtils.getLevelUp(event, igsqBot), igsqBot);
+					Member member = event.getMessage().getMentionedMembers().get(0);
 
 					if(newRoles != null && !newRoles.isEmpty())
 					{
-						if(!event.getMessage().getMentionedMembers().isEmpty())
+						Role highest = null;
+						if(member.getRoles().isEmpty())
 						{
-							for(Role role : newRoles)
+							highest = event.getMessage().getMentionedMembers().get(0).getRoles().get(0);
+						}
+						
+						for(Role role : newRoles)
+						{
+							if(role != null)
 							{
-								if(role != null)
+								if(highest == null || highest.canInteract(role))
 								{
-									guild.addRoleToMember(event.getMessage().getMentionedMembers().get(0), role).queue();
+									guild.addRoleToMember(member, role).queue();
 								}
 							}
 						}
