@@ -28,7 +28,9 @@ public class StealCommand extends Command
 	@Override
 	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
+		System.out.println("sanity");
 		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure) || CommandChecks.stringIsURL(args.get(1), ctx, failure)) return;
+
 
 		if(!args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
 		{
@@ -36,10 +38,13 @@ public class StealCommand extends Command
 			return;
 		}
 
+		System.out.println("args ok");
+
 		Icon icon = FileUtils.getIcon(args.get(1));
 		if(icon == null)
 		{
 			failure.accept(new CommandResultException("The image / gif provided could not be loaded."));
+			System.out.println("invalid image");
 		}
 		else
 		{

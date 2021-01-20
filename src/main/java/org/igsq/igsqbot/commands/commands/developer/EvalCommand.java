@@ -1,11 +1,11 @@
 package org.igsq.igsqbot.commands.commands.developer;
 
-import java.awt.*;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
@@ -33,7 +33,6 @@ public class EvalCommand extends Command
 		if(CommandChecks.argsEmpty(ctx, failure)) return;
 
 		Object out;
-		Color color = Color.GREEN;
 		String status = "Success";
 
 		if(ctx.isFromGuild())
@@ -48,11 +47,14 @@ public class EvalCommand extends Command
 		SCRIPT_ENGINE.put("args", ctx.getArgs());
 		SCRIPT_ENGINE.put("jda", ctx.getJDA());
 		SCRIPT_ENGINE.put("author", ctx.getAuthor());
+		
+
 
 		StringBuilder imports = new StringBuilder();
 		DEFAULT_IMPORTS.forEach(imp -> imports.append("import ").append(imp).append(".*; "));
 		String code = String.join(" ", ctx.getArgs());
 		long start = System.currentTimeMillis();
+
 
 		try
 		{
@@ -61,13 +63,11 @@ public class EvalCommand extends Command
 		catch(Exception exception)
 		{
 			out = exception.getMessage();
-			color = Color.RED;
 			status = "Failed";
 		}
 
 		ctx.sendMessage(new EmbedBuilder()
 				.setTitle("Evaluated Result")
-				.setColor(color)
 				.addField("Status:", status, true)
 				.addField("Duration:", (System.currentTimeMillis() - start) + "ms", true)
 				.addField("Code:", "```java\n" + code + "\n```", false)
