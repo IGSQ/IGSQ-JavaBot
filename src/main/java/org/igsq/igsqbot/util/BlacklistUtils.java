@@ -31,6 +31,17 @@ public class BlacklistUtils
 	{
 		Guild guild = event.getGuild();
 		String content = event.getMessage().getContentRaw();
+		Member member = event.getMember();
+
+		if(member == null)
+		{
+			return false;
+		}
+
+		if(member.hasPermission(Permission.ADMINISTRATOR))
+		{
+			return true;
+		}
 
 		List<String> blacklistedWords = getBlacklistedPhrases(guild, igsqBot);
 
