@@ -85,7 +85,7 @@ public class MessageEventsMain extends ListenerAdapter
 						{
 							highest = event.getMessage().getMentionedMembers().get(0).getRoles().get(0);
 						}
-						
+
 						for(Role role : newRoles)
 						{
 							if(role != null)

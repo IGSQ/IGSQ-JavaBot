@@ -36,10 +36,12 @@ public class UserInfoCommand extends Command
 		else
 		{
 			Guild guild = ctx.getGuild();
-			new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), ctx).parseAsUser(
+			String arg = ArrayUtils.arrayCompile(args.subList(0, args.size()), " ");
+			System.out.println(arg);
+			new Parser(arg, ctx).parseAsUser(
 					user -> UserUtils.getMemberFromUser(user, guild).queue(
 							member -> showInfo(member, ctx),
-							error -> failure.accept(new CommandResultException("Member not found."))));
+							error -> failure.accept(new CommandResultException("Member " + arg + " not found, may not be in a shared server with me."))));
 		}
 	}
 

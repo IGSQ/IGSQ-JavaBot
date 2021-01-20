@@ -45,7 +45,7 @@ public class RoleInfoCommand extends Command
 
 					ctx.sendMessage(new EmbedBuilder()
 							.setTitle("Information for role **" + role.getName() + "** (" + size + " Members)")
-							.addField("Random members", text.toString(), false));
+							.addField("Random members", text.length() == 0 ? "No members" : text.toString(), false));
 				});
 			});
 		}
