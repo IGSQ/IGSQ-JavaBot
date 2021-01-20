@@ -122,7 +122,8 @@ None!
  - [x] 2FA not functioning as intended - unintended feature
  - [x] Muting causing duplicate entries (fixed, was a Map issue)
  - [x] Resource loading fails (incorrect method used)
- - [ ] Unchecked interaction check for reaction roles
+ - [x] Unchecked interaction check for reaction roles
+ - [ ] Time parsing might have issues
 
 ## Building and Running
 
