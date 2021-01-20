@@ -30,7 +30,7 @@ public class MessageEventsMain extends ListenerAdapter
 		if(event.isFromGuild())
 		{
 			Guild guild = event.getGuild();
-			
+
 			if(BlacklistUtils.isChannelBlacklisted(event, igsqBot))
 			{
 				return;
