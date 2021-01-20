@@ -78,12 +78,27 @@ public class BlacklistUtils
 		}
 
 
-		if(member == null || (findLink(content) && !event.getChannel().equals(promoChannel)))
-		{
-			return true;
-		}
 
-		return !member.hasPermission(Permission.MESSAGE_MANAGE) && !member.getRoles().contains(promoBypass);
+		if(findLink(content))
+		{
+			if(member == null)
+			{
+				return true;
+			}
+
+			if(member.hasPermission(Permission.MESSAGE_MANAGE))
+			{
+				return false;
+			}
+
+			if(!event.getChannel().equals(promoChannel))
+			{
+				return true;
+			}
+
+			return event.getChannel().equals(promoChannel) && !member.getRoles().contains(promoBypass);
+		}
+		return false;
 	}
 
 	private static boolean findLink(String content)
