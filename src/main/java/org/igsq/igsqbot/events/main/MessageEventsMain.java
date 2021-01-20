@@ -29,12 +29,23 @@ public class MessageEventsMain extends ListenerAdapter
 		MessageChannel channel = event.getChannel();
 		if(event.isFromGuild())
 		{
+			Guild guild = event.getGuild();
+
 			if(BlacklistUtils.isChannelBlacklisted(event, igsqBot))
 			{
 				return;
 			}
 
-			Guild guild = event.getGuild();
+			if(BlacklistUtils.isDiscordInvite(event.getMessage().getContentRaw()))
+			{
+				EmbedUtils.sendError(channel, "You cannot advertise Discord servers.");
+				if(guild.getSelfMember().hasPermission((GuildChannel) event.getChannel(), Permission.MESSAGE_MANAGE))
+				{
+					event.getMessage().delete().queue();
+				}
+				return;
+			}
+			
 			if(!event.getAuthor().isBot())
 			{
 				MessageCache.getCache(guild).set(new CachedMessage(event.getMessage()));

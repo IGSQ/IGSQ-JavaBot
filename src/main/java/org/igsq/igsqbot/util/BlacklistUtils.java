@@ -24,7 +24,8 @@ public class BlacklistUtils
 		//Overrides the default, public, constructor
 	}
 
-	public static List<String> LINKS = new ArrayList<>(List.of("youtube.com/", "twitch.tv/", "youtu.be/"));
+	public static final List<String> LINKS = List.copyOf(List.of("youtube.com/", "twitch.tv/", "youtu.be/"));
+	public static final List<String> DISCORD = List.copyOf(List.of("discord.gg/"));
 
 	public static boolean isBlacklistedPhrase(MessageReceivedEvent event, IGSQBot igsqBot)
 	{
@@ -78,7 +79,6 @@ public class BlacklistUtils
 		}
 
 
-
 		if(findLink(content))
 		{
 			if(member == null)
@@ -111,6 +111,21 @@ public class BlacklistUtils
 			if(content.contains(link))
 			{
 				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isDiscordInvite(String content)
+	{
+		content = content.replaceAll("\\s+", "");
+		content = content.toLowerCase();
+
+		for(String link : DISCORD)
+		{
+			if(content.contains(link))
+			{
+
 			}
 		}
 		return false;
