@@ -227,8 +227,7 @@ public class Vote
 
 					EmbedBuilder newEmbed = new EmbedBuilder(message.getEmbeds().get(0))
 							.clearFields()
-							.addField("Users", newUsers, false)
-							.addField("Expires at:", "**Expired**", false);
+							.addField("Users", newUsers, false);
 
 					for(MessageEmbed.Field field : fields)
 					{
@@ -236,8 +235,7 @@ public class Vote
 					}
 					message.editMessage(newEmbed.build()).queue();
 				}
-				, error ->
-				{});
+				, error -> {});
 	}
 
 	private static void clearDM(long userId, long messageId, IGSQBot igsqBot)
