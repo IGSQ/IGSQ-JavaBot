@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
+
 public class EvalCommand extends Command
 {
 	private static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager().getEngineByName("groovy");

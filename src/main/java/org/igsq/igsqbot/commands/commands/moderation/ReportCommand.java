@@ -14,6 +14,7 @@ import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandHierarchyException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.*;
 
 @SuppressWarnings("unused")
@@ -36,7 +37,7 @@ public class ReportCommand extends Command
 		Guild guild = ctx.getGuild();
 		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(ctx).getReportChannel());
 
-		CommandChecks.channelConfigured(reportChannel, "Report channel", failure);
+		if(CommandChecks.channelConfigured(reportChannel, "Report channel", failure)) return;
 
 		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
@@ -46,7 +47,8 @@ public class ReportCommand extends Command
 
 			if(user.isBot())
 			{
-				throw new IllegalArgumentException("You may not report bots.");
+				failure.accept(new CommandInputException("You may not report bots."));
+				return;
 			}
 
 			UserUtils.getMemberFromUser(user, guild).queue(

@@ -40,7 +40,7 @@ public class ReactionRoleShowCommand extends Command
 						.append("  ")
 						.append(StringUtils.getRoleAsMention(reactionRole.getRoleId()))
 						.append("  ")
-						.append(reactionRole.getMessageId());
+						.append("\n");
 			}
 
 			ctx.sendMessage(new EmbedBuilder()

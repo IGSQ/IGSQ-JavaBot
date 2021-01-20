@@ -14,6 +14,7 @@ import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Tempban;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.*;
 
 @SuppressWarnings("unused")
@@ -44,6 +45,7 @@ public class TempbanCommand extends Command
 
 			if(CommandChecks.roleConfigured(tempBanRole, "Tempban role", failure)) return;
 
+
 			if(muteTime == null || muteTime.isAfter(LocalDateTime.now().plusWeeks(1)))
 			{
 				failure.accept(new CommandInputException("Duration " + args.get(1) + " is invalid."));
@@ -60,8 +62,14 @@ public class TempbanCommand extends Command
 						guild.modifyMemberRoles(member, tempBanRole).queue(
 								success ->
 								{
-									Tempban.add(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot());
-									ctx.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
+									if(Tempban.add(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot()))
+									{
+										ctx.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
+									}
+									else
+									{
+										failure.accept(new CommandResultException("User " + user.getAsMention() + " is already tempbanned."));
+									}
 								}
 						);
 					});

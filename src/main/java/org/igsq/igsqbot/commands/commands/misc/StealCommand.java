@@ -47,6 +47,5 @@ public class StealCommand extends Command
 					emote -> ctx.replySuccess("Added emote " + emote.getAsMention() + " successfully!"),
 					error -> ctx.replyError("An error occurred while adding the emote."));
 		}
-
 	}
 }
