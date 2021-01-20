@@ -40,7 +40,7 @@ public class BlacklistUtils
 
 		if(member.hasPermission(Permission.ADMINISTRATOR))
 		{
-			return true;
+			return false;
 		}
 
 		List<String> blacklistedWords = getBlacklistedPhrases(guild, igsqBot);
