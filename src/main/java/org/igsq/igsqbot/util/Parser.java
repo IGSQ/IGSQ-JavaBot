@@ -172,7 +172,7 @@ public class Parser
 				}
 				else
 				{
-					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found."););
+					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found."));
 					return;
 				}
 			}
