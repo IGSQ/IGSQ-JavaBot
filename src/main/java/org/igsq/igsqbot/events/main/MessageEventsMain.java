@@ -31,6 +31,11 @@ public class MessageEventsMain extends ListenerAdapter
 		{
 			Guild guild = event.getGuild();
 
+			if(!event.getAuthor().isBot())
+			{
+				MessageCache.getCache(guild).set(new CachedMessage(event.getMessage()));
+			}
+
 			if(BlacklistUtils.isBlacklistedPhrase(event, igsqBot))
 			{
 				EmbedUtils.sendError(channel, "Your message contained a blacklisted phrase, this has been logged.");
@@ -53,11 +58,6 @@ public class MessageEventsMain extends ListenerAdapter
 					event.getMessage().delete().queue();
 				}
 				return;
-			}
-
-			if(!event.getAuthor().isBot())
-			{
-				MessageCache.getCache(guild).set(new CachedMessage(event.getMessage()));
 			}
 
 			if(BlacklistUtils.isAdvertising(event, igsqBot))
