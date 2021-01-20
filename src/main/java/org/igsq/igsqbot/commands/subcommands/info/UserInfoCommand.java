@@ -37,7 +37,6 @@ public class UserInfoCommand extends Command
 		{
 			Guild guild = ctx.getGuild();
 			String arg = ArrayUtils.arrayCompile(args.subList(0, args.size()), " ");
-			System.out.println(arg);
 			new Parser(arg, ctx).parseAsUser(
 					user -> UserUtils.getMemberFromUser(user, guild).queue(
 							member -> showInfo(member, ctx),
