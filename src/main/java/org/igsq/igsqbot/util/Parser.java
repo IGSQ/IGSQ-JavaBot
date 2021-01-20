@@ -172,7 +172,7 @@ public class Parser
 				}
 				else
 				{
-					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("User" + arg +" not found."));
+					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found."););
 					return;
 				}
 			}
@@ -185,7 +185,7 @@ public class Parser
 				}
 				else
 				{
-					ctx.replyError("Channel" + arg + " not found / i do not have permissions to see it.");
+					ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found or i dont have permission to see it.");
 				}
 				return;
 			}
@@ -198,7 +198,7 @@ public class Parser
 				}
 				else
 				{
-					ctx.replyError("Role " + arg + " not found");
+					ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 				}
 				return;
 			}
@@ -218,7 +218,7 @@ public class Parser
 						{
 							if(members.isEmpty())
 							{
-								ctx.replyError("User " + arg +" not found.");
+								ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 								return;
 							}
 
