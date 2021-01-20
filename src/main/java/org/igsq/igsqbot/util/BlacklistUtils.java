@@ -24,7 +24,7 @@ public class BlacklistUtils
 		//Overrides the default, public, constructor
 	}
 
-	public static List<String> LINKS = new ArrayList<>(List.of("youtube", "twitch", "ttv", "utube"));
+	public static List<String> LINKS = new ArrayList<>(List.of("youtube.com/", "twitch.tv/", "youtu.be/"));
 
 	public static boolean isBlacklistedPhrase(MessageReceivedEvent event, IGSQBot igsqBot)
 	{
@@ -93,7 +93,7 @@ public class BlacklistUtils
 
 			if(!event.getChannel().equals(promoChannel))
 			{
-				return true;
+				return false;
 			}
 
 			return event.getChannel().equals(promoChannel) && !member.getRoles().contains(promoBypass);

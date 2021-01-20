@@ -1,10 +1,8 @@
 package org.igsq.igsqbot.events.main;
 
 import java.util.List;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.igsq.igsqbot.IGSQBot;
@@ -29,7 +27,7 @@ public class MessageEventsMain extends ListenerAdapter
 	public void onMessageReceived(MessageReceivedEvent event)
 	{
 		MessageChannel channel = event.getChannel();
-		if(event.getChannelType().equals(ChannelType.TEXT))
+		if(event.isFromGuild())
 		{
 			if(BlacklistUtils.isChannelBlacklisted(event, igsqBot))
 			{
@@ -45,6 +43,10 @@ public class MessageEventsMain extends ListenerAdapter
 			if(BlacklistUtils.isAdvertising(event, igsqBot))
 			{
 				EmbedUtils.sendError(channel, "You cannot advertise here.");
+				if(guild.getSelfMember().hasPermission((GuildChannel) event.getChannel(), Permission.MESSAGE_MANAGE))
+				{
+					event.getMessage().delete().queue();
+				}
 				return;
 			}
 
