@@ -97,6 +97,7 @@ public class VoteCreateCommand extends Command
                                     .stream()
                                     .map(Role::getAsMention)
                                     .collect(Collectors.joining(" "))));
+                            return;
                         }
 
                         if(members.size() > 20)
@@ -105,9 +106,10 @@ public class VoteCreateCommand extends Command
                                     .stream()
                                     .map(Role::getAsMention)
                                     .collect(Collectors.joining(" "))));
+                            return;
                         }
 
-                        
+
                         Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, ctx);
                         vote.start();
                     });
