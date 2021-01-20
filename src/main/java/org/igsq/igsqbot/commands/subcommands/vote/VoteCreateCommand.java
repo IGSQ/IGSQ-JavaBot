@@ -90,6 +90,7 @@ public class VoteCreateCommand extends Command
             guild.findMembers(member -> member.getRoles().stream().anyMatch(finalRoles::contains)).onSuccess(
                     members ->
                     {
+                        members = members.stream().filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
                         if(members.isEmpty())
                         {
                             failure.accept(new CommandInputException("No members found for roles " + finalRoles
@@ -106,8 +107,7 @@ public class VoteCreateCommand extends Command
                                     .collect(Collectors.joining(" "))));
                         }
 
-                        members = members.stream().filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
-
+                        
                         Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, ctx);
                         vote.start();
                     });
