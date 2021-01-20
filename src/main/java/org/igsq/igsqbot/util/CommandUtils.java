@@ -39,7 +39,7 @@ public class CommandUtils
 					}
 					else
 					{
-						ctx.replyError("A hierarchy issue occurred when tried to execute command `" + ctx.getCommand().getName() + "`");
+						ctx.replyError("A hierarchy issue occurred when trying to execute command `" + ctx.getCommand().getName() + "`");
 					}
 				}
 		);
