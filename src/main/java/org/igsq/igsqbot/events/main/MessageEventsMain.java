@@ -30,6 +30,11 @@ public class MessageEventsMain extends ListenerAdapter
 		if(event.isFromGuild())
 		{
 			Guild guild = event.getGuild();
+			
+			if(BlacklistUtils.isChannelBlacklisted(event, igsqBot))
+			{
+				return;
+			}
 
 			if(!event.getAuthor().isBot())
 			{
@@ -43,10 +48,6 @@ public class MessageEventsMain extends ListenerAdapter
 				{
 					event.getMessage().delete().queue();
 				}
-				return;
-			}
-			if(BlacklistUtils.isChannelBlacklisted(event, igsqBot))
-			{
 				return;
 			}
 
