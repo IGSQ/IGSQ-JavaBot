@@ -2,9 +2,12 @@ package org.igsq.igsqbot.commands.commands.misc;
 
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.Parser;
 
 @SuppressWarnings("unused")
@@ -17,7 +20,7 @@ public class HelpCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
 		OptionalInt page;
 		if(args.isEmpty())
@@ -43,7 +46,8 @@ public class HelpCommand extends Command
 		{
 			if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
 			{
-				throw new IllegalArgumentException("Page `" + args.get(0) + "` does not exist.");
+				failure.accept(new CommandInputException("Page `" + args.get(0) + "` does not exist."));
+				return;
 			}
 
 			ctx.sendMessage(ctx.getIGSQBot().getHelpPages().get(page.getAsInt() - 1));

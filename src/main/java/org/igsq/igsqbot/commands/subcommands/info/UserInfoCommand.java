@@ -1,14 +1,17 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.entities.info.MemberInfo;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.Parser;
@@ -24,7 +27,7 @@ public class UserInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
 		if(args.isEmpty())
 		{
@@ -36,11 +39,11 @@ public class UserInfoCommand extends Command
 			new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), ctx).parseAsUser(
 					user -> UserUtils.getMemberFromUser(user, guild).queue(
 							member -> showInfo(member, ctx),
-							error -> ctx.replyError("Member not found.")));
+							error -> failure.accept(new CommandResultException("Member not found."))));
 		}
 	}
 
-	private void showInfo(Member member, CommandContext ctx)
+	private void showInfo(Member member, CommandEvent ctx)
 	{
 		MemberInfo memberInfo = new MemberInfo(member);
 

@@ -1,11 +1,13 @@
 package org.igsq.igsqbot.commands.commands.misc;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
+import org.igsq.igsqbot.entities.exception.CommandException;
 
 @SuppressWarnings("unused")
 public class PingCommand extends Command
@@ -17,7 +19,7 @@ public class PingCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
 		JDA jda = ctx.getJDA();
 		jda.getRestPing().queue(

@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.requests.RestAction;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 
 public class CommandUtils
@@ -24,7 +24,7 @@ public class CommandUtils
 		return message.startsWith(new GuildConfig(guildId, igsqBot).getPrefix()) || message.startsWith("<@" + igsqBot.getSelfUser().getId() + ">") || message.startsWith("<@!" + igsqBot.getSelfUser().getId() + ">");
 	}
 
-	public static void interactionCheck(User user1, User user2, CommandContext ctx, Runnable onSuccess)
+	public static void interactionCheck(User user1, User user2, CommandEvent ctx, Runnable onSuccess)
 	{
 		List<RestAction<?>> actions = new ArrayList<>();
 		actions.add(ctx.getGuild().retrieveMember(user1));

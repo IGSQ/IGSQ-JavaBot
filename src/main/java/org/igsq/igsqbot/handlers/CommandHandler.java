@@ -16,7 +16,7 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.util.EmbedUtils;
 
@@ -153,7 +153,7 @@ public class CommandHandler
 			{
 				args.remove(0);
 			}
-			CommandContext ctx = new CommandContext(event, igsqBot, cmd, args);
+			CommandEvent ctx = new CommandEvent(event, igsqBot, cmd, args);
 
 			if(args.isEmpty())
 			{
@@ -167,7 +167,7 @@ public class CommandHandler
 				if(subCommand.equalsIgnoreCase(child.getName()))
 				{
 					args.remove(0);
-					child.process(new CommandContext(event, igsqBot, child, args));
+					child.process(new CommandEvent(event, igsqBot, child, args));
 					return;
 				}
 			}

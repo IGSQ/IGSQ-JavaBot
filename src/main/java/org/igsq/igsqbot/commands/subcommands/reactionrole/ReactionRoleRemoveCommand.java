@@ -2,11 +2,15 @@ package org.igsq.igsqbot.commands.subcommands.reactionrole;
 
 import java.util.List;
 import java.util.OptionalLong;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.ReactionRole;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
+import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
@@ -22,9 +26,9 @@ public class ReactionRoleRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsSizeSubceeds(ctx, 4);
+		if(CommandChecks.argsSizeSubceeds(ctx, 4, failure)) return;
 
 		OptionalLong messageId = new Parser(args.get(0), ctx).parseAsUnsignedLong();
 		String emote = ctx.getMessage().getEmotes().isEmpty() ? args.get(3) : ctx.getMessage().getEmotes().get(0).getId();
@@ -42,14 +46,15 @@ public class ReactionRoleRemoveCommand extends Command
 
 										if(!reactionRole.isPresent())
 										{
-											throw new IllegalArgumentException("That reaction role does not exist");
+											failure.accept(new CommandResultException("That reaction role does not exist"));
+											return;
 										}
 
 										reactionRole.remove();
 										ctx.replySuccess("Removed reaction role for role " + StringUtils.getRoleAsMention(role.getIdLong()));
 										message.clearReactions(emote).queue();
 									},
-									error -> ctx.replyError("That message does not exist"));
+									error -> failure.accept(new CommandInputException("Message " + messageId.getAsLong() + " does not exist")));
 						});
 			}
 		});

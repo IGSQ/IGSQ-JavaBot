@@ -1,12 +1,14 @@
 package org.igsq.igsqbot.commands.commands.misc;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 
 @SuppressWarnings("unused")
@@ -21,7 +23,7 @@ public class InviteCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
 		Guild guild = ctx.getGuild();
 
@@ -36,7 +38,7 @@ public class InviteCommand extends Command
 							return;
 						}
 					}
-					throw new CommandResultException("No invites found.");
+					failure.accept(new CommandResultException("No invites found."));
 				}
 		);
 	}

@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.Emoji;
 
 public class EmbedUtils
@@ -31,7 +31,7 @@ public class EmbedUtils
 				.setTimestamp(Instant.now()));
 	}
 
-	public static void sendSyntaxError(CommandContext ctx)
+	public static void sendSyntaxError(CommandEvent ctx)
 	{
 		Command cmd = ctx.getCommand();
 		ctx.addErrorReaction();
@@ -51,7 +51,7 @@ public class EmbedUtils
 		}
 	}
 
-	public static void sendMemberPermissionError(CommandContext ctx)
+	public static void sendMemberPermissionError(CommandEvent ctx)
 	{
 		ctx.addErrorReaction();
 		Command cmd = ctx.getCommand();
@@ -63,7 +63,7 @@ public class EmbedUtils
 	}
 
 
-	public static void sendSelfPermissionError(CommandContext ctx)
+	public static void sendSelfPermissionError(CommandEvent ctx)
 	{
 		ctx.addErrorReaction();
 		Command cmd = ctx.getCommand();
@@ -82,7 +82,7 @@ public class EmbedUtils
 				.setTimestamp(Instant.now()));
 	}
 
-	public static void sendDisabledError(CommandContext ctx)
+	public static void sendDisabledError(CommandEvent ctx)
 	{
 		ctx.addErrorReaction();
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()

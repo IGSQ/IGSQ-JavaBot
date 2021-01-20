@@ -2,11 +2,13 @@ package org.igsq.igsqbot.commands.subcommands.vote;
 
 import java.util.List;
 import java.util.OptionalLong;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Vote;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
@@ -21,9 +23,9 @@ public class VoteCloseCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandContext ctx)
+    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
     {
-        CommandChecks.argsEmpty(ctx);
+        if(CommandChecks.argsEmpty(ctx, failure)) return;
 
         OptionalLong id = new Parser(args.get(0), ctx).parseAsUnsignedLong();
 
@@ -37,7 +39,7 @@ public class VoteCloseCommand extends Command
 
             if(!success)
             {
-                throw new CommandResultException("Vote with ID **" + id.getAsLong() + "** not found.");
+                failure.accept(new CommandResultException("Vote with ID **" + id.getAsLong() + "** not found."));
             }
             else
             {

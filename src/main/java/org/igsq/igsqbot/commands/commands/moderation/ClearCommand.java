@@ -2,16 +2,18 @@ package org.igsq.igsqbot.commands.commands.moderation;
 
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.cache.MessageCache;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
-import org.igsq.igsqbot.entities.exception.CooldownException;
-import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandCooldownException;
+import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
@@ -30,9 +32,9 @@ public class ClearCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsEmpty(ctx);
+		if(CommandChecks.argsEmpty(ctx, failure)) return;
 
 		MessageChannel channel = ctx.getChannel();
 		Member member = ctx.getMember();
@@ -43,23 +45,24 @@ public class ClearCommand extends Command
 		{
 			if(amount.getAsInt() > 51)
 			{
-				throw new SyntaxException(this);
+				failure.accept(new CommandSyntaxException(this));
+				return;
 			}
-			else if(CooldownHandler.isOnCooldown(member, this))
+
+			if(CooldownHandler.isOnCooldown(member, this))
 			{
-				throw new CooldownException(this);
+				failure.accept(new CommandCooldownException(this));
+				return;
 			}
-			else
+
+			channel.getIterableHistory().takeAsync(amount.getAsInt()).thenAccept(messages ->
 			{
-				channel.getIterableHistory().takeAsync(amount.getAsInt()).thenAccept(messages ->
-				{
-					CooldownHandler.addCooldown(member, this);
-					channel.purgeMessages(messages);
-					ctx.replySuccess("Deleted " + (messages.size()) + " messages");
-					MessageCache cache = MessageCache.getCache(guild);
-					messages.stream().filter(cache::isInCache).forEach(cache::remove);
-				});
-			}
+				CooldownHandler.addCooldown(member, this);
+				channel.purgeMessages(messages);
+				ctx.replySuccess("Deleted " + (messages.size()) + " messages");
+				MessageCache cache = MessageCache.getCache(guild);
+				messages.stream().filter(cache::isInCache).forEach(cache::remove);
+			});
 		}
 	}
 }

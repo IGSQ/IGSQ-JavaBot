@@ -1,11 +1,14 @@
 package org.igsq.igsqbot.commands.commands.misc;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Icon;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.FileUtils;
@@ -23,19 +26,20 @@ public class StealCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsSizeSubceeds(ctx, 2);
-		CommandChecks.stringIsURL(args.get(1), ctx);
+		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure) || CommandChecks.stringIsURL(args.get(1), ctx, failure)) return;
+
 		if(!args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
 		{
-			throw new IllegalArgumentException("Emoji names must be A-Z with underscores (_)");
+			failure.accept(new CommandInputException("Emoji names must be A-Z with underscores (_)"));
+			return;
 		}
 
 		Icon icon = FileUtils.getIcon(args.get(1));
 		if(icon == null)
 		{
-			throw new CommandResultException("The image / gif provided could not be loaded.");
+			failure.accept(new CommandResultException("The image / gif provided could not be loaded."));
 		}
 		else
 		{

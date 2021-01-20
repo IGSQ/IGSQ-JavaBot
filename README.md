@@ -95,6 +95,8 @@
  - [x] Change all database classes to static utils if possible
  - [x] Check '.' at the end of every command description
  - [x] Add sub commands to help menu.
+ - [x] Catch config issues at startup
+ - [x] Change mc syncing to events
  
 ### **TeaEyes**
 None!
@@ -102,8 +104,7 @@ None!
 ### **arynxd**
  - [ ] Improve user feedback
  - [ ] Verification
- - [ ] Change mc syncing to events
- - [ ] Catch config issues at startup
+ - [ ] Make more granular errors with reaction role reaction adding (ErrorHandler)
  
  - [ ] **PREPARE FOR PR**
 

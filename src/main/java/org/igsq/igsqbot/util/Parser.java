@@ -8,8 +8,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
-import org.igsq.igsqbot.entities.command.CommandContext;
-import org.igsq.igsqbot.entities.exception.CommandResultException;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 
 public class Parser
 {
@@ -25,9 +24,9 @@ public class Parser
 					")");
 
 	private final String arg;
-	private final CommandContext ctx;
+	private final CommandEvent ctx;
 
-	public Parser(String arg, CommandContext ctx)
+	public Parser(String arg, CommandEvent ctx)
 	{
 		this.arg = arg;
 		this.ctx = ctx;
@@ -110,13 +109,14 @@ public class Parser
 			OptionalInt value = OptionalInt.of(Integer.parseUnsignedInt(arg));
 			if(value.getAsInt() == 0)
 			{
-				throw new IllegalArgumentException("Enter a whole number greater than 0, eg: 1");
+				ctx.replyError("Enter a whole number greater than 0, eg: 1");
 			}
 			return value;
 		}
 		catch(NumberFormatException exception)
 		{
-			throw new IllegalArgumentException("Enter a whole number greater than 0, eg: 1");
+			ctx.replyError("Enter a whole number greater than 0, eg: 1");
+			return OptionalInt.empty();
 		}
 	}
 
@@ -167,10 +167,7 @@ public class Parser
 				}
 				else
 				{
-					jda.retrieveUserById(mentionableId).queue(consumer, failure ->
-					{
-						throw new CommandResultException("User not found.");
-					});
+					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("User" + arg +" not found."));
 				}
 			}
 			else if(type == Message.MentionType.CHANNEL)
@@ -179,12 +176,12 @@ public class Parser
 				if(channel != null)
 				{
 					consumer.accept((IMentionable) channel);
-					return;
 				}
 				else
 				{
-					throw new CommandResultException("Channel not found / i do not have permissions to see it.");
+					ctx.replyError("Channel" + arg + " not found / i do not have permissions to see it.");
 				}
+				return;
 			}
 			else if(type == Message.MentionType.ROLE)
 			{
@@ -192,12 +189,12 @@ public class Parser
 				if(role != null)
 				{
 					consumer.accept(role);
-					return;
 				}
 				else
 				{
-					throw new CommandResultException("Role not found");
+					ctx.replyError("Role " + arg + " not found");
 				}
+				return;
 			}
 		}
 
@@ -215,19 +212,19 @@ public class Parser
 						{
 							if(members.isEmpty())
 							{
-								throw new CommandResultException("User not found.");
+								ctx.replyError("User " + arg +" not found.");
+								return;
 							}
-							else
-							{
-								consumer.accept(members.get(0).getUser());
-							}
+
+							consumer.accept(members.get(0).getUser());
+
 						});
 				return;
 			}
 			var rolesChannelsList = type == Message.MentionType.CHANNEL ? guild.getTextChannelsByName(arg, true) : guild.getRolesByName(arg, true);
 			if(rolesChannelsList.isEmpty()) //Role / Channel
 			{
-				throw new CommandResultException("No " + typeName.toLowerCase() + "s with that name found");
+				ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 			}
 			else
 			{

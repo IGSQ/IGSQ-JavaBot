@@ -1,11 +1,13 @@
 package org.igsq.igsqbot.commands.commands.fun;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
@@ -18,9 +20,9 @@ public class AvatarCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsSizeExceeds(ctx, 3);
+		if(CommandChecks.argsSizeExceeds(ctx, 3, failure)) return;
 
 		Message message = ctx.getMessage();
 		User author = message.getAuthor();

@@ -2,9 +2,9 @@ package org.igsq.igsqbot.entities.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.igsq.igsqbot.entities.exception.*;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -53,7 +53,7 @@ public abstract class Command
 		this.flags = new ArrayList<>();
 	}
 
-	public void process(CommandContext ctx)
+	public void process(CommandEvent ctx)
 	{
 		if(isDisabled() || hasFlag(CommandFlag.DISABLED))
 		{
@@ -85,47 +85,45 @@ public abstract class Command
 		}
 		else
 		{
-			if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
+			if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.selfPermissionCheck(Permission.MESSAGE_MANAGE))
 			{
 				ctx.getMessage().delete().queue();
 			}
-			try
+			run(ctx.getArgs(), ctx, exception ->
 			{
-				run(ctx.getArgs(), ctx);
-			}
-			catch(CooldownException exception)
-			{
-				ctx.replyError(ctx.getAuthor().getAsMention() + " you are on cooldown from this command.");
-			}
-			catch(CommandResultException exception)
-			{
-				ctx.replyError(exception.getText());
-			}
-			catch(IllegalArgumentException | HierarchyException exception)
-			{
-				ctx.replyError(exception.getMessage());
-			}
-			catch(MemberPermissionException exception)
-			{
-				EmbedUtils.sendMemberPermissionError(ctx);
-			}
-			catch(IllegalLengthException exception)
-			{
-				ctx.replyError("The provided input was too long for an embed.");
-				ctx.getMessage().delete().queue();
-			}
-			catch(SyntaxException exception)
-			{
-				EmbedUtils.sendSyntaxError(ctx);
-			}
-			catch(MissingConfigurationException exception)
-			{
-				ctx.replyError(exception.getText() + " is not setup.");
-			}
-			catch(CommandException exception)
-			{
-				ctx.replyError("An unexpected error occurred while executing command " + getName() + "\n" + exception.getText());
-			}
+				if(exception instanceof CommandCooldownException)
+				{
+					ctx.replyError(ctx.getAuthor().getAsMention() + " is on cooldown from command " + getName());
+				}
+				else if(exception instanceof CommandResultException)
+				{
+					ctx.replyError("Something went wrong. " + exception.getText());
+				}
+				else if(exception instanceof CommandInputException)
+				{
+					ctx.replyError(exception.getText());
+				}
+				else if(exception instanceof CommandSyntaxException)
+				{
+					EmbedUtils.sendSyntaxError(ctx);
+				}
+				else if(exception instanceof CommandHierarchyException)
+				{
+					ctx.replyError("A hierarchy error occurred when trying to process command " + getName());
+				}
+				else if(exception instanceof CommandUserPermissionException)
+				{
+					EmbedUtils.sendMemberPermissionError(ctx);
+				}
+				else if(exception instanceof MissingConfigurationException)
+				{
+					ctx.replyError(exception.getText() + " is not setup.");
+				}
+				else
+				{
+					ctx.replyError("An unhandled error occurred " + exception.getText());
+				}
+			});
 		}
 	}
 
@@ -134,7 +132,7 @@ public abstract class Command
 		return !getChildren().isEmpty();
 	}
 
-	public abstract void run(List<String> args, CommandContext ctx);
+	public abstract void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure);
 
 	public void addCooldown(long millis)
 	{

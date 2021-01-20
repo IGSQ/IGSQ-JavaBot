@@ -3,8 +3,10 @@ package org.igsq.igsqbot.commands.subcommands.channel;
 import java.util.List;
 
 import java.util.Optional;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import java.util.function.Consumer;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.Command;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.CommandChecks;
@@ -18,9 +20,9 @@ public class ChannelIgnoreCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandContext ctx)
+    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
     {
-		CommandChecks.argsSizeSubceeds(ctx, 2);
+		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
 
 		new Parser(args.get(0), ctx).parseAsTextChannel(
 		channel ->
@@ -37,7 +39,7 @@ public class ChannelIgnoreCommand extends Command
 					}
 					else
 					{
-						throw new CommandResultException("Channel " + channel.getAsMention() + " is already blacklisted.");
+						failure.accept(new CommandResultException("Channel " + channel.getAsMention() + " is already blacklisted."));
 					}
 				}
 				else
@@ -48,7 +50,7 @@ public class ChannelIgnoreCommand extends Command
 					}
 					else
 					{
-						throw new CommandResultException("Channel " + channel.getAsMention() + " is not blacklisted.");
+						failure.accept(new CommandResultException("Channel " + channel.getAsMention() + " is not blacklisted."));
 					}
 				}
 			}

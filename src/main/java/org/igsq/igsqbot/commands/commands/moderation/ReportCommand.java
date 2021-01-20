@@ -1,17 +1,19 @@
 package org.igsq.igsqbot.commands.commands.moderation;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandHierarchyException;
 import org.igsq.igsqbot.util.*;
 
 @SuppressWarnings("unused")
@@ -25,16 +27,16 @@ public class ReportCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsSizeSubceeds(ctx, 2);
+		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
 
 		MessageChannel channel = ctx.getChannel();
 		User author = ctx.getAuthor();
 		Guild guild = ctx.getGuild();
 		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(ctx).getReportChannel());
 
-		CommandChecks.channelConfigured(reportChannel, "Report channel");
+		CommandChecks.channelConfigured(reportChannel, "Report channel", failure);
 
 		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
@@ -52,8 +54,10 @@ public class ReportCommand extends Command
 					{
 						if(member.isOwner())
 						{
-							throw new HierarchyException("You may not report the owner.");
+							failure.accept(new CommandHierarchyException(this));
+							return;
 						}
+
 						reportChannel.sendMessage(new EmbedBuilder()
 								.setTitle("New report by: " + author.getAsTag())
 								.addField("Reporting user:", user.getAsMention(), false)

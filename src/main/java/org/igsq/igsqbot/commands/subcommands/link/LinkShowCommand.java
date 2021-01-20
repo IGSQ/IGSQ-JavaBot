@@ -1,11 +1,13 @@
 package org.igsq.igsqbot.commands.subcommands.link;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftUtils;
 import org.igsq.igsqbot.util.Parser;
@@ -19,7 +21,7 @@ public class LinkShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
 		Minecraft minecraft = ctx.getIGSQBot().getMinecraft();
 
@@ -66,7 +68,7 @@ public class LinkShowCommand extends Command
 		showSelf(MinecraftUtils.getLinks(ctx.getAuthor().getId(), minecraft), ctx);
 	}
 
-	private void showSelf(List<MinecraftUtils.Link> links, CommandContext ctx)
+	private void showSelf(List<MinecraftUtils.Link> links, CommandEvent ctx)
 	{
 		StringBuilder text = new StringBuilder();
 		Minecraft minecraft = ctx.getIGSQBot().getMinecraft();

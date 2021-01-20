@@ -2,14 +2,16 @@ package org.igsq.igsqbot.commands.subcommands.warning;
 
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
-import org.igsq.igsqbot.entities.exception.CommandResultException;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.CommandUtils;
@@ -25,9 +27,9 @@ public class WarningRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsSizeSubceeds(ctx, 2);
+		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
 
 		User author = ctx.getAuthor();
 		Guild guild = ctx.getGuild();
@@ -35,7 +37,7 @@ public class WarningRemoveCommand extends Command
 				{
 					if(user.isBot())
 					{
-						throw new CommandResultException("Bots cannot have warnings.");
+						failure.accept(new CommandInputException("Bots cannot have warnings."));
 					}
 
 					CommandUtils.interactionCheck(author, user, ctx, () ->
@@ -47,7 +49,8 @@ public class WarningRemoveCommand extends Command
 
 							if(warn == null)
 							{
-								throw new CommandResultException("Invalid warning specified.");
+								failure.accept(new CommandInputException("Invalid warning specified."));
+								return;
 							}
 
 							new Warning(guild, user, ctx.getIGSQBot()).remove(warningNumber.getAsInt());

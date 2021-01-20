@@ -1,9 +1,11 @@
 package org.igsq.igsqbot.commands.subcommands.info;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.info.BotInfo;
 
 public class BotInfoCommand extends Command
@@ -14,7 +16,7 @@ public class BotInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
 		ctx.sendMessage(new EmbedBuilder()
 				.setTitle(ctx.getJDA().getSelfUser().getAsTag() + " information")

@@ -2,15 +2,17 @@ package org.igsq.igsqbot.commands.commands.moderation;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Tempban;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.*;
 
 @SuppressWarnings("unused")
@@ -27,9 +29,9 @@ public class TempbanCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsSizeMatches(ctx, 2);
+		if(CommandChecks.argsSizeMatches(ctx, 2, failure)) return;
 
 		new Parser(args.get(0), ctx).parseAsUser(user ->
 		{
@@ -39,7 +41,7 @@ public class TempbanCommand extends Command
 			Guild guild = ctx.getGuild();
 			Role tempBanRole = guild.getRoleById(new GuildConfig(guild.getIdLong(), ctx.getIGSQBot()).getTempBanRole());
 
-			CommandChecks.roleConfigured(tempBanRole, "Tempban role");
+			if(CommandChecks.roleConfigured(tempBanRole, "Tempban role", failure)) return;
 
 			CommandUtils.interactionCheck(selfUser, user, ctx, () ->
 			{
@@ -70,9 +72,9 @@ public class TempbanCommand extends Command
 	    }
 
 	    @Override
-	    public void run(List<String> args, CommandContext ctx)
+	    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	    {
-			CommandChecks.argsEmpty(ctx);
+			if(CommandChecks.argsEmpty(ctx, failure)) return;
 
 			new Parser(args.get(0), ctx).parseAsUser(user ->
 			{

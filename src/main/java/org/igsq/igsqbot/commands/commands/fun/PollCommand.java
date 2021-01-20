@@ -2,13 +2,15 @@ package org.igsq.igsqbot.commands.commands.fun;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.Emoji;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
@@ -23,9 +25,9 @@ public class PollCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsSizeMatches(ctx, 1);
+		if(CommandChecks.argsSizeMatches(ctx, 1, failure)) return;
 
 		StringBuilder options = new StringBuilder();
 		MessageChannel channel = ctx.getChannel();
@@ -33,7 +35,7 @@ public class PollCommand extends Command
 		List<String> reactions = new ArrayList<>();
 		List<String> slashArgs = new Parser(args.get(0), ctx).parseAsSlashArgs();
 
-		CommandChecks.argsSizeSubceeds(slashArgs, ctx, 3);
+		if(CommandChecks.argsSizeSubceeds(slashArgs, ctx, 3, failure)) return;
 		String topic = slashArgs.get(0);
 
 		List<Emoji> emojis = Emoji.getPoll();

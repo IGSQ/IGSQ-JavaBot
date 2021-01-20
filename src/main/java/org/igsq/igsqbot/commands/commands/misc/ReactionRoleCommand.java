@@ -1,13 +1,15 @@
 package org.igsq.igsqbot.commands.commands.misc;
 
 import java.util.List;
+import java.util.function.Consumer;
 import org.igsq.igsqbot.commands.subcommands.reactionrole.ReactionRoleAddCommand;
 import org.igsq.igsqbot.commands.subcommands.reactionrole.ReactionRoleRemoveCommand;
 import org.igsq.igsqbot.commands.subcommands.reactionrole.ReactionRoleShowCommand;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
-import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 
 @SuppressWarnings("unused")
 public class ReactionRoleCommand extends Command
@@ -25,8 +27,8 @@ public class ReactionRoleCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		throw new SyntaxException(ctx);
+		failure.accept(new CommandSyntaxException(ctx));
 	}
 }

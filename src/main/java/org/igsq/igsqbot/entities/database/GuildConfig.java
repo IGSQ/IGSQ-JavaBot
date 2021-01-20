@@ -3,7 +3,7 @@ package org.igsq.igsqbot.entities.database;
 import java.sql.Connection;
 import net.dv8tion.jda.api.entities.Guild;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.jooq.Tables;
 import org.jooq.Field;
 
@@ -14,7 +14,7 @@ public class GuildConfig
 	private final IGSQBot igsqBot;
 	private final long guildId;
 
-	public GuildConfig(CommandContext ctx)
+	public GuildConfig(CommandEvent ctx)
 	{
 		this.guildId = ctx.getGuild().getIdLong();
 		this.igsqBot = ctx.getIGSQBot();

@@ -1,10 +1,12 @@
 package org.igsq.igsqbot.commands.subcommands.level;
 
 import java.util.List;
+import java.util.function.Consumer;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 
@@ -17,9 +19,9 @@ public class LevelBotCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandContext ctx)
+    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
     {
-        CommandChecks.argsEmpty(ctx);
+        if(CommandChecks.argsEmpty(ctx, failure)) return;
 
         new Parser(args.get(0), ctx).parseAsUser(
         user ->

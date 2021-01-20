@@ -1,11 +1,13 @@
 package org.igsq.igsqbot.commands.commands.developer;
 
 import java.util.List;
+import java.util.function.Consumer;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
-import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
@@ -23,9 +25,9 @@ public class ModuleCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		throw new SyntaxException(ctx);
+		throw new CommandSyntaxException(ctx);
 	}
 
 	public static class ModuleEnableCommand extends Command
@@ -37,9 +39,9 @@ public class ModuleCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandContext ctx)
+		public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 		{
-			CommandChecks.argsEmpty(ctx);
+			if(CommandChecks.argsEmpty(ctx, failure)) return;
 			String moduleName = args.get(0);
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
@@ -67,18 +69,20 @@ public class ModuleCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandContext ctx)
+		public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 		{
-			CommandChecks.argsEmpty(ctx);
+			if(CommandChecks.argsEmpty(ctx, failure)) return;
 			String moduleName = args.get(0);
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
 			{
-				throw new CommandResultException("Module " + moduleName + " was not found");
+				failure.accept(new CommandResultException("Module " + moduleName + " was not found"));
+				return;
 			}
 			if(cmd.isDisabled())
 			{
-				throw new CommandResultException("Module " + cmd.getName() + " was already disabled.");
+				failure.accept(new CommandResultException("Module " + cmd.getName() + " was already disabled."));
+				return;
 			}
 
 			cmd.setDisabled(true);

@@ -21,15 +21,15 @@ import org.jooq.DSLContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CommandContext
+public class CommandEvent
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CommandContext.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommandEvent.class);
 	private final MessageReceivedEvent event;
 	private final IGSQBot igsqBot;
 	private final Command command;
 	private final List<String> args;
 
-	public CommandContext(MessageReceivedEvent event, IGSQBot igsqBot, Command command, List<String> args)
+	public CommandEvent(MessageReceivedEvent event, IGSQBot igsqBot, Command command, List<String> args)
 	{
 		this.event = event;
 		this.igsqBot = igsqBot;
@@ -190,6 +190,7 @@ public class CommandContext
 
 	public void sendMessage(EmbedBuilder embed)
 	{
+		addSuccessReaction();
 		getChannel().sendMessage(embed.setColor(Constants.IGSQ_PURPLE).setTimestamp(Instant.now()).build()).queue();
 	}
 

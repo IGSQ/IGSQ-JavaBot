@@ -1,9 +1,11 @@
 package org.igsq.igsqbot.commands.commands.developer;
 
 import java.util.List;
+import java.util.function.Consumer;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandException;
 
 @SuppressWarnings("unused")
 public class ShutdownCommand extends Command
@@ -16,7 +18,7 @@ public class ShutdownCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
 		ctx.getIGSQBot().getDatabaseHandler().close();
 		ctx.getIGSQBot().getMinecraft().close();

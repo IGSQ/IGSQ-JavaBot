@@ -1,10 +1,12 @@
 package org.igsq.igsqbot.commands.subcommands.blacklist;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.BlacklistUtils;
 
 public class BlacklistShowCommand extends Command
@@ -16,7 +18,7 @@ public class BlacklistShowCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandContext ctx)
+    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
     {
         List<String> blacklist = BlacklistUtils.getBlacklistedPhrases(ctx.getGuild(), ctx.getIGSQBot());
         StringBuilder text = new StringBuilder();

@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.jooq.Tables;
 import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
 import org.igsq.igsqbot.util.StringUtils;
@@ -27,10 +27,10 @@ public class Vote
 	private final LocalDateTime expiry;
 	private final int maxOptions;
 	private final IGSQBot igsqBot;
-	private final CommandContext ctx;
+	private final CommandEvent ctx;
 	private final String subject;
 
-	public Vote(List<Long> users, List<String> options, LocalDateTime expiry, String subject, CommandContext ctx)
+	public Vote(List<Long> users, List<String> options, LocalDateTime expiry, String subject, CommandEvent ctx)
 	{
 		this.users = users;
 		this.options = options;
@@ -121,7 +121,7 @@ public class Vote
 		return result.toString();
 	}
 
-	public static Boolean closeById(long voteId, CommandContext ctx)
+	public static Boolean closeById(long voteId, CommandEvent ctx)
 	{
 		try(Connection connection = ctx.getIGSQBot().getDatabaseHandler().getConnection())
 		{

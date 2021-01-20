@@ -3,13 +3,15 @@ package org.igsq.igsqbot.util;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.exception.MissingConfigurationException;
-import org.igsq.igsqbot.entities.exception.IllegalLengthException;
-import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 
 public class CommandChecks
 {
@@ -18,91 +20,102 @@ public class CommandChecks
 		//Overrides the default, public, constructor
 	}
 
-	public static void argLengthExceeds(CommandContext ctx, int position, int size)
-	{
-		if(ctx.getArgs().get(position).length() > size)
-		{
-			throw new SyntaxException(ctx);
-		}
-	}
-	public static void channelConfigured(MessageChannel channel, String name)
+	public static boolean channelConfigured(MessageChannel channel, String name, Consumer<CommandException> callback)
 	{
 		if(channel == null)
 		{
-			throw new MissingConfigurationException(name);
+			callback.accept(new MissingConfigurationException(name));
+			return true;
 		}
+		return false;
 	}
 
-	public static void roleConfigured(Role role, String name)
+	public static boolean roleConfigured(Role role, String name, Consumer<CommandException> callback)
 	{
 		if(role == null)
 		{
-			throw new MissingConfigurationException(name);
+			callback.accept(new MissingConfigurationException(name));
+			return true;
 		}
+		return false;
 	}
 
-	public static void userConfigured(User user, String name)
+	public static boolean userConfigured(User user, String name, Consumer<CommandException> callback)
 	{
 		if(user == null)
 		{
-			throw new MissingConfigurationException(name);
+			callback.accept(new MissingConfigurationException(name));
+			return true;
 		}
+		return false;
 	}
 
-	public static void stringIsURL(String url, CommandContext ctx)
+	public static boolean stringIsURL(String url, CommandEvent ctx, Consumer<CommandException> callback)
 	{
 		try
 		{
 			URL obj = new URL(url);
 			obj.toURI();
+			return true;
 		}
 		catch(Exception exception)
 		{
-			throw new SyntaxException(ctx);
+			callback.accept(new CommandSyntaxException(ctx));
+			return false;
 		}
 	}
 
-	public static void argsEmpty(CommandContext ctx)
+	public static boolean argsEmpty(CommandEvent ctx, Consumer<CommandException> callback)
 	{
 		if(ctx.getArgs().isEmpty())
 		{
-			throw new SyntaxException(ctx);
+			callback.accept(new CommandSyntaxException(ctx));
+			return true;
 		}
+		return false;
 	}
 
-	public static void argsSizeExceeds(CommandContext ctx, int size)
+	public static boolean argsSizeExceeds(CommandEvent ctx, int size, Consumer<CommandException> callback)
 	{
 		if(ctx.getArgs().size() > size)
 		{
-			throw new SyntaxException(ctx);
+			callback.accept(new CommandSyntaxException(ctx));
+			return true;
 		}
+		return false;
 	}
 
-	public static void argsSizeSubceeds(CommandContext ctx, int size)
+	public static boolean argsSizeSubceeds(CommandEvent ctx, int size, Consumer<CommandException> callback)
 	{
 		if(ctx.getArgs().size() < size)
 		{
-			throw new SyntaxException(ctx);
+			callback.accept(new CommandSyntaxException(ctx));
+			return true;
 		}
+		return false;
 	}
 
-	public static void argsSizeSubceeds(List<String> args, CommandContext ctx, int size)
+	public static boolean argsSizeSubceeds(List<String> args, CommandEvent ctx, int size, Consumer<CommandException> callback)
 	{
 		if(args.size() < size)
 		{
-			throw new SyntaxException(ctx);
+			callback.accept(new CommandSyntaxException(ctx));
+			return true;
 		}
+		return false;
 	}
 
-	public static void argsSizeMatches(CommandContext ctx, int size)
+	public static boolean argsSizeMatches(CommandEvent ctx, int size, Consumer<CommandException> callback)
 	{
 		if(ctx.getArgs().size() != size)
 		{
-			throw new SyntaxException(ctx);
+			callback.accept(new CommandSyntaxException(ctx));
+			return true;
 		}
+		return false;
 	}
 
-	public static void argsEmbedCompatible(CommandContext ctx)
+	public static boolean argsEmbedCompatible(CommandEvent ctx, Consumer<CommandException> callback)
 	{
 		List<Character> chars = new ArrayList<>();
 		ctx.getArgs().stream().map(arg -> arg.split("")).forEach(
@@ -118,7 +131,9 @@ public class CommandChecks
 		});
 		if(chars.size() > EmbedUtils.CHARACTER_LIMIT)
 		{
-			throw new IllegalLengthException(ctx);
+			callback.accept(new CommandInputException("Input too large."));
+			return true;
 		}
+		return false;
 	}
 }

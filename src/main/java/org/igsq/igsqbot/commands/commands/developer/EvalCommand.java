@@ -2,12 +2,15 @@ package org.igsq.igsqbot.commands.commands.developer;
 
 import java.awt.*;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.util.CommandChecks;
 
 @SuppressWarnings("unused")
 public class EvalCommand extends Command
@@ -19,16 +22,18 @@ public class EvalCommand extends Command
     public EvalCommand()
     {
         super("Eval", "Evaluates Java code", "[code]");
-        addFlags(CommandFlag.GUILD_ONLY);
+        addFlags(CommandFlag.GUILD_ONLY, CommandFlag.DEVELOPER_ONLY);
         addAliases("eval", "evaluate", "code");
     }
 
     @Override
-    public void run(List<String> args, CommandContext ctx)
+    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
     {
+		if(CommandChecks.argsEmpty(ctx, failure)) return;
+
 		Object out;
-		var color = Color.GREEN;
-		var status = "Success";
+		Color color = Color.GREEN;
+		String status = "Success";
 
 		if(ctx.isFromGuild())
 		{
@@ -59,7 +64,8 @@ public class EvalCommand extends Command
 			status = "Failed";
 		}
 
-		ctx.sendMessage(new EmbedBuilder().setTitle("Eval")
+		ctx.sendMessage(new EmbedBuilder()
+				.setTitle("Evaluated Result")
 				.setColor(color)
 				.addField("Status:", status, true)
 				.addField("Duration:", (System.currentTimeMillis() - start) + "ms", true)

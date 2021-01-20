@@ -2,13 +2,15 @@ package org.igsq.igsqbot.commands.commands.moderation;
 
 import java.util.List;
 
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.commands.subcommands.blacklist.BlacklistAddCommand;
 import org.igsq.igsqbot.commands.subcommands.blacklist.BlacklistRemoveCommand;
 import org.igsq.igsqbot.commands.subcommands.blacklist.BlacklistShowCommand;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 
 @SuppressWarnings("unused")
 public class BlacklistCommand extends Command
@@ -26,8 +28,8 @@ public class BlacklistCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandContext ctx)
+    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
     {
-		throw new SyntaxException(ctx);
+		failure.accept(new CommandSyntaxException(ctx));
     }
 }

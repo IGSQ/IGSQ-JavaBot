@@ -1,9 +1,11 @@
 package org.igsq.igsqbot.commands.subcommands.link;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
+import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftChecks;
@@ -18,9 +20,9 @@ public class LinkAddCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandContext ctx)
+	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		CommandChecks.argsEmpty(ctx);
+		if(CommandChecks.argsEmpty(ctx, failure)) return;
 
 		User author = ctx.getAuthor();
 		Minecraft minecraft = ctx.getIGSQBot().getMinecraft();
@@ -28,35 +30,38 @@ public class LinkAddCommand extends Command
 
 		if(!MinecraftChecks.isAccountExist(arg, minecraft))
 		{
-			throw new CommandResultException("Account **" + arg + "** does not exist. Please ensure you have played on our server.");
+			failure.accept(new CommandResultException("Account **" + arg + "** does not exist. Please ensure you have played on our server."));
+			return;
 		}
 		String uuid = MinecraftUtils.getUUIDByName(arg, minecraft);
 		String account = MinecraftUtils.getName(uuid, minecraft);
 
 		if(MinecraftChecks.isAccountLinked(uuid, minecraft))
 		{
-			throw new CommandResultException("Account **" + account + "** is already linked.");
+			failure.accept(new CommandResultException("Account **" + account + "** is already linked."));
+			return;
 		}
-		else
+
+
+		if(MinecraftChecks.isDuplicate(uuid, author.getId(), minecraft))
 		{
-			if(MinecraftChecks.isDuplicate(uuid, author.getId(), minecraft))
-			{
-				throw new CommandResultException("You cannot make duplicate link requests.");
-			}
-			else if(MinecraftChecks.isPendingDiscord(uuid, minecraft))
-			{
-				MinecraftUtils.updateLink(uuid, author.getId(), minecraft);
-				ctx.replySuccess("Confirmed link for account **" + account + "**");
-			}
-			else if(MinecraftChecks.isUserLinked(author.getId(), minecraft))
-			{
-				throw new CommandResultException("You are already linked to an account.");
-			}
-			else
-			{
-				MinecraftUtils.insertLink(uuid, author.getId(), minecraft);
-				ctx.replySuccess("Added link for account **" + account + "** confirm it in Minecraft now.");
-			}
+			failure.accept(new CommandResultException("You cannot make duplicate link requests."));
+			return;
 		}
+		if(MinecraftChecks.isPendingDiscord(uuid, minecraft))
+		{
+			MinecraftUtils.updateLink(uuid, author.getId(), minecraft);
+			ctx.replySuccess("Confirmed link for account **" + account + "**");
+		}
+		if(MinecraftChecks.isUserLinked(author.getId(), minecraft))
+		{
+			failure.accept(new CommandResultException("You are already linked to an account."));
+			return;
+		}
+
+		MinecraftUtils.insertLink(uuid, author.getId(), minecraft);
+		ctx.replySuccess("Added link for account **" + account + "** confirm it in Minecraft now.");
+
+
 	}
 }

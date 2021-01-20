@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -11,11 +12,12 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import org.igsq.igsqbot.entities.command.Command;
-import org.igsq.igsqbot.entities.command.CommandContext;
+import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Vote;
-import org.igsq.igsqbot.entities.exception.CommandResultException;
-import org.igsq.igsqbot.entities.exception.SyntaxException;
+import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
+import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
@@ -30,9 +32,9 @@ public class VoteCreateCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandContext ctx)
+    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
     {
-        CommandChecks.argsSizeSubceeds(ctx, 3);
+        if(CommandChecks.argsSizeSubceeds(ctx, 3, failure)) return;
 
         List<String> options = new Parser(args.get(1), ctx).parseAsSlashArgs();
         LocalDateTime expiry = new Parser(args.get(2), ctx).parseAsDuration();
@@ -77,7 +79,8 @@ public class VoteCreateCommand extends Command
 
         if(options.isEmpty() || options.size() > 6 || expiry == null || roles.size() > 3 || users.size() > 10)
         {
-            throw new SyntaxException(ctx);
+            failure.accept(new CommandSyntaxException(ctx));
+            return;
         }
 
         if(users.isEmpty() && !roles.isEmpty())
@@ -88,18 +91,18 @@ public class VoteCreateCommand extends Command
                     {
                         if(members.isEmpty())
                         {
-                            throw new CommandResultException("No members found for roles " + finalRoles
+                            failure.accept(new CommandInputException("No members found for roles " + finalRoles
                                     .stream()
                                     .map(Role::getAsMention)
-                                    .collect(Collectors.joining(" ")));
+                                    .collect(Collectors.joining(" "))));
                         }
 
                         if(members.size() > 20)
                         {
-                            throw new CommandResultException("Too many members found for roles " + finalRoles
+                            failure.accept(new CommandInputException("Too many members found for roles " + finalRoles
                                     .stream()
                                     .map(Role::getAsMention)
-                                    .collect(Collectors.joining(" ")));
+                                    .collect(Collectors.joining(" "))));
                         }
 
                         Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, ctx);
@@ -113,7 +116,7 @@ public class VoteCreateCommand extends Command
         }
         else
         {
-            throw new SyntaxException(ctx);
+            failure.accept(new CommandSyntaxException(ctx));
         }
     }
 }
