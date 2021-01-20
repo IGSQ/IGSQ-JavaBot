@@ -88,7 +88,7 @@ public class Vote
 				.setTitle("You have been called to vote in " + ctx.getGuild().getName())
 				.addField("Expires at", StringUtils.parseDateTime(expiry), false)
 				.setColor(Constants.IGSQ_PURPLE)
-				.setDescription("Subject : **" + subject + "**\n\nReply to this message with 1,2,3.. to cast your vote, or `abstain` to abstain, if you do not respond, you will be considered 'Not voted'."));
+				.setDescription("Subject : **" + subject + "**\n\nInline Reply (right click / press and hold, then tap / click reply) to this message with 1,2,3.. to cast your vote, or `abstain` to abstain, if you do not respond, you will be considered 'Not voted'."));
 	}
 
 	private EmbedBuilder generateGuildEmbed()
