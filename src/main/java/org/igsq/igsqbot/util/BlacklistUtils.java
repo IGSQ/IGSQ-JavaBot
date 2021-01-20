@@ -34,9 +34,9 @@ public class BlacklistUtils
 
 		List<String> blacklistedWords = getBlacklistedPhrases(guild, igsqBot);
 
-		for(String word : content.split("\\s+"))
+		for(String word : blacklistedWords)
 		{
-			if(blacklistedWords.contains(word))
+			if(content.contains(word))
 			{
 				return true;
 			}
