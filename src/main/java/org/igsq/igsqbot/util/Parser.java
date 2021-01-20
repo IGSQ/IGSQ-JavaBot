@@ -230,6 +230,7 @@ public class Parser
 			if(rolesChannelsList.isEmpty()) //Role / Channel
 			{
 				ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
+				return;
 			}
 			else
 			{
