@@ -36,7 +36,7 @@ public class MessageEventsMain extends ListenerAdapter
 				return;
 			}
 
-			if(BlacklistUtils.isDiscordInvite(event.getMessage().getContentRaw()))
+			if(BlacklistUtils.isDiscordInvite(event))
 			{
 				EmbedUtils.sendError(channel, "You cannot advertise Discord servers.");
 				if(guild.getSelfMember().hasPermission((GuildChannel) event.getChannel(), Permission.MESSAGE_MANAGE))
@@ -45,7 +45,7 @@ public class MessageEventsMain extends ListenerAdapter
 				}
 				return;
 			}
-			
+
 			if(!event.getAuthor().isBot())
 			{
 				MessageCache.getCache(guild).set(new CachedMessage(event.getMessage()));

@@ -116,8 +116,20 @@ public class BlacklistUtils
 		return false;
 	}
 
-	public static boolean isDiscordInvite(String content)
+	public static boolean isDiscordInvite(MessageReceivedEvent event)
 	{
+		Member member = event.getMember();
+
+		if(member == null)
+		{
+			return false;
+		}
+
+		if(member.hasPermission(Permission.MESSAGE_MANAGE))
+		{
+			return false;
+		}
+		String content = event.getMessage().getContentRaw();
 		content = content.replaceAll("\\s+", "");
 		content = content.toLowerCase();
 
