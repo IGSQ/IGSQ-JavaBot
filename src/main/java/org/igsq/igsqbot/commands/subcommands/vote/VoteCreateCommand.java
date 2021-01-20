@@ -72,6 +72,7 @@ public class VoteCreateCommand extends Command
                     .map(arg -> arg.replaceAll("[^a-z]/gi", ""))
                     .map(guild::getMemberById)
                     .filter(Objects::nonNull)
+                    .filter(member -> !member.getUser().isBot())
                     .map(Member::getIdLong)
                     .collect(Collectors.toList());
         }
@@ -104,6 +105,8 @@ public class VoteCreateCommand extends Command
                                     .map(Role::getAsMention)
                                     .collect(Collectors.joining(" "))));
                         }
+
+                        members = members.stream().filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
 
                         Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, ctx);
                         vote.start();
