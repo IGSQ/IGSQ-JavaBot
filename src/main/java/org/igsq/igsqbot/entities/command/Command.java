@@ -93,7 +93,7 @@ public abstract class Command
 			{
 				if(exception instanceof CommandCooldownException)
 				{
-					ctx.replyError(ctx.getAuthor().getAsMention() + " is on cooldown from command " + getName());
+					ctx.replyError(ctx.getAuthor().getAsMention() + " is on cooldown from command `" + getName() + "`");
 				}
 				else if(exception instanceof CommandResultException)
 				{
@@ -109,7 +109,7 @@ public abstract class Command
 				}
 				else if(exception instanceof CommandHierarchyException)
 				{
-					ctx.replyError("A hierarchy error occurred when trying to process command " + getName());
+					ctx.replyError("A hierarchy error occurred when trying to process command `" + getName() + "`");
 				}
 				else if(exception instanceof CommandUserPermissionException)
 				{
@@ -117,7 +117,7 @@ public abstract class Command
 				}
 				else if(exception instanceof MissingConfigurationException)
 				{
-					ctx.replyError(exception.getText() + " is not setup.");
+					ctx.replyError("`" + exception.getText() + "` is not setup.");
 				}
 				else
 				{
