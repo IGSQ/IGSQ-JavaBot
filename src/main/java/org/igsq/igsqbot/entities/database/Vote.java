@@ -161,9 +161,13 @@ public class Vote
 		{
 			votes.append(UserUtils.getAsMention(row.getUserId())).append(" -> ");
 
-			if(row.getDirectMessageId() == -1 || row.getOption() == -1)
+			if(row.getOption() == -1)
 			{
 				votes.append(" Never voted ");
+			}
+			else if(row.getDirectMessageId() == -1)
+			{
+				votes.append(" DM could not be send ");
 			}
 			else if(row.getOption() == -2)
 			{
