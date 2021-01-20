@@ -78,6 +78,14 @@ public class Parser
 		LocalDateTime offset = LocalDateTime.now();
 		while(matcher.find())
 		{
+			try
+			{
+
+			}
+			catch(Exception exception)
+			{
+				continue;
+			}
 			int num = Integer.parseInt(matcher.group(1));
 			if(num == 0)
 			{

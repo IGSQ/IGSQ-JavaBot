@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Tempban;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.*;
 
 @SuppressWarnings("unused")
@@ -43,6 +44,12 @@ public class TempbanCommand extends Command
 
 			if(CommandChecks.roleConfigured(tempBanRole, "Tempban role", failure)) return;
 
+			if(muteTime == null)
+			{
+				failure.accept(new CommandInputException("Duration " + args.get(1) + " is invalid."));
+				return;
+			}
+
 			CommandUtils.interactionCheck(selfUser, user, ctx, () ->
 			{
 				CommandUtils.interactionCheck(author, user, ctx, () ->
@@ -53,7 +60,6 @@ public class TempbanCommand extends Command
 						guild.modifyMemberRoles(member, tempBanRole).queue(
 								success ->
 								{
-
 									Tempban.add(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot());
 									ctx.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
 								}
