@@ -31,6 +31,15 @@ public class MessageEventsMain extends ListenerAdapter
 		{
 			Guild guild = event.getGuild();
 
+			if(BlacklistUtils.isBlacklistedPhrase(event, igsqBot))
+			{
+				EmbedUtils.sendError(channel, "Your message contained a blacklisted phrase, this has been logged.");
+				if(guild.getSelfMember().hasPermission((GuildChannel) event.getChannel(), Permission.MESSAGE_MANAGE))
+				{
+					event.getMessage().delete().queue();
+				}
+				return;
+			}
 			if(BlacklistUtils.isChannelBlacklisted(event, igsqBot))
 			{
 				return;

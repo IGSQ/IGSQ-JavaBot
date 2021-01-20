@@ -41,7 +41,6 @@ public class BlacklistUtils
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -137,7 +136,7 @@ public class BlacklistUtils
 		{
 			if(content.contains(link))
 			{
-
+				return true;
 			}
 		}
 		return false;
