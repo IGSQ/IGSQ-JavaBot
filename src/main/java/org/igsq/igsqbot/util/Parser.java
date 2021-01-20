@@ -80,28 +80,25 @@ public class Parser
 		{
 			try
 			{
+				int num = Integer.parseInt(matcher.group(1));
+				if(num == 0)
+				{
+					continue;
+				}
 
+				String typ = matcher.group(2);
+				switch(typ)
+				{
+					case "s", "sec", "secs", "seconds" -> offset = offset.plusSeconds(num);
+					case "m", "min", "mins", "minutes" -> offset = offset.plusMinutes(num);
+					case "h", "hrs", "hours" -> offset = offset.plusHours(num);
+					case "d", "day", "days" -> offset = offset.plusDays(num);
+					case "w", "wk", "wks", "weeks" -> offset = offset.plusWeeks(num);
+					case "mo", "mnth", "month", "months" -> offset = offset.plusMonths(num);
+				}
 			}
-			catch(Exception exception)
-			{
-				continue;
-			}
-			int num = Integer.parseInt(matcher.group(1));
-			if(num == 0)
-			{
-				continue;
-			}
+			catch(Exception ignored) { }
 
-			String typ = matcher.group(2);
-			switch(typ)
-			{
-				case "s", "sec", "secs", "seconds" -> offset = offset.plusSeconds(num);
-				case "m", "min", "mins", "minutes" -> offset = offset.plusMinutes(num);
-				case "h", "hrs", "hours" -> offset = offset.plusHours(num);
-				case "d", "day", "days" -> offset = offset.plusDays(num);
-				case "w", "wk", "wks", "weeks" -> offset = offset.plusWeeks(num);
-				case "mo", "mnth", "month", "months" -> offset = offset.plusMonths(num);
-			}
 		}
 		if(offset.isBefore(LocalDateTime.now()))
 		{
@@ -237,7 +234,10 @@ public class Parser
 			else
 			{
 				consumer.accept(rolesChannelsList.get(0));
+				return;
 			}
 		}
+
+		ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 	}
 }
