@@ -105,7 +105,7 @@ None!
  - [ ] Improve user feedback
  - [ ] Verification
  - [ ] Make more granular errors with reaction role reaction adding (ErrorHandler)
- 
+ - [ ] Improve permission error embed
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

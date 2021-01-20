@@ -56,12 +56,12 @@ public class CommandChecks
 		{
 			URL obj = new URL(url);
 			obj.toURI();
-			return true;
+			return false;
 		}
 		catch(Exception exception)
 		{
 			callback.accept(new CommandSyntaxException(ctx));
-			return false;
+			return true;
 		}
 	}
 

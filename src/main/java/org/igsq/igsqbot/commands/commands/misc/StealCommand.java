@@ -31,7 +31,6 @@ public class StealCommand extends Command
 		System.out.println("sanity");
 		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure) || CommandChecks.stringIsURL(args.get(1), ctx, failure)) return;
 
-
 		if(!args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
 		{
 			failure.accept(new CommandInputException("Emoji names must be A-Z with underscores (_)"));
