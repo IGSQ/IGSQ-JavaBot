@@ -27,7 +27,7 @@ public class ModuleCommand extends Command
 	@Override
 	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
 	{
-		throw new CommandSyntaxException(ctx);
+		failure.accept(new CommandSyntaxException(ctx));
 	}
 
 	public static class ModuleEnableCommand extends Command
@@ -46,12 +46,14 @@ public class ModuleCommand extends Command
 			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(cmd == null)
 			{
-				throw new CommandResultException("Module " + moduleName + " was not found");
+				failure.accept(new CommandResultException("Module " + moduleName + " was not found"));
+				return;
 			}
 
 			if(!cmd.isDisabled())
 			{
-				throw new CommandResultException("Module " + cmd.getName() + " was already enabled.");
+				failure.accept(new CommandResultException("Module " + cmd.getName() + " was already enabled."));
+				return;
 			}
 			cmd.setDisabled(false);
 			ctx.replySuccess("Enabled module: `" + cmd.getName() + "`.");

@@ -44,7 +44,7 @@ public class TempbanCommand extends Command
 
 			if(CommandChecks.roleConfigured(tempBanRole, "Tempban role", failure)) return;
 
-			if(muteTime == null)
+			if(muteTime == null || muteTime.isAfter(LocalDateTime.now().plusWeeks(1)))
 			{
 				failure.accept(new CommandInputException("Duration " + args.get(1) + " is invalid."));
 				return;
