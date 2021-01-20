@@ -167,7 +167,7 @@ public class Vote
 			}
 			else if(row.getDirectMessageId() == -1)
 			{
-				votes.append(" DM could not be send ");
+				votes.append(" DM could not be sent ");
 			}
 			else if(row.getOption() == -2)
 			{
