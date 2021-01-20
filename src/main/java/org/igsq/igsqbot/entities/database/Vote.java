@@ -320,6 +320,6 @@ public class Vote
 
 	private static String parseOption(int number)
 	{
-		return StringUtils.parseToEmote(number).isBlank() ? "Abstained" : " voted for option " + StringUtils.parseToEmote(number);
+		return StringUtils.parseToEmote(number).isBlank() ? "Abstained" : " Voted for option " + StringUtils.parseToEmote(number);
 	}
 }
