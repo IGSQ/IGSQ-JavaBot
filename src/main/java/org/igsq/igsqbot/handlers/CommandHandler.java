@@ -105,11 +105,11 @@ public class CommandHandler
 		boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
 		String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 		String prefix = Constants.DEFAULT_BOT_PREFIX;
-		boolean containsBlacklist = BlacklistUtils.isBlacklistedPhrase(event, igsqBot);
+		boolean containsBlacklist = false;
 
 		if(event.isFromGuild())
 		{
-
+			containsBlacklist = BlacklistUtils.isBlacklistedPhrase(event, igsqBot);
 			Guild guild = event.getGuild();
 			if(startsWithId)
 			{
