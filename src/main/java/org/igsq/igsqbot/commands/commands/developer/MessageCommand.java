@@ -111,9 +111,9 @@ public class MessageCommand extends Command
 
 		EmbedBuilder VERIFICATION = new EmbedBuilder().setDescription("This server has a **semi-automatic** verification system. It means the bot will take care of verification, but it will be manually checked by staff first. To give you the correct roles, please tell us in this channel:\n" +
 				"\n" +
-				Emoji.IGSQ1 + " What country are you from?\n" +
+				Emoji.IGSQ1.getAsMessageable() + " What country are you from?\n" +
 				"\n" +
-				Emoji.IGSQ2 + " What game(s) did you join for?\n" +
+				Emoji.IGSQ2.getAsMessageable() + " What game(s) did you join for?\n" +
 				"\n" +
 				"• By joining our server, you agree to follow our <#767657829401231360>.\n" +
 				"\n" +
@@ -126,9 +126,9 @@ public class MessageCommand extends Command
 				"\n" +
 				"<@&701141500029042718> are trusted members of the community that help us keep the server clean.\n" +
 				"\n" +
-				"<@&798626642125783050> celestial description.\n" +
+				"<@&798626642125783050> is a unique role given to very few members. It shows continued respect and dedication to the community, so much so that the are given the highest non staff role available.\n" +
 				"\n" +
-				"<@&798626642125783050> is a unique role granted to the most elite members of our server. Over time they have shown that they care for and love the server so much they deserve the highest non-staff role!\n" +
+				"<@&798626642125783050> is given to the most elite members of our server. It shows dedication over time to the community as a whole.\n" +
 				"\n" +
 				"<@&558698050256633868> are some of our most dedicated members. It's granted on an individual basis to people for various reasons.\n" +
 				"\n" +
