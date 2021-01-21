@@ -19,7 +19,7 @@ public class BlacklistRemoveCommand extends Command
     {
         super(parent, "remove", "Removes a phrase from the blacklist.", "[phrase]");
         addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE, CommandFlag.BLACKLIST_BYPASS);
-        addMemberPermissions(Permission.MANAGE_SERVER);
+        addMemberPermissions(Permission.MESSAGE_MANAGE);
     }
 
     @Override

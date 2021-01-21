@@ -16,7 +16,7 @@ public class BlacklistShowCommand extends Command
     {
         super(parent, "show", "Shows all blacklisted phrases for this server.", "[none]");
         addFlags(CommandFlag.GUILD_ONLY);
-        addMemberPermissions(Permission.MANAGE_SERVER);
+        addMemberPermissions(Permission.MESSAGE_MANAGE);
     }
 
     @Override

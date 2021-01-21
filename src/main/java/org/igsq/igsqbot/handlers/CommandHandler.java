@@ -99,17 +99,16 @@ public class CommandHandler
 		MessageChannel channel = event.getChannel();
 		String selfID = jda.getSelfUser().getId();
 		String commandText;
-		String content = null;
+		String content;
 		Command cmd;
 
 		boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
 		String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 		String prefix = Constants.DEFAULT_BOT_PREFIX;
-		boolean containsBlacklist = false;
+		boolean containsBlacklist = BlacklistUtils.isBlacklistedPhrase(event, igsqBot);
 
 		if(event.isFromGuild())
 		{
-			containsBlacklist = BlacklistUtils.isBlacklistedPhrase(event, igsqBot);
 			Guild guild = event.getGuild();
 			if(startsWithId)
 			{
@@ -119,6 +118,10 @@ public class CommandHandler
 			{
 				prefix = new GuildConfig(guild.getIdLong(), igsqBot).getPrefix();
 				content = messageContent.substring(prefix.length()).trim();
+			}
+			else
+			{
+				return;
 			}
 		}
 		else
@@ -132,32 +135,34 @@ public class CommandHandler
 			{
 				content = messageContent.substring(prefix.length()).trim();
 			}
+			else
+			{
+				return;
+			}
 		}
 
-		if(content == null)
+		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
+
+		cmd = commandMap.get(commandText.toLowerCase());
+		if(cmd == null)
 		{
 			if(containsBlacklist)
 			{
-				EmbedUtils.sendError(channel, "Your message contained a blacklisted message.");
+				EmbedUtils.sendError(channel, "Your message contained a blacklisted phrase.");
 				if(event.getGuild().getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 				{
 					event.getMessage().delete().queue();
 				}
+				return;
 			}
-			return;
-		}
-
-		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-		cmd = commandMap.get(commandText.toLowerCase());
-		if(cmd == null)
-		{
 			event.getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(success -> event.getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS, null, error -> {}), error -> {});
 			EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.\n Type `" + prefix + "help` for help.");
 			return;
 		}
-		else if(containsBlacklist && !cmd.hasFlag(CommandFlag.BLACKLIST_BYPASS))
+
+		if(containsBlacklist && cmd.hasFlag(CommandFlag.BLACKLIST_BYPASS))
 		{
-			EmbedUtils.sendError(channel, "Your message contained a blacklisted message.");
+			EmbedUtils.sendError(channel, "Your message contained a blacklisted phrase.");
 			if(event.getGuild().getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
 			{
 				event.getMessage().delete().queue();
@@ -166,6 +171,10 @@ public class CommandHandler
 		}
 
 		args.remove(0);
+		if(startsWithId)
+		{
+			args.remove(0);
+		}
 		CommandEvent ctx = new CommandEvent(event, igsqBot, cmd, args);
 
 		if(args.isEmpty())
@@ -178,8 +187,8 @@ public class CommandHandler
 				.filter(child -> child.getName().equalsIgnoreCase(args.get(0)))
 				.findFirst()
 				.ifPresentOrElse(
-						child -> child.process(new CommandEvent(event, igsqBot, child, args.subList(1, args.size()))),
-						() -> cmd.process(ctx));
-
+				child -> child.process(new CommandEvent(event, igsqBot, child, args.subList(1, args.size()))),
+				() -> cmd.process(ctx));
 	}
+
 }

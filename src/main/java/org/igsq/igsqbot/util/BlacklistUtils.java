@@ -33,7 +33,7 @@ public class BlacklistUtils
 		String content = event.getMessage().getContentRaw();
 		Member member = event.getMember();
 
-		if(member == null || member.hasPermission(Permission.ADMINISTRATOR))
+		if(member == null)
 		{
 			return false;
 		}

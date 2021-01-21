@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.exception.*;
-import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 public abstract class Command
@@ -57,14 +56,6 @@ public abstract class Command
 		if(isDisabled() || hasFlag(CommandFlag.DISABLED))
 		{
 			EmbedUtils.sendDisabledError(cmd);
-		}
-		if(BlacklistUtils.isBlacklistedPhrase(cmd.getEvent(), cmd.getIGSQBot()))
-		{
-			cmd.replyError("Your message contained a blacklisted phrase, this has been logged.");
-			if(cmd.selfPermissionCheck(Permission.MESSAGE_MANAGE))
-			{
-				cmd.getMessage().delete().queue();
-			}
 		}
 		else if(hasFlag(CommandFlag.GUILD_ONLY) && !cmd.isFromGuild())
 		{
