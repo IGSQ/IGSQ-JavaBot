@@ -3,6 +3,7 @@ package org.igsq.igsqbot.commands.subcommands.blacklist;
 import java.util.List;
 
 import java.util.function.Consumer;
+import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandFlag;
@@ -17,6 +18,7 @@ public class BlacklistAddCommand extends Command
     {
         super(parent, "add", "Adds a phrase to the blacklist.", "[phrase]");
         addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
+        addMemberPermissions(Permission.MANAGE_SERVER);
     }
 
     @Override

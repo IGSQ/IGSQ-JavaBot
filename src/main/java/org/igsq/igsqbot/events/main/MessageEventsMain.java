@@ -41,16 +41,6 @@ public class MessageEventsMain extends ListenerAdapter
 				MessageCache.getCache(guild).set(new CachedMessage(event.getMessage()));
 			}
 
-			if(BlacklistUtils.isBlacklistedPhrase(event, igsqBot))
-			{
-				EmbedUtils.sendError(channel, "Your message contained a blacklisted phrase, this has been logged.");
-				if(guild.getSelfMember().hasPermission((GuildChannel) event.getChannel(), Permission.MESSAGE_MANAGE))
-				{
-					event.getMessage().delete().queue();
-				}
-				return;
-			}
-
 			if(BlacklistUtils.isDiscordInvite(event))
 			{
 				EmbedUtils.sendError(channel, "You cannot advertise Discord servers.");

@@ -59,6 +59,14 @@ public abstract class Command
 		{
 			EmbedUtils.sendDisabledError(cmd);
 		}
+		if(BlacklistUtils.isBlacklistedPhrase(cmd.getEvent(), cmd.getIGSQBot()))
+		{
+			cmd.replyError("Your message contained a blacklisted phrase, this has been logged.");
+			if(cmd.selfPermissionCheck(Permission.MESSAGE_MANAGE))
+			{
+				cmd.getMessage().delete().queue();
+			}
+		}
 		else if(cmd.isFromGuild() && BlacklistUtils.isBlacklistedPhrase(cmd.getEvent(), cmd.getIGSQBot()) && !hasFlag(CommandFlag.BLACKLIST_BYPASS))
 		{
 			cmd.replyError("Your message contained a blacklisted message.");
