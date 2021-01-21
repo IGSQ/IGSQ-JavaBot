@@ -20,23 +20,23 @@ public class AvatarCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeExceeds(ctx, 3, failure)) return;
+		if(CommandChecks.argsSizeExceeds(cmd, 3, failure)) return;
 
-		Message message = ctx.getMessage();
+		Message message = cmd.getMessage();
 		User author = message.getAuthor();
 
 		if(message.getMentionedMembers().isEmpty())
 		{
-			ctx.sendMessage(new EmbedBuilder()
+			cmd.sendMessage(new EmbedBuilder()
 					.setTitle(author.getAsTag() + "'s Avatar")
 					.setImage(author.getAvatarUrl() + "?size=4096"));
 		}
 		else
 		{
 			message.getMentionedMembers().forEach(member ->
-					ctx.sendMessage(new EmbedBuilder()
+					cmd.sendMessage(new EmbedBuilder()
 							.setTitle(member.getUser().getAsTag() + "'s Avatar")
 							.setImage(member.getUser().getEffectiveAvatarUrl() + "?size=4096")));
 		}

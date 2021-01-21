@@ -20,11 +20,11 @@ public class BlacklistAddCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        if(CommandChecks.argsEmpty(ctx, failure)) return;
+        if(CommandChecks.argsEmpty(cmd, failure)) return;
         String phrase = ArrayUtils.arrayCompile(args, " ");
-        BlacklistUtils.addPhrase(ctx.getGuild(), phrase, ctx.getIGSQBot());
-        ctx.replySuccess("Added phrase ||" + phrase + "|| to the blacklist");
+        BlacklistUtils.addPhrase(cmd.getGuild(), phrase, cmd.getIGSQBot());
+        cmd.replySuccess("Added phrase ||" + phrase + "|| to the blacklist");
     }
 }

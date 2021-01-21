@@ -32,32 +32,32 @@ public class VoteCreateCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        if(CommandChecks.argsSizeSubceeds(ctx, 3, failure)) return;
+        if(CommandChecks.argsSizeSubceeds(cmd, 3, failure)) return;
 
-        List<String> options = new Parser(args.get(1), ctx).parseAsSlashArgs();
-        LocalDateTime expiry = new Parser(args.get(2), ctx).parseAsDuration();
+        List<String> options = new Parser(args.get(1), cmd).parseAsSlashArgs();
+        LocalDateTime expiry = new Parser(args.get(2), cmd).parseAsDuration();
         String subject = ArrayUtils.arrayCompile(args.subList(3, args.size()), " ");
-        Guild guild = ctx.getGuild();
+        Guild guild = cmd.getGuild();
         List<Role> roles = new ArrayList<>();
         List<Long> users = new ArrayList<>();
 
-        int argCount = new Parser(args.get(0), ctx).parseAsSlashArgs().size();
-        int roleCount = ctx.getMessage().getMentionedRoles().size();
-        int memberCount = ctx.getMessage().getMentionedMembers().size();
+        int argCount = new Parser(args.get(0), cmd).parseAsSlashArgs().size();
+        int roleCount = cmd.getMessage().getMentionedRoles().size();
+        int memberCount = cmd.getMessage().getMentionedMembers().size();
 
         if(roleCount == argCount)
         {
-            roles = ctx.getMessage().getMentionedRoles();
+            roles = cmd.getMessage().getMentionedRoles();
         }
         else if(memberCount == argCount)
         {
-            users = ctx.getMessage().getMentionedUsers().stream().map(User::getIdLong).collect(Collectors.toList());
+            users = cmd.getMessage().getMentionedUsers().stream().map(User::getIdLong).collect(Collectors.toList());
         }
         else
         {
-            roles = new Parser(args.get(0), ctx)
+            roles = new Parser(args.get(0), cmd)
                     .parseAsSlashArgs()
                     .stream()
                     .map(arg -> arg.replaceAll("[^a-z]/gi", ""))
@@ -66,7 +66,7 @@ public class VoteCreateCommand extends Command
                     .collect(Collectors.toList());
 
 
-            users = new Parser(args.get(0), ctx)
+            users = new Parser(args.get(0), cmd)
                     .parseAsSlashArgs()
                     .stream()
                     .map(arg -> arg.replaceAll("[^a-z]/gi", ""))
@@ -80,7 +80,7 @@ public class VoteCreateCommand extends Command
 
         if(options.isEmpty() || options.size() > 6 || expiry == null || roles.size() > 3 || users.size() > 10)
         {
-            failure.accept(new CommandSyntaxException(ctx));
+            failure.accept(new CommandSyntaxException(cmd));
             return;
         }
 
@@ -110,18 +110,18 @@ public class VoteCreateCommand extends Command
                         }
 
 
-                        Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, ctx);
+                        Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, cmd);
                         vote.start();
                     });
         }
         else if(roles.isEmpty() && !users.isEmpty())
         {
-            Vote vote = new Vote(users, options, expiry, subject, ctx);
+            Vote vote = new Vote(users, options, expiry, subject, cmd);
             vote.start();
         }
         else
         {
-            failure.accept(new CommandSyntaxException(ctx));
+            failure.accept(new CommandSyntaxException(cmd));
         }
     }
 }

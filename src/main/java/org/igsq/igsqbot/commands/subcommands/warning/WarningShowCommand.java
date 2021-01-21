@@ -25,15 +25,15 @@ public class WarningShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
 
-		new Parser(args.get(0), ctx).parseAsUser(user ->
+		new Parser(args.get(0), cmd).parseAsUser(user ->
 		{
-			Guild guild = ctx.getGuild();
-			MessageChannel channel = ctx.getChannel();
-			List<Warnings> warnings = new Warning(guild, user, ctx.getIGSQBot()).get();
+			Guild guild = cmd.getGuild();
+			MessageChannel channel = cmd.getChannel();
+			List<Warnings> warnings = new Warning(guild, user, cmd.getIGSQBot()).get();
 			StringBuilder stringBuilder = new StringBuilder();
 
 			warnings.forEach(warn -> stringBuilder

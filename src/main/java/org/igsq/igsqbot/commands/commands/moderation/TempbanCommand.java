@@ -31,17 +31,17 @@ public class TempbanCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeMatches(ctx, 2, failure)) return;
+		if(CommandChecks.argsSizeMatches(cmd, 2, failure)) return;
 
-		new Parser(args.get(0), ctx).parseAsUser(user ->
+		new Parser(args.get(0), cmd).parseAsUser(user ->
 		{
-			LocalDateTime muteTime = new Parser(args.get(1), ctx).parseAsDuration();
-			User author = ctx.getAuthor();
-			User selfUser = ctx.getIGSQBot().getSelfUser();
-			Guild guild = ctx.getGuild();
-			Role tempBanRole = guild.getRoleById(new GuildConfig(guild.getIdLong(), ctx.getIGSQBot()).getTempBanRole());
+			LocalDateTime muteTime = new Parser(args.get(1), cmd).parseAsDuration();
+			User author = cmd.getAuthor();
+			User selfUser = cmd.getIGSQBot().getSelfUser();
+			Guild guild = cmd.getGuild();
+			Role tempBanRole = guild.getRoleById(new GuildConfig(guild.getIdLong(), cmd.getIGSQBot()).getTempBanRole());
 
 			if(CommandChecks.roleConfigured(tempBanRole, "Tempban role", failure)) return;
 
@@ -52,9 +52,9 @@ public class TempbanCommand extends Command
 				return;
 			}
 
-			CommandUtils.interactionCheck(selfUser, user, ctx, () ->
+			CommandUtils.interactionCheck(selfUser, user, cmd, () ->
 			{
-				CommandUtils.interactionCheck(author, user, ctx, () ->
+				CommandUtils.interactionCheck(author, user, cmd, () ->
 				{
 					UserUtils.getMemberFromUser(user, guild).queue(member ->
 					{
@@ -62,9 +62,9 @@ public class TempbanCommand extends Command
 						guild.modifyMemberRoles(member, tempBanRole).queue(
 								success ->
 								{
-									if(Tempban.add(member.getIdLong(), roleIds, guild, muteTime, ctx.getIGSQBot()))
+									if(Tempban.add(member.getIdLong(), roleIds, guild, muteTime, cmd.getIGSQBot()))
 									{
-										ctx.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
+										cmd.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
 									}
 									else
 									{
@@ -86,24 +86,24 @@ public class TempbanCommand extends Command
 	    }
 
 	    @Override
-	    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	    {
-			if(CommandChecks.argsEmpty(ctx, failure)) return;
+			if(CommandChecks.argsEmpty(cmd, failure)) return;
 
-			new Parser(args.get(0), ctx).parseAsUser(user ->
+			new Parser(args.get(0), cmd).parseAsUser(user ->
 			{
-				User author = ctx.getAuthor();
-				User selfUser = ctx.getIGSQBot().getSelfUser();
-				Guild guild = ctx.getGuild();
+				User author = cmd.getAuthor();
+				User selfUser = cmd.getIGSQBot().getSelfUser();
+				Guild guild = cmd.getGuild();
 
-				CommandUtils.interactionCheck(selfUser, user, ctx, () ->
+				CommandUtils.interactionCheck(selfUser, user, cmd, () ->
 				{
-					CommandUtils.interactionCheck(author, user, ctx, () ->
+					CommandUtils.interactionCheck(author, user, cmd, () ->
 					{
 						UserUtils.getMemberFromUser(user, guild).queue(member ->
 						{
-							Tempban.remove(member.getIdLong(), ctx.getIGSQBot());
-							ctx.replySuccess("Removed tempban for user " + UserUtils.getAsMention(member.getIdLong()));
+							Tempban.remove(member.getIdLong(), cmd.getIGSQBot());
+							cmd.replySuccess("Removed tempban for user " + UserUtils.getAsMention(member.getIdLong()));
 						});
 					});
 				});

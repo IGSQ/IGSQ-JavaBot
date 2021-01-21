@@ -19,15 +19,15 @@ public class LevelBotCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        if(CommandChecks.argsEmpty(ctx, failure)) return;
+        if(CommandChecks.argsEmpty(cmd, failure)) return;
 
-        new Parser(args.get(0), ctx).parseAsUser(
+        new Parser(args.get(0), cmd).parseAsUser(
         user ->
         {
-            new GuildConfig(ctx).setLevelUpBot(user.getIdLong());
-            ctx.replySuccess("New level up bot is " + user.getAsMention());
+            new GuildConfig(cmd).setLevelUpBot(user.getIdLong());
+            cmd.replySuccess("New level up bot is " + user.getAsMention());
         });
     }
 }

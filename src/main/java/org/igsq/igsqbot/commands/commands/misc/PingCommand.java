@@ -19,9 +19,9 @@ public class PingCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		JDA jda = ctx.getJDA();
+		JDA jda = cmd.getJDA();
 		jda.getRestPing().queue(
 				ping ->
 				{
@@ -32,7 +32,7 @@ public class PingCommand extends Command
 						oCount = 256;
 					}
 
-					ctx.sendMessage(new EmbedBuilder()
+					cmd.sendMessage(new EmbedBuilder()
 							.setTitle("P" + "o".repeat(oCount)+ "ng.")
 							.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId()
 									+ "\n**REST Ping**: " + ping

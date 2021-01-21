@@ -23,20 +23,20 @@ public class LevelAddCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        User levelBot = ctx.getIGSQBot().getShardManager().getUserById(new GuildConfig(ctx).getLevelUpBot());
+        User levelBot = cmd.getIGSQBot().getShardManager().getUserById(new GuildConfig(cmd).getLevelUpBot());
         if(CommandChecks.userConfigured(levelBot, "Level up bot", failure)) return;
-        if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
-        OptionalInt level = new Parser(args.get(0), ctx).parseAsUnsignedInt();
+        if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
+        OptionalInt level = new Parser(args.get(0), cmd).parseAsUnsignedInt();
 
         if(level.isPresent())
         {
-            new Parser(args.get(1), ctx).parseAsRole(
+            new Parser(args.get(1), cmd).parseAsRole(
                 role ->
                 {
-                    Level.addLevel(role, level.getAsInt(), ctx.getGuildIdLong(), ctx.getIGSQBot());
-                    ctx.replySuccess("Added new level " + level.getAsInt() + " which awards " + role.getAsMention());
+                    Level.addLevel(role, level.getAsInt(), cmd.getGuildIdLong(), cmd.getIGSQBot());
+                    cmd.replySuccess("Added new level " + level.getAsInt() + " which awards " + role.getAsMention());
                 });
         }
     }

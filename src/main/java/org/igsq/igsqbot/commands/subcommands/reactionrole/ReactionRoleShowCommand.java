@@ -22,15 +22,15 @@ public class ReactionRoleShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
 
-		OptionalLong messageId = new Parser(args.get(0), ctx).parseAsUnsignedLong();
+		OptionalLong messageId = new Parser(args.get(0), cmd).parseAsUnsignedLong();
 
 		if(messageId.isPresent())
 		{
-			List<ReactionRole> reactionRoles = ReactionRole.getByMessageId(messageId.getAsLong(), ctx.getIGSQBot());
+			List<ReactionRole> reactionRoles = ReactionRole.getByMessageId(messageId.getAsLong(), cmd.getIGSQBot());
 			StringBuilder text = new StringBuilder();
 
 			for(ReactionRole reactionRole : reactionRoles)
@@ -43,7 +43,7 @@ public class ReactionRoleShowCommand extends Command
 						.append("\n");
 			}
 
-			ctx.sendMessage(new EmbedBuilder()
+			cmd.sendMessage(new EmbedBuilder()
 					.setTitle("Reaction roles for message " + messageId.getAsLong())
 					.setDescription(text.length() == 0 ? "No reaction roles found" : text.toString()));
 		}

@@ -23,9 +23,9 @@ public class InviteCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		Guild guild = ctx.getGuild();
+		Guild guild = cmd.getGuild();
 
 		guild.retrieveInvites().queue(
 				invites ->
@@ -34,7 +34,7 @@ public class InviteCommand extends Command
 					{
 						if(invite.getMaxUses() == 0)
 						{
-							ctx.replySuccess("Invite found: " + invite.getUrl());
+							cmd.replySuccess("Invite found: " + invite.getUrl());
 							return;
 						}
 					}

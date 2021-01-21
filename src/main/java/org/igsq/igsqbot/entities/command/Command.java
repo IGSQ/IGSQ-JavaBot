@@ -53,75 +53,76 @@ public abstract class Command
 		this.flags = new ArrayList<>();
 	}
 
-	public void process(CommandEvent ctx)
+	public void process(CommandEvent cmd)
 	{
 		if(isDisabled() || hasFlag(CommandFlag.DISABLED))
 		{
-			EmbedUtils.sendDisabledError(ctx);
+			EmbedUtils.sendDisabledError(cmd);
 		}
-		else if(ctx.isFromGuild() && BlacklistUtils.isBlacklistedPhrase(ctx.getEvent(), ctx.getIGSQBot()) && !hasFlag(CommandFlag.BLACKLIST_BYPASS))
+		else if(cmd.isFromGuild() && BlacklistUtils.isBlacklistedPhrase(cmd.getEvent(), cmd.getIGSQBot()) && !hasFlag(CommandFlag.BLACKLIST_BYPASS))
 		{
-			ctx.replyError("Your message contained a blacklisted message.");
-			if(ctx.getSelfMember().hasPermission((GuildChannel) ctx.getChannel(), Permission.MESSAGE_MANAGE))
+			cmd.replyError("Your message contained a blacklisted message.");
+			if(cmd.getSelfMember().hasPermission((GuildChannel) cmd.getChannel(), Permission.MESSAGE_MANAGE))
 			{
-				ctx.getMessage().delete().queue();
+				cmd.getMessage().delete().queue();
 			}
 		}
-		else if(hasFlag(CommandFlag.GUILD_ONLY) && !ctx.isFromGuild())
+		else if(hasFlag(CommandFlag.GUILD_ONLY) && !cmd.isFromGuild())
 		{
-			ctx.replyError("This command must be executed in a server.");
+			cmd.replyError("This command must be executed in a server.");
 		}
-		else if(!getMemberRequiredPermissions().isEmpty() && !ctx.memberPermissionCheck(getMemberRequiredPermissions()))
+		else if(!getMemberRequiredPermissions().isEmpty() && !cmd.memberPermissionCheck(getMemberRequiredPermissions()))
 		{
-			EmbedUtils.sendMemberPermissionError(ctx);
+			EmbedUtils.sendMemberPermissionError(cmd);
 		}
-		else if(!getSelfRequiredPermissions().isEmpty() && !ctx.selfPermissionCheck(getSelfRequiredPermissions()))
+		else if(!getSelfRequiredPermissions().isEmpty() && !cmd.selfPermissionCheck(getSelfRequiredPermissions()))
 		{
-			EmbedUtils.sendSelfPermissionError(ctx);
+			EmbedUtils.sendSelfPermissionError(cmd);
 		}
-		else if(hasFlag(CommandFlag.DEVELOPER_ONLY) && !ctx.isDeveloper())
+		else if(hasFlag(CommandFlag.DEVELOPER_ONLY) && !cmd.isDeveloper())
 		{
-			ctx.replyError("This command is for developers only.");
+			cmd.replyError("This command is for developers only.");
 		}
 		else
 		{
-			if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && ctx.selfPermissionCheck(Permission.MESSAGE_MANAGE))
+			if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && cmd.selfPermissionCheck(Permission.MESSAGE_MANAGE))
 			{
-				ctx.getMessage().delete().queue();
+				cmd.getMessage().delete().queue();
 			}
-			run(ctx.getArgs(), ctx, exception ->
+
+			run(cmd.getArgs(), cmd, exception ->
 			{
 				if(exception instanceof CommandCooldownException)
 				{
-					ctx.replyError(ctx.getAuthor().getAsMention() + " is on cooldown from command `" + getName() + "`");
+					cmd.replyError(cmd.getAuthor().getAsMention() + " is on cooldown from command `" + getName() + "`");
 				}
 				else if(exception instanceof CommandResultException)
 				{
-					ctx.replyError("Something went wrong. " + exception.getText());
+					cmd.replyError("An error occurred. " + exception.getText());
 				}
 				else if(exception instanceof CommandInputException)
 				{
-					ctx.replyError(exception.getText());
+					cmd.replyError(exception.getText());
 				}
 				else if(exception instanceof CommandSyntaxException)
 				{
-					EmbedUtils.sendSyntaxError(ctx);
+					EmbedUtils.sendSyntaxError(cmd);
 				}
 				else if(exception instanceof CommandHierarchyException)
 				{
-					ctx.replyError("A hierarchy error occurred when trying to process command `" + getName() + "`");
+					cmd.replyError("A hierarchy error occurred when trying to process command `" + getName() + "`");
 				}
 				else if(exception instanceof CommandUserPermissionException)
 				{
-					EmbedUtils.sendMemberPermissionError(ctx);
+					EmbedUtils.sendMemberPermissionError(cmd);
 				}
 				else if(exception instanceof MissingConfigurationException)
 				{
-					ctx.replyError("`" + exception.getText() + "` is not setup.");
+					cmd.replyError("`" + exception.getText() + "` is not setup.");
 				}
 				else
 				{
-					ctx.replyError("An unhandled error occurred " + exception.getText());
+					cmd.replyError("An unhandled error occurred " + exception.getText());
 				}
 			});
 		}
@@ -132,7 +133,7 @@ public abstract class Command
 		return !getChildren().isEmpty();
 	}
 
-	public abstract void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure);
+	public abstract void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure);
 
 	public void addCooldown(long millis)
 	{

@@ -20,7 +20,7 @@ public class HelpCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		OptionalInt page;
 		if(args.isEmpty())
@@ -29,14 +29,14 @@ public class HelpCommand extends Command
 		}
 		else
 		{
-			Command command = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(args.get(0));
+			Command command = cmd.getIGSQBot().getCommandHandler().getCommandMap().get(args.get(0));
 			if(command == null)
 			{
-				page = new Parser(args.get(0), ctx).parseAsUnsignedInt();
+				page = new Parser(args.get(0), cmd).parseAsUnsignedInt();
 			}
 			else
 			{
-				ctx.sendMessage(generateHelpPerCommand(command, ctx.getPrefix()));
+				cmd.sendMessage(generateHelpPerCommand(command, cmd.getPrefix()));
 				return;
 			}
 		}
@@ -44,13 +44,13 @@ public class HelpCommand extends Command
 
 		if(page.isPresent())
 		{
-			if(page.getAsInt() + 1 > ctx.getIGSQBot().getHelpPages().size() + 1)
+			if(page.getAsInt() + 1 > cmd.getIGSQBot().getHelpPages().size() + 1)
 			{
 				failure.accept(new CommandInputException("Page `" + args.get(0) + "` does not exist."));
 				return;
 			}
 
-			ctx.sendMessage(ctx.getIGSQBot().getHelpPages().get(page.getAsInt() - 1));
+			cmd.sendMessage(cmd.getIGSQBot().getHelpPages().get(page.getAsInt() - 1));
 		}
 	}
 

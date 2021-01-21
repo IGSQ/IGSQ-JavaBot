@@ -24,20 +24,20 @@ public class LevelRemoveCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        User levelBot = ctx.getIGSQBot().getShardManager().getUserById(new GuildConfig(ctx).getLevelUpBot());
+        User levelBot = cmd.getIGSQBot().getShardManager().getUserById(new GuildConfig(cmd).getLevelUpBot());
         if(CommandChecks.userConfigured(levelBot, "Level up bot", failure)) return;
-        if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
-        OptionalInt level = new Parser(args.get(0), ctx).parseAsUnsignedInt();
+        if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
+        OptionalInt level = new Parser(args.get(0), cmd).parseAsUnsignedInt();
         if(level.isPresent())
         {
-            new Parser(args.get(1), ctx).parseAsRole(
+            new Parser(args.get(1), cmd).parseAsRole(
                     role ->
                     {
-                        if(Level.removeLevel(role, level.getAsInt(), ctx.getGuildIdLong(), ctx.getIGSQBot()))
+                        if(Level.removeLevel(role, level.getAsInt(), cmd.getGuildIdLong(), cmd.getIGSQBot()))
                         {
-                            ctx.replySuccess("Removed level " + level.getAsInt() + " which awarded " + role.getAsMention());
+                            cmd.replySuccess("Removed level " + level.getAsInt() + " which awarded " + role.getAsMention());
                         }
                         else
                         {

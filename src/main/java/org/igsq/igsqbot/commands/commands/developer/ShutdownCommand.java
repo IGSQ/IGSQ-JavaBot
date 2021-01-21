@@ -18,23 +18,23 @@ public class ShutdownCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		ctx.getIGSQBot().getDatabaseHandler().close();
-		ctx.getIGSQBot().getMinecraft().close();
-		ctx.getIGSQBot().getTaskHandler().close();
+		cmd.getIGSQBot().getDatabaseHandler().close();
+		cmd.getIGSQBot().getMinecraft().close();
+		cmd.getIGSQBot().getTaskHandler().close();
 
-		ctx.getJDA().shutdown();
+		cmd.getJDA().shutdown();
 
-		ctx.getIGSQBot().getLogger().warn("-- IGSQBot was shutdown using shutdown command.");
-		ctx.getIGSQBot().getLogger().warn("-- Issued by: " + ctx.getAuthor().getAsTag());
-		if(ctx.getGuild() != null)
+		cmd.getIGSQBot().getLogger().warn("-- IGSQBot was shutdown using shutdown command.");
+		cmd.getIGSQBot().getLogger().warn("-- Issued by: " + cmd.getAuthor().getAsTag());
+		if(cmd.getGuild() != null)
 		{
-			ctx.getIGSQBot().getLogger().warn("-- In guild: " + ctx.getGuild().getName());
+			cmd.getIGSQBot().getLogger().warn("-- In guild: " + cmd.getGuild().getName());
 		}
 		else
 		{
-			ctx.getIGSQBot().getLogger().warn("-- In guild: " + "Shutdown in DMs.");
+			cmd.getIGSQBot().getLogger().warn("-- In guild: " + "Shutdown in DMs.");
 		}
 		System.exit(0);
 	}

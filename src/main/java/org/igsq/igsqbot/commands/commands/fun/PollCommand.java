@@ -25,17 +25,17 @@ public class PollCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeMatches(ctx, 1, failure)) return;
+		if(CommandChecks.argsSizeMatches(cmd, 1, failure)) return;
 
 		StringBuilder options = new StringBuilder();
-		MessageChannel channel = ctx.getChannel();
-		User author = ctx.getAuthor();
+		MessageChannel channel = cmd.getChannel();
+		User author = cmd.getAuthor();
 		List<String> reactions = new ArrayList<>();
-		List<String> slashArgs = new Parser(args.get(0), ctx).parseAsSlashArgs();
+		List<String> slashArgs = new Parser(args.get(0), cmd).parseAsSlashArgs();
 
-		if(CommandChecks.argsSizeSubceeds(slashArgs, ctx, 3, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(slashArgs, cmd, 3, failure)) return;
 		String topic = slashArgs.get(0);
 
 		List<Emoji> emojis = Emoji.getPoll();

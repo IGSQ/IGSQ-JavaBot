@@ -23,14 +23,14 @@ public class UwUCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
-		if(CommandChecks.argsEmbedCompatible(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmbedCompatible(cmd, failure)) return;
 
 		List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
 		StringBuilder finalSentence = new StringBuilder();
-		User author = ctx.getAuthor();
+		User author = cmd.getAuthor();
 
 		for(String selectedChar : chars)
 		{
@@ -44,7 +44,7 @@ public class UwUCommand extends Command
 			}
 		}
 
-		ctx.sendMessage(new EmbedBuilder()
+		cmd.sendMessage(new EmbedBuilder()
 				.setDescription(finalSentence.toString())
 				.setColor(Constants.IGSQ_PURPLE)
 				.setFooter("This sentence was UwU'd by: " + author.getAsTag() + " | "));

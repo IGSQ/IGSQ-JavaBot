@@ -16,18 +16,18 @@ public class BotInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		ctx.sendMessage(new EmbedBuilder()
-				.setTitle(ctx.getJDA().getSelfUser().getAsTag() + " information")
+		cmd.sendMessage(new EmbedBuilder()
+				.setTitle(cmd.getJDA().getSelfUser().getAsTag() + " information")
 				.addField("JVM Version", BotInfo.getJavaVersion(), true)
 				.addField("JDA Version", BotInfo.getJDAVersion(), true)
 				.addBlankField(true)
 				.addField("Thread Count", String.valueOf(BotInfo.getThreadCount()), true)
 				.addField("Memory Usage", BotInfo.getMemoryFormatted(), true)
 				.addBlankField(true)
-				.addField("Shard info", ctx.getJDA().getShardInfo().getShardString(), true)
-				.addField("Server count", String.valueOf(BotInfo.getTotalServers(ctx.getIGSQBot().getShardManager())), true)
+				.addField("Shard info", cmd.getJDA().getShardInfo().getShardString(), true)
+				.addField("Server count", String.valueOf(BotInfo.getTotalServers(cmd.getIGSQBot().getShardManager())), true)
 				.addBlankField(true));
 	}
 }

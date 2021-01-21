@@ -27,14 +27,14 @@ public class SuggestionCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
-		if(CommandChecks.argsEmbedCompatible(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmbedCompatible(cmd, failure)) return;
 
-		User author = ctx.getAuthor();
-		GuildConfig guildConfig = new GuildConfig(ctx);
-		MessageChannel suggestionChannel = ctx.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
+		User author = cmd.getAuthor();
+		GuildConfig guildConfig = new GuildConfig(cmd);
+		MessageChannel suggestionChannel = cmd.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
 
 		if(CommandChecks.channelConfigured(suggestionChannel, "Suggestion channel", failure)) return;
 		suggestionChannel.sendMessage(new EmbedBuilder()
@@ -42,7 +42,7 @@ public class SuggestionCommand extends Command
 				.setDescription(ArrayUtils.arrayCompile(args, " "))
 				.setColor(Constants.IGSQ_PURPLE)
 				.setThumbnail(author.getAvatarUrl())
-				.setFooter("Suggested by: " + ctx.getAuthor().getAsTag() + " | ")
+				.setFooter("Suggested by: " + cmd.getAuthor().getAsTag() + " | ")
 				.setTimestamp(Instant.now())
 				.build()).queue(
 				message ->

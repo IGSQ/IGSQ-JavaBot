@@ -26,23 +26,23 @@ public class ReactionRoleRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(ctx, 4, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 4, failure)) return;
 
-		OptionalLong messageId = new Parser(args.get(0), ctx).parseAsUnsignedLong();
-		String emote = ctx.getMessage().getEmotes().isEmpty() ? args.get(3) : ctx.getMessage().getEmotes().get(0).getId();
-		new Parser(args.get(2), ctx).parseAsRole(role ->
+		OptionalLong messageId = new Parser(args.get(0), cmd).parseAsUnsignedLong();
+		String emote = cmd.getMessage().getEmotes().isEmpty() ? args.get(3) : cmd.getMessage().getEmotes().get(0).getId();
+		new Parser(args.get(2), cmd).parseAsRole(role ->
 		{
 			if(messageId.isPresent())
 			{
-				new Parser(args.get(1), ctx).parseAsTextChannel(
+				new Parser(args.get(1), cmd).parseAsTextChannel(
 						channel ->
 						{
 							channel.retrieveMessageById(messageId.getAsLong()).queue(
 									message ->
 									{
-										ReactionRole reactionRole = new ReactionRole(messageId.getAsLong(), role.getIdLong(), ctx.getGuild().getIdLong(), emote, ctx.getIGSQBot());
+										ReactionRole reactionRole = new ReactionRole(messageId.getAsLong(), role.getIdLong(), cmd.getGuild().getIdLong(), emote, cmd.getIGSQBot());
 
 										if(!reactionRole.isPresent())
 										{
@@ -51,7 +51,7 @@ public class ReactionRoleRemoveCommand extends Command
 										}
 
 										reactionRole.remove();
-										ctx.replySuccess("Removed reaction role for role " + StringUtils.getRoleAsMention(role.getIdLong()));
+										cmd.replySuccess("Removed reaction role for role " + StringUtils.getRoleAsMention(role.getIdLong()));
 										message.clearReactions(emote).queue();
 									},
 									error -> failure.accept(new CommandInputException("Message " + messageId.getAsLong() + " does not exist")));

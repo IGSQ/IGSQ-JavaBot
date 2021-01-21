@@ -18,9 +18,9 @@ public class BlacklistShowCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        List<String> blacklist = BlacklistUtils.getBlacklistedPhrases(ctx.getGuild(), ctx.getIGSQBot());
+        List<String> blacklist = BlacklistUtils.getBlacklistedPhrases(cmd.getGuild(), cmd.getIGSQBot());
         StringBuilder text = new StringBuilder();
 
         for(String word : blacklist)
@@ -32,8 +32,8 @@ public class BlacklistShowCommand extends Command
                 .append("\n");
         }
 
-        ctx.sendMessage(new EmbedBuilder()
-                .setTitle("Blacklisted words for server " + ctx.getGuild().getName())
+        cmd.sendMessage(new EmbedBuilder()
+                .setTitle("Blacklisted words for server " + cmd.getGuild().getName())
                 .setDescription(text.length() == 0 ? "No blacklisted words setup." : text.toString()));
     }
 }

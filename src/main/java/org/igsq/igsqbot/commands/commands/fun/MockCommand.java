@@ -24,15 +24,15 @@ public class MockCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
-		if(CommandChecks.argsEmbedCompatible(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmbedCompatible(cmd, failure)) return;
 
 		InputStream file = FileUtils.getResourceFile("mock.jpg");
 		if(file != null)
 		{
-			ctx.getChannel().sendFile(file, "mock.jpg").embed(new EmbedBuilder()
+			cmd.getChannel().sendFile(file, "mock.jpg").embed(new EmbedBuilder()
 					.setTitle(mockText(args))
 					.setColor(Constants.IGSQ_PURPLE)
 					.setImage("attachment://mock.jpg")

@@ -19,15 +19,15 @@ public class RoleInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		if(args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(ctx);
+			EmbedUtils.sendSyntaxError(cmd);
 		}
 		else
 		{
-			new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), ctx).parseAsRole(role ->
+			new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), cmd).parseAsRole(role ->
 			{
 				RoleInfo roleInfo = new RoleInfo(role);
 
@@ -43,7 +43,7 @@ public class RoleInfoCommand extends Command
 
 					members.forEach(member -> text.append(member.getAsMention()).append(" "));
 
-					ctx.sendMessage(new EmbedBuilder()
+					cmd.sendMessage(new EmbedBuilder()
 							.setTitle("Information for role **" + role.getName() + "** (" + size + " Members)")
 							.addField("Random members", text.length() == 0 ? "No members" : text.toString(), false));
 				});

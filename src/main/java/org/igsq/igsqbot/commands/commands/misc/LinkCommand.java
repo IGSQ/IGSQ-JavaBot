@@ -23,8 +23,8 @@ public class LinkCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		this.getChildren().get(2).run(args, ctx, failure);
+		this.getChildren().get(2).run(args, cmd, failure);
 	}
 }

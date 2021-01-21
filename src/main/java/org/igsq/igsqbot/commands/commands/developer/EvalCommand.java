@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
@@ -28,33 +27,30 @@ public class EvalCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
 
 		Object out;
 		String status = "Success";
 
-		if(ctx.isFromGuild())
+		if(cmd.isFromGuild())
 		{
-			SCRIPT_ENGINE.put("guild", ctx.getGuild());
-			SCRIPT_ENGINE.put("member", ctx.getMember());
+			SCRIPT_ENGINE.put("guild", cmd.getGuild());
+			SCRIPT_ENGINE.put("member", cmd.getMember());
 		}
 
-		SCRIPT_ENGINE.put("ctx", ctx);
-		SCRIPT_ENGINE.put("message", ctx.getMessage());
-		SCRIPT_ENGINE.put("channel", ctx.getChannel());
-		SCRIPT_ENGINE.put("args", ctx.getArgs());
-		SCRIPT_ENGINE.put("jda", ctx.getJDA());
-		SCRIPT_ENGINE.put("author", ctx.getAuthor());
-		
-
+		SCRIPT_ENGINE.put("ctx", cmd);
+		SCRIPT_ENGINE.put("message", cmd.getMessage());
+		SCRIPT_ENGINE.put("channel", cmd.getChannel());
+		SCRIPT_ENGINE.put("args", cmd.getArgs());
+		SCRIPT_ENGINE.put("jda", cmd.getJDA());
+		SCRIPT_ENGINE.put("author", cmd.getAuthor());
 
 		StringBuilder imports = new StringBuilder();
 		DEFAULT_IMPORTS.forEach(imp -> imports.append("import ").append(imp).append(".*; "));
-		String code = String.join(" ", ctx.getArgs());
+		String code = String.join(" ", cmd.getArgs());
 		long start = System.currentTimeMillis();
-
 
 		try
 		{
@@ -66,7 +62,7 @@ public class EvalCommand extends Command
 			status = "Failed";
 		}
 
-		ctx.sendMessage(new EmbedBuilder()
+		cmd.sendMessage(new EmbedBuilder()
 				.setTitle("Evaluated Result")
 				.addField("Status:", status, true)
 				.addField("Duration:", (System.currentTimeMillis() - start) + "ms", true)

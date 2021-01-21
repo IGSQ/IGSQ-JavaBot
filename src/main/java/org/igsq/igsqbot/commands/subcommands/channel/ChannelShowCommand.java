@@ -18,16 +18,16 @@ public class ChannelShowCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		StringBuilder text = new StringBuilder();
-		for(ChannelBlacklists channel : BlacklistUtils.getBlacklistedChannels(ctx.getGuild(), ctx.getIGSQBot()))
+		for(ChannelBlacklists channel : BlacklistUtils.getBlacklistedChannels(cmd.getGuild(), cmd.getIGSQBot()))
 		{
 			text.append(StringUtils.getChannelAsMention(channel.getChannelId())).append(" is blacklisted.");
 		}
 
-		ctx.sendMessage(new EmbedBuilder()
-				.setTitle("Configured channels for " + ctx.getGuild().getName())
+		cmd.sendMessage(new EmbedBuilder()
+				.setTitle("Configured channels for " + cmd.getGuild().getName())
 				.addField("Blacklisted Channels", text.length() == 0 ? "No blacklisted channels" : text.toString(), false));
     }
 }

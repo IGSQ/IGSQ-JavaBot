@@ -62,13 +62,6 @@ public enum Emoji
 	private final String emote;
 	private final boolean isAnimated;
 
-	Emoji(String emote, String unicode, boolean isAnimated)
-	{
-		this.emote = emote;
-		this.unicode = unicode;
-		this.isAnimated = isAnimated;
-	}
-
 	Emoji(String emote, String unicode)
 	{
 		this.emote = emote;

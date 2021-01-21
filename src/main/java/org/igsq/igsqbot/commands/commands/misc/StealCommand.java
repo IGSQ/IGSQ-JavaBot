@@ -26,9 +26,9 @@ public class StealCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure) || CommandChecks.stringIsURL(args.get(1), ctx, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure) || CommandChecks.stringIsURL(args.get(1), cmd, failure)) return;
 
 		if(!args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
 		{
@@ -43,9 +43,9 @@ public class StealCommand extends Command
 		}
 		else
 		{
-			ctx.getGuild().createEmote(args.get(0), icon).queue(
-					emote -> ctx.replySuccess("Added emote " + emote.getAsMention() + " successfully!"),
-					error -> ctx.replyError("An error occurred while adding the emote."));
+			cmd.getGuild().createEmote(args.get(0), icon).queue(
+					emote -> cmd.replySuccess("Added emote " + emote.getAsMention() + " successfully!"),
+					error -> cmd.replyError("An error occurred while adding the emote."));
 		}
 	}
 }

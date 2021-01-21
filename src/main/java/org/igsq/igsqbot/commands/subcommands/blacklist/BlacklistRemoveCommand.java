@@ -21,13 +21,13 @@ public class BlacklistRemoveCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        if(CommandChecks.argsEmpty(ctx, failure)) return;
+        if(CommandChecks.argsEmpty(cmd, failure)) return;
         String phrase = ArrayUtils.arrayCompile(args, " ");
-        if(BlacklistUtils.removePhrase(ctx.getGuild(), phrase, ctx.getIGSQBot()))
+        if(BlacklistUtils.removePhrase(cmd.getGuild(), phrase, cmd.getIGSQBot()))
         {
-            ctx.replySuccess("Removed phrase ||" + phrase + "|| from the blacklist");
+            cmd.replySuccess("Removed phrase ||" + phrase + "|| from the blacklist");
         }
         else
         {

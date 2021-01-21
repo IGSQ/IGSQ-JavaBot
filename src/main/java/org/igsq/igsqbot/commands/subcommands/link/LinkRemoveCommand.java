@@ -20,13 +20,13 @@ public class LinkRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
 
 		String arg = args.get(0);
-		User author = ctx.getAuthor();
-		Minecraft minecraft = ctx.getIGSQBot().getMinecraft();
+		User author = cmd.getAuthor();
+		Minecraft minecraft = cmd.getIGSQBot().getMinecraft();
 
 		if(!MinecraftChecks.isAccountExist(arg, minecraft))
 		{
@@ -50,7 +50,7 @@ public class LinkRemoveCommand extends Command
 
 
 		MinecraftUtils.removeLink(uuid, author.getId(), minecraft);
-		ctx.replySuccess("Removed link **" + account + "**");
+		cmd.replySuccess("Removed link **" + account + "**");
 
 
 

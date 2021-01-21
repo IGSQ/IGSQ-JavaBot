@@ -20,12 +20,12 @@ public class LinkAddCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
 
-		User author = ctx.getAuthor();
-		Minecraft minecraft = ctx.getIGSQBot().getMinecraft();
+		User author = cmd.getAuthor();
+		Minecraft minecraft = cmd.getIGSQBot().getMinecraft();
 		String arg = args.get(0);
 
 		if(!MinecraftChecks.isAccountExist(arg, minecraft))
@@ -51,7 +51,7 @@ public class LinkAddCommand extends Command
 		if(MinecraftChecks.isPendingDiscord(uuid, minecraft))
 		{
 			MinecraftUtils.updateLink(uuid, author.getId(), minecraft);
-			ctx.replySuccess("Confirmed link for account **" + account + "**");
+			cmd.replySuccess("Confirmed link for account **" + account + "**");
 		}
 		if(MinecraftChecks.isUserLinked(author.getId(), minecraft))
 		{
@@ -60,7 +60,7 @@ public class LinkAddCommand extends Command
 		}
 
 		MinecraftUtils.insertLink(uuid, author.getId(), minecraft);
-		ctx.replySuccess("Added link for account **" + account + "** confirm it in Minecraft now.");
+		cmd.replySuccess("Added link for account **" + account + "** confirm it in Minecraft now.");
 
 
 	}

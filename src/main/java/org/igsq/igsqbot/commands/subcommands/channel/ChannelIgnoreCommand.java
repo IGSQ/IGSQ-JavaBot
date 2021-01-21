@@ -20,22 +20,22 @@ public class ChannelIgnoreCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
 
-		new Parser(args.get(0), ctx).parseAsTextChannel(
+		new Parser(args.get(0), cmd).parseAsTextChannel(
 		channel ->
 		{
-			Optional<Boolean> bool = new Parser(args.get(1), ctx).parseAsBoolean();
+			Optional<Boolean> bool = new Parser(args.get(1), cmd).parseAsBoolean();
 
 			if(bool.isPresent())
 			{
 				if(bool.get())
 				{
-					if(BlacklistUtils.addChannel(channel, ctx.getGuild(), ctx.getIGSQBot()))
+					if(BlacklistUtils.addChannel(channel, cmd.getGuild(), cmd.getIGSQBot()))
 					{
-						ctx.replySuccess("Blacklisted channel " + channel.getAsMention());
+						cmd.replySuccess("Blacklisted channel " + channel.getAsMention());
 					}
 					else
 					{
@@ -44,9 +44,9 @@ public class ChannelIgnoreCommand extends Command
 				}
 				else
 				{
-					if(BlacklistUtils.removeChannel(channel, ctx.getGuild(), ctx.getIGSQBot()))
+					if(BlacklistUtils.removeChannel(channel, cmd.getGuild(), cmd.getIGSQBot()))
 					{
-						ctx.replySuccess("Removed blacklist for channel " + channel.getAsMention());
+						cmd.replySuccess("Removed blacklist for channel " + channel.getAsMention());
 					}
 					else
 					{

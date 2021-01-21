@@ -23,15 +23,15 @@ public class VoteCloseCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        if(CommandChecks.argsEmpty(ctx, failure)) return;
+        if(CommandChecks.argsEmpty(cmd, failure)) return;
 
-        OptionalLong id = new Parser(args.get(0), ctx).parseAsUnsignedLong();
+        OptionalLong id = new Parser(args.get(0), cmd).parseAsUnsignedLong();
 
         if(id.isPresent())
         {
-            Boolean success = Vote.closeById(id.getAsLong(), ctx);
+            Boolean success = Vote.closeById(id.getAsLong(), cmd);
             if(success == null)
             {
                return;
@@ -43,7 +43,7 @@ public class VoteCloseCommand extends Command
             }
             else
             {
-                ctx.replySuccess("Closed vote **" + id.getAsLong() + "** successfully.");
+                cmd.replySuccess("Closed vote **" + id.getAsLong() + "** successfully.");
             }
         }
     }

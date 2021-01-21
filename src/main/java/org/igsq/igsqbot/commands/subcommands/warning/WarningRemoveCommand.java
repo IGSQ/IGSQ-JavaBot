@@ -27,25 +27,25 @@ public class WarningRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
 
-		User author = ctx.getAuthor();
-		Guild guild = ctx.getGuild();
-		new Parser(args.get(0), ctx).parseAsUser(user ->
+		User author = cmd.getAuthor();
+		Guild guild = cmd.getGuild();
+		new Parser(args.get(0), cmd).parseAsUser(user ->
 				{
 					if(user.isBot())
 					{
 						failure.accept(new CommandInputException("Bots cannot have warnings."));
 					}
 
-					CommandUtils.interactionCheck(author, user, ctx, () ->
+					CommandUtils.interactionCheck(author, user, cmd, () ->
 					{
-						OptionalInt warningNumber = new Parser(args.get(1), ctx).parseAsUnsignedInt();
+						OptionalInt warningNumber = new Parser(args.get(1), cmd).parseAsUnsignedInt();
 						if(warningNumber.isPresent())
 						{
-							Warnings warn = new Warning(ctx.getGuild(), user, ctx.getIGSQBot()).getByWarnId(warningNumber.getAsInt());
+							Warnings warn = new Warning(cmd.getGuild(), user, cmd.getIGSQBot()).getByWarnId(warningNumber.getAsInt());
 
 							if(warn == null)
 							{
@@ -53,8 +53,8 @@ public class WarningRemoveCommand extends Command
 								return;
 							}
 
-							new Warning(guild, user, ctx.getIGSQBot()).remove(warningNumber.getAsInt());
-							ctx.replySuccess("Removed warning: " + warn.getWarnText());
+							new Warning(guild, user, cmd.getIGSQBot()).remove(warningNumber.getAsInt());
+							cmd.replySuccess("Removed warning: " + warn.getWarnText());
 						}
 					});
 				}

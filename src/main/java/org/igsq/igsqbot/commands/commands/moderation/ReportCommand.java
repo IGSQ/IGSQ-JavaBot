@@ -28,22 +28,22 @@ public class ReportCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
 
-		MessageChannel channel = ctx.getChannel();
-		User author = ctx.getAuthor();
-		Guild guild = ctx.getGuild();
-		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(ctx).getReportChannel());
+		MessageChannel channel = cmd.getChannel();
+		User author = cmd.getAuthor();
+		Guild guild = cmd.getGuild();
+		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(cmd).getReportChannel());
 
 		if(CommandChecks.channelConfigured(reportChannel, "Report channel", failure)) return;
 
-		new Parser(args.get(0), ctx).parseAsUser(user ->
+		new Parser(args.get(0), cmd).parseAsUser(user ->
 		{
 			args.remove(0);
 			String reason = ArrayUtils.arrayCompile(args, " ");
-			String messageLink = StringUtils.getMessageLink(ctx.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
+			String messageLink = StringUtils.getMessageLink(cmd.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
 
 			if(user.isBot())
 			{
@@ -72,7 +72,7 @@ public class ReportCommand extends Command
 								(
 										message ->
 										{
-											Report.add(message.getIdLong(), ctx.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), reason, ctx.getIGSQBot());
+											Report.add(message.getIdLong(), cmd.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), reason, cmd.getIGSQBot());
 											message.addReaction(Emoji.THUMB_UP.getUnicode()).queue();
 										}
 								);

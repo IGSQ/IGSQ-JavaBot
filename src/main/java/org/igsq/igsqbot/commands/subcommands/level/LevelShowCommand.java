@@ -23,11 +23,11 @@ public class LevelShowCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-        User levelBot = ctx.getIGSQBot().getShardManager().getUserById(new GuildConfig(ctx).getLevelUpBot());
+        User levelBot = cmd.getIGSQBot().getShardManager().getUserById(new GuildConfig(cmd).getLevelUpBot());
         if(CommandChecks.userConfigured(levelBot, "Level up bot", failure)) return;
-        List<Levels> levelList = Level.showLevels(ctx.getGuildIdLong(), ctx.getIGSQBot());
+        List<Levels> levelList = Level.showLevels(cmd.getGuildIdLong(), cmd.getIGSQBot());
 
         StringBuilder text = new StringBuilder();
 
@@ -43,8 +43,8 @@ public class LevelShowCommand extends Command
                 .append("\n");
         }
 
-        ctx.sendMessage(new EmbedBuilder()
-            .setTitle("Configured levels for " + ctx.getGuild().getName())
+        cmd.sendMessage(new EmbedBuilder()
+            .setTitle("Configured levels for " + cmd.getGuild().getName())
             .setDescription(text.length() == 0 ? "No levels configured" : text.toString()));
     }
 }

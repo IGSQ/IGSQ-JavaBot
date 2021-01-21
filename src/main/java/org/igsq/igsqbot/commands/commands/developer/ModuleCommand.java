@@ -25,9 +25,9 @@ public class ModuleCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		failure.accept(new CommandSyntaxException(ctx));
+		failure.accept(new CommandSyntaxException(cmd));
 	}
 
 	public static class ModuleEnableCommand extends Command
@@ -39,25 +39,25 @@ public class ModuleCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 		{
-			if(CommandChecks.argsEmpty(ctx, failure)) return;
+			if(CommandChecks.argsEmpty(cmd, failure)) return;
 			String moduleName = args.get(0);
-			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
-			if(cmd == null)
+			Command command = cmd.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
+			if(command == null)
 			{
 				failure.accept(new CommandResultException("Module " + moduleName + " was not found"));
 				return;
 			}
 
-			if(!cmd.isDisabled())
+			if(!command.isDisabled())
 			{
-				failure.accept(new CommandResultException("Module " + cmd.getName() + " was already enabled."));
+				failure.accept(new CommandResultException("Module " + command.getName() + " was already enabled."));
 				return;
 			}
-			cmd.setDisabled(false);
-			ctx.replySuccess("Enabled module: `" + cmd.getName() + "`.");
-			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was enabled.");
+			command.setDisabled(false);
+			cmd.replySuccess("Enabled module: `" + command.getName() + "`.");
+			cmd.getIGSQBot().getLogger().warn("Module " + command.getName() + " was enabled.");
 		}
 	}
 
@@ -65,31 +65,30 @@ public class ModuleCommand extends Command
 	{
 		public ModuleDisableCommand(Command parent)
 		{
-			super(parent, "Disable", "Disables a module", "[module-name]");
-			addAliases("disable");
+			super(parent, "disable", "Disables a module", "[module-name]");
 			addFlags(CommandFlag.DEVELOPER_ONLY);
 		}
 
 		@Override
-		public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 		{
-			if(CommandChecks.argsEmpty(ctx, failure)) return;
+			if(CommandChecks.argsEmpty(cmd, failure)) return;
 			String moduleName = args.get(0);
-			Command cmd = ctx.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
-			if(cmd == null)
+			Command command = cmd.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
+			if(command == null)
 			{
 				failure.accept(new CommandResultException("Module " + moduleName + " was not found"));
 				return;
 			}
-			if(cmd.isDisabled())
+			if(command.isDisabled())
 			{
-				failure.accept(new CommandResultException("Module " + cmd.getName() + " was already disabled."));
+				failure.accept(new CommandResultException("Module " + command.getName() + " was already disabled."));
 				return;
 			}
 
-			cmd.setDisabled(true);
-			ctx.replySuccess("Disabled module: `" + cmd.getName() + "`.");
-			ctx.getIGSQBot().getLogger().warn("Module " + cmd.getName() + " was disabled.");
+			command.setDisabled(true);
+			cmd.replySuccess("Disabled module: `" + command.getName() + "`.");
+			cmd.getIGSQBot().getLogger().warn("Module " + command.getName() + " was disabled.");
 		}
 	}
 }

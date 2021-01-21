@@ -32,25 +32,25 @@ public class WarnCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(ctx, 2, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
 
-		User author = ctx.getAuthor();
-		Guild guild = ctx.getGuild();
+		User author = cmd.getAuthor();
+		Guild guild = cmd.getGuild();
 
-		new Parser(args.get(0), ctx).parseAsUser(user ->
+		new Parser(args.get(0), cmd).parseAsUser(user ->
 		{
 			if(user.isBot())
 			{
 				failure.accept(new CommandResultException("Bots cannot be warned."));
 			}
-			CommandUtils.interactionCheck(author, user, ctx, () ->
+			CommandUtils.interactionCheck(author, user, cmd, () ->
 			{
 				args.remove(0);
 				String reason = String.join(" ", args);
-				new Warning(guild, user, ctx.getIGSQBot()).add(reason);
-				ctx.replySuccess("Warned " + user.getAsMention() + " for reason: " + reason);
+				new Warning(guild, user, cmd.getIGSQBot()).add(reason);
+				cmd.replySuccess("Warned " + user.getAsMention() + " for reason: " + reason);
 			});
 		});
 	}

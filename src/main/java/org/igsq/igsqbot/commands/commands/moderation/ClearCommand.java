@@ -32,14 +32,14 @@ public class ClearCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(ctx, failure)) return;
+		if(CommandChecks.argsEmpty(cmd, failure)) return;
 
-		MessageChannel channel = ctx.getChannel();
-		Member member = ctx.getMember();
-		Guild guild = ctx.getGuild();
-		OptionalInt amount = new Parser(args.get(0), ctx).parseAsUnsignedInt();
+		MessageChannel channel = cmd.getChannel();
+		Member member = cmd.getMember();
+		Guild guild = cmd.getGuild();
+		OptionalInt amount = new Parser(args.get(0), cmd).parseAsUnsignedInt();
 
 		if(amount.isPresent())
 		{
@@ -59,7 +59,7 @@ public class ClearCommand extends Command
 			{
 				CooldownHandler.addCooldown(member, this);
 				channel.purgeMessages(messages);
-				ctx.replySuccess("Deleted " + (messages.size()) + " messages");
+				cmd.replySuccess("Deleted " + (messages.size()) + " messages");
 				MessageCache cache = MessageCache.getCache(guild);
 				messages.stream().filter(cache::isInCache).forEach(cache::remove);
 			});

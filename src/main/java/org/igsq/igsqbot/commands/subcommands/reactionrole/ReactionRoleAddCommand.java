@@ -25,39 +25,39 @@ public class ReactionRoleAddCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(ctx, 4, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 4, failure)) return;
 
 		String emote;
-		if(!ctx.getMessage().getEmotes().isEmpty())
+		if(!cmd.getMessage().getEmotes().isEmpty())
 		{
-			if(ctx.getMessage().getEmotes().get(0).isAnimated())
+			if(cmd.getMessage().getEmotes().get(0).isAnimated())
 			{
 				failure.accept(new CommandInputException("Animated emotes are not allowed."));
 				return;
 			}
-			emote = ctx.getMessage().getEmotes().get(0).getId();
+			emote = cmd.getMessage().getEmotes().get(0).getId();
 		}
 		else
 		{
 			emote = args.get(3);
 		}
 
-		OptionalLong messageId = new Parser(args.get(0), ctx).parseAsUnsignedLong();
+		OptionalLong messageId = new Parser(args.get(0), cmd).parseAsUnsignedLong();
 
 		if(messageId.isPresent())
 		{
-			new Parser(args.get(1), ctx).parseAsTextChannel(
+			new Parser(args.get(1), cmd).parseAsTextChannel(
 					channel ->
 					{
 						channel.retrieveMessageById(messageId.getAsLong()).queue(
 								message ->
 								{
-									new Parser(args.get(2), ctx).parseAsRole(
+									new Parser(args.get(2), cmd).parseAsRole(
 											role ->
 											{
-												if(!ctx.getSelfMember().canInteract(role) || !ctx.getMember().canInteract(role))
+												if(!cmd.getSelfMember().canInteract(role) || !cmd.getMember().canInteract(role))
 												{
 													failure.accept(new CommandHierarchyException(this));
 													return;
@@ -66,10 +66,10 @@ public class ReactionRoleAddCommand extends Command
 												message.addReaction(emote).queue(
 														success ->
 														{
-															new ReactionRole(message.getIdLong(), role.getIdLong(), ctx.getGuild().getIdLong(), emote, ctx.getIGSQBot()).add();
-															ctx.replySuccess("Reaction role added.");
+															new ReactionRole(message.getIdLong(), role.getIdLong(), cmd.getGuild().getIdLong(), emote, cmd.getIGSQBot()).add();
+															cmd.replySuccess("Reaction role added.");
 														},
-														error -> failure.accept(new CommandInputException("I could not add reaction `" + ctx.getMessage().getEmotes().get(0).getName() + "`")));
+														error -> failure.accept(new CommandInputException("I could not add reaction `" + cmd.getMessage().getEmotes().get(0).getName() + "`")));
 											});
 								},
 								error -> failure.accept(new CommandInputException("Message with ID " + messageId.getAsLong() + " not found in channel " + channel.getAsMention())));

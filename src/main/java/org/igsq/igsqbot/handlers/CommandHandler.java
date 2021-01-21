@@ -97,15 +97,14 @@ public class CommandHandler
 		String commandText;
 		String content;
 		Command cmd;
-		Guild guild = event.isFromGuild() ? event.getGuild() : null;
 
 		boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
-		boolean startWithIdSpaced = messageContent.startsWith("<@" + selfID + "> ") || messageContent.startsWith("<@!" + selfID + "> ");
 		String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 		String prefix = Constants.DEFAULT_BOT_PREFIX;
 
 		if(event.isFromGuild())
 		{
+			Guild guild = event.getGuild();
 			if(startsWithId)
 			{
 				content = idTrimmed;
@@ -149,10 +148,6 @@ public class CommandHandler
 			}
 
 			args.remove(0);
-			if(startWithIdSpaced)
-			{
-				args.remove(0);
-			}
 			CommandEvent ctx = new CommandEvent(event, igsqBot, cmd, args);
 
 			if(args.isEmpty())
@@ -161,17 +156,12 @@ public class CommandHandler
 				return;
 			}
 
-			String subCommand = args.get(0);
-			for(Command child : cmd.getChildren())
-			{
-				if(subCommand.equalsIgnoreCase(child.getName()))
-				{
-					args.remove(0);
-					child.process(new CommandEvent(event, igsqBot, child, args));
-					return;
-				}
-			}
-			cmd.process(ctx);
+			cmd.getChildren().stream()
+					.filter(child -> child.getName().equalsIgnoreCase(args.get(0)))
+					.findFirst()
+					.ifPresentOrElse(
+					child -> child.process(new CommandEvent(event, igsqBot, child, args.subList(1, args.size()))),
+					() -> cmd.process(ctx));
 		}
 	}
 }

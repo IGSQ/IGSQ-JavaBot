@@ -27,10 +27,10 @@ public class PrefixCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		MessageChannel channel = ctx.getChannel();
-		GuildConfig guildConfig = new GuildConfig(ctx);
+		MessageChannel channel = cmd.getChannel();
+		GuildConfig guildConfig = new GuildConfig(cmd);
 
 		if(args.isEmpty())
 		{
@@ -46,14 +46,14 @@ public class PrefixCommand extends Command
 			return;
 		}
 
-		if(!ctx.memberPermissionCheck(Permission.MANAGE_SERVER))
+		if(!cmd.memberPermissionCheck(Permission.MANAGE_SERVER))
 		{
 			failure.accept(new CommandUserPermissionException(this));
 			return;
 		}
 
 		guildConfig.setPrefix(args.get(0));
-		ctx.replySuccess("My new prefix is `" + args.get(0) + "`");
+		cmd.replySuccess("My new prefix is `" + args.get(0) + "`");
 	}
 
 	public static class PrefixResetCommand extends Command
@@ -66,10 +66,10 @@ public class PrefixCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 		{
-			GuildConfig guildConfig = new GuildConfig(ctx);
-			ctx.replySuccess("Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
+			GuildConfig guildConfig = new GuildConfig(cmd);
+			cmd.replySuccess("Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
 			guildConfig.setPrefix(Constants.DEFAULT_BOT_PREFIX);
 		}
 	}

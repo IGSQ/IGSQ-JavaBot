@@ -3,6 +3,7 @@ package org.igsq.igsqbot.util;
 import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
@@ -128,7 +129,7 @@ public class DatabaseUtils
 
 			if(result.isEmpty())
 			{
-				return null;
+				return Collections.emptyList();
 			}
 
 			List<Role> roles = new ArrayList<>();
@@ -139,7 +140,7 @@ public class DatabaseUtils
 		catch(Exception exception)
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
-			return null;
+			return Collections.emptyList();
 		}
 	}
 

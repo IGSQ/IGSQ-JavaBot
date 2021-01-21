@@ -27,19 +27,19 @@ public class UserInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		if(args.isEmpty())
 		{
-			showInfo(ctx.getMember(), ctx);
+			showInfo(cmd.getMember(), cmd);
 		}
 		else
 		{
-			Guild guild = ctx.getGuild();
+			Guild guild = cmd.getGuild();
 			String arg = ArrayUtils.arrayCompile(args.subList(0, args.size()), " ");
-			new Parser(arg, ctx).parseAsUser(
+			new Parser(arg, cmd).parseAsUser(
 					user -> UserUtils.getMemberFromUser(user, guild).queue(
-							member -> showInfo(member, ctx),
+							member -> showInfo(member, cmd),
 							error -> failure.accept(new CommandResultException("Member " + arg + " not found, may not be in a shared server with me."))));
 		}
 	}

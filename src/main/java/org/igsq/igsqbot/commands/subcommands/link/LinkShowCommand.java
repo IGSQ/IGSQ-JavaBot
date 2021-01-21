@@ -21,26 +21,26 @@ public class LinkShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		Minecraft minecraft = ctx.getIGSQBot().getMinecraft();
+		Minecraft minecraft = cmd.getIGSQBot().getMinecraft();
 
-		if(!ctx.isFromGuild())
+		if(!cmd.isFromGuild())
 		{
-			showSelf(MinecraftUtils.getLinks(ctx.getAuthor().getId(), minecraft), ctx);
+			showSelf(MinecraftUtils.getLinks(cmd.getAuthor().getId(), minecraft), cmd);
 			return;
 		}
 
 		if(args.isEmpty())
 		{
-			showSelf(MinecraftUtils.getLinks(ctx.getAuthor().getId(), minecraft), ctx);
+			showSelf(MinecraftUtils.getLinks(cmd.getAuthor().getId(), minecraft), cmd);
 			return;
 		}
 
-		if(ctx.memberPermissionCheck(Permission.MESSAGE_MANAGE))
+		if(cmd.memberPermissionCheck(Permission.MESSAGE_MANAGE))
 		{
 			String arg = args.get(0);
-			new Parser(arg, ctx).parseAsUser(user ->
+			new Parser(arg, cmd).parseAsUser(user ->
 			{
 				List<MinecraftUtils.Link> links = MinecraftUtils.getLinks(user.getId(), minecraft);
 				StringBuilder text = new StringBuilder();
@@ -56,7 +56,7 @@ public class LinkShowCommand extends Command
 							.append("\n");
 				}
 
-				ctx.getChannel().sendMessage(new EmbedBuilder()
+				cmd.getChannel().sendMessage(new EmbedBuilder()
 						.setTitle("Links for user: " + user.getAsTag())
 						.setDescription(text.length() == 0 ? "No links found" : text.toString())
 						.setColor(Constants.IGSQ_PURPLE)
@@ -65,7 +65,7 @@ public class LinkShowCommand extends Command
 			return;
 		}
 
-		showSelf(MinecraftUtils.getLinks(ctx.getAuthor().getId(), minecraft), ctx);
+		showSelf(MinecraftUtils.getLinks(cmd.getAuthor().getId(), minecraft), cmd);
 	}
 
 	private void showSelf(List<MinecraftUtils.Link> links, CommandEvent ctx)

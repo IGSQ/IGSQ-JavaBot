@@ -27,8 +27,8 @@ public class ChannelCommand extends Command
     }
 
     @Override
-    public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
     {
-		failure.accept(new CommandSyntaxException(ctx));
+		failure.accept(new CommandSyntaxException(cmd));
     }
 }

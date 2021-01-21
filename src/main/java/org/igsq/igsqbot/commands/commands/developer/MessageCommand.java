@@ -22,7 +22,7 @@ public class MessageCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		EmbedBuilder PUNISHMENT = new EmbedBuilder()
 				.setTitle("**Punishment System**:")
@@ -147,37 +147,37 @@ public class MessageCommand extends Command
 
 		switch(args.get(0))
 		{
-			case "verification" -> ctx.getChannel().sendMessage(VERIFICATION
+			case "verification" -> cmd.getChannel().sendMessage(VERIFICATION
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "shortrules" -> ctx.getChannel().sendMessage(SHORTRULES
+			case "shortrules" -> cmd.getChannel().sendMessage(SHORTRULES
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "longrules" -> ctx.getChannel().sendMessage(FULLRULES
+			case "longrules" -> cmd.getChannel().sendMessage(FULLRULES
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "punishment" -> ctx.getChannel().sendMessage(PUNISHMENT
+			case "punishment" -> cmd.getChannel().sendMessage(PUNISHMENT
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "roleinfo" -> ctx.getChannel().sendMessage(ROLEINFO
+			case "roleinfo" -> cmd.getChannel().sendMessage(ROLEINFO
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "otherroles" -> ctx.getChannel().sendMessage(OTHERROLES
+			case "otherroles" -> cmd.getChannel().sendMessage(OTHERROLES
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			default -> EmbedUtils.sendSyntaxError(ctx);
+			default -> EmbedUtils.sendSyntaxError(cmd);
 		}
 	}
 }

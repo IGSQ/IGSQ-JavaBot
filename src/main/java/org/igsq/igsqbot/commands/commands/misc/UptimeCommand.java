@@ -20,10 +20,10 @@ public class UptimeCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		Duration uptime = Duration.between(ctx.getIGSQBot().getStartTimestamp(), LocalDateTime.now());
-		ctx.sendMessage(new EmbedBuilder()
+		Duration uptime = Duration.between(cmd.getIGSQBot().getStartTimestamp(), LocalDateTime.now());
+		cmd.sendMessage(new EmbedBuilder()
 				.setDescription(
 						"Uptime: " + uptime.toDaysPart() +
 						" days, " + uptime.toHoursPart() +

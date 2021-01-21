@@ -22,23 +22,23 @@ public class ServerInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent ctx, Consumer<CommandException> failure)
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		Optional<Guild> guild;
 		if(args.isEmpty())
 		{
-			guild = Optional.of(ctx.getGuild());
+			guild = Optional.of(cmd.getGuild());
 		}
 		else
 		{
-			guild = new Parser(args.get(0), ctx).parseAsGuild();
+			guild = new Parser(args.get(0), cmd).parseAsGuild();
 		}
 
 		if(guild.isPresent())
 		{
 			GuildInfo guildInfo = new GuildInfo(guild.get());
 
-			ctx.sendMessage(new EmbedBuilder()
+			cmd.sendMessage(new EmbedBuilder()
 					.setTitle("Information for server: **" + guildInfo.getName() + "**")
 					.addField("Partner status", guildInfo.isPartner() ? "Is partnered" : "Not partnered", true)
 					.addField("Verified Status", guildInfo.isVerified() ? "Is verified" : "Not verified", true)
