@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import org.igsq.igsqbot.entities.exception.*;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
@@ -63,14 +62,6 @@ public abstract class Command
 		{
 			cmd.replyError("Your message contained a blacklisted phrase, this has been logged.");
 			if(cmd.selfPermissionCheck(Permission.MESSAGE_MANAGE))
-			{
-				cmd.getMessage().delete().queue();
-			}
-		}
-		else if(cmd.isFromGuild() && BlacklistUtils.isBlacklistedPhrase(cmd.getEvent(), cmd.getIGSQBot()) && !hasFlag(CommandFlag.BLACKLIST_BYPASS))
-		{
-			cmd.replyError("Your message contained a blacklisted message.");
-			if(cmd.getSelfMember().hasPermission((GuildChannel) cmd.getChannel(), Permission.MESSAGE_MANAGE))
 			{
 				cmd.getMessage().delete().queue();
 			}
