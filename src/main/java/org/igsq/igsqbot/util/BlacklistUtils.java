@@ -33,26 +33,12 @@ public class BlacklistUtils
 		String content = event.getMessage().getContentRaw();
 		Member member = event.getMember();
 
-		if(member == null)
+		if(member == null || member.hasPermission(Permission.ADMINISTRATOR))
 		{
 			return false;
 		}
 
-		if(member.hasPermission(Permission.ADMINISTRATOR))
-		{
-			return false;
-		}
-
-		List<String> blacklistedWords = getBlacklistedPhrases(guild, igsqBot);
-
-		for(String word : blacklistedWords)
-		{
-			if(content.contains(word))
-			{
-				return true;
-			}
-		}
-		return false;
+		return getBlacklistedPhrases(guild, igsqBot).stream().anyMatch(phrase -> content.contains(phrase.toLowerCase()));
 	}
 
 	public static boolean isChannelBlacklisted(MessageReceivedEvent event, IGSQBot igsqBot)
@@ -96,12 +82,7 @@ public class BlacklistUtils
 				return true;
 			}
 
-			if(member.hasPermission(Permission.MESSAGE_MANAGE))
-			{
-				return false;
-			}
-
-			if(!event.getChannel().equals(promoChannel))
+			if(member.hasPermission(Permission.MESSAGE_MANAGE) || !event.getChannel().equals(promoChannel))
 			{
 				return false;
 			}
@@ -113,17 +94,8 @@ public class BlacklistUtils
 
 	private static boolean findLink(String content)
 	{
-		content = content.replaceAll("\\s+", "");
-		content = content.toLowerCase();
-
-		for(String link : LINKS)
-		{
-			if(content.contains(link))
-			{
-				return true;
-			}
-		}
-		return false;
+		String finalContent = content.replaceAll("\\s+", "").toLowerCase();
+		return LINKS.stream().anyMatch(word -> finalContent.contains(word.toLowerCase()));
 	}
 
 	public static boolean isDiscordInvite(MessageReceivedEvent event)
