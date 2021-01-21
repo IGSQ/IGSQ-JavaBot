@@ -105,7 +105,7 @@ public class CommandHandler
 		boolean startsWithId = messageContent.startsWith("<@" + selfID + ">") || messageContent.startsWith("<@!" + selfID + ">");
 		String idTrimmed = messageContent.substring(messageContent.indexOf(">") + 1).trim();
 		String prefix = Constants.DEFAULT_BOT_PREFIX;
-		boolean containsBlacklist = BlacklistUtils.isBlacklistedPhrase(event, igsqBot;
+		boolean containsBlacklist = BlacklistUtils.isBlacklistedPhrase(event, igsqBot);
 
 		if(event.isFromGuild())
 		{
@@ -143,16 +143,27 @@ public class CommandHandler
 		}
 
 		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
-		if(!commandText.isEmpty())
+		if(commandText.isBlank())
+		{
+			if(containsBlacklist)
+			{
+				EmbedUtils.sendError(channel, "Your message contained a blacklisted message.");
+				if(event.getGuild().getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
+				{
+					event.getMessage().delete().queue();
+				}
+			}
+		}
+		else
 		{
 			cmd = commandMap.get(commandText.toLowerCase());
-			if(cmd == null && !containsBlacklist)
+			if(cmd == null)
 			{
 				event.getMessage().addReaction(Emoji.FAILURE.getAsReaction()).queue(success -> event.getMessage().removeReaction(Emoji.FAILURE.getAsReaction()).queueAfter(10, TimeUnit.SECONDS, null, error -> {}), error -> {});
 				EmbedUtils.sendError(channel, "The command `" + commandText + "` was not found.\n Type `" + prefix + "help` for help.");
 				return;
 			}
-			else if(cmd != null && containsBlacklist && !cmd.hasFlag(CommandFlag.BLACKLIST_BYPASS))
+			else if(containsBlacklist && !cmd.hasFlag(CommandFlag.BLACKLIST_BYPASS))
 			{
 				EmbedUtils.sendError(channel, "Your message contained a blacklisted message.");
 				if(event.getGuild().getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
@@ -175,8 +186,9 @@ public class CommandHandler
 					.filter(child -> child.getName().equalsIgnoreCase(args.get(0)))
 					.findFirst()
 					.ifPresentOrElse(
-					child -> child.process(new CommandEvent(event, igsqBot, child, args.subList(1, args.size()))),
-					() -> cmd.process(ctx));
+							child -> child.process(new CommandEvent(event, igsqBot, child, args.subList(1, args.size()))),
+							() -> cmd.process(ctx));
 		}
+
 	}
 }
