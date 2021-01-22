@@ -116,6 +116,6 @@ public class ReportCommandReactionAdd extends ListenerAdapter
 							{});
 						}
 					}
-				});
+				}, error -> {});
 	}
 }
