@@ -113,7 +113,7 @@ public class VerificationCommand extends Command
 															event -> event.getMessageIdLong() == message.getIdLong() && event.getUserIdLong() == cmd.getAuthor().getIdLong(),
 															event ->
 															{
-																message.delete().queue();
+																message.delete().queue(null, error -> {});
 																channel.purgeMessages(messages);
 
 																MessageChannel welcomeChannel = guild.getTextChannelById(new GuildConfig(cmd).getWelcomeChannel());
@@ -142,7 +142,7 @@ public class VerificationCommand extends Command
 
 															},
 															10000, TimeUnit.MILLISECONDS,
-															() -> message.delete().queue());
+															() -> message.delete().queue(null, error -> {}));
 												});
 											});
 								}));
