@@ -38,6 +38,7 @@ public class WarningRemoveCommand extends Command
 					if(user.isBot())
 					{
 						failure.accept(new CommandInputException("Bots cannot have warnings."));
+						return;
 					}
 
 					CommandUtils.interactionCheck(author, user, cmd, () ->
