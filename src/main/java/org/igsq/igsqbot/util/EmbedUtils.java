@@ -58,8 +58,8 @@ public class EmbedUtils
 		cmd.getMemberRequiredPermissions().forEach(perm -> perms.append("*").append(perm.getName()).append("*").append("\n"));
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
 				.setDescription(Emoji.FAILURE.getAsMessageable() +
-						" You do not have the following required permissions for command:`"
-						+ cmd.getName() + "`" + perms.toString())
+						" You do not have the following required permissions:"
+						+ perms.toString())
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
@@ -74,8 +74,8 @@ public class EmbedUtils
 		cmd.getSelfRequiredPermissions().forEach(perm -> perms.append("*").append(perm.getName()).append("*").append("\n"));
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
 				.setDescription(Emoji.FAILURE.getAsMessageable() +
-						" I do not have the following required permissions for command:`"
-						+ cmd.getName() + "`" + perms.toString())
+						" I do not have the following required permission:`"
+						+ perms.toString())
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
