@@ -119,6 +119,15 @@ public class CommandHandler
 				prefix = new GuildConfig(guild.getIdLong(), igsqBot).getPrefix();
 				content = messageContent.substring(prefix.length()).trim();
 			}
+			else if(containsBlacklist)
+			{
+				EmbedUtils.sendError(channel, "Your message contained a blacklisted phrase.");
+				if(event.getGuild().getSelfMember().hasPermission((GuildChannel) channel, Permission.MESSAGE_MANAGE))
+				{
+					event.getMessage().delete().queue();
+				}
+				return;
+			}
 			else
 			{
 				return;
