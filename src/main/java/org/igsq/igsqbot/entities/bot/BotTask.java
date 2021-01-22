@@ -3,6 +3,15 @@ package org.igsq.igsqbot.entities.bot;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A class representing a managed task in the {@link org.igsq.igsqbot.IGSQBot bot's} {@link org.igsq.igsqbot.handlers.TaskHandler Task Handler}.
+ *
+ * @see #getTask()
+ * @see #getName()
+ * @see #getExpiresAt()
+ * @see #getUnit()
+ * @see #cancel(boolean)
+ */
 public class BotTask
 {
 	private final ScheduledFuture<?> task;
@@ -10,6 +19,14 @@ public class BotTask
 	private final long expiresAt;
 	private final TimeUnit unit;
 
+	/**
+	 * Constructs a new {@link org.igsq.igsqbot.entities.bot.BotTask managed task} for use in the {@link org.igsq.igsqbot.handlers.TaskHandler Task Handler}.
+	 * @param task The {@link java.util.concurrent.ScheduledFuture future}d to be managed.
+	 * @param name The task name.
+	 * @param expiresAt The task's expiry time.
+	 * @param timeUnit The {@link java.util.concurrent.TimeUnit unit} of the expiry time.
+	 *
+	 */
 	public BotTask(ScheduledFuture<?> task, String name, long expiresAt, TimeUnit timeUnit)
 	{
 		this.task = task;
@@ -18,26 +35,42 @@ public class BotTask
 		this.unit = timeUnit;
 	}
 
+	/**
+	 * @return The {@link java.util.concurrent.TimeUnit unit} for this {@link org.igsq.igsqbot.entities.bot.BotTask task}.
+	 */
 	public TimeUnit getUnit()
 	{
 		return unit;
 	}
 
+	/**
+	 * @return The {@link java.util.concurrent.ScheduledFuture future} for this {@link org.igsq.igsqbot.entities.bot.BotTask task}.
+	 */
 	public ScheduledFuture<?> getTask()
 	{
 		return task;
 	}
 
+	/**
+	 * @return The name of this {@link org.igsq.igsqbot.entities.bot.BotTask task}, could be a UUID.
+	 */
 	public String getName()
 	{
 		return name;
 	}
 
+	/**
+	 * @return The expiry time of this {@link org.igsq.igsqbot.entities.bot.BotTask task}.
+	 */
 	public long getExpiresAt()
 	{
 		return expiresAt;
 	}
 
+	/**
+	 * Cancels this task.
+	 * @param shouldInterrupt Should interrupt the {@link org.igsq.igsqbot.entities.bot.BotTask task's} execution
+	 */
 	public void cancel(boolean shouldInterrupt)
 	{
 		task.cancel(shouldInterrupt);

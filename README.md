@@ -106,7 +106,7 @@ None!
 
 ### **arynxd**
  - [ ] Improve user feedback
- 
+ - [ ] Documentation
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

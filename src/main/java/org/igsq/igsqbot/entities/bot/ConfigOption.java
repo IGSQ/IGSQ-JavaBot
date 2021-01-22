@@ -2,6 +2,9 @@ package org.igsq.igsqbot.entities.bot;
 
 import java.util.List;
 
+/**
+ * An enum containing all possible {@link org.igsq.igsqbot.entities.bot.Configuration configuration} options
+ */
 public enum ConfigOption
 {
 	TOKEN("token", "token"),
