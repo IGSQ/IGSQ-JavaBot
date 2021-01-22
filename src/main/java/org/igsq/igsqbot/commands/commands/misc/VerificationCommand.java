@@ -60,92 +60,91 @@ public class VerificationCommand extends Command
 
 		new Parser(args.get(0), cmd).parseAsUser(
 				target ->
-						UserUtils.getMemberFromUser(target, guild).queue(
-								member ->
+					UserUtils.getMemberFromUser(target, guild).queue(
+							member ->
+							{
+								if(target.isBot())
 								{
-									if(target.isBot())
-									{
-										failure.accept(new CommandResultException("Bots cannot be verified."));
-										return;
-									}
-									if(member.getRoles().contains(verifiedRole))
-									{
-										failure.accept(new CommandResultException("User " + target.getAsMention() + " is already verified."));
-										return;
-									}
-									channel.getIterableHistory().takeAsync(10).thenAccept(
-											input ->
+									failure.accept(new CommandResultException("Bots cannot be verified."));
+									return;
+								}
+								if(member.getRoles().contains(verifiedRole))
+								{
+									failure.accept(new CommandResultException("User " + target.getAsMention() + " is already verified."));
+									return;
+								}
+								channel.getIterableHistory().takeAsync(10).thenAccept(
+										input ->
+										{
+											List<Message> messages = filterMessages(input, target);
+
+											if(messages.isEmpty())
 											{
+												failure.accept(new CommandResultException("No messages from " + target.getAsMention() + " were found in this channel."));
+												return;
+											}
 
-												List<Message> messages = filterMessages(input, target);
+											StringBuilder ctxMessage = new StringBuilder();
+											StringBuilder welcomeMessage = new StringBuilder();
 
-												if(messages.isEmpty())
-												{
-													failure.accept(new CommandResultException("No messages from " + target.getAsMention() + " were found in this channel."));
-													return;
-												}
+											List<Role> roles = getMatches(messages, cmd.getGuild(), cmd.getIGSQBot()).stream()
+													.map(guild::getRoleById)
+													.filter(Objects::nonNull)
+													.collect(Collectors.toList());
 
-												StringBuilder ctxMessage = new StringBuilder();
-												StringBuilder welcomeMessage = new StringBuilder();
+											for(Role role : roles)
+											{
+												ctxMessage.append(role.getAsMention()).append("\n");
+												welcomeMessage.append(role.getAsMention());
+											}
 
-												List<Role> roles = getMatches(messages, cmd.getGuild(), cmd.getIGSQBot()).stream()
-														.map(guild::getRoleById)
-														.filter(Objects::nonNull)
-														.collect(Collectors.toList());
+											roles.addAll(member.getRoles());
 
-												for(Role role : roles)
-												{
-													ctxMessage.append(role.getAsMention()).append("\n");
-													welcomeMessage.append(role.getAsMention());
-												}
+											cmd.getChannel().sendMessage(new EmbedBuilder()
+													.setTitle("Verification for " + target.getAsTag())
+													.addField("Roles", ctxMessage.length() == 0 ? "No roles found" : ctxMessage.toString(), false)
+													.setColor(Constants.IGSQ_PURPLE)
+													.setTimestamp(Instant.now())
+													.build()).queue(message ->
+											{
+												message.addReaction(Emoji.THUMB_UP.getAsReaction()).queue();
+												cmd.getIGSQBot().getEventWaiter().waitForEvent(GuildMessageReactionAddEvent.class,
+														event -> event.getMessageIdLong() == message.getIdLong() && event.getUserIdLong() == cmd.getAuthor().getIdLong(),
+														event ->
+														{
+															message.delete().queue(null, error -> {});
+															channel.purgeMessages(messages);
 
-												roles.addAll(member.getRoles());
-
-												cmd.getChannel().sendMessage(new EmbedBuilder()
-														.setTitle("Verification for " + target.getAsTag())
-														.addField("Roles", ctxMessage.length() == 0 ? "No roles found" : ctxMessage.toString(), false)
-														.setColor(Constants.IGSQ_PURPLE)
-														.setTimestamp(Instant.now())
-														.build()).queue(message ->
-												{
-													message.addReaction(Emoji.THUMB_UP.getAsReaction()).queue();
-													cmd.getIGSQBot().getEventWaiter().waitForEvent(GuildMessageReactionAddEvent.class,
-															event -> event.getMessageIdLong() == message.getIdLong() && event.getUserIdLong() == cmd.getAuthor().getIdLong(),
-															event ->
+															MessageChannel welcomeChannel = guild.getTextChannelById(new GuildConfig(cmd).getWelcomeChannel());
+															if(welcomeChannel != null)
 															{
-																message.delete().queue(null, error -> {});
-																channel.purgeMessages(messages);
+																welcomeChannel.sendMessage(new EmbedBuilder()
+																		.setAuthor(target.getAsTag(), null, target.getEffectiveAvatarUrl())
+																		.setDescription(target.getAsMention() + " has joined " + guild.getName() + ". Welcome!")
+																		.addField("Roles", welcomeMessage.length() == 0 ? "No roles." : welcomeMessage.toString(), false)
+																		.setColor(Constants.IGSQ_PURPLE)
+																		.setTimestamp(Instant.now())
+																		.build()).queue();
+															}
+															else
+															{
+																cmd.replyError("Welcome channel not setup, no welcome message will be sent.");
+															}
 
-																MessageChannel welcomeChannel = guild.getTextChannelById(new GuildConfig(cmd).getWelcomeChannel());
-																if(welcomeChannel != null)
-																{
-																	welcomeChannel.sendMessage(new EmbedBuilder()
-																			.setAuthor(target.getAsTag(), null, target.getEffectiveAvatarUrl())
-																			.setDescription(target.getAsMention() + " has joined " + guild.getName() + ". Welcome!")
-																			.addField("Roles", welcomeMessage.length() == 0 ? "No roles." : welcomeMessage.toString(), false)
-																			.setColor(Constants.IGSQ_PURPLE)
-																			.setTimestamp(Instant.now())
-																			.build()).queue();
-																}
-																else
-																{
-																	cmd.replyError("Welcome channel not setup, no welcome message will be sent.");
-																}
+															roles.add(verifiedRole);
+															if(unverifiedRole != null)
+															{
+																roles.remove(unverifiedRole);
+															}
 
-																roles.add(verifiedRole);
-																if(unverifiedRole != null)
-																{
-																	roles.remove(unverifiedRole);
-																}
+															guild.modifyMemberRoles(member, roles).queue();
 
-																guild.modifyMemberRoles(member, roles).queue();
-
-															},
-															10000, TimeUnit.MILLISECONDS,
-															() -> message.delete().queue(null, error -> {}));
-												});
+														},
+														10000, TimeUnit.MILLISECONDS,
+														() -> message.delete().queue(null, error -> {}));
 											});
-								}));
+										});
+							}));
 	}
 
 	private List<Message> filterMessages(List<Message> messages, User target)
