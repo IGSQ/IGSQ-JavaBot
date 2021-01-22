@@ -37,7 +37,7 @@ public class VerificationCommand extends Command
 	{
 		super("Verification", "Handles verification of new members.", "[user] / [add / remove / show]");
 		addAliases("verify", "verification", "accept", "v");
-		addFlags(CommandFlag.GUILD_ONLY);
+		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
 		addSelfPermissions(Permission.MANAGE_ROLES);
 		addChildren(
