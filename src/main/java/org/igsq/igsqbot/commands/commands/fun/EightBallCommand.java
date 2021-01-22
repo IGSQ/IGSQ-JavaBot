@@ -23,8 +23,8 @@ public class EightBallCommand extends Command
 	{
 		Random random = new Random();
 		List<String> options = new ArrayList<>(List.of("op1", "op2"));
-		int choice = random.nextInt(args.size());
-		cmd.getChannel().sendMessage(options.get(Math.abs(choice))).queue();
+		int choice = random.nextInt(args.size() + 1);
+		cmd.getChannel().sendMessage(options.get(Math.abs(choice - 1))).queue();
 	}
 }
 
