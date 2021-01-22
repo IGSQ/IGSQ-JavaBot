@@ -3,9 +3,7 @@ package org.igsq.igsqbot.util;
 import java.awt.*;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.igsq.igsqbot.entities.Emoji;
@@ -55,9 +53,13 @@ public class EmbedUtils
 	{
 		ctx.addErrorReaction();
 		Command cmd = ctx.getCommand();
+		StringBuilder perms = new StringBuilder();
+
+		cmd.getMemberRequiredPermissions().forEach(perm -> perms.append("*").append(perm.getName()).append("*").append("\n"));
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() + " You do not have the following required permissions for command:`" + cmd.getName() + "`" +
-						cmd.getMemberRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")))
+				.setDescription(Emoji.FAILURE.getAsMessageable() +
+						" You do not have the following required permissions for command:`"
+						+ cmd.getName() + "`" + perms.toString())
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
@@ -67,9 +69,13 @@ public class EmbedUtils
 	{
 		ctx.addErrorReaction();
 		Command cmd = ctx.getCommand();
+		StringBuilder perms = new StringBuilder();
+
+		cmd.getSelfRequiredPermissions().forEach(perm -> perms.append("*").append(perm.getName()).append("*").append("\n"));
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() + " I do not have the following required permissions for command:`" + cmd.getName() + "`" +
-						cmd.getMemberRequiredPermissions().stream().map(Permission::getName).collect(Collectors.joining(" ")))
+				.setDescription(Emoji.FAILURE.getAsMessageable() +
+						" I do not have the following required permissions for command:`"
+						+ cmd.getName() + "`" + perms.toString())
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
