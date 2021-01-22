@@ -29,11 +29,16 @@ public class BlacklistUtils
 
 	public static boolean isBlacklistedPhrase(MessageReceivedEvent event, IGSQBot igsqBot)
 	{
+		if(!event.isFromGuild())
+		{
+			return false;
+		}
+
 		Guild guild = event.getGuild();
 		String content = event.getMessage().getContentRaw();
 		Member member = event.getMember();
 
-		if(member == null)
+		if(member == null || member.hasPermission(Permission.ADMINISTRATOR))
 		{
 			return false;
 		}
@@ -43,6 +48,10 @@ public class BlacklistUtils
 
 	public static boolean isChannelBlacklisted(MessageReceivedEvent event, IGSQBot igsqBot)
 	{
+		if(!event.isFromGuild())
+		{
+			return false;
+		}
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
@@ -62,6 +71,10 @@ public class BlacklistUtils
 
 	public static boolean isAdvertising(MessageReceivedEvent event, IGSQBot igsqBot)
 	{
+		if(!event.isFromGuild())
+		{
+			return false;
+		}
 		Guild guild = event.getGuild();
 		String content = event.getMessage().getContentRaw();
 		Member member = event.getMember();
@@ -100,29 +113,20 @@ public class BlacklistUtils
 
 	public static boolean isDiscordInvite(MessageReceivedEvent event)
 	{
+		if(!event.isFromGuild())
+		{
+			return false;
+		}
 		Member member = event.getMember();
 
-		if(member == null)
+		if(member == null || member.hasPermission(Permission.MESSAGE_MANAGE))
 		{
 			return false;
 		}
 
-		if(member.hasPermission(Permission.MESSAGE_MANAGE))
-		{
-			return false;
-		}
-		String content = event.getMessage().getContentRaw();
-		content = content.replaceAll("\\s+", "");
-		content = content.toLowerCase();
+		String content = event.getMessage().getContentRaw().replaceAll("\\s+", "").toLowerCase();
 
-		for(String link : DISCORD)
-		{
-			if(content.contains(link))
-			{
-				return true;
-			}
-		}
-		return false;
+		return DISCORD.stream().anyMatch(phrase -> content.contains(phrase.toLowerCase()));
 	}
 
 	public static List<String> getBlacklistedPhrases(Guild guild, IGSQBot igsqBot)
