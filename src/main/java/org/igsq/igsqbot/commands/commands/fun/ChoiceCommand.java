@@ -24,8 +24,9 @@ public class ChoiceCommand extends Command
 		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
 		Random random = new Random();
 		String choice;
+		int chance = random.nextInt(2);
 
-		if(random.nextBoolean())
+		if(chance == 1)
 		{
 			choice = args.get(0);
 		}

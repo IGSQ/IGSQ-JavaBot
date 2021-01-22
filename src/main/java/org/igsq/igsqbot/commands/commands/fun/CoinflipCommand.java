@@ -21,8 +21,9 @@ public class CoinflipCommand extends Command
 	{
 		Random random = new Random();
 		String result;
+		int chance = random.nextInt(2);
 
-		if(random.nextBoolean())
+		if(chance == 1)
 		{
 			result = "Heads";
 		}
