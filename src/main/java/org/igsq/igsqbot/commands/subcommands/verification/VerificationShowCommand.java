@@ -29,7 +29,8 @@ public class VerificationShowCommand extends Command
 				(role, phrase) -> text
 						.append(StringUtils.getRoleAsMention(role))
 						.append(" -> ")
-						.append(phrase));
+						.append(phrase)
+						.append("\n"));
 
 		cmd.sendMessage(new EmbedBuilder()
 				.setTitle("Aliases setup for " + cmd.getGuild().getName())
