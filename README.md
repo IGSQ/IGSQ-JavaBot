@@ -98,15 +98,15 @@
  - [x] Catch config issues at startup
  - [x] Change mc syncing to events
  - [x] Make more granular errors with reaction role reaction adding (ErrorHandler)
+ - [x] Verification
+ - [x] Improve permission error embed
  
 ### **TeaEyes**
 None!
 
 ### **arynxd**
  - [ ] Improve user feedback
- - [ ] Verification
  
- - [ ] Improve permission error embed
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

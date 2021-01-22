@@ -36,7 +36,7 @@ public class VerificationCommand extends Command
 	public VerificationCommand()
 	{
 		super("Verification", "Handles verification of new members.", "[user] / [add / remove / show]");
-		addAliases("verify", "verification", "accept");
+		addAliases("verify", "verification", "accept", "v");
 		addFlags(CommandFlag.GUILD_ONLY);
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
 		addSelfPermissions(Permission.MANAGE_ROLES);
@@ -63,6 +63,11 @@ public class VerificationCommand extends Command
 						UserUtils.getMemberFromUser(target, guild).queue(
 								member ->
 								{
+									if(target.isBot())
+									{
+										failure.accept(new CommandResultException("Bots cannot be verified."));
+										return;
+									}
 									if(member.getRoles().contains(verifiedRole))
 									{
 										failure.accept(new CommandResultException("User " + target.getAsMention() + " is already verified."));

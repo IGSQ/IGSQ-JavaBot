@@ -47,6 +47,7 @@ public class WarnCommand extends Command
 			if(user.isBot())
 			{
 				failure.accept(new CommandResultException("Bots cannot be warned."));
+				return;
 			}
 			CommandUtils.interactionCheck(author, user, cmd, () ->
 			{
@@ -59,7 +60,6 @@ public class WarnCommand extends Command
 						.flatMap(privateChannel -> privateChannel.sendMessage(new EmbedBuilder()
 								.setTitle("You have been warned in " + guild.getName())
 								.addField("Reason", reason, true)
-								.addField("Moderator", author.getAsMention(), true)
 								.setColor(Constants.IGSQ_PURPLE)
 								.setTimestamp(Instant.now())
 								.build())).queue(null, error ->
