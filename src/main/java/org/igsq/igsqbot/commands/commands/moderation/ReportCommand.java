@@ -1,11 +1,14 @@
 package org.igsq.igsqbot.commands.commands.moderation;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
@@ -38,6 +41,7 @@ public class ReportCommand extends Command
 		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(cmd).getReportChannel());
 
 		if(CommandChecks.channelConfigured(reportChannel, "Report channel", failure)) return;
+		if(CommandChecks.canSee(reportChannel, cmd.getSelfMember(), "Report channel", failure)) return;
 
 		new Parser(args.get(0), cmd).parseAsUser(user ->
 		{
@@ -72,13 +76,23 @@ public class ReportCommand extends Command
 								(
 										message ->
 										{
-											Report.add(message.getIdLong(), cmd.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), reason, cmd.getIGSQBot());
+											author.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(generateDM(member, user, reason).build()).queue());
+											Report.add(message.getIdLong(), cmd.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), author.getIdLong(), reason, cmd.getIGSQBot());
 											message.addReaction(Emoji.THUMB_UP.getUnicode()).queue();
 										}
 								);
 					}
 			);
-
 		});
+	}
+
+	private EmbedBuilder generateDM(Member author, User reported, String reason)
+	{
+		return new EmbedBuilder()
+				.setTitle("Your report in " + author.getGuild().getName())
+				.addField("Reporting User", reported.getAsMention(), true)
+				.addField("Reason", reason, true)
+				.setColor(Constants.IGSQ_PURPLE)
+				.setTimestamp(Instant.now());
 	}
 }

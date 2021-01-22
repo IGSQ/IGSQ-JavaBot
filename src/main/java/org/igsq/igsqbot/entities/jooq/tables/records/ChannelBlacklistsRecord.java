@@ -4,11 +4,11 @@
 package org.igsq.igsqbot.entities.jooq.tables.records;
 
 
+import org.igsq.igsqbot.entities.jooq.tables.ChannelBlacklists;
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record3;
 import org.jooq.Row3;
-import org.igsq.igsqbot.entities.jooq.tables.ChannelBlacklists;
 import org.jooq.impl.UpdatableRecordImpl;
 
 

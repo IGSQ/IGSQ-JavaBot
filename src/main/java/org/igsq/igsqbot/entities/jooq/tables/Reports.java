@@ -8,20 +8,20 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.igsq.igsqbot.entities.jooq.Keys;
-import org.igsq.igsqbot.entities.jooq.Public;
-import org.igsq.igsqbot.entities.jooq.tables.records.ReportsRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
+import org.igsq.igsqbot.entities.jooq.Keys;
+import org.igsq.igsqbot.entities.jooq.Public;
+import org.igsq.igsqbot.entities.jooq.tables.records.ReportsRecord;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -74,9 +74,14 @@ public class Reports extends TableImpl<ReportsRecord> {
     public final TableField<ReportsRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.reports.user_id</code>.
+     * The column <code>public.reports.reporter_id</code>.
      */
-    public final TableField<ReportsRecord, Long> USER_ID = createField(DSL.name("user_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ReportsRecord, Long> REPORTER_ID = createField(DSL.name("reporter_id"), SQLDataType.BIGINT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.reports.reporttee_id</code>.
+     */
+    public final TableField<ReportsRecord, Long> REPORTTEE_ID = createField(DSL.name("reporttee_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.reports.timestamp</code>.
@@ -142,6 +147,15 @@ public class Reports extends TableImpl<ReportsRecord> {
     }
 
     @Override
+    public List<ForeignKey<ReportsRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<ReportsRecord, ?>>asList(Keys.REPORTS__REPORTS_GUILD_ID_FKEY);
+    }
+
+    public Guilds guilds() {
+        return new Guilds(this, Keys.REPORTS__REPORTS_GUILD_ID_FKEY);
+    }
+
+    @Override
     public Reports as(String alias) {
         return new Reports(DSL.name(alias), this);
     }
@@ -168,11 +182,11 @@ public class Reports extends TableImpl<ReportsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, Long, Long, Long, Long, Long, LocalDateTime, String> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Long, Long, Long, Long, Long, Long, Long, LocalDateTime, String> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 }

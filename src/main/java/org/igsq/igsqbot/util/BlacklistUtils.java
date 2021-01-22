@@ -206,7 +206,7 @@ public class BlacklistUtils
 		{
 			var context = igsqBot.getDatabaseHandler().getContext(connection);
 			var query = context
-					.selectFrom(Tables.CHANNEL_BLACKLISTS)
+					.selectFrom(CHANNEL_BLACKLISTS)
 					.where(CHANNEL_BLACKLISTS.GUILD_ID.eq(guild.getIdLong()));
 
 			for(var row : query.fetch())

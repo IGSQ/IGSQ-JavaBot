@@ -4,14 +4,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import org.igsq.igsqbot.entities.command.CommandEvent;
-import org.igsq.igsqbot.entities.exception.CommandException;
-import org.igsq.igsqbot.entities.exception.CommandInputException;
-import org.igsq.igsqbot.entities.exception.MissingConfigurationException;
-import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
+import org.igsq.igsqbot.entities.exception.*;
 
 public class CommandChecks
 {
@@ -20,6 +16,15 @@ public class CommandChecks
 		//Overrides the default, public, constructor
 	}
 
+	public static boolean canSee(MessageChannel channel, Member selfMember, String name, Consumer<CommandException> callback)
+	{
+		if(!selfMember.hasPermission((GuildChannel) channel, Permission.VIEW_CHANNEL, Permission.MESSAGE_WRITE, Permission.MESSAGE_EMBED_LINKS))
+		{
+			callback.accept(new CommandResultException("I cannot access " + name));
+			return true;
+		}
+		return false;
+	}
 	public static boolean channelConfigured(MessageChannel channel, String name, Consumer<CommandException> callback)
 	{
 		if(channel == null)

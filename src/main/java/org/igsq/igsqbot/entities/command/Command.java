@@ -92,7 +92,7 @@ public abstract class Command
 				}
 				else if(exception instanceof CommandInputException)
 				{
-					cmd.replyError(exception.getText());
+					cmd.replyError("Your input was invalid. " + exception.getText());
 				}
 				else if(exception instanceof CommandSyntaxException)
 				{

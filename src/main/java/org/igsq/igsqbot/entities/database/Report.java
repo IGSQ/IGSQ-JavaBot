@@ -15,14 +15,21 @@ public class Report
 	private final long reportedUserId;
 	private final String reason;
 	private final IGSQBot igsqBot;
+	private final long reporteeUserId;
 
-	private Report(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, String reason, IGSQBot igsqBot)
+	public long getReporteeUserId()
+	{
+		return reporteeUserId;
+	}
+
+	private Report(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, long reporteeUserId, String reason, IGSQBot igsqBot)
 	{
 		this.messageId = messageId;
 		this.commandMessageId = commandMessageId;
 		this.channelId = channelId;
 		this.guildId = guildId;
 		this.reportedUserId = reportedUserId;
+		this.reporteeUserId = reporteeUserId;
 		this.reason = reason;
 		this.igsqBot = igsqBot;
 	}
@@ -38,7 +45,7 @@ public class Report
 			if(!result.isEmpty())
 			{
 				var report = result.get(0);
-				return new Report(report.getMessageId(), report.getReportMessageId(), report.getChannelId(), report.getGuildId(), report.getUserId(), report.getReportText(), igsqBot);
+				return new Report(report.getMessageId(), report.getReportMessageId(), report.getChannelId(), report.getGuildId(), report.getReporterId(),report.getReportteeId(), report.getReportText(), igsqBot);
 			}
 			else
 			{
@@ -52,15 +59,15 @@ public class Report
 		}
 	}
 
-	public static void add(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, String reason, IGSQBot igsqBot)
+	public static void add(long messageId, long commandMessageId, long channelId, long guildId, long reportedUserId, long reporteeUserId, String reason, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
 
-			ctx.insertInto(Tables.REPORTS)
-					.columns(REPORTS.MESSAGE_ID, REPORTS.REPORT_MESSAGE_ID, REPORTS.CHANNEL_ID, REPORTS.GUILD_ID, REPORTS.USER_ID, REPORTS.REPORT_TEXT)
-					.values(messageId, commandMessageId, channelId, guildId, reportedUserId, reason)
+			ctx.insertInto(REPORTS)
+					.columns(REPORTS.MESSAGE_ID, REPORTS.REPORT_MESSAGE_ID, REPORTS.CHANNEL_ID, REPORTS.GUILD_ID, REPORTS.REPORTER_ID, REPORTS.REPORTTEE_ID, REPORTS.REPORT_TEXT)
+					.values(messageId, commandMessageId, channelId, guildId, reportedUserId,reporteeUserId, reason)
 					.execute();
 		}
 		catch(Exception exception)

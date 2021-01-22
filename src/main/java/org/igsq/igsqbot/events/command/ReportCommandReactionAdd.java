@@ -1,6 +1,7 @@
 package org.igsq.igsqbot.events.command;
 
 import java.awt.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -8,11 +9,13 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.RestAction;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Report;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.igsq.igsqbot.util.UserUtils;
 
 public class ReportCommandReactionAdd extends ListenerAdapter
 {
@@ -77,6 +80,7 @@ public class ReportCommandReactionAdd extends ListenerAdapter
 							EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
 									.setColor(Color.GREEN)
 									.setFooter("This report was dealt with by " + user.getAsTag() + " the reported member left."));
+
 							Report.remove(report.getMessageId(), igsqBot);
 							return;
 						}
@@ -90,8 +94,26 @@ public class ReportCommandReactionAdd extends ListenerAdapter
 						EmbedUtils.sendReplacedEmbed(message, new EmbedBuilder(message.getEmbeds().get(0))
 								.setColor(Color.GREEN)
 								.setFooter("This report was dealt with by " + user.getAsTag()));
+
 						Report.remove(report.getMessageId(), igsqBot);
 						message.clearReactions().queue();
+
+						User reportee = igsqBot.getShardManager().getUserById(report.getReporteeUserId());
+
+						if(reportee != null)
+						{
+							reportee.openPrivateChannel().flatMap(
+							privateChannel ->
+
+								privateChannel.sendMessage(new EmbedBuilder()
+										.setTitle("Your report in " + guild.getName())
+										.addField("Reporting User", UserUtils.getAsMention(report.getReportedUserId()), true)
+										.addField("Reason", report.getReason(), true)
+										.addField("Dealt with by", user.getAsMention(), true)
+										.setColor(Constants.IGSQ_PURPLE)
+										.setTimestamp(Instant.now()).build())
+							).queue(null, error -> {});
+						}
 					}
 				});
 	}

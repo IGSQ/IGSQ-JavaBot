@@ -21,7 +21,8 @@ public class Reports implements Serializable {
     private final Long          reportMessageId;
     private final Long          channelId;
     private final Long          guildId;
-    private final Long          userId;
+    private final Long          reporterId;
+    private final Long          reportteeId;
     private final LocalDateTime timestamp;
     private final String        reportText;
 
@@ -31,7 +32,8 @@ public class Reports implements Serializable {
         this.reportMessageId = value.reportMessageId;
         this.channelId = value.channelId;
         this.guildId = value.guildId;
-        this.userId = value.userId;
+        this.reporterId = value.reporterId;
+        this.reportteeId = value.reportteeId;
         this.timestamp = value.timestamp;
         this.reportText = value.reportText;
     }
@@ -42,7 +44,8 @@ public class Reports implements Serializable {
         Long          reportMessageId,
         Long          channelId,
         Long          guildId,
-        Long          userId,
+        Long          reporterId,
+        Long          reportteeId,
         LocalDateTime timestamp,
         String        reportText
     ) {
@@ -51,7 +54,8 @@ public class Reports implements Serializable {
         this.reportMessageId = reportMessageId;
         this.channelId = channelId;
         this.guildId = guildId;
-        this.userId = userId;
+        this.reporterId = reporterId;
+        this.reportteeId = reportteeId;
         this.timestamp = timestamp;
         this.reportText = reportText;
     }
@@ -92,10 +96,17 @@ public class Reports implements Serializable {
     }
 
     /**
-     * Getter for <code>public.reports.user_id</code>.
+     * Getter for <code>public.reports.reporter_id</code>.
      */
-    public Long getUserId() {
-        return this.userId;
+    public Long getReporterId() {
+        return this.reporterId;
+    }
+
+    /**
+     * Getter for <code>public.reports.reporttee_id</code>.
+     */
+    public Long getReportteeId() {
+        return this.reportteeId;
     }
 
     /**
@@ -121,7 +132,8 @@ public class Reports implements Serializable {
         sb.append(", ").append(reportMessageId);
         sb.append(", ").append(channelId);
         sb.append(", ").append(guildId);
-        sb.append(", ").append(userId);
+        sb.append(", ").append(reporterId);
+        sb.append(", ").append(reportteeId);
         sb.append(", ").append(timestamp);
         sb.append(", ").append(reportText);
 

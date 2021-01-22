@@ -65,5 +65,6 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<ChannelBlacklistsRecord, GuildsRecord> CHANNEL_BLACKLISTS__CHANNEL_BLACKLISTS_GUILD_ID_FKEY = Internal.createForeignKey(ChannelBlacklists.CHANNEL_BLACKLISTS, DSL.name("channel_blacklists_guild_id_fkey"), new TableField[] { ChannelBlacklists.CHANNEL_BLACKLISTS.GUILD_ID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
+    public static final ForeignKey<ReportsRecord, GuildsRecord> REPORTS__REPORTS_GUILD_ID_FKEY = Internal.createForeignKey(Reports.REPORTS, DSL.name("reports_guild_id_fkey"), new TableField[] { Reports.REPORTS.GUILD_ID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
     public static final ForeignKey<WordBlacklistsRecord, GuildsRecord> WORD_BLACKLISTS__WORD_BLACKLISTS_GUILD_ID_FKEY = Internal.createForeignKey(WordBlacklists.WORD_BLACKLISTS, DSL.name("word_blacklists_guild_id_fkey"), new TableField[] { WordBlacklists.WORD_BLACKLISTS.GUILD_ID }, Keys.GUILDS_PKEY, new TableField[] { Guilds.GUILDS.GUILD_ID }, true);
 }

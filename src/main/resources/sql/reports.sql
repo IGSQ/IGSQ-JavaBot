@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS reports
     report_message_id BIGINT NOT NULL UNIQUE,
     channel_id BIGINT NOT NULL,
     guild_id BIGINT NOT NULL REFERENCES guilds(guild_id) ON DELETE CASCADE,
-    user_id BIGINT NOT NULL,
+    reporter_id BIGINT NOT NULL,
+    reporttee_id BIGINT NOT NULL,
     timestamp TIMESTAMP NOT NULL DEFAULT current_timestamp,
     report_text TEXT NOT NULL
 );
