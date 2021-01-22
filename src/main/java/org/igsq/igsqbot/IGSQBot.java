@@ -1,5 +1,6 @@
 package org.igsq.igsqbot;
 
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class IGSQBot extends ListenerAdapter
 	private final List<EmbedBuilder> helpPages;
 	private final Configuration configuration;
 	private final TaskHandler taskHandler;
+	private final EventWaiter eventWaiter;
 	private ShardManager shardManager;
 	private Minecraft minecraft;
 	private final Logger logger;
@@ -60,6 +62,12 @@ public class IGSQBot extends ListenerAdapter
 		this.startTimestamp = LocalDateTime.now();
 		this.helpPages = new ArrayList<>();
 		this.taskHandler = new TaskHandler();
+		this.eventWaiter = new EventWaiter();
+	}
+
+	public EventWaiter getEventWaiter()
+	{
+		return eventWaiter;
 	}
 
 	public void build() throws LoginException
@@ -87,6 +95,7 @@ public class IGSQBot extends ListenerAdapter
 
 				.addEventListeners(
 						this,
+						eventWaiter,
 
 						new MessageEventsMain(this),
 						new GuildEventsMain(this),

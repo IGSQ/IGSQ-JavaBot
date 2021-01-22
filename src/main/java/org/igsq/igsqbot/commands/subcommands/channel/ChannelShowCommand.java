@@ -12,13 +12,13 @@ import org.igsq.igsqbot.util.StringUtils;
 
 public class ChannelShowCommand extends Command
 {
-    public ChannelShowCommand(Command parent)
-    {
-        super(parent, "show", "Shows all configured channels for this server.", "[none]");
-    }
+	public ChannelShowCommand(Command parent)
+	{
+		super(parent, "show", "Shows all configured channels for this server.", "[none]");
+	}
 
-    @Override
-    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	@Override
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		StringBuilder text = new StringBuilder();
 		for(ChannelBlacklists channel : BlacklistUtils.getBlacklistedChannels(cmd.getGuild(), cmd.getIGSQBot()))
@@ -29,5 +29,5 @@ public class ChannelShowCommand extends Command
 		cmd.sendMessage(new EmbedBuilder()
 				.setTitle("Configured channels for " + cmd.getGuild().getName())
 				.addField("Blacklisted Channels", text.length() == 0 ? "No blacklisted channels" : text.toString(), false));
-    }
+	}
 }

@@ -24,104 +24,104 @@ import org.igsq.igsqbot.util.Parser;
 
 public class VoteCreateCommand extends Command
 {
-    public VoteCreateCommand(Command parent)
-    {
-        super(parent, "create", "Creates a vote.", "[role1/role2{3}][option1/option2{6}][duration][subject]");
-        addMemberPermissions(Permission.MANAGE_CHANNEL);
-        addFlags(CommandFlag.GUILD_ONLY);
-    }
+	public VoteCreateCommand(Command parent)
+	{
+		super(parent, "create", "Creates a vote.", "[role1/role2{3}][option1/option2{6}][duration][subject]");
+		addMemberPermissions(Permission.MANAGE_CHANNEL);
+		addFlags(CommandFlag.GUILD_ONLY);
+	}
 
-    @Override
-    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
-    {
-        if(CommandChecks.argsSizeSubceeds(cmd, 3, failure)) return;
+	@Override
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	{
+		if(CommandChecks.argsSizeSubceeds(cmd, 3, failure)) return;
 
-        List<String> options = new Parser(args.get(1), cmd).parseAsSlashArgs();
-        LocalDateTime expiry = new Parser(args.get(2), cmd).parseAsDuration();
-        String subject = ArrayUtils.arrayCompile(args.subList(3, args.size()), " ");
-        Guild guild = cmd.getGuild();
-        List<Role> roles = new ArrayList<>();
-        List<Long> users = new ArrayList<>();
+		List<String> options = new Parser(args.get(1), cmd).parseAsSlashArgs();
+		LocalDateTime expiry = new Parser(args.get(2), cmd).parseAsDuration();
+		String subject = ArrayUtils.arrayCompile(args.subList(3, args.size()), " ");
+		Guild guild = cmd.getGuild();
+		List<Role> roles = new ArrayList<>();
+		List<Long> users = new ArrayList<>();
 
-        int argCount = new Parser(args.get(0), cmd).parseAsSlashArgs().size();
-        int roleCount = cmd.getMessage().getMentionedRoles().size();
-        int memberCount = cmd.getMessage().getMentionedMembers().size();
+		int argCount = new Parser(args.get(0), cmd).parseAsSlashArgs().size();
+		int roleCount = cmd.getMessage().getMentionedRoles().size();
+		int memberCount = cmd.getMessage().getMentionedMembers().size();
 
-        if(roleCount == argCount)
-        {
-            roles = cmd.getMessage().getMentionedRoles();
-        }
-        else if(memberCount == argCount)
-        {
-            users = cmd.getMessage().getMentionedUsers().stream().map(User::getIdLong).collect(Collectors.toList());
-        }
-        else
-        {
-            roles = new Parser(args.get(0), cmd)
-                    .parseAsSlashArgs()
-                    .stream()
-                    .map(arg -> arg.replaceAll("[^a-z]/gi", ""))
-                    .map(guild::getRoleById)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-
-
-            users = new Parser(args.get(0), cmd)
-                    .parseAsSlashArgs()
-                    .stream()
-                    .map(arg -> arg.replaceAll("[^a-z]/gi", ""))
-                    .map(guild::getMemberById)
-                    .filter(Objects::nonNull)
-                    .filter(member -> !member.getUser().isBot())
-                    .map(Member::getIdLong)
-                    .collect(Collectors.toList());
-        }
+		if(roleCount == argCount)
+		{
+			roles = cmd.getMessage().getMentionedRoles();
+		}
+		else if(memberCount == argCount)
+		{
+			users = cmd.getMessage().getMentionedUsers().stream().map(User::getIdLong).collect(Collectors.toList());
+		}
+		else
+		{
+			roles = new Parser(args.get(0), cmd)
+					.parseAsSlashArgs()
+					.stream()
+					.map(arg -> arg.replaceAll("[^a-z]/gi", ""))
+					.map(guild::getRoleById)
+					.filter(Objects::nonNull)
+					.collect(Collectors.toList());
 
 
-        if(options.isEmpty() || options.size() > 6 || expiry == null || roles.size() > 3 || users.size() > 10)
-        {
-            failure.accept(new CommandSyntaxException(cmd));
-            return;
-        }
-
-        if(users.isEmpty() && !roles.isEmpty())
-        {
-            List<Role> finalRoles = roles;
-            guild.findMembers(member -> member.getRoles().stream().anyMatch(finalRoles::contains)).onSuccess(
-                    members ->
-                    {
-                        members = members.stream().filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
-                        if(members.isEmpty())
-                        {
-                            failure.accept(new CommandInputException("No members found for roles " + finalRoles
-                                    .stream()
-                                    .map(Role::getAsMention)
-                                    .collect(Collectors.joining(" "))));
-                            return;
-                        }
-
-                        if(members.size() > 20)
-                        {
-                            failure.accept(new CommandInputException("Too many members found for roles " + finalRoles
-                                    .stream()
-                                    .map(Role::getAsMention)
-                                    .collect(Collectors.joining(" "))));
-                            return;
-                        }
+			users = new Parser(args.get(0), cmd)
+					.parseAsSlashArgs()
+					.stream()
+					.map(arg -> arg.replaceAll("[^a-z]/gi", ""))
+					.map(guild::getMemberById)
+					.filter(Objects::nonNull)
+					.filter(member -> !member.getUser().isBot())
+					.map(Member::getIdLong)
+					.collect(Collectors.toList());
+		}
 
 
-                        Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, cmd);
-                        vote.start();
-                    });
-        }
-        else if(roles.isEmpty() && !users.isEmpty())
-        {
-            Vote vote = new Vote(users, options, expiry, subject, cmd);
-            vote.start();
-        }
-        else
-        {
-            failure.accept(new CommandSyntaxException(cmd));
-        }
-    }
+		if(options.isEmpty() || options.size() > 6 || expiry == null || roles.size() > 3 || users.size() > 10)
+		{
+			failure.accept(new CommandSyntaxException(cmd));
+			return;
+		}
+
+		if(users.isEmpty() && !roles.isEmpty())
+		{
+			List<Role> finalRoles = roles;
+			guild.findMembers(member -> member.getRoles().stream().anyMatch(finalRoles::contains)).onSuccess(
+					members ->
+					{
+						members = members.stream().filter(member -> !member.getUser().isBot()).collect(Collectors.toList());
+						if(members.isEmpty())
+						{
+							failure.accept(new CommandInputException("No members found for roles " + finalRoles
+									.stream()
+									.map(Role::getAsMention)
+									.collect(Collectors.joining(" "))));
+							return;
+						}
+
+						if(members.size() > 20)
+						{
+							failure.accept(new CommandInputException("Too many members found for roles " + finalRoles
+									.stream()
+									.map(Role::getAsMention)
+									.collect(Collectors.joining(" "))));
+							return;
+						}
+
+
+						Vote vote = new Vote(members.stream().map(Member::getIdLong).collect(Collectors.toList()), options, expiry, subject, cmd);
+						vote.start();
+					});
+		}
+		else if(roles.isEmpty() && !users.isEmpty())
+		{
+			Vote vote = new Vote(users, options, expiry, subject, cmd);
+			vote.start();
+		}
+		else
+		{
+			failure.accept(new CommandSyntaxException(cmd));
+		}
+	}
 }

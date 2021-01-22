@@ -59,12 +59,12 @@ public class HelpCommand extends Command
 		EmbedBuilder result = new EmbedBuilder()
 				.setTitle("**Help for " + command.getName() + "**")
 				.setFooter("<> Optional;  [] Required; {} Maximum Quantity | ");
-		result.addField(prefix + command.getAliases().get(0),  command.getDescription() + "\n`Syntax: " + command.getSyntax() + "`", false);
+		result.addField(prefix + command.getAliases().get(0), command.getDescription() + "\n`Syntax: " + command.getSyntax() + "`", false);
 		if(command.hasChildren())
 		{
 			command.getChildren().forEach(
-			child ->
-				result.addField(prefix + command.getAliases().get(0) + " " + child.getName(), child.getDescription() + "\n`Syntax: " + child.getSyntax() + "`", false));
+					child ->
+							result.addField(prefix + command.getAliases().get(0) + " " + child.getName(), child.getDescription() + "\n`Syntax: " + child.getSyntax() + "`", false));
 		}
 		return result;
 	}

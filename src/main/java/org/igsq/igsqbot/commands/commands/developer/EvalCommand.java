@@ -19,16 +19,16 @@ public class EvalCommand extends Command
 	private static final List<String> DEFAULT_IMPORTS = List.of("net.dv8tion.jda.api.entities.impl", "net.dv8tion.jda.api.managers", "net.dv8tion.jda.api.entities", "net.dv8tion.jda.api",
 			"java.io", "java.math", "java.util", "java.util.concurrent", "java.time", "java.util.stream");
 
-    public EvalCommand()
-    {
-        super("Eval", "Evaluates Java code", "[code]");
-        addFlags(CommandFlag.GUILD_ONLY, CommandFlag.DEVELOPER_ONLY);
-        addAliases("eval", "evaluate", "code");
-    }
+	public EvalCommand()
+	{
+		super("Eval", "Evaluates Java code", "[code]");
+		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.DEVELOPER_ONLY);
+		addAliases("eval", "evaluate", "code");
+	}
 
-    @Override
-    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
-    {
+	@Override
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	{
 		if(CommandChecks.argsEmpty(cmd, failure)) return;
 
 		Object out;

@@ -23,16 +23,6 @@ public class UserUtils
 		return user.hasPermission(channel, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_READ, Permission.VIEW_CHANNEL, Permission.MESSAGE_EMBED_LINKS);
 	}
 
-	public static String getAsMention(String userId)
-	{
-		return "<@!" + userId + ">";
-	}
-
-	public static String getAsMention(long userId)
-	{
-		return "<@!" + userId + ">";
-	}
-
 
 	public static RestAction<Member> getMemberFromUser(User user, Guild guild)
 	{

@@ -28,7 +28,8 @@ public class StealCommand extends Command
 	@Override
 	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure) || CommandChecks.stringIsURL(args.get(1), cmd, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure) || CommandChecks.stringIsURL(args.get(1), cmd, failure))
+			return;
 
 		if(!args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
 		{

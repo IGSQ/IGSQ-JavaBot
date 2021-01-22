@@ -25,6 +25,7 @@ public class CommandChecks
 		}
 		return false;
 	}
+
 	public static boolean channelConfigured(MessageChannel channel, String name, Consumer<CommandException> callback)
 	{
 		if(channel == null)
@@ -124,16 +125,16 @@ public class CommandChecks
 	{
 		List<Character> chars = new ArrayList<>();
 		ctx.getArgs().stream().map(arg -> arg.split("")).forEach(
-		words ->
-		{
-			for(String word : words)
-			{
-				for(char character : word.toCharArray())
+				words ->
 				{
-					chars.add(character);
-				}
-			}
-		});
+					for(String word : words)
+					{
+						for(char character : word.toCharArray())
+						{
+							chars.add(character);
+						}
+					}
+				});
 		if(chars.size() > EmbedUtils.CHARACTER_LIMIT)
 		{
 			callback.accept(new CommandInputException("Input too large."));

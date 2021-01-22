@@ -11,7 +11,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftUtils;
 import org.igsq.igsqbot.util.Parser;
-import org.igsq.igsqbot.util.UserUtils;
+import org.igsq.igsqbot.util.StringUtils;
 
 public class LinkShowCommand extends Command
 {
@@ -48,7 +48,7 @@ public class LinkShowCommand extends Command
 				for(MinecraftUtils.Link link : links)
 				{
 					text
-							.append(UserUtils.getAsMention(link.getId()))
+							.append(StringUtils.getUserAsMention(link.getId()))
 							.append(" -- ")
 							.append(MinecraftUtils.getName(link.getUuid(), minecraft))
 							.append(" -- ")
@@ -75,7 +75,7 @@ public class LinkShowCommand extends Command
 		for(MinecraftUtils.Link link : links)
 		{
 			text
-					.append(UserUtils.getAsMention(link.getId()))
+					.append(StringUtils.getUserAsMention(link.getId()))
 					.append(" -- ")
 					.append(MinecraftUtils.getName(link.getUuid(), minecraft))
 					.append(" -- ")

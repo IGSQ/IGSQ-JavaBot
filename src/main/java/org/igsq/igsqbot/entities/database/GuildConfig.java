@@ -32,6 +32,11 @@ public class GuildConfig
 		this.igsqBot = igsqBot;
 	}
 
+	public long getVerifiedRole()
+	{
+		return getLong(GUILDS.VERIFIED_ROLE);
+	}
+
 	public String getPrefix()
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
@@ -73,6 +78,10 @@ public class GuildConfig
 		}
 	}
 
+	public long getUnverifiedRole()
+	{
+		return getLong(GUILDS.UNVERIFIED_ROLE);
+	}
 	public long getReportChannel()
 	{
 		return getLong(GUILDS.REPORT_CHANNEL);
@@ -81,6 +90,11 @@ public class GuildConfig
 	public long getLogChannel()
 	{
 		return getLong(GUILDS.LOG_CHANNEL);
+	}
+
+	public long getWelcomeChannel()
+	{
+		return getLong(GUILDS.WELCOME_CHANNEL);
 	}
 
 	public long getVoteChannel()

@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.Constants;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
-import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.EmbedUtils;
 

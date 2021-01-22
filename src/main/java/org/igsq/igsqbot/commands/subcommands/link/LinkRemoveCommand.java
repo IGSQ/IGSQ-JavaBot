@@ -53,6 +53,5 @@ public class LinkRemoveCommand extends Command
 		cmd.replySuccess("Removed link **" + account + "**");
 
 
-
 	}
 }

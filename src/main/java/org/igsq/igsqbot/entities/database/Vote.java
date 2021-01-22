@@ -15,7 +15,6 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.jooq.Tables;
 import org.igsq.igsqbot.entities.jooq.tables.records.VotesRecord;
 import org.igsq.igsqbot.util.StringUtils;
-import org.igsq.igsqbot.util.UserUtils;
 import org.jooq.Result;
 
 import static org.igsq.igsqbot.entities.jooq.tables.Votes.VOTES;
@@ -116,7 +115,7 @@ public class Vote
 
 		for(long user : users)
 		{
-			result.append(UserUtils.getAsMention(user)).append(" -> ").append("Not voted").append("\n");
+			result.append(StringUtils.getUserAsMention(user)).append(" -> ").append("Not voted").append("\n");
 		}
 		return result.toString();
 	}
@@ -159,7 +158,7 @@ public class Vote
 		StringBuilder votes = new StringBuilder();
 		for(var row : result)
 		{
-			votes.append(UserUtils.getAsMention(row.getUserId())).append(" -> ");
+			votes.append(StringUtils.getUserAsMention(row.getUserId())).append(" -> ");
 
 			if(row.getOption() == -1)
 			{

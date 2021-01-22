@@ -26,9 +26,9 @@ public class UptimeCommand extends Command
 		cmd.sendMessage(new EmbedBuilder()
 				.setDescription(
 						"Uptime: " + uptime.toDaysPart() +
-						" days, " + uptime.toHoursPart() +
-						" hours, " + uptime.toSecondsPart() +
-						" seconds.")
+								" days, " + uptime.toHoursPart() +
+								" hours, " + uptime.toSecondsPart() +
+								" seconds.")
 				.setColor(Constants.IGSQ_PURPLE));
 	}
 }

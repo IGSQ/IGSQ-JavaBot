@@ -64,6 +64,9 @@ public class DatabaseHandler
 		LOGGER.debug("Initialise table levels.");
 		initTable("levels");
 
+		LOGGER.debug("Initialise table verification.");
+		initTable("verification");
+
 		LOGGER.debug("Table setup complete.");
 	}
 

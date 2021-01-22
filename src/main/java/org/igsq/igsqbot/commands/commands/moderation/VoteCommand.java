@@ -13,20 +13,20 @@ import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 @SuppressWarnings("unused")
 public class VoteCommand extends Command
 {
-    public VoteCommand()
-    {
-        super("Vote", "Controls voting", "[create / close]");
-        addAliases("vote");
-        addMemberPermissions(Permission.MANAGE_SERVER);
-        addChildren(
-                new VoteCreateCommand(this),
-                new VoteCloseCommand(this)
-        );
-    }
+	public VoteCommand()
+	{
+		super("Vote", "Controls voting", "[create / close]");
+		addAliases("vote");
+		addMemberPermissions(Permission.MANAGE_SERVER);
+		addChildren(
+				new VoteCreateCommand(this),
+				new VoteCloseCommand(this)
+		);
+	}
 
-    @Override
-    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
-    {
+	@Override
+	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	{
 		failure.accept(new CommandSyntaxException(cmd));
-    }
+	}
 }

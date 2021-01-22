@@ -10,6 +10,7 @@ public class BotInfo
 	{
 		//Overrides the default, public, constructor
 	}
+
 	public static String getJDAVersion()
 	{
 		return JDAInfo.VERSION;

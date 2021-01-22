@@ -155,7 +155,7 @@ public class DatabaseUtils
 			{
 				if(value.getExpiry().isBefore(LocalDateTime.now()))
 				{
-					result.add(new Votes(value.getId(), value.getVoteId(),value.getGuildId(), value.getDirectMessageId(), value.getUserId(), value.getOption(), value.getMaxOptions(), value.getExpiry(), value.getHasVoted()));
+					result.add(new Votes(value.getId(), value.getVoteId(), value.getGuildId(), value.getDirectMessageId(), value.getUserId(), value.getOption(), value.getMaxOptions(), value.getExpiry(), value.getHasVoted()));
 				}
 			}
 		}

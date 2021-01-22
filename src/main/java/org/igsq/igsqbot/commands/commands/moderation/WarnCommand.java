@@ -25,7 +25,7 @@ public class WarnCommand extends Command
 {
 	public WarnCommand()
 	{
-		super("Warn", "Handles the user warning system", "[user][reason] / [show][user] / [remove][user][number]");
+		super("Warn", "Handles the user warning system", "[user][reason] / [show] / [remove]");
 		addAliases("warn");
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
 		addChildren(
@@ -62,7 +62,8 @@ public class WarnCommand extends Command
 								.addField("Moderator", author.getAsMention(), true)
 								.setColor(Constants.IGSQ_PURPLE)
 								.setTimestamp(Instant.now())
-								.build())).queue(null, error -> {});
+								.build())).queue(null, error ->
+				{});
 			});
 		});
 	}

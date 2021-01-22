@@ -97,6 +97,7 @@
  - [x] Add sub commands to help menu.
  - [x] Catch config issues at startup
  - [x] Change mc syncing to events
+ - [x] Make more granular errors with reaction role reaction adding (ErrorHandler)
  
 ### **TeaEyes**
 None!
@@ -104,7 +105,7 @@ None!
 ### **arynxd**
  - [ ] Improve user feedback
  - [ ] Verification
- - [ ] Make more granular errors with reaction role reaction adding (ErrorHandler)
+ 
  - [ ] Improve permission error embed
  - [ ] **PREPARE FOR PR**
 

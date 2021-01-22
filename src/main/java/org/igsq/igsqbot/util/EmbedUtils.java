@@ -8,9 +8,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.igsq.igsqbot.entities.Emoji;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
-import org.igsq.igsqbot.entities.Emoji;
 
 public class EmbedUtils
 {
@@ -94,7 +94,8 @@ public class EmbedUtils
 	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed, long delay)
 	{
 		channel.sendMessage(embed.build()).queue(message -> message.delete().queueAfter(delay, TimeUnit.MILLISECONDS, null, error ->
-		{ }));
+		{
+		}));
 	}
 
 	public static void sendDeletingEmbed(MessageChannel channel, EmbedBuilder embed)

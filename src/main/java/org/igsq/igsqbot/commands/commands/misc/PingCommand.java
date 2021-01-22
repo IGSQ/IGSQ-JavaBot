@@ -33,7 +33,7 @@ public class PingCommand extends Command
 					}
 
 					cmd.sendMessage(new EmbedBuilder()
-							.setTitle("P" + "o".repeat(oCount)+ "ng.")
+							.setTitle("P" + "o".repeat(oCount) + "ng.")
 							.setDescription("**Shard ID**: " + jda.getShardInfo().getShardId()
 									+ "\n**REST Ping**: " + ping
 									+ "ms\n**Gateway Ping**: " + jda.getGatewayPing() + "ms")

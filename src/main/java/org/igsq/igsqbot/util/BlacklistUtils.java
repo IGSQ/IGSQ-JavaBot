@@ -19,13 +19,12 @@ import static org.igsq.igsqbot.entities.jooq.tables.WordBlacklists.WORD_BLACKLIS
 
 public class BlacklistUtils
 {
+	public static final List<String> LINKS = List.copyOf(List.of("youtube.com/", "twitch.tv/", "youtu.be/"));
+	public static final List<String> DISCORD = List.copyOf(List.of("discord.gg/"));
 	private BlacklistUtils()
 	{
 		//Overrides the default, public, constructor
 	}
-
-	public static final List<String> LINKS = List.copyOf(List.of("youtube.com/", "twitch.tv/", "youtu.be/"));
-	public static final List<String> DISCORD = List.copyOf(List.of("discord.gg/"));
 
 	public static boolean isBlacklistedPhrase(MessageReceivedEvent event, IGSQBot igsqBot)
 	{
@@ -58,7 +57,7 @@ public class BlacklistUtils
 			var query = context
 					.selectFrom(Tables.CHANNEL_BLACKLISTS)
 					.where(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(event.getChannel().getIdLong())
-					.and(CHANNEL_BLACKLISTS.GUILD_ID.eq(event.getGuild().getIdLong())));
+							.and(CHANNEL_BLACKLISTS.GUILD_ID.eq(event.getGuild().getIdLong())));
 
 			return query.execute() > 0;
 		}
@@ -180,9 +179,9 @@ public class BlacklistUtils
 					.values(guild.getIdLong(), channel.getIdLong());
 
 			var exists = context
-				.selectFrom(Tables.CHANNEL_BLACKLISTS)
-				.where(CHANNEL_BLACKLISTS.GUILD_ID.eq(guild.getIdLong())
-				.and(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(channel.getIdLong())));
+					.selectFrom(Tables.CHANNEL_BLACKLISTS)
+					.where(CHANNEL_BLACKLISTS.GUILD_ID.eq(guild.getIdLong())
+							.and(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(channel.getIdLong())));
 
 			if(exists.fetch().isNotEmpty())
 			{
@@ -229,7 +228,7 @@ public class BlacklistUtils
 			var query = context
 					.deleteFrom(Tables.CHANNEL_BLACKLISTS)
 					.where(CHANNEL_BLACKLISTS.GUILD_ID.eq(guild.getIdLong())
-					.and(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(channel.getIdLong())));
+							.and(CHANNEL_BLACKLISTS.CHANNEL_ID.eq(channel.getIdLong())));
 
 			return query.execute() > 0;
 		}

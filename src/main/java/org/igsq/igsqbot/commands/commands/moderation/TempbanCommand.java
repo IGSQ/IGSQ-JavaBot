@@ -80,14 +80,14 @@ public class TempbanCommand extends Command
 
 	public static class TempbanRemoveCommand extends Command
 	{
-	    public TempbanRemoveCommand(Command parent)
-	    {
-	        super(parent, "remove", "Removes a tempban", "[user]");
-	    }
+		public TempbanRemoveCommand(Command parent)
+		{
+			super(parent, "remove", "Removes a tempban", "[user]");
+		}
 
-	    @Override
-	    public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
-	    {
+		@Override
+		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+		{
 			if(CommandChecks.argsEmpty(cmd, failure)) return;
 
 			new Parser(args.get(0), cmd).parseAsUser(user ->
@@ -103,11 +103,11 @@ public class TempbanCommand extends Command
 						UserUtils.getMemberFromUser(user, guild).queue(member ->
 						{
 							Tempban.remove(member.getIdLong(), cmd.getIGSQBot());
-							cmd.replySuccess("Removed tempban for user " + UserUtils.getAsMention(member.getIdLong()));
+							cmd.replySuccess("Removed tempban for user " + StringUtils.getUserAsMention(member.getIdLong()));
 						});
 					});
 				});
 			});
-	    }
+		}
 	}
 }
