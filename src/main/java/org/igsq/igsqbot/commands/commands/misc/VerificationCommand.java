@@ -166,13 +166,33 @@ public class VerificationCommand extends Command
 				{
 					for(String message : content)
 					{
-						if(phrase.contains(" "))
+						List<String> words = new ArrayList<>(List.of(message.split(" ")));
+
+						for(int i = 0; i < words.size(); i++)
 						{
-							phrase = String.join(" ", phrase.split(" "));
-						}
-						if(matcher.similarity(phrase, message) > 0.8)
-						{
-							result.add(role);
+							String query;
+							int queryNum = i;
+
+							if(phrase.contains(" "))
+							{
+								if(++queryNum > words.size())
+								{
+									query = words.get(i);
+								}
+								else
+								{
+									query = words.get(i) + words.get(i + 1);
+								}
+							}
+							else
+							{
+								query = words.get(i);
+							}
+
+							if(matcher.similarity(phrase, query) > 0.8)
+							{
+								result.add(role);
+							}
 						}
 					}
 				});
