@@ -37,7 +37,7 @@ public class WarningShowCommand extends Command
 				failure.accept(new CommandInputException("Bots cannot have warnings."));
 				return;
 			}
-			
+
 			Guild guild = cmd.getGuild();
 			MessageChannel channel = cmd.getChannel();
 			List<Warnings> warnings = new Warning(guild, user, cmd.getIGSQBot()).get();

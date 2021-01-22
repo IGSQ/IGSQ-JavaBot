@@ -19,7 +19,7 @@ import static org.igsq.igsqbot.entities.jooq.tables.WordBlacklists.WORD_BLACKLIS
 
 public class BlacklistUtils
 {
-	public static final List<String> LINKS = List.copyOf(List.of("youtube.com/", "twitch.tv/", "youtu.be/"));
+	public static final List<String> LINKS = List.copyOf(List.of("youtube.com/", "twitch.tv/", "youtu.be/", "https://", "http://", "www."));
 	public static final List<String> DISCORD = List.copyOf(List.of("discord.gg/"));
 	private BlacklistUtils()
 	{
