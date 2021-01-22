@@ -145,7 +145,7 @@ public class MessageCommand extends Command
 					"\n" +
 					"• By joining our server, you agree to follow our <#767657829401231360>.\n" +
 					"\n" +
-					"• Please follow the example below. **You'll be verified as soon as possible.** This is usually in less than a minute, but if nobody is online, it can take a couple hours.\n\n\n\n\n\n rocket league r6 united states").queue();
+					"• Below you can see an example of a previous member who just joined the server. **You will be verified as soon as possible.** This is usually in less than a minute, but if nobody is online, it can take a couple hours.").queue();
 
 			case "shortrules" -> cmd.getChannel().sendMessage(SHORTRULES
 					.setColor(Constants.IGSQ_PURPLE)
