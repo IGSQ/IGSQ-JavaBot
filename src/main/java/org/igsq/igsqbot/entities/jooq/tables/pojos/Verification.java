@@ -17,28 +17,28 @@ public class Verification implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	private final Long id;
-	private final String phrase;
 	private final Long guildId;
+	private final String phrase;
 	private final Long roleId;
 
 	public Verification(Verification value)
 	{
 		this.id = value.id;
-		this.phrase = value.phrase;
 		this.guildId = value.guildId;
+		this.phrase = value.phrase;
 		this.roleId = value.roleId;
 	}
 
 	public Verification(
 			Long id,
-			String phrase,
 			Long guildId,
+			String phrase,
 			Long roleId
 	)
 	{
 		this.id = id;
-		this.phrase = phrase;
 		this.guildId = guildId;
+		this.phrase = phrase;
 		this.roleId = roleId;
 	}
 
@@ -51,19 +51,19 @@ public class Verification implements Serializable
 	}
 
 	/**
-	 * Getter for <code>public.verification.phrase</code>.
-	 */
-	public String getPhrase()
-	{
-		return this.phrase;
-	}
-
-	/**
 	 * Getter for <code>public.verification.guild_id</code>.
 	 */
 	public Long getGuildId()
 	{
 		return this.guildId;
+	}
+
+	/**
+	 * Getter for <code>public.verification.phrase</code>.
+	 */
+	public String getPhrase()
+	{
+		return this.phrase;
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class Verification implements Serializable
 		StringBuilder sb = new StringBuilder("Verification (");
 
 		sb.append(id);
-		sb.append(", ").append(phrase);
 		sb.append(", ").append(guildId);
+		sb.append(", ").append(phrase);
 		sb.append(", ").append(roleId);
 
 		sb.append(")");

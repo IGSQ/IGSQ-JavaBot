@@ -25,6 +25,7 @@ public class VerificationAddCommand extends Command
 	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
 		if(CommandChecks.argsSizeExceeds(cmd, 3, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
 
 		new Parser(args.get(0), cmd).parseAsRole(
 				role ->

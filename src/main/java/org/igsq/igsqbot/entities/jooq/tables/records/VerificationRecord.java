@@ -17,7 +17,7 @@ import org.jooq.impl.UpdatableRecordImpl;
  */
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
-		implements Record4<Long, String, Long, Long>
+		implements Record4<Long, Long, String, Long>
 {
 
 	private static final long serialVersionUID = 1L;
@@ -33,13 +33,13 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	/**
 	 * Create a detached, initialised VerificationRecord
 	 */
-	public VerificationRecord(Long id, String phrase, Long guildId, Long roleId)
+	public VerificationRecord(Long id, Long guildId, String phrase, Long roleId)
 	{
 		super(Verification.VERIFICATION);
 
 		setId(id);
-		setPhrase(phrase);
 		setGuildId(guildId);
+		setPhrase(phrase);
 		setRoleId(roleId);
 	}
 
@@ -61,34 +61,34 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	}
 
 	/**
-	 * Getter for <code>public.verification.phrase</code>.
-	 */
-	public String getPhrase()
-	{
-		return (String) get(1);
-	}
-
-	/**
-	 * Setter for <code>public.verification.phrase</code>.
-	 */
-	public VerificationRecord setPhrase(String value)
-	{
-		set(1, value);
-		return this;
-	}
-
-	/**
 	 * Getter for <code>public.verification.guild_id</code>.
 	 */
 	public Long getGuildId()
 	{
-		return (Long) get(2);
+		return (Long) get(1);
 	}
 
 	/**
 	 * Setter for <code>public.verification.guild_id</code>.
 	 */
 	public VerificationRecord setGuildId(Long value)
+	{
+		set(1, value);
+		return this;
+	}
+
+	/**
+	 * Getter for <code>public.verification.phrase</code>.
+	 */
+	public String getPhrase()
+	{
+		return (String) get(2);
+	}
+
+	/**
+	 * Setter for <code>public.verification.phrase</code>.
+	 */
+	public VerificationRecord setPhrase(String value)
 	{
 		set(2, value);
 		return this;
@@ -126,13 +126,13 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	}
 
 	@Override
-	public Row4<Long, String, Long, Long> fieldsRow()
+	public Row4<Long, Long, String, Long> fieldsRow()
 	{
 		return (Row4) super.fieldsRow();
 	}
 
 	@Override
-	public Row4<Long, String, Long, Long> valuesRow()
+	public Row4<Long, Long, String, Long> valuesRow()
 	{
 		return (Row4) super.valuesRow();
 	}
@@ -144,15 +144,15 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	}
 
 	@Override
-	public Field<String> field2()
+	public Field<Long> field2()
 	{
-		return Verification.VERIFICATION.PHRASE;
+		return Verification.VERIFICATION.GUILD_ID;
 	}
 
 	@Override
-	public Field<Long> field3()
+	public Field<String> field3()
 	{
-		return Verification.VERIFICATION.GUILD_ID;
+		return Verification.VERIFICATION.PHRASE;
 	}
 
 	@Override
@@ -168,15 +168,15 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	}
 
 	@Override
-	public String component2()
+	public Long component2()
 	{
-		return getPhrase();
+		return getGuildId();
 	}
 
 	@Override
-	public Long component3()
+	public String component3()
 	{
-		return getGuildId();
+		return getPhrase();
 	}
 
 	@Override
@@ -192,15 +192,15 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	}
 
 	@Override
-	public String value2()
+	public Long value2()
 	{
-		return getPhrase();
+		return getGuildId();
 	}
 
 	@Override
-	public Long value3()
+	public String value3()
 	{
-		return getGuildId();
+		return getPhrase();
 	}
 
 	@Override
@@ -217,16 +217,16 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	}
 
 	@Override
-	public VerificationRecord value2(String value)
+	public VerificationRecord value2(Long value)
 	{
-		setPhrase(value);
+		setGuildId(value);
 		return this;
 	}
 
 	@Override
-	public VerificationRecord value3(Long value)
+	public VerificationRecord value3(String value)
 	{
-		setGuildId(value);
+		setPhrase(value);
 		return this;
 	}
 
@@ -242,7 +242,7 @@ public class VerificationRecord extends UpdatableRecordImpl<VerificationRecord>
 	}
 
 	@Override
-	public VerificationRecord values(Long value1, String value2, Long value3, Long value4)
+	public VerificationRecord values(Long value1, Long value2, String value3, Long value4)
 	{
 		value1(value1);
 		value2(value2);

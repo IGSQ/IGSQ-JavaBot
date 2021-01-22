@@ -6,6 +6,7 @@ package org.igsq.igsqbot.entities.jooq;
 
 import org.igsq.igsqbot.entities.jooq.tables.*;
 import org.igsq.igsqbot.entities.jooq.tables.records.*;
+import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -37,7 +38,14 @@ public class Keys
 	public static final UniqueKey<TempbansRecord> TEMPBANS_PKEY = Internal.createUniqueKey(Tempbans.TEMPBANS, DSL.name("tempbans_pkey"), new TableField[]{Tempbans.TEMPBANS.ID}, true);
 	public static final UniqueKey<TempbansRecord> TEMPBANS_USER_ID_KEY = Internal.createUniqueKey(Tempbans.TEMPBANS, DSL.name("tempbans_user_id_key"), new TableField[]{Tempbans.TEMPBANS.USER_ID}, true);
 	public static final UniqueKey<VerificationRecord> VERIFICATION_PKEY = Internal.createUniqueKey(Verification.VERIFICATION, DSL.name("verification_pkey"), new TableField[]{Verification.VERIFICATION.ID}, true);
+	public static final UniqueKey<VerificationRecord> VERIFICATION_ROLE_ID_PHRASE_KEY = Internal.createUniqueKey(Verification.VERIFICATION, DSL.name("verification_role_id_phrase_key"), new TableField[]{Verification.VERIFICATION.ROLE_ID, Verification.VERIFICATION.PHRASE}, true);
 	public static final UniqueKey<VotesRecord> VOTES_PKEY = Internal.createUniqueKey(Votes.VOTES, DSL.name("votes_pkey"), new TableField[]{Votes.VOTES.ID}, true);
 	public static final UniqueKey<WarningsRecord> WARNINGS_PKEY = Internal.createUniqueKey(Warnings.WARNINGS, DSL.name("warnings_pkey"), new TableField[]{Warnings.WARNINGS.ID}, true);
 	public static final UniqueKey<WordBlacklistsRecord> WORD_BLACKLISTS_PKEY = Internal.createUniqueKey(WordBlacklists.WORD_BLACKLISTS, DSL.name("word_blacklists_pkey"), new TableField[]{WordBlacklists.WORD_BLACKLISTS.ID}, true);
+
+	// -------------------------------------------------------------------------
+	// FOREIGN KEY definitions
+	// -------------------------------------------------------------------------
+
+	public static final ForeignKey<VerificationRecord, GuildsRecord> VERIFICATION__VERIFICATION_GUILD_ID_FKEY = Internal.createForeignKey(Verification.VERIFICATION, DSL.name("verification_guild_id_fkey"), new TableField[]{Verification.VERIFICATION.GUILD_ID}, Keys.GUILDS_PKEY, new TableField[]{Guilds.GUILDS.GUILD_ID}, true);
 }

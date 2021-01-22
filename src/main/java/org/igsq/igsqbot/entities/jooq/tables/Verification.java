@@ -33,13 +33,13 @@ public class Verification extends TableImpl<VerificationRecord>
 	 */
 	public final TableField<VerificationRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 	/**
-	 * The column <code>public.verification.phrase</code>.
-	 */
-	public final TableField<VerificationRecord, String> PHRASE = createField(DSL.name("phrase"), SQLDataType.CLOB.nullable(false), this, "");
-	/**
 	 * The column <code>public.verification.guild_id</code>.
 	 */
 	public final TableField<VerificationRecord, Long> GUILD_ID = createField(DSL.name("guild_id"), SQLDataType.BIGINT.nullable(false), this, "");
+	/**
+	 * The column <code>public.verification.phrase</code>.
+	 */
+	public final TableField<VerificationRecord, String> PHRASE = createField(DSL.name("phrase"), SQLDataType.CLOB.nullable(false), this, "");
 	/**
 	 * The column <code>public.verification.role_id</code>.
 	 */
@@ -114,7 +114,18 @@ public class Verification extends TableImpl<VerificationRecord>
 	@Override
 	public List<UniqueKey<VerificationRecord>> getKeys()
 	{
-		return Arrays.<UniqueKey<VerificationRecord>>asList(Keys.VERIFICATION_PKEY);
+		return Arrays.<UniqueKey<VerificationRecord>>asList(Keys.VERIFICATION_PKEY, Keys.VERIFICATION_ROLE_ID_PHRASE_KEY);
+	}
+
+	@Override
+	public List<ForeignKey<VerificationRecord, ?>> getReferences()
+	{
+		return Arrays.<ForeignKey<VerificationRecord, ?>>asList(Keys.VERIFICATION__VERIFICATION_GUILD_ID_FKEY);
+	}
+
+	public Guilds guilds()
+	{
+		return new Guilds(this, Keys.VERIFICATION__VERIFICATION_GUILD_ID_FKEY);
 	}
 
 	@Override
@@ -152,7 +163,7 @@ public class Verification extends TableImpl<VerificationRecord>
 	// -------------------------------------------------------------------------
 
 	@Override
-	public Row4<Long, String, Long, Long> fieldsRow()
+	public Row4<Long, Long, String, Long> fieldsRow()
 	{
 		return (Row4) super.fieldsRow();
 	}

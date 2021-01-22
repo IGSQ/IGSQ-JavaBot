@@ -22,11 +22,11 @@ public class VerificationShowCommand extends Command
 	@Override
 	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
 	{
-		Map<Long, String> phrases = VerificationUtils.getMappedPhrases(cmd.getGuild(), cmd.getIGSQBot());
+		Map<String, Long> phrases = VerificationUtils.getMappedPhrases(cmd.getGuild(), cmd.getIGSQBot());
 		StringBuilder text = new StringBuilder();
 
 		phrases.forEach(
-				(role, phrase) -> text
+				(phrase, role) -> text
 						.append(StringUtils.getRoleAsMention(role))
 						.append(" -> ")
 						.append(phrase)

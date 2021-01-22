@@ -153,11 +153,11 @@ public class VerificationCommand extends Command
 		List<Long> result = new ArrayList<>();
 		List<String> content = messages.stream().map(Message::getContentRaw).collect(Collectors.toList());
 
-		Map<Long, String> mappings = VerificationUtils.getMappedPhrases(guild, igsqBot);
+		Map<String, Long> mappings = VerificationUtils.getMappedPhrases(guild, igsqBot);
 		JaroWinkler matcher = new JaroWinkler();
 
 		mappings.forEach(
-				(role, phrase) ->
+				(phrase, role) ->
 				{
 					for(String message : content)
 					{

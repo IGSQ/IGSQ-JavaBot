@@ -15,9 +15,9 @@ public class VerificationUtils
 		//Overrides the default, public. constructor
 	}
 
-	public static Map<Long, String> getMappedPhrases(Guild guild, IGSQBot igsqBot)
+	public static Map<String, Long> getMappedPhrases(Guild guild, IGSQBot igsqBot)
 	{
-		Map<Long, String> result = new HashMap<>();
+		Map<String, Long> result = new HashMap<>();
 
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
@@ -29,7 +29,7 @@ public class VerificationUtils
 
 			for(var row : query.fetch())
 			{
-				result.put(row.getRoleId(), row.getPhrase());
+				result.put(row.getPhrase(), row.getRoleId());
 			}
 		}
 		catch(Exception exception)
