@@ -8,11 +8,13 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 
+@SuppressWarnings("unused")
 public class CoinflipCommand extends Command
 {
 	public CoinflipCommand()
 	{
 		super("Coinflip", "Flips a coin.", "[none]");
+		addAliases("coinflip");
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public class ChoiceCommand extends Command
 	public ChoiceCommand()
 	{
 		super("choice", "Chooses a 50/50 for you.", "[opt1][opt2]");
+		addAliases("choice");
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public class EightBallCommand extends Command
 	public EightBallCommand()
 	{
 		super("8ball", "Query the 8Ball.", "[question]");
+		addAliases("8ball");
 	}
 
 	@Override
