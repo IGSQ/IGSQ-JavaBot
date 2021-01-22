@@ -44,7 +44,10 @@ public class VerificationUtils
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
-			var existsQuery = ctx.selectFrom(VERIFICATION).where(VERIFICATION.ROLE_ID.eq(roleId));
+			var existsQuery = ctx
+					.selectFrom(VERIFICATION)
+					.where(VERIFICATION.ROLE_ID.eq(roleId))
+					.and(VERIFICATION.PHRASE.eq(phrase));
 
 			if(existsQuery.fetch().isNotEmpty())
 			{
