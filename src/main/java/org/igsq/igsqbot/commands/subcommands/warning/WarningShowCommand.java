@@ -11,6 +11,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
@@ -31,6 +32,12 @@ public class WarningShowCommand extends Command
 
 		new Parser(args.get(0), cmd).parseAsUser(user ->
 		{
+			if(user.isBot())
+			{
+				failure.accept(new CommandInputException("Bots cannot have warnings."));
+				return;
+			}
+			
 			Guild guild = cmd.getGuild();
 			MessageChannel channel = cmd.getChannel();
 			List<Warnings> warnings = new Warning(guild, user, cmd.getIGSQBot()).get();
