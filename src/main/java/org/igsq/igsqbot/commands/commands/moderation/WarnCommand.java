@@ -1,10 +1,13 @@
 package org.igsq.igsqbot.commands.commands.moderation;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.function.Consumer;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
+import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.commands.subcommands.warning.WarningRemoveCommand;
 import org.igsq.igsqbot.commands.subcommands.warning.WarningShowCommand;
 import org.igsq.igsqbot.entities.command.Command;
@@ -51,6 +54,15 @@ public class WarnCommand extends Command
 				String reason = String.join(" ", args);
 				new Warning(guild, user, cmd.getIGSQBot()).add(reason);
 				cmd.replySuccess("Warned " + user.getAsMention() + " for reason: " + reason);
+
+				user.openPrivateChannel()
+						.flatMap(privateChannel -> privateChannel.sendMessage(new EmbedBuilder()
+								.setTitle("You have been warned in " + guild.getName())
+								.addField("Reason", reason, true)
+								.addField("Moderator", author.getAsMention(), true)
+								.setColor(Constants.IGSQ_PURPLE)
+								.setTimestamp(Instant.now())
+								.build())).queue(null, error -> {});
 			});
 		});
 	}

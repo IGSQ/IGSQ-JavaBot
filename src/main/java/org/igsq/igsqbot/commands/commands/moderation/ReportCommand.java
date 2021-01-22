@@ -76,7 +76,11 @@ public class ReportCommand extends Command
 								(
 										message ->
 										{
-											author.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(generateDM(member, user, reason).build()).queue());
+											author.openPrivateChannel()
+													.flatMap(privateChannel ->
+															privateChannel.sendMessage(generateDM(member, user, reason).build()))
+													.queue(null, error -> {});
+
 											Report.add(message.getIdLong(), cmd.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), author.getIdLong(), reason, cmd.getIGSQBot());
 											message.addReaction(Emoji.THUMB_UP.getUnicode()).queue();
 										}
