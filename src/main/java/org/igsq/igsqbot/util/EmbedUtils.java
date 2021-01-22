@@ -24,7 +24,7 @@ public class EmbedUtils
 	public static void sendError(MessageChannel channel, String errorText)
 	{
 		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() + errorText)
+				.setDescription(Emoji.FAILURE.getAsChat() + errorText)
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}
@@ -36,14 +36,14 @@ public class EmbedUtils
 		if(ctx.isChild())
 		{
 			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-					.setDescription(Emoji.FAILURE.getAsMessageable() + "A syntax error occurred:\n`" + ctx.getPrefix() + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
+					.setDescription(Emoji.FAILURE.getAsChat() + "A syntax error occurred:\n`" + ctx.getPrefix() + cmd.getParent().getAliases().get(0) + " " + cmd.getName() + " " + cmd.getSyntax() + "`")
 					.setTimestamp(Instant.now())
 					.setColor(Color.RED), 30000);
 		}
 		else
 		{
 			sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-					.setDescription(Emoji.FAILURE.getAsMessageable() + "A syntax error occurred:\n`" + ctx.getPrefix() + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
+					.setDescription(Emoji.FAILURE.getAsChat() + "A syntax error occurred:\n`" + ctx.getPrefix() + cmd.getAliases().get(0) + " " + cmd.getSyntax() + "`")
 					.setTimestamp(Instant.now())
 					.setColor(Color.RED), 20000);
 		}
@@ -57,7 +57,7 @@ public class EmbedUtils
 
 		cmd.getMemberRequiredPermissions().forEach(perm -> perms.append("*").append(perm.getName()).append("*").append("\n"));
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() +
+				.setDescription(Emoji.FAILURE.getAsChat() +
 						" You do not have the following required permissions:"
 						+ perms.toString())
 				.setColor(Color.RED)
@@ -73,7 +73,7 @@ public class EmbedUtils
 
 		cmd.getSelfRequiredPermissions().forEach(perm -> perms.append("*").append(perm.getName()).append("*").append("\n"));
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() +
+				.setDescription(Emoji.FAILURE.getAsChat() +
 						" I do not have the following required permission:`"
 						+ perms.toString())
 				.setColor(Color.RED)
@@ -83,7 +83,7 @@ public class EmbedUtils
 	public static void sendSuccess(MessageChannel channel, String successText)
 	{
 		sendDeletingEmbed(channel, new EmbedBuilder()
-				.setDescription(Emoji.SUCCESS.getAsMessageable() + successText)
+				.setDescription(Emoji.SUCCESS.getAsChat() + successText)
 				.setColor(Color.GREEN)
 				.setTimestamp(Instant.now()));
 	}
@@ -92,7 +92,7 @@ public class EmbedUtils
 	{
 		ctx.addErrorReaction();
 		sendDeletingEmbed(ctx.getChannel(), new EmbedBuilder()
-				.setDescription(Emoji.FAILURE.getAsMessageable() + " `" + ctx.getCommand().getName() + "` is currently disabled!")
+				.setDescription(Emoji.FAILURE.getAsChat() + " `" + ctx.getCommand().getName() + "` is currently disabled!")
 				.setColor(Color.RED)
 				.setTimestamp(Instant.now()));
 	}

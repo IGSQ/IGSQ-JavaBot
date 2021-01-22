@@ -120,7 +120,7 @@ public enum Emoji
 		return this.unicode;
 	}
 
-	public String getAsMessageable()
+	public String getAsChat()
 	{
 		if(this.unicode.isBlank())
 		{

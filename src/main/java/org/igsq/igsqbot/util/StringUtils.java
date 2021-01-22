@@ -28,16 +28,16 @@ public class StringUtils
 	{
 		return switch(number)
 				{
-					case 1 -> Emoji.ONE.getAsMessageable();
-					case 2 -> Emoji.TWO.getAsMessageable();
-					case 3 -> Emoji.THREE.getAsMessageable();
-					case 4 -> Emoji.FOUR.getAsMessageable();
-					case 5 -> Emoji.FIVE.getAsMessageable();
-					case 6 -> Emoji.SIX.getAsMessageable();
-					case 7 -> Emoji.SEVEN.getAsMessageable();
-					case 8 -> Emoji.EIGHT.getAsMessageable();
-					case 9 -> Emoji.NINE.getAsMessageable();
-					case 0 -> Emoji.ZERO.getAsMessageable();
+					case 1 -> Emoji.ONE.getAsChat();
+					case 2 -> Emoji.TWO.getAsChat();
+					case 3 -> Emoji.THREE.getAsChat();
+					case 4 -> Emoji.FOUR.getAsChat();
+					case 5 -> Emoji.FIVE.getAsChat();
+					case 6 -> Emoji.SIX.getAsChat();
+					case 7 -> Emoji.SEVEN.getAsChat();
+					case 8 -> Emoji.EIGHT.getAsChat();
+					case 9 -> Emoji.NINE.getAsChat();
+					case 0 -> Emoji.ZERO.getAsChat();
 					default -> "";
 				};
 	}

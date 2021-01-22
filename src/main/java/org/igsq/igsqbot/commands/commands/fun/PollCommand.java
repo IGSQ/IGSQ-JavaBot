@@ -44,7 +44,7 @@ public class PollCommand extends Command
 		{
 			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
 			{
-				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsMessageable()).append("\n");
+				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsChat()).append("\n");
 				reactions.add(emojis.get(i - 1).getUnicode());
 			}
 		}
@@ -52,7 +52,7 @@ public class PollCommand extends Command
 		{
 			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
 			{
-				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsMessageable()).append("\n\n");
+				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsChat()).append("\n\n");
 				reactions.add(emojis.get(i - 1).getUnicode());
 			}
 		}

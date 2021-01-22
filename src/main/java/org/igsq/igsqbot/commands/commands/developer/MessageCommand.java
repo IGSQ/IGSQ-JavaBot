@@ -109,16 +109,6 @@ public class MessageCommand extends Command
 						"\u200F\u200F\u200E\n" +
 						"**Note**: This is a summary of our guidelines. More information will be available after verification!");
 
-		EmbedBuilder VERIFICATION = new EmbedBuilder().setDescription("This server has a **semi-automatic** verification system. It means the bot will take care of verification, but it will be manually checked by staff first. To give you the correct roles, please tell us in this channel:\n" +
-				"\n" +
-				Emoji.IGSQ1.getAsMessageable() + " What country are you from?\n" +
-				"\n" +
-				Emoji.IGSQ2.getAsMessageable() + " What game(s) did you join for?\n" +
-				"\n" +
-				"• By joining our server, you agree to follow our <#767657829401231360>.\n" +
-				"\n" +
-				"• Below you can see an example of a previous member who just joined the server. **Please type your answer below the example, and you'll be verified as soon as possible.** This is usually in less than a minute, but if nobody is online, it can take a couple hours.");
-
 		EmbedBuilder ROLEINFO = new EmbedBuilder().setTitle("**Roles**:").setDescription("" +
 				"<@&558697600375848970> are the administrators of the server.\n" +
 				"\n" +
@@ -147,10 +137,15 @@ public class MessageCommand extends Command
 
 		switch(args.get(0))
 		{
-			case "verification" -> cmd.getChannel().sendMessage(VERIFICATION
-					.setColor(Constants.IGSQ_PURPLE)
-					.setFooter("© 2020 The Intergalactic Squirrels™")
-					.build()).queue();
+			case "verification" -> cmd.getChannel().sendMessage("This server has a **semi-automatic** verification system. It means the bot will take care of verification, but it will be manually checked by staff first. To give you the correct roles, please tell us in this channel:\n" +
+					"\n" +
+					Emoji.IGSQ1.getAsChat() + " What country are you from?\n" +
+					"\n" +
+					Emoji.IGSQ2.getAsChat() + " What game(s) did you join for?\n" +
+					"\n" +
+					"• By joining our server, you agree to follow our <#767657829401231360>.\n" +
+					"\n" +
+					"• Below you can see an example of a previous member who just joined the server. **Please type your answer below the example, and you'll be verified as soon as possible.** This is usually in less than a minute, but if nobody is online, it can take a couple hours.").queue();
 
 			case "shortrules" -> cmd.getChannel().sendMessage(SHORTRULES
 					.setColor(Constants.IGSQ_PURPLE)
