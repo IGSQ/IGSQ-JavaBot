@@ -39,10 +39,22 @@ public class PollCommand extends Command
 		String topic = slashArgs.get(0);
 
 		List<Emoji> emojis = Emoji.getPoll();
-		for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
+
+		if(slashArgs.size() > 10)
 		{
-			options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsMessageable()).append("\n\n");
-			reactions.add(emojis.get(i - 1).getUnicode());
+			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
+			{
+				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsMessageable()).append("\n");
+				reactions.add(emojis.get(i - 1).getUnicode());
+			}
+		}
+		else
+		{
+			for(int i = 1; i < slashArgs.size() && i < EmbedUtils.REACTION_LIMIT + 1; i++)
+			{
+				options.append(slashArgs.get(i)).append(" ").append(emojis.get(i - 1).getAsMessageable()).append("\n\n");
+				reactions.add(emojis.get(i - 1).getUnicode());
+			}
 		}
 
 		channel.sendMessage(new EmbedBuilder()
