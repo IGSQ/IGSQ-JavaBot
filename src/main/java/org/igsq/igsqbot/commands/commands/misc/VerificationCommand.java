@@ -198,8 +198,10 @@ public class VerificationCommand extends Command
 								query = words.get(i);
 							}
 
+							System.out.println("QUERY -> " + query);
 							if(matcher.similarity(phrase, query) > 0.8)
 							{
+								System.out.println("ADDED " + role);
 								result.add(role);
 							}
 						}
