@@ -163,6 +163,10 @@ public class VerificationCommand extends Command
 
 		Map<String, Long> mappings = VerificationUtils.getMappedPhrases(guild, igsqBot);
 		JaroWinkler matcher = new JaroWinkler();
+		if(mappings.isEmpty())
+		{
+			return result;
+		}
 
 		for(Map.Entry<String, Long> entry : mappings.entrySet())
 		{
@@ -186,7 +190,8 @@ public class VerificationCommand extends Command
 						else
 						{
 							query = words.get(i) + words.get(i + 1);
-							words.remove(i + 1);
+							words.remove(i);
+							words.remove(i);
 						}
 					}
 					else
