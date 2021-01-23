@@ -93,7 +93,7 @@ public class VerificationCommand extends Command
 													.map(guild::getRoleById)
 													.filter(Objects::nonNull)
 													.collect(Collectors.toList());
-											
+
 											if(!roles.isEmpty())
 											{
 												for(Role role : roles)
@@ -197,7 +197,10 @@ public class VerificationCommand extends Command
 
 					if(matcher.similarity(phrase, query) > 0.8)
 					{
-						result.add(role);
+						if(!result.contains(role))
+						{
+							result.add(role);
+						}
 					}
 				}
 			}
