@@ -28,7 +28,7 @@ public enum CommandFlag
 	/**
 	 * If the {@link org.igsq.igsqbot.entities.command.Command command} is disabled.
 	 *
-	 * @see org.igsq.igsqbot.entities.command.Command#isDisabled().
+	 * @see org.igsq.igsqbot.entities.command.Command#isDisabled() isDisabled()
 	 */
 	DISABLED(false);
 
