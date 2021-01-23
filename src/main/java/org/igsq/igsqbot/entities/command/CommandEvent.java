@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -139,18 +140,18 @@ public class CommandEvent
 	}
 
 	/**
-	 * The {@link net.dv8tion.jda.api.entities.Guild guild}.
+	 * .
 	 *
-	 * @throws java.lang.IllegalStateException If {@link #getChannelType()} != {@link net.dv8tion.jda.api.entities.ChannelType#TEXT}.
+	 * @return The {@link net.dv8tion.jda.api.entities.Guild guild} or <code>null</code> if the command was not executed in a server.
 	 */
-	@Nonnull
+	@Nullable
 	public Guild getGuild()
 	{
-		if(command.hasFlag(CommandFlag.GUILD_ONLY) && event.isFromGuild())
+		if(event.isFromGuild())
 		{
 			return event.getGuild();
 		}
-		throw new IllegalStateException("Guild cannot be accessed from a Private Channel");
+		return null;
 	}
 
 	/**

@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
-import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.Parser;
@@ -19,7 +18,6 @@ public class HelpCommand extends Command
 	{
 		super("Help", "Shows the help menu for this bot.", "[page / command]");
 		addAliases("help", "?", "howto", "commands");
-		addFlags(CommandFlag.GUILD_ONLY);
 	}
 
 	@Override

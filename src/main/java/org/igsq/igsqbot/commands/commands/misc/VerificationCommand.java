@@ -191,6 +191,7 @@ public class VerificationCommand extends Command
 
 							if(matcher.similarity(phrase, query) > 0.8)
 							{
+								System.out.println("MATCHED ROLE " + role + " FOR PHRASE " + phrase);
 								result.add(role);
 							}
 						}
