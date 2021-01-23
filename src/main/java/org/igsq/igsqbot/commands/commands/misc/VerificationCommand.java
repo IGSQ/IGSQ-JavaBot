@@ -92,7 +92,7 @@ public class VerificationCommand extends Command
 											for(long role : getMatches(messages, commandEvent.getGuild(), commandEvent.getIGSQBot()))
 											{
 												Role fetch = guild.getRoleById(role);
-												if(fetch !=null)
+												if(fetch != null)
 												{
 													roles.add(fetch);
 												}
@@ -177,6 +177,7 @@ public class VerificationCommand extends Command
 		{
 			String phrase = entry.getKey();
 			long role = entry.getValue();
+
 			for(String message : content)
 			{
 				List<String> words = new ArrayList<>(List.of(message.split(" ")));

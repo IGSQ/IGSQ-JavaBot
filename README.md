@@ -125,7 +125,8 @@ None!
  - [x] Muting causing duplicate entries (fixed, was a Map issue)
  - [x] Resource loading fails (incorrect method used)
  - [x] Unchecked interaction check for reaction roles
- - [ ] Time parsing might have issues
+ - [ ] Time parsing might have issues (vote)
+ - [ ] Verification does not always work
 
 ## Building and Running
 
