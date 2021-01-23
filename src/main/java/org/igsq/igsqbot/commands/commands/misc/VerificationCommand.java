@@ -88,16 +88,20 @@ public class VerificationCommand extends Command
 											StringBuilder ctxMessage = new StringBuilder();
 											StringBuilder welcomeMessage = new StringBuilder();
 
-											List<Role> roles = getMatches(messages, commandEvent.getGuild(), commandEvent.getIGSQBot()).stream()
+											List<Role> roles = getMatches(messages, commandEvent.getGuild(), commandEvent.getIGSQBot())
+													.stream()
 													.map(guild::getRoleById)
 													.filter(Objects::nonNull)
 													.collect(Collectors.toList());
 
 											System.out.println("HERE");
-											for(Role role : roles)
+											if(!roles.isEmpty())
 											{
-												ctxMessage.append(role.getAsMention()).append("\n");
-												welcomeMessage.append(role.getAsMention());
+												for(Role role : roles)
+												{
+													ctxMessage.append(role.getAsMention()).append("\n");
+													welcomeMessage.append(role.getAsMention());
+												}
 											}
 											System.out.println("HERE1");
 											roles.addAll(member.getRoles());
