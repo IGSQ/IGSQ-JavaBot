@@ -93,8 +93,7 @@ public class VerificationCommand extends Command
 													.map(guild::getRoleById)
 													.filter(Objects::nonNull)
 													.collect(Collectors.toList());
-
-											System.out.println("HERE");
+											
 											if(!roles.isEmpty())
 											{
 												for(Role role : roles)
@@ -103,9 +102,7 @@ public class VerificationCommand extends Command
 													welcomeMessage.append(role.getAsMention());
 												}
 											}
-											System.out.println("HERE1");
 											roles.addAll(member.getRoles());
-											System.out.println("HERE2");
 
 											commandEvent.getChannel().sendMessage(new EmbedBuilder()
 													.setTitle("Verification for " + target.getAsTag())
@@ -114,7 +111,6 @@ public class VerificationCommand extends Command
 													.setTimestamp(Instant.now())
 													.build()).queue(message ->
 											{
-												System.out.println("HERE3");
 												message.addReaction(Emoji.THUMB_UP.getAsReaction()).queue();
 												commandEvent.getIGSQBot().getEventWaiter().waitForEvent(GuildMessageReactionAddEvent.class,
 														event -> event.getMessageIdLong() == message.getIdLong() && event.getUserIdLong() == commandEvent.getAuthor().getIdLong(),
@@ -168,8 +164,6 @@ public class VerificationCommand extends Command
 		Map<String, Long> mappings = VerificationUtils.getMappedPhrases(guild, igsqBot);
 		JaroWinkler matcher = new JaroWinkler();
 
-		System.out.println("GOING INTO FOR");
-
 		for(Map.Entry<String, Long> entry : mappings.entrySet())
 		{
 			String phrase = entry.getKey();
@@ -201,16 +195,13 @@ public class VerificationCommand extends Command
 						query = words.get(i);
 					}
 
-					System.out.println("QUERY -> " + query);
 					if(matcher.similarity(phrase, query) > 0.8)
 					{
-						System.out.println("ADDED " + role);
 						result.add(role);
 					}
 				}
 			}
 		}
-		System.out.println(result.toString());
 		return result;
 	}
 
