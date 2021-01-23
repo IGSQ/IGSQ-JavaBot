@@ -8,6 +8,7 @@ import org.igsq.igsqbot.commands.subcommands.link.LinkShowCommand;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class LinkCommand extends Command
@@ -23,8 +24,8 @@ public class LinkCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		this.getChildren().get(2).run(args, cmd, failure);
+		this.getChildren().get(2).run(args, event, failure);
 	}
 }

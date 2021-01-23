@@ -17,6 +17,7 @@ import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 import org.igsq.igsqbot.handlers.CooldownHandler;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class ClearCommand extends Command
@@ -27,19 +28,19 @@ public class ClearCommand extends Command
 		addAliases("clear", "purge");
 		addMemberPermissions(Permission.MESSAGE_MANAGE);
 		addSelfPermissions(Permission.MESSAGE_MANAGE);
-		addCooldown(10000);
+		setCooldown(10000L);
 		addFlags(CommandFlag.GUILD_ONLY);
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
-		MessageChannel channel = cmd.getChannel();
-		Member member = cmd.getMember();
-		Guild guild = cmd.getGuild();
-		OptionalInt amount = new Parser(args.get(0), cmd).parseAsUnsignedInt();
+		MessageChannel channel = event.getChannel();
+		Member member = event.getMember();
+		Guild guild = event.getGuild();
+		OptionalInt amount = new Parser(args.get(0), event).parseAsUnsignedInt();
 
 		if(amount.isPresent())
 		{
@@ -59,7 +60,7 @@ public class ClearCommand extends Command
 			{
 				CooldownHandler.addCooldown(member, this);
 				channel.purgeMessages(messages);
-				cmd.replySuccess("Deleted " + (messages.size()) + " messages");
+				event.replySuccess("Deleted " + (messages.size()) + " messages");
 				MessageCache cache = MessageCache.getCache(guild);
 				messages.stream().filter(cache::isInCache).forEach(cache::remove);
 			});

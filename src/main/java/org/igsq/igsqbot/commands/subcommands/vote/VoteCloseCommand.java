@@ -12,6 +12,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 public class VoteCloseCommand extends Command
 {
@@ -23,15 +24,15 @@ public class VoteCloseCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
-		OptionalLong id = new Parser(args.get(0), cmd).parseAsUnsignedLong();
+		OptionalLong id = new Parser(args.get(0), event).parseAsUnsignedLong();
 
 		if(id.isPresent())
 		{
-			Boolean success = Vote.closeById(id.getAsLong(), cmd);
+			Boolean success = Vote.closeById(id.getAsLong(), event);
 			if(success == null)
 			{
 				return;
@@ -43,7 +44,7 @@ public class VoteCloseCommand extends Command
 			}
 			else
 			{
-				cmd.replySuccess("Closed vote **" + id.getAsLong() + "** successfully.");
+				event.replySuccess("Closed vote **" + id.getAsLong() + "** successfully.");
 			}
 		}
 	}

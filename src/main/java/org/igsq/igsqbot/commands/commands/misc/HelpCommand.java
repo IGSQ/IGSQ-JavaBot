@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class HelpCommand extends Command
@@ -20,7 +21,7 @@ public class HelpCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		OptionalInt page;
 		if(args.isEmpty())
@@ -29,14 +30,14 @@ public class HelpCommand extends Command
 		}
 		else
 		{
-			Command command = cmd.getIGSQBot().getCommandHandler().getCommandMap().get(args.get(0));
+			Command command = event.getIGSQBot().getCommandHandler().getCommandMap().get(args.get(0));
 			if(command == null)
 			{
-				page = new Parser(args.get(0), cmd).parseAsUnsignedInt();
+				page = new Parser(args.get(0), event).parseAsUnsignedInt();
 			}
 			else
 			{
-				cmd.sendMessage(generateHelpPerCommand(command, cmd.getPrefix()));
+				event.sendMessage(generateHelpPerCommand(command, event.getPrefix()));
 				return;
 			}
 		}
@@ -44,13 +45,13 @@ public class HelpCommand extends Command
 
 		if(page.isPresent())
 		{
-			if(page.getAsInt() + 1 > cmd.getIGSQBot().getHelpPages().size() + 1)
+			if(page.getAsInt() + 1 > event.getIGSQBot().getHelpPages().size() + 1)
 			{
 				failure.accept(new CommandInputException("Page `" + args.get(0) + "` does not exist."));
 				return;
 			}
 
-			cmd.sendMessage(cmd.getIGSQBot().getHelpPages().get(page.getAsInt() - 1));
+			event.sendMessage(event.getIGSQBot().getHelpPages().get(page.getAsInt() - 1));
 		}
 	}
 

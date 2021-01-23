@@ -8,6 +8,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class ChoiceCommand extends Command
@@ -19,9 +20,9 @@ public class ChoiceCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(event, 2, failure)) return;
 		Random random = new Random();
 		String choice;
 		int chance = random.nextInt(2);
@@ -39,7 +40,7 @@ public class ChoiceCommand extends Command
 		choice = Message.MentionType.EVERYONE.getPattern().matcher(choice).replaceAll("");
 		choice = Message.MentionType.HERE.getPattern().matcher(choice).replaceAll("");
 
-		cmd.getChannel().sendMessage("I choose " + choice).queue();
+		event.getChannel().sendMessage("I choose " + choice).queue();
 	}
 }
 

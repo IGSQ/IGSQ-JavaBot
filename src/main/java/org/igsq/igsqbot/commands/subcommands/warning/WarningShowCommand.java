@@ -16,6 +16,7 @@ import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class WarningShowCommand extends Command
 {
@@ -26,11 +27,11 @@ public class WarningShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
-		new Parser(args.get(0), cmd).parseAsUser(user ->
+		new Parser(args.get(0), event).parseAsUser(user ->
 		{
 			if(user.isBot())
 			{
@@ -38,9 +39,9 @@ public class WarningShowCommand extends Command
 				return;
 			}
 
-			Guild guild = cmd.getGuild();
-			MessageChannel channel = cmd.getChannel();
-			List<Warnings> warnings = new Warning(guild, user, cmd.getIGSQBot()).get();
+			Guild guild = event.getGuild();
+			MessageChannel channel = event.getChannel();
+			List<Warnings> warnings = new Warning(guild, user, event.getIGSQBot()).get();
 			StringBuilder stringBuilder = new StringBuilder();
 
 			warnings.forEach(warn -> stringBuilder

@@ -12,6 +12,7 @@ import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.FileUtils;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class StealCommand extends Command
@@ -26,9 +27,9 @@ public class StealCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure) || CommandChecks.stringIsURL(args.get(1), cmd, failure))
+		if(CommandChecks.argsSizeSubceeds(event, 2, failure) || CommandChecks.stringIsURL(args.get(1), event, failure))
 			return;
 
 		if(!args.get(0).matches("([A-Z]|[a-z]|_)\\w+"))
@@ -44,9 +45,9 @@ public class StealCommand extends Command
 		}
 		else
 		{
-			cmd.getGuild().createEmote(args.get(0), icon).queue(
-					emote -> cmd.replySuccess("Added emote " + emote.getAsMention() + " successfully!"),
-					error -> cmd.replyError("An error occurred while adding the emote."));
+			event.getGuild().createEmote(args.get(0), icon).queue(
+					emote -> event.replySuccess("Added emote " + emote.getAsMention() + " successfully!"),
+					error -> event.replyError("An error occurred while adding the emote."));
 		}
 	}
 }

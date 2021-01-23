@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.exception.CommandHierarchyException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 public class ReactionRoleAddCommand extends Command
 {
@@ -25,39 +26,39 @@ public class ReactionRoleAddCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(cmd, 4, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(event, 4, failure)) return;
 
 		String emote;
-		if(!cmd.getMessage().getEmotes().isEmpty())
+		if(!event.getMessage().getEmotes().isEmpty())
 		{
-			if(cmd.getMessage().getEmotes().get(0).isAnimated())
+			if(event.getMessage().getEmotes().get(0).isAnimated())
 			{
 				failure.accept(new CommandInputException("Animated emotes are not allowed."));
 				return;
 			}
-			emote = cmd.getMessage().getEmotes().get(0).getId();
+			emote = event.getMessage().getEmotes().get(0).getId();
 		}
 		else
 		{
 			emote = args.get(3);
 		}
 
-		OptionalLong messageId = new Parser(args.get(0), cmd).parseAsUnsignedLong();
+		OptionalLong messageId = new Parser(args.get(0), event).parseAsUnsignedLong();
 
 		if(messageId.isPresent())
 		{
-			new Parser(args.get(1), cmd).parseAsTextChannel(
+			new Parser(args.get(1), event).parseAsTextChannel(
 					channel ->
 					{
 						channel.retrieveMessageById(messageId.getAsLong()).queue(
 								message ->
 								{
-									new Parser(args.get(2), cmd).parseAsRole(
+									new Parser(args.get(2), event).parseAsRole(
 											role ->
 											{
-												if(!cmd.getSelfMember().canInteract(role) || !cmd.getMember().canInteract(role))
+												if(!event.getSelfMember().canInteract(role) || !event.getMember().canInteract(role))
 												{
 													failure.accept(new CommandHierarchyException(this));
 													return;
@@ -66,10 +67,10 @@ public class ReactionRoleAddCommand extends Command
 												message.addReaction(emote).queue(
 														success ->
 														{
-															new ReactionRole(message.getIdLong(), role.getIdLong(), cmd.getGuild().getIdLong(), emote, cmd.getIGSQBot()).add();
-															cmd.replySuccess("Reaction role added.");
+															new ReactionRole(message.getIdLong(), role.getIdLong(), event.getGuild().getIdLong(), emote, event.getIGSQBot()).add();
+															event.replySuccess("Reaction role added.");
 														},
-														error -> failure.accept(new CommandInputException("I could not add reaction `" + cmd.getMessage().getEmotes().get(0).getName() + "`")));
+														error -> failure.accept(new CommandInputException("I could not add reaction `" + event.getMessage().getEmotes().get(0).getName() + "`")));
 											});
 								},
 								error -> failure.accept(new CommandInputException("Message with ID " + messageId.getAsLong() + " not found in channel " + channel.getAsMention())));

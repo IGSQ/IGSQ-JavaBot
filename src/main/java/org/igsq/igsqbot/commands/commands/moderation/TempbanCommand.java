@@ -16,6 +16,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.*;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class TempbanCommand extends Command
@@ -31,17 +32,17 @@ public class TempbanCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeMatches(cmd, 2, failure)) return;
+		if(CommandChecks.argsSizeMatches(event, 2, failure)) return;
 
-		new Parser(args.get(0), cmd).parseAsUser(user ->
+		new Parser(args.get(0), event).parseAsUser(user ->
 		{
-			LocalDateTime muteTime = new Parser(args.get(1), cmd).parseAsDuration();
-			User author = cmd.getAuthor();
-			User selfUser = cmd.getIGSQBot().getSelfUser();
-			Guild guild = cmd.getGuild();
-			Role tempBanRole = guild.getRoleById(new GuildConfig(guild.getIdLong(), cmd.getIGSQBot()).getTempBanRole());
+			LocalDateTime muteTime = new Parser(args.get(1), event).parseAsDuration();
+			User author = event.getAuthor();
+			User selfUser = event.getIGSQBot().getSelfUser();
+			Guild guild = event.getGuild();
+			Role tempBanRole = guild.getRoleById(new GuildConfig(guild.getIdLong(), event.getIGSQBot()).getTempBanRole());
 
 			if(CommandChecks.roleConfigured(tempBanRole, "Tempban role", failure)) return;
 
@@ -52,9 +53,9 @@ public class TempbanCommand extends Command
 				return;
 			}
 
-			CommandUtils.interactionCheck(selfUser, user, cmd, () ->
+			CommandUtils.interactionCheck(selfUser, user, event, () ->
 			{
-				CommandUtils.interactionCheck(author, user, cmd, () ->
+				CommandUtils.interactionCheck(author, user, event, () ->
 				{
 					UserUtils.getMemberFromUser(user, guild).queue(member ->
 					{
@@ -62,9 +63,9 @@ public class TempbanCommand extends Command
 						guild.modifyMemberRoles(member, tempBanRole).queue(
 								success ->
 								{
-									if(Tempban.add(member.getIdLong(), roleIds, guild, muteTime, cmd.getIGSQBot()))
+									if(Tempban.add(member.getIdLong(), roleIds, guild, muteTime, event.getIGSQBot()))
 									{
-										cmd.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
+										event.replySuccess("Tempbanned " + user.getAsMention() + " until " + StringUtils.parseDateTime(muteTime));
 									}
 									else
 									{
@@ -86,24 +87,24 @@ public class TempbanCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+		public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 		{
-			if(CommandChecks.argsEmpty(cmd, failure)) return;
+			if(CommandChecks.argsEmpty(event, failure)) return;
 
-			new Parser(args.get(0), cmd).parseAsUser(user ->
+			new Parser(args.get(0), event).parseAsUser(user ->
 			{
-				User author = cmd.getAuthor();
-				User selfUser = cmd.getIGSQBot().getSelfUser();
-				Guild guild = cmd.getGuild();
+				User author = event.getAuthor();
+				User selfUser = event.getIGSQBot().getSelfUser();
+				Guild guild = event.getGuild();
 
-				CommandUtils.interactionCheck(selfUser, user, cmd, () ->
+				CommandUtils.interactionCheck(selfUser, user, event, () ->
 				{
-					CommandUtils.interactionCheck(author, user, cmd, () ->
+					CommandUtils.interactionCheck(author, user, event, () ->
 					{
 						UserUtils.getMemberFromUser(user, guild).queue(member ->
 						{
-							Tempban.remove(member.getIdLong(), cmd.getIGSQBot());
-							cmd.replySuccess("Removed tempban for user " + StringUtils.getUserAsMention(member.getIdLong()));
+							Tempban.remove(member.getIdLong(), event.getIGSQBot());
+							event.replySuccess("Removed tempban for user " + StringUtils.getUserAsMention(member.getIdLong()));
 						});
 					});
 				});

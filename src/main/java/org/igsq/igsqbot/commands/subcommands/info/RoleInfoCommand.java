@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.info.RoleInfo;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 public class RoleInfoCommand extends Command
 {
@@ -19,15 +20,15 @@ public class RoleInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		if(args.isEmpty())
 		{
-			EmbedUtils.sendSyntaxError(cmd);
+			EmbedUtils.sendSyntaxError(event);
 		}
 		else
 		{
-			new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), cmd).parseAsRole(role ->
+			new Parser(ArrayUtils.arrayCompile(args.subList(0, args.size()), " "), event).parseAsRole(role ->
 			{
 				RoleInfo roleInfo = new RoleInfo(role);
 
@@ -43,7 +44,7 @@ public class RoleInfoCommand extends Command
 
 					members.forEach(member -> text.append(member.getAsMention()).append(" "));
 
-					cmd.sendMessage(new EmbedBuilder()
+					event.sendMessage(new EmbedBuilder()
 							.setTitle("Information for role **" + role.getName() + "** (" + size + " Members)")
 							.addField("Random members", text.length() == 0 ? "No members" : text.toString(), false));
 				});

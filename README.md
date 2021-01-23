@@ -107,6 +107,7 @@ None!
 ### **arynxd**
  - [ ] Improve user feedback
  - [ ] Documentation
+ - [ ] Move logging exceptions to errorhandler
  - [ ] **PREPARE FOR PR**
 
 ### **Future work**

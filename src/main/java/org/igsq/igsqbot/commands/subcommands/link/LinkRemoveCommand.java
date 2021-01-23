@@ -11,6 +11,7 @@ import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftChecks;
 import org.igsq.igsqbot.minecraft.MinecraftUtils;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 public class LinkRemoveCommand extends Command
 {
@@ -20,13 +21,13 @@ public class LinkRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
 		String arg = args.get(0);
-		User author = cmd.getAuthor();
-		Minecraft minecraft = cmd.getIGSQBot().getMinecraft();
+		User author = event.getAuthor();
+		Minecraft minecraft = event.getIGSQBot().getMinecraft();
 
 		if(!MinecraftChecks.isAccountExist(arg, minecraft))
 		{
@@ -50,7 +51,7 @@ public class LinkRemoveCommand extends Command
 
 
 		MinecraftUtils.removeLink(uuid, author.getId(), minecraft);
-		cmd.replySuccess("Removed link **" + account + "**");
+		event.replySuccess("Removed link **" + account + "**");
 
 
 	}

@@ -11,6 +11,7 @@ import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 public class BlacklistAddCommand extends Command
 {
@@ -22,18 +23,18 @@ public class BlacklistAddCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 		String phrase = ArrayUtils.arrayCompile(args, " ");
 
-		if(cmd.getIGSQBot().getCommandHandler().getCommandMap().get(phrase) != null)
+		if(event.getIGSQBot().getCommandHandler().getCommandMap().get(phrase) != null)
 		{
 			failure.accept(new CommandInputException("You cannot blacklist my commands."));
 			return;
 		}
 
-		BlacklistUtils.addPhrase(cmd.getGuild(), phrase, cmd.getIGSQBot());
-		cmd.replySuccess("Added phrase ||" + phrase + "|| to the blacklist");
+		BlacklistUtils.addPhrase(event.getGuild(), phrase, event.getIGSQBot());
+		event.replySuccess("Added phrase ||" + phrase + "|| to the blacklist");
 	}
 }

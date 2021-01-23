@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.FileUtils;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class MockCommand extends Command
@@ -24,15 +25,15 @@ public class MockCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
-		if(CommandChecks.argsEmbedCompatible(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
+		if(CommandChecks.argsEmbedCompatible(event, failure)) return;
 
 		InputStream file = FileUtils.getResourceFile("mock.jpg");
 		if(file != null)
 		{
-			cmd.getChannel().sendFile(file, "mock.jpg").embed(new EmbedBuilder()
+			event.getChannel().sendFile(file, "mock.jpg").embed(new EmbedBuilder()
 					.setTitle(mockText(args))
 					.setColor(Constants.IGSQ_PURPLE)
 					.setImage("attachment://mock.jpg")

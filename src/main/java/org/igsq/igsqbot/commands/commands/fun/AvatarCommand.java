@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class AvatarCommand extends Command
@@ -20,23 +21,23 @@ public class AvatarCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeExceeds(cmd, 3, failure)) return;
+		if(CommandChecks.argsSizeExceeds(event, 3, failure)) return;
 
-		Message message = cmd.getMessage();
+		Message message = event.getMessage();
 		User author = message.getAuthor();
 
 		if(message.getMentionedMembers().isEmpty())
 		{
-			cmd.sendMessage(new EmbedBuilder()
+			event.sendMessage(new EmbedBuilder()
 					.setTitle(author.getAsTag() + "'s Avatar")
 					.setImage(author.getAvatarUrl() + "?size=4096"));
 		}
 		else
 		{
 			message.getMentionedMembers().forEach(member ->
-					cmd.sendMessage(new EmbedBuilder()
+					event.sendMessage(new EmbedBuilder()
 							.setTitle(member.getUser().getAsTag() + "'s Avatar")
 							.setImage(member.getUser().getEffectiveAvatarUrl() + "?size=4096")));
 		}

@@ -15,6 +15,7 @@ import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class SuggestionCommand extends Command
@@ -27,14 +28,14 @@ public class SuggestionCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
-		if(CommandChecks.argsEmbedCompatible(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
+		if(CommandChecks.argsEmbedCompatible(event, failure)) return;
 
-		User author = cmd.getAuthor();
-		GuildConfig guildConfig = new GuildConfig(cmd);
-		MessageChannel suggestionChannel = cmd.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
+		User author = event.getAuthor();
+		GuildConfig guildConfig = new GuildConfig(event);
+		MessageChannel suggestionChannel = event.getGuild().getTextChannelById(guildConfig.getSuggestionChannel());
 
 		if(CommandChecks.channelConfigured(suggestionChannel, "Suggestion channel", failure)) return;
 		suggestionChannel.sendMessage(new EmbedBuilder()
@@ -42,7 +43,7 @@ public class SuggestionCommand extends Command
 				.setDescription(ArrayUtils.arrayCompile(args, " "))
 				.setColor(Constants.IGSQ_PURPLE)
 				.setThumbnail(author.getAvatarUrl())
-				.setFooter("Suggested by: " + cmd.getAuthor().getAsTag() + " | ")
+				.setFooter("Suggested by: " + event.getAuthor().getAsTag() + " | ")
 				.setTimestamp(Instant.now())
 				.build()).queue(
 				message ->

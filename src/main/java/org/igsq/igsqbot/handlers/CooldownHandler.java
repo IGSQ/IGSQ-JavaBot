@@ -7,7 +7,7 @@ import org.igsq.igsqbot.entities.command.Command;
 
 public abstract class CooldownHandler
 {
-	private static final Map<CooledCommand, Long> COOLDOWN_MAP = new ConcurrentHashMap<>(); //K = userID, guildId, command V = timestamp
+	private static final Map<CooledCommand, Long> COOLDOWN_MAP = new ConcurrentHashMap<>(); //K = userId, guildId, command V = timestamp
 
 	private CooldownHandler()
 	{

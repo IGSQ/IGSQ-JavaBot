@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class EightBallCommand extends Command
@@ -19,13 +20,13 @@ public class EightBallCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		Random random = new Random();
 		List<String> options = new ArrayList<>(List.of("op1", "op2"));
 
 		int choice = random.nextInt(args.size() + 1);
-		cmd.getChannel().sendMessage(options.get(Math.abs(choice - 1))).queue();
+		event.getChannel().sendMessage(options.get(Math.abs(choice - 1))).queue();
 	}
 }
 

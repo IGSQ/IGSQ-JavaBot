@@ -12,6 +12,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class ReactionRoleShowCommand extends Command
 {
@@ -22,15 +23,15 @@ public class ReactionRoleShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
-		OptionalLong messageId = new Parser(args.get(0), cmd).parseAsUnsignedLong();
+		OptionalLong messageId = new Parser(args.get(0), event).parseAsUnsignedLong();
 
 		if(messageId.isPresent())
 		{
-			List<ReactionRole> reactionRoles = ReactionRole.getByMessageId(messageId.getAsLong(), cmd.getIGSQBot());
+			List<ReactionRole> reactionRoles = ReactionRole.getByMessageId(messageId.getAsLong(), event.getIGSQBot());
 			StringBuilder text = new StringBuilder();
 
 			for(ReactionRole reactionRole : reactionRoles)
@@ -43,7 +44,7 @@ public class ReactionRoleShowCommand extends Command
 						.append("\n");
 			}
 
-			cmd.sendMessage(new EmbedBuilder()
+			event.sendMessage(new EmbedBuilder()
 					.setTitle("Reaction roles for message " + messageId.getAsLong())
 					.setDescription(text.length() == 0 ? "No reaction roles found" : text.toString()));
 		}

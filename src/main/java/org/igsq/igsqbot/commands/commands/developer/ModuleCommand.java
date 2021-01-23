@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class ModuleCommand extends Command
@@ -25,9 +26,9 @@ public class ModuleCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		failure.accept(new CommandSyntaxException(cmd));
+		failure.accept(new CommandSyntaxException(event));
 	}
 
 	public static class ModuleEnableCommand extends Command
@@ -39,11 +40,11 @@ public class ModuleCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+		public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 		{
-			if(CommandChecks.argsEmpty(cmd, failure)) return;
+			if(CommandChecks.argsEmpty(event, failure)) return;
 			String moduleName = args.get(0);
-			Command command = cmd.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
+			Command command = event.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(command == null)
 			{
 				failure.accept(new CommandResultException("Module " + moduleName + " was not found"));
@@ -56,8 +57,8 @@ public class ModuleCommand extends Command
 				return;
 			}
 			command.setDisabled(false);
-			cmd.replySuccess("Enabled module: `" + command.getName() + "`.");
-			cmd.getIGSQBot().getLogger().warn("Module " + command.getName() + " was enabled.");
+			event.replySuccess("Enabled module: `" + command.getName() + "`.");
+			event.getIGSQBot().getLogger().warn("Module " + command.getName() + " was enabled.");
 		}
 	}
 
@@ -70,11 +71,11 @@ public class ModuleCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+		public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 		{
-			if(CommandChecks.argsEmpty(cmd, failure)) return;
+			if(CommandChecks.argsEmpty(event, failure)) return;
 			String moduleName = args.get(0);
-			Command command = cmd.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
+			Command command = event.getIGSQBot().getCommandHandler().getCommandMap().get(moduleName);
 			if(command == null)
 			{
 				failure.accept(new CommandResultException("Module " + moduleName + " was not found"));
@@ -87,8 +88,8 @@ public class ModuleCommand extends Command
 			}
 
 			command.setDisabled(true);
-			cmd.replySuccess("Disabled module: `" + command.getName() + "`.");
-			cmd.getIGSQBot().getLogger().warn("Module " + command.getName() + " was disabled.");
+			event.replySuccess("Disabled module: `" + command.getName() + "`.");
+			event.getIGSQBot().getLogger().warn("Module " + command.getName() + " was disabled.");
 		}
 	}
 }

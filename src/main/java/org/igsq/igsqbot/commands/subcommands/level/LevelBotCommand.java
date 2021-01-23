@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 public class LevelBotCommand extends Command
 {
@@ -19,15 +20,15 @@ public class LevelBotCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
-		new Parser(args.get(0), cmd).parseAsUser(
+		new Parser(args.get(0), event).parseAsUser(
 				user ->
 				{
-					new GuildConfig(cmd).setLevelUpBot(user.getIdLong());
-					cmd.replySuccess("New level up bot is " + user.getAsMention());
+					new GuildConfig(event).setLevelUpBot(user.getIdLong());
+					event.replySuccess("New level up bot is " + user.getAsMention());
 				});
 	}
 }

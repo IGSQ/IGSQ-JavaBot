@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 public class ChannelIgnoreCommand extends Command
 {
@@ -19,22 +20,22 @@ public class ChannelIgnoreCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(event, 2, failure)) return;
 
-		new Parser(args.get(0), cmd).parseAsTextChannel(
+		new Parser(args.get(0), event).parseAsTextChannel(
 				channel ->
 				{
-					Optional<Boolean> bool = new Parser(args.get(1), cmd).parseAsBoolean();
+					Optional<Boolean> bool = new Parser(args.get(1), event).parseAsBoolean();
 
 					if(bool.isPresent())
 					{
 						if(bool.get())
 						{
-							if(BlacklistUtils.addChannel(channel, cmd.getGuild(), cmd.getIGSQBot()))
+							if(BlacklistUtils.addChannel(channel, event.getGuild(), event.getIGSQBot()))
 							{
-								cmd.replySuccess("Blacklisted channel " + channel.getAsMention());
+								event.replySuccess("Blacklisted channel " + channel.getAsMention());
 							}
 							else
 							{
@@ -43,9 +44,9 @@ public class ChannelIgnoreCommand extends Command
 						}
 						else
 						{
-							if(BlacklistUtils.removeChannel(channel, cmd.getGuild(), cmd.getIGSQBot()))
+							if(BlacklistUtils.removeChannel(channel, event.getGuild(), event.getIGSQBot()))
 							{
-								cmd.replySuccess("Removed blacklist for channel " + channel.getAsMention());
+								event.replySuccess("Removed blacklist for channel " + channel.getAsMention());
 							}
 							else
 							{

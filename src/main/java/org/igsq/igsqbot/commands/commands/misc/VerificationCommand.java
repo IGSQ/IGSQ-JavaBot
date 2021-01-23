@@ -29,6 +29,7 @@ import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.UserUtils;
 import org.igsq.igsqbot.util.VerificationUtils;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class VerificationCommand extends Command
@@ -47,18 +48,18 @@ public class VerificationCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent commandEvent, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(commandEvent, failure)) return;
 
-		MessageChannel channel = cmd.getChannel();
-		Guild guild = cmd.getGuild();
-		Role verifiedRole = guild.getRoleById(new GuildConfig(cmd).getVerifiedRole());
-		Role unverifiedRole = guild.getRoleById(new GuildConfig(cmd).getUnverifiedRole());
+		MessageChannel channel = commandEvent.getChannel();
+		Guild guild = commandEvent.getGuild();
+		Role verifiedRole = guild.getRoleById(new GuildConfig(commandEvent).getVerifiedRole());
+		Role unverifiedRole = guild.getRoleById(new GuildConfig(commandEvent).getUnverifiedRole());
 
 		if(CommandChecks.roleConfigured(verifiedRole, "Verified role", failure)) return;
 
-		new Parser(args.get(0), cmd).parseAsUser(
+		new Parser(args.get(0), commandEvent).parseAsUser(
 				target ->
 					UserUtils.getMemberFromUser(target, guild).queue(
 							member ->
@@ -87,7 +88,7 @@ public class VerificationCommand extends Command
 											StringBuilder ctxMessage = new StringBuilder();
 											StringBuilder welcomeMessage = new StringBuilder();
 
-											List<Role> roles = getMatches(messages, cmd.getGuild(), cmd.getIGSQBot()).stream()
+											List<Role> roles = getMatches(messages, commandEvent.getGuild(), commandEvent.getIGSQBot()).stream()
 													.map(guild::getRoleById)
 													.filter(Objects::nonNull)
 													.collect(Collectors.toList());
@@ -100,7 +101,7 @@ public class VerificationCommand extends Command
 
 											roles.addAll(member.getRoles());
 
-											cmd.getChannel().sendMessage(new EmbedBuilder()
+											commandEvent.getChannel().sendMessage(new EmbedBuilder()
 													.setTitle("Verification for " + target.getAsTag())
 													.addField("Roles", ctxMessage.length() == 0 ? "No roles found" : ctxMessage.toString(), false)
 													.setColor(Constants.IGSQ_PURPLE)
@@ -108,14 +109,14 @@ public class VerificationCommand extends Command
 													.build()).queue(message ->
 											{
 												message.addReaction(Emoji.THUMB_UP.getAsReaction()).queue();
-												cmd.getIGSQBot().getEventWaiter().waitForEvent(GuildMessageReactionAddEvent.class,
-														event -> event.getMessageIdLong() == message.getIdLong() && event.getUserIdLong() == cmd.getAuthor().getIdLong(),
+												commandEvent.getIGSQBot().getEventWaiter().waitForEvent(GuildMessageReactionAddEvent.class,
+														event -> event.getMessageIdLong() == message.getIdLong() && event.getUserIdLong() == commandEvent.getAuthor().getIdLong(),
 														event ->
 														{
 															message.delete().queue(null, error -> {});
 															channel.purgeMessages(messages);
 
-															MessageChannel welcomeChannel = guild.getTextChannelById(new GuildConfig(cmd).getWelcomeChannel());
+															MessageChannel welcomeChannel = guild.getTextChannelById(new GuildConfig(commandEvent).getWelcomeChannel());
 															if(welcomeChannel != null)
 															{
 																welcomeChannel.sendMessage(new EmbedBuilder()
@@ -128,7 +129,7 @@ public class VerificationCommand extends Command
 															}
 															else
 															{
-																cmd.replyError("Welcome channel not setup, no welcome message will be sent.");
+																commandEvent.replyError("Welcome channel not setup, no welcome message will be sent.");
 															}
 
 															roles.add(verifiedRole);

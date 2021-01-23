@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class MessageCommand extends Command
@@ -22,7 +23,7 @@ public class MessageCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		EmbedBuilder PUNISHMENT = new EmbedBuilder()
 				.setTitle("**Punishment System**:")
@@ -137,7 +138,7 @@ public class MessageCommand extends Command
 
 		switch(args.get(0))
 		{
-			case "verification" -> cmd.getChannel().sendMessage("This server has a **semi-automatic** verification system. It means the bot will take care of verification, but it will be manually checked by staff first. To give you the correct roles, please tell us in this channel:\n" +
+			case "verification" -> event.getChannel().sendMessage("This server has a **semi-automatic** verification system. It means the bot will take care of verification, but it will be manually checked by staff first. To give you the correct roles, please tell us in this channel:\n" +
 					"\n" +
 					Emoji.IGSQ1.getAsChat() + " What country are you from?\n" +
 					"\n" +
@@ -147,32 +148,32 @@ public class MessageCommand extends Command
 					"\n" +
 					"• Below you can see an example of a previous member who just joined the server. **You will be verified as soon as possible.** This is usually in less than a minute, but if nobody is online, it can take a couple hours.").queue();
 
-			case "shortrules" -> cmd.getChannel().sendMessage(SHORTRULES
+			case "shortrules" -> event.getChannel().sendMessage(SHORTRULES
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "longrules" -> cmd.getChannel().sendMessage(FULLRULES
+			case "longrules" -> event.getChannel().sendMessage(FULLRULES
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "punishment" -> cmd.getChannel().sendMessage(PUNISHMENT
+			case "punishment" -> event.getChannel().sendMessage(PUNISHMENT
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "roleinfo" -> cmd.getChannel().sendMessage(ROLEINFO
+			case "roleinfo" -> event.getChannel().sendMessage(ROLEINFO
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			case "otherroles" -> cmd.getChannel().sendMessage(OTHERROLES
+			case "otherroles" -> event.getChannel().sendMessage(OTHERROLES
 					.setColor(Constants.IGSQ_PURPLE)
 					.setFooter("© 2020 The Intergalactic Squirrels™")
 					.build()).queue();
 
-			default -> EmbedUtils.sendSyntaxError(cmd);
+			default -> EmbedUtils.sendSyntaxError(event);
 		}
 	}
 }

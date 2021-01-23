@@ -19,6 +19,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandHierarchyException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.util.*;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class ReportCommand extends Command
@@ -31,23 +32,23 @@ public class ReportCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(event, 2, failure)) return;
 
-		MessageChannel channel = cmd.getChannel();
-		User author = cmd.getAuthor();
-		Guild guild = cmd.getGuild();
-		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(cmd).getReportChannel());
+		MessageChannel channel = event.getChannel();
+		User author = event.getAuthor();
+		Guild guild = event.getGuild();
+		MessageChannel reportChannel = guild.getTextChannelById(new GuildConfig(event).getReportChannel());
 
 		if(CommandChecks.channelConfigured(reportChannel, "Report channel", failure)) return;
-		if(CommandChecks.canSee(reportChannel, cmd.getSelfMember(), "Report channel", failure)) return;
+		if(CommandChecks.canSee(reportChannel, event.getSelfMember(), "Report channel", failure)) return;
 
-		new Parser(args.get(0), cmd).parseAsUser(user ->
+		new Parser(args.get(0), event).parseAsUser(user ->
 		{
 			args.remove(0);
 			String reason = ArrayUtils.arrayCompile(args, " ");
-			String messageLink = StringUtils.getMessageLink(cmd.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
+			String messageLink = StringUtils.getMessageLink(event.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong());
 
 			if(user.isBot())
 			{
@@ -82,7 +83,7 @@ public class ReportCommand extends Command
 													.queue(null, error ->
 													{});
 
-											Report.add(message.getIdLong(), cmd.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), author.getIdLong(), reason, cmd.getIGSQBot());
+											Report.add(message.getIdLong(), event.getMessage().getIdLong(), channel.getIdLong(), guild.getIdLong(), user.getIdLong(), author.getIdLong(), reason, event.getIGSQBot());
 											message.addReaction(Emoji.THUMB_UP.getUnicode()).queue();
 										}
 								);

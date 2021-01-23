@@ -12,6 +12,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.info.GuildInfo;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class ServerInfoCommand extends Command
 {
@@ -22,23 +23,23 @@ public class ServerInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		Optional<Guild> guild;
 		if(args.isEmpty())
 		{
-			guild = Optional.of(cmd.getGuild());
+			guild = Optional.of(event.getGuild());
 		}
 		else
 		{
-			guild = new Parser(args.get(0), cmd).parseAsGuild();
+			guild = new Parser(args.get(0), event).parseAsGuild();
 		}
 
 		if(guild.isPresent())
 		{
 			GuildInfo guildInfo = new GuildInfo(guild.get());
 
-			cmd.sendMessage(new EmbedBuilder()
+			event.sendMessage(new EmbedBuilder()
 					.setTitle("Information for server: **" + guildInfo.getName() + "**")
 					.addField("Partner status", guildInfo.isPartner() ? "Is partnered" : "Not partnered", true)
 					.addField("Verified Status", guildInfo.isVerified() ? "Is verified" : "Not verified", true)

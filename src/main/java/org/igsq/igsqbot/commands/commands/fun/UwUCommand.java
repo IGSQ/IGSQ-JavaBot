@@ -12,6 +12,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class UwUCommand extends Command
@@ -23,14 +24,14 @@ public class UwUCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
-		if(CommandChecks.argsEmbedCompatible(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
+		if(CommandChecks.argsEmbedCompatible(event, failure)) return;
 
 		List<String> chars = Arrays.stream(ArrayUtils.arrayCompile(args, " ").split("")).collect(Collectors.toList());
 		StringBuilder finalSentence = new StringBuilder();
-		User author = cmd.getAuthor();
+		User author = event.getAuthor();
 
 		for(String selectedChar : chars)
 		{
@@ -44,7 +45,7 @@ public class UwUCommand extends Command
 			}
 		}
 
-		cmd.sendMessage(new EmbedBuilder()
+		event.sendMessage(new EmbedBuilder()
 				.setDescription(finalSentence.toString())
 				.setColor(Constants.IGSQ_PURPLE)
 				.setFooter("This sentence was UwU'd by: " + author.getAsTag() + " | "));

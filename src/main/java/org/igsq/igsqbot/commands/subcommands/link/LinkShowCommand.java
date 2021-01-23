@@ -12,6 +12,7 @@ import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftUtils;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class LinkShowCommand extends Command
 {
@@ -21,26 +22,26 @@ public class LinkShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		Minecraft minecraft = cmd.getIGSQBot().getMinecraft();
+		Minecraft minecraft = event.getIGSQBot().getMinecraft();
 
-		if(!cmd.isFromGuild())
+		if(!event.isFromGuild())
 		{
-			showSelf(MinecraftUtils.getLinks(cmd.getAuthor().getId(), minecraft), cmd);
+			showSelf(MinecraftUtils.getLinks(event.getAuthor().getId(), minecraft), event);
 			return;
 		}
 
 		if(args.isEmpty())
 		{
-			showSelf(MinecraftUtils.getLinks(cmd.getAuthor().getId(), minecraft), cmd);
+			showSelf(MinecraftUtils.getLinks(event.getAuthor().getId(), minecraft), event);
 			return;
 		}
 
-		if(cmd.memberPermissionCheck(Permission.MESSAGE_MANAGE))
+		if(event.memberPermissionCheck(Permission.MESSAGE_MANAGE))
 		{
 			String arg = args.get(0);
-			new Parser(arg, cmd).parseAsUser(user ->
+			new Parser(arg, event).parseAsUser(user ->
 			{
 				List<MinecraftUtils.Link> links = MinecraftUtils.getLinks(user.getId(), minecraft);
 				StringBuilder text = new StringBuilder();
@@ -56,7 +57,7 @@ public class LinkShowCommand extends Command
 							.append("\n");
 				}
 
-				cmd.getChannel().sendMessage(new EmbedBuilder()
+				event.getChannel().sendMessage(new EmbedBuilder()
 						.setTitle("Links for user: " + user.getAsTag())
 						.setDescription(text.length() == 0 ? "No links found" : text.toString())
 						.setColor(Constants.IGSQ_PURPLE)
@@ -65,7 +66,7 @@ public class LinkShowCommand extends Command
 			return;
 		}
 
-		showSelf(MinecraftUtils.getLinks(cmd.getAuthor().getId(), minecraft), cmd);
+		showSelf(MinecraftUtils.getLinks(event.getAuthor().getId(), minecraft), event);
 	}
 
 	private void showSelf(List<MinecraftUtils.Link> links, CommandEvent ctx)

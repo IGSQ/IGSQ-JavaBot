@@ -17,6 +17,7 @@ import org.igsq.igsqbot.util.ArrayUtils;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.UserUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class UserInfoCommand extends Command
 {
@@ -27,19 +28,19 @@ public class UserInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		if(args.isEmpty())
 		{
-			showInfo(cmd.getMember(), cmd);
+			showInfo(event.getMember(), event);
 		}
 		else
 		{
-			Guild guild = cmd.getGuild();
+			Guild guild = event.getGuild();
 			String arg = ArrayUtils.arrayCompile(args.subList(0, args.size()), " ");
-			new Parser(arg, cmd).parseAsUser(
+			new Parser(arg, event).parseAsUser(
 					user -> UserUtils.getMemberFromUser(user, guild).queue(
-							member -> showInfo(member, cmd),
+							member -> showInfo(member, event),
 							error -> failure.accept(new CommandResultException("Member " + arg + " not found, may not be in a shared server with me."))));
 		}
 	}

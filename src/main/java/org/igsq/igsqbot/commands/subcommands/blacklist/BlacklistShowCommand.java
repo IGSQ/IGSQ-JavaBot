@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.BlacklistUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class BlacklistShowCommand extends Command
 {
@@ -20,9 +21,9 @@ public class BlacklistShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		List<String> blacklist = BlacklistUtils.getBlacklistedPhrases(cmd.getGuild(), cmd.getIGSQBot());
+		List<String> blacklist = BlacklistUtils.getBlacklistedPhrases(event.getGuild(), event.getIGSQBot());
 		StringBuilder text = new StringBuilder();
 
 		for(String word : blacklist)
@@ -34,8 +35,8 @@ public class BlacklistShowCommand extends Command
 					.append("\n");
 		}
 
-		cmd.sendMessage(new EmbedBuilder()
-				.setTitle("Blacklisted words for server " + cmd.getGuild().getName())
+		event.sendMessage(new EmbedBuilder()
+				.setTitle("Blacklisted words for server " + event.getGuild().getName())
 				.setDescription(text.length() == 0 ? "No blacklisted words setup." : text.toString()));
 	}
 }

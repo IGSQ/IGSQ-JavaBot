@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Levels;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class LevelShowCommand extends Command
 {
@@ -23,11 +24,11 @@ public class LevelShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		User levelBot = cmd.getIGSQBot().getShardManager().getUserById(new GuildConfig(cmd).getLevelUpBot());
+		User levelBot = event.getIGSQBot().getShardManager().getUserById(new GuildConfig(event).getLevelUpBot());
 		if(CommandChecks.userConfigured(levelBot, "Level up bot", failure)) return;
-		List<Levels> levelList = Level.showLevels(cmd.getGuildIdLong(), cmd.getIGSQBot());
+		List<Levels> levelList = Level.showLevels(event.getGuildIdLong(), event.getIGSQBot());
 
 		StringBuilder text = new StringBuilder();
 
@@ -43,8 +44,8 @@ public class LevelShowCommand extends Command
 					.append("\n");
 		}
 
-		cmd.sendMessage(new EmbedBuilder()
-				.setTitle("Configured levels for " + cmd.getGuild().getName())
+		event.sendMessage(new EmbedBuilder()
+				.setTitle("Configured levels for " + event.getGuild().getName())
 				.setDescription(text.length() == 0 ? "No levels configured" : text.toString()));
 	}
 }

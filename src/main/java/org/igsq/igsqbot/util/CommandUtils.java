@@ -49,9 +49,9 @@ public class CommandUtils
 	{
 		Guild guild = event.getGuild();
 		Member member = event.getMember();
-		Member levelBot = guild.getMemberById(new GuildConfig(guild.getIdLong(), igsqBot).getLevelUpBot());
+		long levelBot = new GuildConfig(guild.getIdLong(), igsqBot).getLevelUpBot();
 
-		if(levelBot == null || !levelBot.equals(member))
+		if(member == null || levelBot != member.getIdLong())
 		{
 			return -1;
 		}

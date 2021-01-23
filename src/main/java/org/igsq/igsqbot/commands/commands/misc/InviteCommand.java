@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class InviteCommand extends Command
@@ -23,9 +24,9 @@ public class InviteCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		Guild guild = cmd.getGuild();
+		Guild guild = event.getGuild();
 
 		guild.retrieveInvites().queue(
 				invites ->
@@ -34,7 +35,7 @@ public class InviteCommand extends Command
 					{
 						if(invite.getMaxUses() == 0)
 						{
-							cmd.replySuccess("Invite found: " + invite.getUrl());
+							event.replySuccess("Invite found: " + invite.getUrl());
 							return;
 						}
 					}

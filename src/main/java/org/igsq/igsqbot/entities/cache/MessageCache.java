@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.jodah.expiringmap.ExpirationPolicy;
@@ -11,14 +13,45 @@ import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A class representing a cache of {@link org.igsq.igsqbot.entities.cache.CachedMessage messages}.
+ *
+ * @see #getCache(long)
+ * @see #getCache(net.dv8tion.jda.api.entities.Guild)
+ * @see #set(CachedMessage)
+ * @see #set(java.util.List)
+ * @see #get(long)
+ * @see #remove(long)
+ * @see #remove(CachedMessage)
+ * @see #remove(net.dv8tion.jda.api.entities.Message)
+ * @see #remove(java.util.List)
+ * @see #isInCache(long)
+ * @see #isInCache(net.dv8tion.jda.api.entities.Message)
+ * @see #update(CachedMessage, CachedMessage)
+ * @see #update(long, CachedMessage)
+ * @see #getID()
+ * @see #getCacheView()
+ */
 public class MessageCache
 {
+	/**
+	 * Holds all of the active {@link org.igsq.igsqbot.entities.cache.MessageCache caches}.
+	 */
 	private static final Map<Long, MessageCache> MESSAGE_CACHES = new ConcurrentHashMap<>();
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageCache.class);
-
+	/**
+	 * A {@link java.util.List list} of {@link org.igsq.igsqbot.entities.cache.CachedMessage messages}
+	 * <p>
+	 * A message contained within this list will be removed after 1 Hour of the last access, or the cache size reaches 1000 messages, whichever occurs first.
+	 */
 	private final Map<Long, CachedMessage> cachedMessages;
 	private final long guildId;
 
+	/**
+	 * Constructs a new {@link org.igsq.igsqbot.entities.cache.MessageCache cache}
+	 *
+	 * @param guildId The guildId for the cache.
+	 */
 	public MessageCache(long guildId)
 	{
 		this.guildId = guildId;
@@ -30,7 +63,16 @@ public class MessageCache
 				.build();
 	}
 
-	public static MessageCache getCache(long guildId)
+	/**
+	 * Gets a {@link org.igsq.igsqbot.entities.cache.MessageCache cache} from the stored {@link #MESSAGE_CACHES caches}.
+	 * <p>
+	 * This will create a new cache if one does not exist.
+	 *
+	 * @param guildId The guildId.
+	 * @return The cache associated with the guildId.
+	 */
+	@Nonnull
+	public static MessageCache getCache(@Nonnull Long guildId)
 	{
 		MessageCache cache = MESSAGE_CACHES.get(guildId);
 		if(MESSAGE_CACHES.get(guildId) == null)
@@ -41,7 +83,17 @@ public class MessageCache
 		return cache;
 	}
 
-	public static MessageCache getCache(Guild guild)
+
+	/**
+	 * Gets a {@link org.igsq.igsqbot.entities.cache.MessageCache cache} from the stored {@link #MESSAGE_CACHES caches}.
+	 * <p>
+	 * This will create a new cache if one does not exist.
+	 *
+	 * @param guild The guild.
+	 * @return The cache associated with the guild.
+	 */
+	@Nonnull
+	public static MessageCache getCache(@Nonnull Guild guild)
 	{
 		MessageCache cache = MESSAGE_CACHES.get(guild.getIdLong());
 		if(MESSAGE_CACHES.get(guild.getIdLong()) == null)
@@ -52,13 +104,21 @@ public class MessageCache
 		return cache;
 	}
 
-	public void set(CachedMessage message)
+	/**
+	 * Adds a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} to the {@link #cachedMessages}.
+	 * @param message The {@link org.igsq.igsqbot.entities.cache.CachedMessage message} to add.
+	 */
+	public void set(@Nonnull CachedMessage message)
 	{
 		LOGGER.debug("Adding message " + message.getIdLong() + " to cache.");
 		cachedMessages.putIfAbsent(message.getIdLong(), message);
 	}
 
-	public void set(List<CachedMessage> messages)
+	/**
+	 * Adds a {@link java.util.List list} of {@link org.igsq.igsqbot.entities.cache.CachedMessage messages} to the {@link #cachedMessages}.
+	 * @param messages The {@link java.util.List list} of {@link org.igsq.igsqbot.entities.cache.CachedMessage messages} to add.
+	 */
+	public void set(@Nonnull List<CachedMessage> messages)
 	{
 		for(CachedMessage selectedMessage : messages)
 		{
@@ -67,7 +127,13 @@ public class MessageCache
 		}
 	}
 
-	public CachedMessage get(long messageId)
+	/**
+	 * Gets a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} from the {@link #cachedMessages cache}.
+	 * @param messageId The messageId to get.
+	 * @return The {@link org.igsq.igsqbot.entities.cache.CachedMessage message} or <code>null</code> if a message is not found.
+	 */
+	@Nullable
+	public CachedMessage get(@Nonnull Long messageId)
 	{
 		LOGGER.debug("Fetching message " + messageId + " from cache.");
 		for(Map.Entry<Long, CachedMessage> entry : cachedMessages.entrySet())
@@ -81,25 +147,41 @@ public class MessageCache
 		return null;
 	}
 
-	public void remove(long messageId)
+	/**
+	 * Removes a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} from the {@link #cachedMessages cache}.
+	 * @param messageId The messageId to remove.
+	 */
+	public void remove(@Nonnull Long messageId)
 	{
 		LOGGER.debug("Removed message " + messageId + " from cache.");
 		cachedMessages.remove(messageId);
 	}
 
-	public void remove(CachedMessage message)
+	/**
+	 * Removes a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} from the {@link #cachedMessages cache}.
+	 * @param message The message to remove.
+	 */
+	public void remove(@Nonnull CachedMessage message)
 	{
 		LOGGER.debug("Removed message " + message.getIdLong() + " from cache.");
 		cachedMessages.remove(message.getIdLong());
 	}
 
-	public void remove(Message message)
+	/**
+	 * Removes a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} from the {@link #cachedMessages cache}.
+	 * @param message The message to remove.
+	 */
+	public void remove(@Nonnull Message message)
 	{
 		LOGGER.debug("Removed message " + message.getIdLong() + " from cache.");
 		cachedMessages.remove(message.getIdLong());
 	}
 
-	public void remove(List<Message> messages)
+	/**
+	 * Removes a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} from the {@link #cachedMessages cache}.
+	 * @param messages The {@link java.util.List list} of {@link net.dv8tion.jda.api.entities.Message messages} to remove.
+	 */
+	public void remove(@Nonnull List<Message> messages)
 	{
 		messages.forEach(message ->
 		{
@@ -108,41 +190,64 @@ public class MessageCache
 		});
 	}
 
-	public boolean isInCache(long messageId)
+	/**
+	 * Queries the {@link #cachedMessages cache} to see if it contains a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} with the given id.
+	 * @param messageId The messageId to look for.
+	 * @return Whether the {@link #cachedMessages cache} contains the message.
+	 */
+	public boolean isInCache(@Nonnull Long messageId)
 	{
 		return cachedMessages.containsKey(messageId);
 	}
 
-	public boolean isInCache(Message message)
+	/**
+	 * Queries the {@link #cachedMessages cache} to see if it contains a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} with the given id.
+	 * @param message The message to look for.
+	 * @return Whether the {@link #cachedMessages cache} contains the message.
+	 */
+	public boolean isInCache(@Nonnull Message message)
 	{
 		return cachedMessages.containsKey(message.getIdLong());
 	}
 
-	public void update(CachedMessage oldMessage, CachedMessage newMessage)
+	/**
+	 * Updates the {@link #cachedMessages cache}, replacing the oldMessage with the newMessage.
+	 * @param oldMessage The old message.
+	 * @param newMessage the new message.
+	 */
+	public void update(@Nonnull CachedMessage oldMessage, @Nonnull CachedMessage newMessage)
 	{
 		LOGGER.debug("Updating message " + oldMessage.getIdLong() + " -> " + newMessage.getIdLong() + " in cache.");
 		cachedMessages.remove(oldMessage.getIdLong());
 		set(newMessage);
 	}
 
-	public void update(long oldMessageID, CachedMessage newMessage)
+	/**
+	 * Updates the {@link #cachedMessages cache}, replacing the oldMessage with the newMessage.
+	 * @param oldMessageId The old messageId.
+	 * @param newMessage the new message.
+	 */
+	public void update(@Nonnull Long oldMessageId, @Nonnull CachedMessage newMessage)
 	{
-		cachedMessages.remove(oldMessageID);
+		cachedMessages.remove(oldMessageId);
 		set(newMessage);
 	}
 
-	public long getID()
+	/**
+	 * @return The id associated with this {@link org.igsq.igsqbot.entities.cache.MessageCache cache}. Never null.
+	 */
+	@Nonnull
+	public Long getID()
 	{
 		return guildId;
 	}
 
+	/**
+	 * @return The {@link #cachedMessages cached message} associated with this {@link org.igsq.igsqbot.entities.cache.MessageCache cache}.
+	 */
+	@Nonnull
 	public Map<Long, CachedMessage> getCacheView()
 	{
 		return cachedMessages;
-	}
-
-	public void flush()
-	{
-		cachedMessages.clear();
 	}
 }

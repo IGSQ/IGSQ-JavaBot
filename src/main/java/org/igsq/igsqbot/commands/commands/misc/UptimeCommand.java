@@ -9,6 +9,7 @@ import org.igsq.igsqbot.Constants;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class UptimeCommand extends Command
@@ -20,10 +21,10 @@ public class UptimeCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		Duration uptime = Duration.between(cmd.getIGSQBot().getStartTimestamp(), LocalDateTime.now());
-		cmd.sendMessage(new EmbedBuilder()
+		Duration uptime = Duration.between(event.getIGSQBot().getStartTimestamp(), LocalDateTime.now());
+		event.sendMessage(new EmbedBuilder()
 				.setDescription(
 						"Uptime: " + uptime.toDaysPart() +
 								" days, " + uptime.toHoursPart() +

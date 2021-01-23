@@ -14,6 +14,7 @@ import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
 import org.igsq.igsqbot.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class ReactionRoleRemoveCommand extends Command
 {
@@ -26,23 +27,23 @@ public class ReactionRoleRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(cmd, 4, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(event, 4, failure)) return;
 
-		OptionalLong messageId = new Parser(args.get(0), cmd).parseAsUnsignedLong();
-		String emote = cmd.getMessage().getEmotes().isEmpty() ? args.get(3) : cmd.getMessage().getEmotes().get(0).getId();
-		new Parser(args.get(2), cmd).parseAsRole(role ->
+		OptionalLong messageId = new Parser(args.get(0), event).parseAsUnsignedLong();
+		String emote = event.getMessage().getEmotes().isEmpty() ? args.get(3) : event.getMessage().getEmotes().get(0).getId();
+		new Parser(args.get(2), event).parseAsRole(role ->
 		{
 			if(messageId.isPresent())
 			{
-				new Parser(args.get(1), cmd).parseAsTextChannel(
+				new Parser(args.get(1), event).parseAsTextChannel(
 						channel ->
 						{
 							channel.retrieveMessageById(messageId.getAsLong()).queue(
 									message ->
 									{
-										ReactionRole reactionRole = new ReactionRole(messageId.getAsLong(), role.getIdLong(), cmd.getGuild().getIdLong(), emote, cmd.getIGSQBot());
+										ReactionRole reactionRole = new ReactionRole(messageId.getAsLong(), role.getIdLong(), event.getGuild().getIdLong(), emote, event.getIGSQBot());
 
 										if(!reactionRole.isPresent())
 										{
@@ -51,7 +52,7 @@ public class ReactionRoleRemoveCommand extends Command
 										}
 
 										reactionRole.remove();
-										cmd.replySuccess("Removed reaction role for role " + StringUtils.getRoleAsMention(role.getIdLong()));
+										event.replySuccess("Removed reaction role for role " + StringUtils.getRoleAsMention(role.getIdLong()));
 										message.clearReactions(emote).queue();
 									},
 									error -> failure.accept(new CommandInputException("Message " + messageId.getAsLong() + " does not exist")));

@@ -11,6 +11,7 @@ import org.igsq.igsqbot.minecraft.Minecraft;
 import org.igsq.igsqbot.minecraft.MinecraftChecks;
 import org.igsq.igsqbot.minecraft.MinecraftUtils;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 public class LinkAddCommand extends Command
 {
@@ -20,12 +21,12 @@ public class LinkAddCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
-		User author = cmd.getAuthor();
-		Minecraft minecraft = cmd.getIGSQBot().getMinecraft();
+		User author = event.getAuthor();
+		Minecraft minecraft = event.getIGSQBot().getMinecraft();
 		String arg = args.get(0);
 
 		if(!MinecraftChecks.isAccountExist(arg, minecraft))
@@ -51,7 +52,7 @@ public class LinkAddCommand extends Command
 		if(MinecraftChecks.isPendingDiscord(uuid, minecraft))
 		{
 			MinecraftUtils.updateLink(uuid, author.getId(), minecraft);
-			cmd.replySuccess("Confirmed link for account **" + account + "**");
+			event.replySuccess("Confirmed link for account **" + account + "**");
 		}
 		if(MinecraftChecks.isUserLinked(author.getId(), minecraft))
 		{
@@ -60,7 +61,7 @@ public class LinkAddCommand extends Command
 		}
 
 		MinecraftUtils.insertLink(uuid, author.getId(), minecraft);
-		cmd.replySuccess("Added link for account **" + account + "** confirm it in Minecraft now.");
+		event.replySuccess("Added link for account **" + account + "** confirm it in Minecraft now.");
 
 
 	}

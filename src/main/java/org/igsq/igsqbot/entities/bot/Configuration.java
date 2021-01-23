@@ -7,10 +7,15 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Nonnull;
 import org.igsq.igsqbot.IGSQBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Configuration file handler for the {@link org.igsq.igsqbot.IGSQBot bot}
+ * @see #getString(ConfigOption)
+ */
 public class Configuration
 {
 	public static final File CONFIG_FOLDER = new File("config");
@@ -19,14 +24,21 @@ public class Configuration
 	private final IGSQBot igsqBot;
 	private final List<ConfigurationValue> configValues;
 
-	public Configuration(IGSQBot igsqBot)
+	/**
+	 * Constructs a new {@link org.igsq.igsqbot.entities.bot.Configuration configuraton handler}
+	 * @param igsqBot The bot instance.
+	 */
+	public Configuration(@Nonnull IGSQBot igsqBot)
 	{
 		this.igsqBot = igsqBot;
 		initFolder();
 		initFiles();
-		this.configValues = loadFiles();
+		this.configValues = loadInitialValues();
 	}
 
+	/**
+	 * Creates the 'config' folder if needed.
+	 */
 	private void initFolder()
 	{
 		if(CONFIG_FOLDER.mkdir())
@@ -39,6 +51,9 @@ public class Configuration
 		}
 	}
 
+	/**
+	 * Try to create the 'config/bot.cfg' file, <code>System.exit()</code> on error.
+	 */
 	private void initFiles()
 	{
 		try
@@ -54,11 +69,16 @@ public class Configuration
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("A config error occurred", exception);
+			igsqBot.getLogger().error("An exception occurred while creating the config files, abort.", exception);
+			System.exit(1);
 		}
 	}
 
-	private List<ConfigurationValue> loadFiles()
+	/**
+	 * Load the initial state of the 'config/bot.cfg' file.
+	 * @return The config values.
+	 */
+	private List<ConfigurationValue> loadInitialValues()
 	{
 		List<ConfigurationValue> values = new ArrayList<>();
 		try
@@ -83,6 +103,11 @@ public class Configuration
 		}
 	}
 
+	/**
+	 * Apply the default values from {@link org.igsq.igsqbot.entities.bot.ConfigOption options} if the key does not exist.
+	 * @param loadedValues The loaded values to apply the defaults to.
+	 * @return The new values
+	 */
 	private List<ConfigurationValue> applyDefaults(List<ConfigurationValue> loadedValues)
 	{
 		for(ConfigOption configOption : ConfigOption.values())
@@ -96,6 +121,10 @@ public class Configuration
 		return Collections.unmodifiableList(loadedValues);
 	}
 
+	/**
+	 * Save the current config options to file.
+	 * @param configValues The options to save.
+	 */
 	private void save(List<ConfigurationValue> configValues)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
@@ -119,6 +148,13 @@ public class Configuration
 		}
 	}
 
+	/**
+	 * Gets a config option from the loaded list
+	 * <p>This IS a Threadsafe operation.
+	 * @param configOption The config option to load.
+	 * @return The retrieved option, or the default.
+	 */
+	@Nonnull
 	public String getString(ConfigOption configOption)
 	{
 		synchronized(configValues)
@@ -134,6 +170,9 @@ public class Configuration
 		}
 	}
 
+	/**
+	 * Represents a key value pair in the {@link org.igsq.igsqbot.IGSQBot bot's} {@link org.igsq.igsqbot.entities.bot.Configuration configuration}.
+	 */
 	private static class ConfigurationValue
 	{
 		private String key;

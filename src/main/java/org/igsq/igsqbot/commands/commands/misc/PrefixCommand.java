@@ -14,6 +14,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.exception.CommandUserPermissionException;
 import org.igsq.igsqbot.util.EmbedUtils;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class PrefixCommand extends Command
@@ -27,10 +28,10 @@ public class PrefixCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		MessageChannel channel = cmd.getChannel();
-		GuildConfig guildConfig = new GuildConfig(cmd);
+		MessageChannel channel = event.getChannel();
+		GuildConfig guildConfig = new GuildConfig(event);
 
 		if(args.isEmpty())
 		{
@@ -46,14 +47,14 @@ public class PrefixCommand extends Command
 			return;
 		}
 
-		if(!cmd.memberPermissionCheck(Permission.MANAGE_SERVER))
+		if(!event.memberPermissionCheck(Permission.MANAGE_SERVER))
 		{
 			failure.accept(new CommandUserPermissionException(this));
 			return;
 		}
 
 		guildConfig.setPrefix(args.get(0));
-		cmd.replySuccess("My new prefix is `" + args.get(0) + "`");
+		event.replySuccess("My new prefix is `" + args.get(0) + "`");
 	}
 
 	public static class PrefixResetCommand extends Command
@@ -66,10 +67,10 @@ public class PrefixCommand extends Command
 		}
 
 		@Override
-		public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+		public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 		{
-			GuildConfig guildConfig = new GuildConfig(cmd);
-			cmd.replySuccess("Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
+			GuildConfig guildConfig = new GuildConfig(event);
+			event.replySuccess("Reset my prefix to `" + Constants.DEFAULT_BOT_PREFIX + "`");
 			guildConfig.setPrefix(Constants.DEFAULT_BOT_PREFIX);
 		}
 	}

@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandSyntaxException;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class ChannelCommand extends Command
@@ -26,8 +27,8 @@ public class ChannelCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		failure.accept(new CommandSyntaxException(cmd));
+		failure.accept(new CommandSyntaxException(event));
 	}
 }

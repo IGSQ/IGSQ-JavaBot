@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 
@@ -27,29 +28,29 @@ public class EvalCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(cmd, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure)) return;
 
 		Object out;
 		String status = "Success";
 
-		if(cmd.isFromGuild())
+		if(event.isFromGuild())
 		{
-			SCRIPT_ENGINE.put("guild", cmd.getGuild());
-			SCRIPT_ENGINE.put("member", cmd.getMember());
+			SCRIPT_ENGINE.put("guild", event.getGuild());
+			SCRIPT_ENGINE.put("member", event.getMember());
 		}
 
-		SCRIPT_ENGINE.put("ctx", cmd);
-		SCRIPT_ENGINE.put("message", cmd.getMessage());
-		SCRIPT_ENGINE.put("channel", cmd.getChannel());
-		SCRIPT_ENGINE.put("args", cmd.getArgs());
-		SCRIPT_ENGINE.put("jda", cmd.getJDA());
-		SCRIPT_ENGINE.put("author", cmd.getAuthor());
+		SCRIPT_ENGINE.put("ctx", event);
+		SCRIPT_ENGINE.put("message", event.getMessage());
+		SCRIPT_ENGINE.put("channel", event.getChannel());
+		SCRIPT_ENGINE.put("args", event.getArgs());
+		SCRIPT_ENGINE.put("jda", event.getJDA());
+		SCRIPT_ENGINE.put("author", event.getAuthor());
 
 		StringBuilder imports = new StringBuilder();
 		DEFAULT_IMPORTS.forEach(imp -> imports.append("import ").append(imp).append(".*; "));
-		String code = String.join(" ", cmd.getArgs());
+		String code = String.join(" ", event.getArgs());
 		long start = System.currentTimeMillis();
 
 		try
@@ -62,7 +63,7 @@ public class EvalCommand extends Command
 			status = "Failed";
 		}
 
-		cmd.sendMessage(new EmbedBuilder()
+		event.sendMessage(new EmbedBuilder()
 				.setTitle("Evaluated Result")
 				.addField("Status:", status, true)
 				.addField("Duration:", (System.currentTimeMillis() - start) + "ms", true)

@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class CoinflipCommand extends Command
@@ -17,7 +18,7 @@ public class CoinflipCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		Random random = new Random();
 		String result;
@@ -32,7 +33,7 @@ public class CoinflipCommand extends Command
 			result = "Tails";
 		}
 
-		cmd.getChannel().sendMessage(result).queue();
+		event.getChannel().sendMessage(result).queue();
 	}
 }
 

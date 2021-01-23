@@ -9,6 +9,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.ChannelBlacklists;
 import org.igsq.igsqbot.util.BlacklistUtils;
 import org.igsq.igsqbot.util.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class ChannelShowCommand extends Command
 {
@@ -18,16 +19,16 @@ public class ChannelShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		StringBuilder text = new StringBuilder();
-		for(ChannelBlacklists channel : BlacklistUtils.getBlacklistedChannels(cmd.getGuild(), cmd.getIGSQBot()))
+		for(ChannelBlacklists channel : BlacklistUtils.getBlacklistedChannels(event.getGuild(), event.getIGSQBot()))
 		{
 			text.append(StringUtils.getChannelAsMention(channel.getChannelId())).append(" is blacklisted.");
 		}
 
-		cmd.sendMessage(new EmbedBuilder()
-				.setTitle("Configured channels for " + cmd.getGuild().getName())
+		event.sendMessage(new EmbedBuilder()
+				.setTitle("Configured channels for " + event.getGuild().getName())
 				.addField("Blacklisted Channels", text.length() == 0 ? "No blacklisted channels" : text.toString(), false));
 	}
 }

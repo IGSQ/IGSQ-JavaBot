@@ -10,6 +10,7 @@ import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.StringUtils;
 import org.igsq.igsqbot.util.VerificationUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class VerificationShowCommand extends Command
 {
@@ -20,9 +21,9 @@ public class VerificationShowCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		Map<String, Long> phrases = VerificationUtils.getMappedPhrases(cmd.getGuild(), cmd.getIGSQBot());
+		Map<String, Long> phrases = VerificationUtils.getMappedPhrases(event.getGuild(), event.getIGSQBot());
 		StringBuilder text = new StringBuilder();
 
 		phrases.forEach(
@@ -32,8 +33,8 @@ public class VerificationShowCommand extends Command
 						.append(phrase)
 						.append("\n"));
 
-		cmd.sendMessage(new EmbedBuilder()
-				.setTitle("Aliases setup for " + cmd.getGuild().getName())
+		event.sendMessage(new EmbedBuilder()
+				.setTitle("Aliases setup for " + event.getGuild().getName())
 				.setDescription(text.length() == 0 ? "No aliases setup" : text.toString()));
 	}
 }

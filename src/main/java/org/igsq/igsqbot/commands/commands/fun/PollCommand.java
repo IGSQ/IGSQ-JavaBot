@@ -14,6 +14,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.EmbedUtils;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class PollCommand extends Command
@@ -25,17 +26,17 @@ public class PollCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeMatches(cmd, 1, failure)) return;
+		if(CommandChecks.argsSizeMatches(event, 1, failure)) return;
 
 		StringBuilder options = new StringBuilder();
-		MessageChannel channel = cmd.getChannel();
-		User author = cmd.getAuthor();
+		MessageChannel channel = event.getChannel();
+		User author = event.getAuthor();
 		List<String> reactions = new ArrayList<>();
-		List<String> slashArgs = new Parser(args.get(0), cmd).parseAsSlashArgs();
+		List<String> slashArgs = new Parser(args.get(0), event).parseAsSlashArgs();
 
-		if(CommandChecks.argsSizeSubceeds(slashArgs, cmd, 3, failure)) return;
+		if(CommandChecks.argsSizeSubceeds(slashArgs, event, 3, failure)) return;
 		String topic = slashArgs.get(0);
 
 		List<Emoji> emojis = Emoji.getPoll();

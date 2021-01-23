@@ -7,6 +7,7 @@ import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.info.BotInfo;
+import org.jetbrains.annotations.NotNull;
 
 public class BotInfoCommand extends Command
 {
@@ -16,18 +17,18 @@ public class BotInfoCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		cmd.sendMessage(new EmbedBuilder()
-				.setTitle(cmd.getJDA().getSelfUser().getAsTag() + " information")
+		event.sendMessage(new EmbedBuilder()
+				.setTitle(event.getJDA().getSelfUser().getAsTag() + " information")
 				.addField("JVM Version", BotInfo.getJavaVersion(), true)
 				.addField("JDA Version", BotInfo.getJDAVersion(), true)
 				.addBlankField(true)
 				.addField("Thread Count", String.valueOf(BotInfo.getThreadCount()), true)
 				.addField("Memory Usage", BotInfo.getMemoryFormatted(), true)
 				.addBlankField(true)
-				.addField("Shard info", cmd.getJDA().getShardInfo().getShardString(), true)
-				.addField("Server count", String.valueOf(BotInfo.getTotalServers(cmd.getIGSQBot().getShardManager())), true)
+				.addField("Shard info", event.getJDA().getShardInfo().getShardString(), true)
+				.addField("Server count", String.valueOf(BotInfo.getTotalServers(event.getIGSQBot().getShardManager())), true)
 				.addBlankField(true));
 	}
 }

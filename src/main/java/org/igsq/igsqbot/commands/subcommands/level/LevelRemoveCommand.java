@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.exception.CommandException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.Parser;
+import org.jetbrains.annotations.NotNull;
 
 public class LevelRemoveCommand extends Command
 {
@@ -23,20 +24,20 @@ public class LevelRemoveCommand extends Command
 	}
 
 	@Override
-	public void run(List<String> args, CommandEvent cmd, Consumer<CommandException> failure)
+	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		User levelBot = cmd.getIGSQBot().getShardManager().getUserById(new GuildConfig(cmd).getLevelUpBot());
+		User levelBot = event.getIGSQBot().getShardManager().getUserById(new GuildConfig(event).getLevelUpBot());
 		if(CommandChecks.userConfigured(levelBot, "Level up bot", failure)) return;
-		if(CommandChecks.argsSizeSubceeds(cmd, 2, failure)) return;
-		OptionalInt level = new Parser(args.get(0), cmd).parseAsUnsignedInt();
+		if(CommandChecks.argsSizeSubceeds(event, 2, failure)) return;
+		OptionalInt level = new Parser(args.get(0), event).parseAsUnsignedInt();
 		if(level.isPresent())
 		{
-			new Parser(args.get(1), cmd).parseAsRole(
+			new Parser(args.get(1), event).parseAsRole(
 					role ->
 					{
-						if(Level.removeLevel(role, level.getAsInt(), cmd.getGuildIdLong(), cmd.getIGSQBot()))
+						if(Level.removeLevel(role, level.getAsInt(), event.getGuildIdLong(), event.getIGSQBot()))
 						{
-							cmd.replySuccess("Removed level " + level.getAsInt() + " which awarded " + role.getAsMention());
+							event.replySuccess("Removed level " + level.getAsInt() + " which awarded " + role.getAsMention());
 						}
 						else
 						{
