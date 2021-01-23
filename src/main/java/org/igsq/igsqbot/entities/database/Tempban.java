@@ -14,12 +14,19 @@ import static org.igsq.igsqbot.entities.jooq.tables.Tempbans.TEMPBANS;
 
 public class Tempban
 {
-	public static void remove(long userId, IGSQBot igsqBot)
+	public static boolean remove(long userId, IGSQBot igsqBot)
 	{
 		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
 		{
 			var ctx = igsqBot.getDatabaseHandler().getContext(connection);
+			var existsQuery = ctx.selectFrom(Tables.TEMPBANS).where(TEMPBANS.USER_ID.eq(userId));
+
+			if(existsQuery.fetch().isEmpty())
+			{
+				return false;
+			}
 			var roles = ctx.selectFrom(Tables.ROLES).where(ROLES.USER_ID.eq(userId));
+
 			List<Role> collectedRoles = new ArrayList<>();
 			Guild guild = null;
 			for(var row : roles.fetch())
@@ -45,10 +52,12 @@ public class Tempban
 			}
 			ctx.deleteFrom(Tables.TEMPBANS).where(TEMPBANS.USER_ID.eq(userId)).execute();
 			ctx.deleteFrom(Tables.ROLES).where(ROLES.USER_ID.eq(userId)).execute();
+			return true;
 		}
 		catch(Exception exception)
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
+			return false;
 		}
 	}
 

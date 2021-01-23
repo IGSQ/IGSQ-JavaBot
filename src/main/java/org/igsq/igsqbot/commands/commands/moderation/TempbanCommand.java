@@ -98,6 +98,11 @@ public class TempbanCommand extends Command
 
 			new Parser(args.get(0), event).parseAsUser(user ->
 			{
+				if(user.isBot())
+				{
+					failure.accept(new CommandInputException("Bots cannot be tempbanned."));
+					return;
+				}
 				User author = event.getAuthor();
 				User selfUser = event.getIGSQBot().getSelfUser();
 				Guild guild = event.getGuild();
@@ -108,8 +113,14 @@ public class TempbanCommand extends Command
 					{
 						UserUtils.getMemberFromUser(user, guild).queue(member ->
 						{
-							Tempban.remove(member.getIdLong(), event.getIGSQBot());
-							event.replySuccess("Removed tempban for user " + StringUtils.getUserAsMention(member.getIdLong()));
+							if(Tempban.remove(member.getIdLong(), event.getIGSQBot()))
+							{
+								event.replySuccess("Removed tempban for user " + StringUtils.getUserAsMention(member.getIdLong()));
+							}
+							else
+							{
+								failure.accept(new CommandResultException("User " + user.getAsMention() + " is not tempbanned."));
+							}
 						});
 					});
 				});
