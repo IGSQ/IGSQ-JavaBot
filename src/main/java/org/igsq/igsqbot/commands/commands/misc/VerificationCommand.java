@@ -168,45 +168,48 @@ public class VerificationCommand extends Command
 		Map<String, Long> mappings = VerificationUtils.getMappedPhrases(guild, igsqBot);
 		JaroWinkler matcher = new JaroWinkler();
 
-		System.out.println("GOING INTO FOREACH");
-		mappings.forEach(
-				(phrase, role) ->
+		System.out.println("GOING INTO FOR");
+
+		for(Map.Entry<String, Long> entry : mappings.entrySet())
+		{
+			String phrase = entry.getKey();
+			long role = entry.getValue();
+			for(String message : content)
+			{
+				List<String> words = new ArrayList<>(List.of(message.split(" ")));
+
+				for(int i = 0; i < words.size(); i++)
 				{
-					for(String message : content)
+					System.out.println(words.get(i));
+					String query;
+					int queryNum = i;
+
+					if(phrase.contains(" "))
 					{
-						List<String> words = new ArrayList<>(List.of(message.split(" ")));
-
-						for(int i = 0; i < words.size(); i++)
+						if(++queryNum > words.size())
 						{
-							System.out.println(words.get(i));
-							String query;
-							int queryNum = i;
-
-							if(phrase.contains(" "))
-							{
-								if(++queryNum > words.size())
-								{
-									query = words.get(i);
-								}
-								else
-								{
-									query = words.get(i) + words.get(i + 1);
-								}
-							}
-							else
-							{
-								query = words.get(i);
-							}
-
-							System.out.println("QUERY -> " + query);
-							if(matcher.similarity(phrase, query) > 0.8)
-							{
-								System.out.println("ADDED " + role);
-								result.add(role);
-							}
+							query = words.get(i);
+						}
+						else
+						{
+							query = words.get(i) + words.get(i + 1);
+							words.remove(i + 1);
 						}
 					}
-				});
+					else
+					{
+						query = words.get(i);
+					}
+
+					System.out.println("QUERY -> " + query);
+					if(matcher.similarity(phrase, query) > 0.8)
+					{
+						System.out.println("ADDED " + role);
+						result.add(role);
+					}
+				}
+			}
+		}
 		System.out.println(result.toString());
 		return result;
 	}
