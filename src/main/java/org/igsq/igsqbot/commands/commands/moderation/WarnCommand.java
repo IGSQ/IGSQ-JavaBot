@@ -15,6 +15,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandHierarchyException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.CommandChecks;
 import org.igsq.igsqbot.util.CommandUtils;
@@ -48,6 +49,12 @@ public class WarnCommand extends Command
 			if(user.isBot())
 			{
 				failure.accept(new CommandResultException("Bots cannot be warned."));
+				return;
+			}
+
+			if(user.equals(author))
+			{
+				failure.accept(new CommandHierarchyException(this));
 				return;
 			}
 			CommandUtils.interactionCheck(author, user, event, () ->

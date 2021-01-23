@@ -11,6 +11,7 @@ import org.igsq.igsqbot.entities.command.CommandEvent;
 import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.Warning;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandHierarchyException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Warnings;
 import org.igsq.igsqbot.util.CommandChecks;
@@ -39,6 +40,12 @@ public class WarningRemoveCommand extends Command
 					if(user.isBot())
 					{
 						failure.accept(new CommandInputException("Bots cannot have warnings."));
+						return;
+					}
+
+					if(user.equals(author))
+					{
+						failure.accept(new CommandHierarchyException(this));
 						return;
 					}
 

@@ -112,6 +112,7 @@ public class TempbanCommand extends Command
 					failure.accept(new CommandInputException("Bots cannot be tempbanned."));
 					return;
 				}
+
 				if(user.equals(author))
 				{
 					failure.accept(new CommandHierarchyException(this));
