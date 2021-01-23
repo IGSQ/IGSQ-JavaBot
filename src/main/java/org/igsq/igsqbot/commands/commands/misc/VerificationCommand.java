@@ -203,6 +203,7 @@ public class VerificationCommand extends Command
 						}
 					}
 				});
+		System.out.println(result.toString());
 		return result;
 	}
 
