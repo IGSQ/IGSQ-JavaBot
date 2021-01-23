@@ -89,6 +89,7 @@ public class TempbanCommand extends Command
 		public TempbanRemoveCommand(Command parent)
 		{
 			super(parent, "remove", "Removes a tempban", "[user]");
+			addFlags(CommandFlag.GUILD_ONLY);
 		}
 
 		@Override
