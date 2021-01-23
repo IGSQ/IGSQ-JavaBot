@@ -174,7 +174,6 @@ public class VerificationCommand extends Command
 
 				for(int i = 0; i < words.size(); i++)
 				{
-					System.out.println(words.get(i));
 					String query;
 					int queryNum = i;
 
