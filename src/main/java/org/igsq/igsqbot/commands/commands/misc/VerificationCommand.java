@@ -93,13 +93,15 @@ public class VerificationCommand extends Command
 													.filter(Objects::nonNull)
 													.collect(Collectors.toList());
 
+											System.out.println("HERE");
 											for(Role role : roles)
 											{
 												ctxMessage.append(role.getAsMention()).append("\n");
 												welcomeMessage.append(role.getAsMention());
 											}
-
+											System.out.println("HERE1");
 											roles.addAll(member.getRoles());
+											System.out.println("HERE2");
 
 											commandEvent.getChannel().sendMessage(new EmbedBuilder()
 													.setTitle("Verification for " + target.getAsTag())
@@ -108,6 +110,7 @@ public class VerificationCommand extends Command
 													.setTimestamp(Instant.now())
 													.build()).queue(message ->
 											{
+												System.out.println("HERE3");
 												message.addReaction(Emoji.THUMB_UP.getAsReaction()).queue();
 												commandEvent.getIGSQBot().getEventWaiter().waitForEvent(GuildMessageReactionAddEvent.class,
 														event -> event.getMessageIdLong() == message.getIdLong() && event.getUserIdLong() == commandEvent.getAuthor().getIdLong(),
@@ -191,7 +194,6 @@ public class VerificationCommand extends Command
 
 							if(matcher.similarity(phrase, query) > 0.8)
 							{
-								System.out.println("MATCHED ROLE " + role + " FOR PHRASE " + phrase);
 								result.add(role);
 							}
 						}
