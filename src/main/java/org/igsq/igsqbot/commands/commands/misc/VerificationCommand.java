@@ -168,6 +168,7 @@ public class VerificationCommand extends Command
 		Map<String, Long> mappings = VerificationUtils.getMappedPhrases(guild, igsqBot);
 		JaroWinkler matcher = new JaroWinkler();
 
+		System.out.println("GOING INTO FOREACH");
 		mappings.forEach(
 				(phrase, role) ->
 				{
@@ -177,6 +178,7 @@ public class VerificationCommand extends Command
 
 						for(int i = 0; i < words.size(); i++)
 						{
+							System.out.println(words.get(i));
 							String query;
 							int queryNum = i;
 
