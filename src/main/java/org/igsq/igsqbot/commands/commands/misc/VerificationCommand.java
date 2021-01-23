@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -88,11 +87,16 @@ public class VerificationCommand extends Command
 											StringBuilder ctxMessage = new StringBuilder();
 											StringBuilder welcomeMessage = new StringBuilder();
 
-											List<Role> roles = getMatches(messages, commandEvent.getGuild(), commandEvent.getIGSQBot())
-													.stream()
-													.map(guild::getRoleById)
-													.filter(Objects::nonNull)
-													.collect(Collectors.toList());
+											List<Role> roles = new ArrayList<>();
+
+											for(long role : getMatches(messages, commandEvent.getGuild(), commandEvent.getIGSQBot()))
+											{
+												Role fetch = guild.getRoleById(role);
+												if(fetch !=null)
+												{
+													roles.add(fetch);
+												}
+											}
 
 											if(!roles.isEmpty())
 											{
