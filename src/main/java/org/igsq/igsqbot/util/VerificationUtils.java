@@ -36,6 +36,7 @@ public class VerificationUtils
 		{
 			igsqBot.getLogger().error("An SQL error occurred", exception);
 		}
+		result.forEach((phrase, role) -> System.out.println(phrase + " -> " + role));
 		return result;
 	}
 

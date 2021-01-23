@@ -140,8 +140,6 @@ public class CommandEvent
 	}
 
 	/**
-	 * .
-	 *
 	 * @return The {@link net.dv8tion.jda.api.entities.Guild guild} or <code>null</code> if the command was not executed in a server.
 	 */
 	@Nullable

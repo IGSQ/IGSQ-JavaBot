@@ -137,7 +137,7 @@ public abstract class Command
 				}
 				else if(exception instanceof CommandHierarchyException)
 				{
-					event.replyError("A hierarchy error occurred when trying to process command `" + getName() + "`");
+					event.replyError("A hierarchy error occurred when trying to run command `" + getName() + "`");
 				}
 				else if(exception instanceof CommandUserPermissionException)
 				{

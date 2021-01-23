@@ -22,7 +22,7 @@ public class ChoiceCommand extends Command
 	@Override
 	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeSubceeds(event, 2, failure)) return;
+		if(CommandChecks.argsSizeMatches(event, 2, failure)) return;
 
 		Random random = new Random();
 		String choice;

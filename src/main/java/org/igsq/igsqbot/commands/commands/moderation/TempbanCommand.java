@@ -13,6 +13,7 @@ import org.igsq.igsqbot.entities.command.CommandFlag;
 import org.igsq.igsqbot.entities.database.GuildConfig;
 import org.igsq.igsqbot.entities.database.Tempban;
 import org.igsq.igsqbot.entities.exception.CommandException;
+import org.igsq.igsqbot.entities.exception.CommandHierarchyException;
 import org.igsq.igsqbot.entities.exception.CommandInputException;
 import org.igsq.igsqbot.entities.exception.CommandResultException;
 import org.igsq.igsqbot.util.*;
@@ -38,19 +39,25 @@ public class TempbanCommand extends Command
 
 		new Parser(args.get(0), event).parseAsUser(user ->
 		{
+			User author = event.getAuthor();
 			if(user.isBot())
 			{
 				failure.accept(new CommandInputException("Bots cannot be tempbanned."));
 				return;
 			}
+
+			if(user.equals(author))
+			{
+				failure.accept(new CommandHierarchyException(this));
+				return;
+			}
+
 			LocalDateTime muteTime = new Parser(args.get(1), event).parseAsDuration();
-			User author = event.getAuthor();
 			User selfUser = event.getIGSQBot().getSelfUser();
 			Guild guild = event.getGuild();
 			Role tempBanRole = guild.getRoleById(new GuildConfig(guild.getIdLong(), event.getIGSQBot()).getTempBanRole());
 
 			if(CommandChecks.roleConfigured(tempBanRole, "Tempban role", failure)) return;
-
 
 			if(muteTime == null || muteTime.isAfter(LocalDateTime.now().plusWeeks(1)))
 			{
@@ -99,12 +106,18 @@ public class TempbanCommand extends Command
 
 			new Parser(args.get(0), event).parseAsUser(user ->
 			{
+				User author = event.getAuthor();
 				if(user.isBot())
 				{
 					failure.accept(new CommandInputException("Bots cannot be tempbanned."));
 					return;
 				}
-				User author = event.getAuthor();
+				if(user.equals(author))
+				{
+					failure.accept(new CommandHierarchyException(this));
+					return;
+				}
+
 				User selfUser = event.getIGSQBot().getSelfUser();
 				Guild guild = event.getGuild();
 
