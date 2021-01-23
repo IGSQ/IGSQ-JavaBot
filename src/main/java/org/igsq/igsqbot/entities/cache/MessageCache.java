@@ -16,21 +16,8 @@ import org.slf4j.LoggerFactory;
 /**
  * A class representing a cache of {@link org.igsq.igsqbot.entities.cache.CachedMessage messages}.
  *
- * @see #getCache(long)
+ * @see #getCache(Long)
  * @see #getCache(net.dv8tion.jda.api.entities.Guild)
- * @see #set(CachedMessage)
- * @see #set(java.util.List)
- * @see #get(long)
- * @see #remove(long)
- * @see #remove(CachedMessage)
- * @see #remove(net.dv8tion.jda.api.entities.Message)
- * @see #remove(java.util.List)
- * @see #isInCache(long)
- * @see #isInCache(net.dv8tion.jda.api.entities.Message)
- * @see #update(CachedMessage, CachedMessage)
- * @see #update(long, CachedMessage)
- * @see #getID()
- * @see #getCacheView()
  */
 public class MessageCache
 {
@@ -42,7 +29,7 @@ public class MessageCache
 	/**
 	 * A {@link java.util.List list} of {@link org.igsq.igsqbot.entities.cache.CachedMessage messages}
 	 * <p>
-	 * A message contained within this list will be removed after 1 Hour of the last access, or the cache size reaches 1000 messages, whichever occurs first.
+	 * A message contained within this list will be removed after 1 hour of the last access, or the cache size reaches 1000 messages, whichever occurs first.
 	 */
 	private final Map<Long, CachedMessage> cachedMessages;
 	private final long guildId;
@@ -82,7 +69,6 @@ public class MessageCache
 		}
 		return cache;
 	}
-
 
 	/**
 	 * Gets a {@link org.igsq.igsqbot.entities.cache.MessageCache cache} from the stored {@link #MESSAGE_CACHES caches}.

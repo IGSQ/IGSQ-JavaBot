@@ -6,11 +6,6 @@ import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Represents a message in the {@link org.igsq.igsqbot.entities.cache.MessageCache cache}.
- * @see #getTimeCreated()
- * @see #getContentRaw()
- * @see #getAuthor()
- * @see #getChannelId()
- * @see #getIdLong()
  */
 public class CachedMessage
 {

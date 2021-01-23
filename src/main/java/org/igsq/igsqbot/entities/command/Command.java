@@ -10,7 +10,10 @@ import org.igsq.igsqbot.entities.exception.*;
 import org.igsq.igsqbot.util.EmbedUtils;
 
 /**
- * A class representing a command for use in the {@link org.igsq.igsqbot.handlers.CommandHandler command handler}.
+ * A class representing a command for use in the {@link org.igsq.igsqbot.handlers.CommandHandler CommandHandler}.
+ *
+ * @see #process(CommandEvent)
+ * @see #run(java.util.List, CommandEvent, java.util.function.Consumer)
  */
 public abstract class Command
 {
@@ -21,11 +24,11 @@ public abstract class Command
 	private final List<Command> children;
 	private final List<String> aliases;
 	/**
-	 * The {@link net.dv8tion.jda.api.Permission permissions} required by the initiator to execute this {@link Command}.
+	 * The {@link net.dv8tion.jda.api.Permission permissions} required by the {@link net.dv8tion.jda.api.entities.Member author} to execute this {@link Command command}.
 	 */
 	private final List<Permission> memberRequiredPermissions;
 	/**
-	 * The {@link net.dv8tion.jda.api.Permission permissions} required by the {@link net.dv8tion.jda.api.entities.Member self member} to execute this {@link Command}.
+	 * The {@link net.dv8tion.jda.api.Permission permissions} required by the {@link net.dv8tion.jda.api.entities.Member self member} to execute this {@link Command command}.
 	 */
 	private final List<Permission> selfRequiredPermissions;
 	private final List<CommandFlag> flags;
@@ -34,10 +37,11 @@ public abstract class Command
 
 	/**
 	 * Constructs a new Command.
-	 * @param parent The parent of this Command.
-	 * @param name The name of this command. This will be the one, and only, invoking {@link java.lang.String string} for a subcommand.
+	 *
+	 * @param parent      The parent of this Command.
+	 * @param name        The name of this command. This will be the one, and only, invoking {@link java.lang.String String} for a subcommand.
 	 * @param description The description of this command.
-	 * @param syntax The syntax of this command.
+	 * @param syntax      The syntax of this command.
 	 */
 	protected Command(@Nullable Command parent, @Nonnull String name, @Nonnull String description, @Nonnull String syntax)
 	{
@@ -56,9 +60,10 @@ public abstract class Command
 
 	/**
 	 * Constructs a new Command.
-	 * @param name The name of this command. This will be the one, and only, invoking {@link java.lang.String string} for a subcommand.
+	 *
+	 * @param name        The name of this command. This will be the one, and only, invoking {@link java.lang.String String} for a subcommand.
 	 * @param description The description of this command.
-	 * @param syntax The syntax of this command.
+	 * @param syntax      The syntax of this command.
 	 */
 	protected Command(@Nonnull String name, @Nonnull String description, @Nonnull String syntax)
 	{
@@ -79,70 +84,72 @@ public abstract class Command
 	 * Processes this {@link org.igsq.igsqbot.entities.command.Command command} for execution.
 	 * <p>
 	 * This will consider the {@link org.igsq.igsqbot.entities.command.CommandFlag flags}, {@link #selfRequiredPermissions} and {@link #memberRequiredPermissions} of this {@link org.igsq.igsqbot.entities.command.Command}
-	 * @param cmd The command event to process with.
+	 * <p>
+	 * This will only {@link #run(java.util.List, CommandEvent, java.util.function.Consumer) run} the command if all checks pass.
+	 * @param event The command event to process with.
 	 */
-	public void process(CommandEvent cmd)
+	public void process(CommandEvent event)
 	{
 		if(isDisabled() || hasFlag(CommandFlag.DISABLED))
 		{
-			EmbedUtils.sendDisabledError(cmd);
+			EmbedUtils.sendDisabledError(event);
 		}
-		else if(hasFlag(CommandFlag.GUILD_ONLY) && !cmd.isFromGuild())
+		else if(hasFlag(CommandFlag.GUILD_ONLY) && !event.isFromGuild())
 		{
-			cmd.replyError("This command must be executed in a server.");
+			event.replyError("This command must be executed in a server.");
 		}
-		else if(!getMemberRequiredPermissions().isEmpty() && !cmd.memberPermissionCheck(getMemberRequiredPermissions()))
+		else if(!getMemberRequiredPermissions().isEmpty() && !event.memberPermissionCheck(getMemberRequiredPermissions()))
 		{
-			EmbedUtils.sendMemberPermissionError(cmd);
+			EmbedUtils.sendMemberPermissionError(event);
 		}
-		else if(!getSelfRequiredPermissions().isEmpty() && !cmd.selfPermissionCheck(getSelfRequiredPermissions()))
+		else if(!getSelfRequiredPermissions().isEmpty() && !event.selfPermissionCheck(getSelfRequiredPermissions()))
 		{
-			EmbedUtils.sendSelfPermissionError(cmd);
+			EmbedUtils.sendSelfPermissionError(event);
 		}
-		else if(hasFlag(CommandFlag.DEVELOPER_ONLY) && !cmd.isDeveloper())
+		else if(hasFlag(CommandFlag.DEVELOPER_ONLY) && !event.isDeveloper())
 		{
-			cmd.replyError("This command is for developers only.");
+			event.replyError("This command is for developers only.");
 		}
 		else
 		{
-			if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && cmd.selfPermissionCheck(Permission.MESSAGE_MANAGE))
+			if(hasFlag(CommandFlag.AUTO_DELETE_MESSAGE) && event.selfPermissionCheck(Permission.MESSAGE_MANAGE))
 			{
-				cmd.getMessage().delete().queue();
+				event.getMessage().delete().queue();
 			}
 
-			run(cmd.getArgs(), cmd, exception ->
+			run(event.getArgs(), event, exception ->
 			{
 				if(exception instanceof CommandCooldownException)
 				{
-					cmd.replyError(cmd.getAuthor().getAsMention() + " is on cooldown from command `" + getName() + "`");
+					event.replyError(event.getAuthor().getAsMention() + " is on cooldown from command `" + getName() + "`");
 				}
 				else if(exception instanceof CommandResultException)
 				{
-					cmd.replyError("An error occurred. " + exception.getText());
+					event.replyError("An error occurred. " + exception.getText());
 				}
 				else if(exception instanceof CommandInputException)
 				{
-					cmd.replyError("Your input was invalid. " + exception.getText());
+					event.replyError("Your input was invalid. " + exception.getText());
 				}
 				else if(exception instanceof CommandSyntaxException)
 				{
-					EmbedUtils.sendSyntaxError(cmd);
+					EmbedUtils.sendSyntaxError(event);
 				}
 				else if(exception instanceof CommandHierarchyException)
 				{
-					cmd.replyError("A hierarchy error occurred when trying to process command `" + getName() + "`");
+					event.replyError("A hierarchy error occurred when trying to process command `" + getName() + "`");
 				}
 				else if(exception instanceof CommandUserPermissionException)
 				{
-					EmbedUtils.sendMemberPermissionError(cmd);
+					EmbedUtils.sendMemberPermissionError(event);
 				}
 				else if(exception instanceof MissingConfigurationException)
 				{
-					cmd.replyError("`" + exception.getText() + "` is not setup.");
+					event.replyError("`" + exception.getText() + "` is not setup.");
 				}
 				else
 				{
-					cmd.replyError("An unhandled error occurred " + exception.getText());
+					event.replyError("An unhandled error occurred " + exception.getText());
 				}
 			});
 		}
@@ -170,27 +177,18 @@ public abstract class Command
 
 	/**
 	 * Submit this command for execution. This implies all {@link #process(CommandEvent) proccessing} steps have completed successfully.
-	 * @param args The arguments supplied.
-	 * @param event The {@link org.igsq.igsqbot.entities.command.CommandEvent event} for this {@link org.igsq.igsqbot.entities.command.Command command}
+	 *
+	 * @param args    The arguments supplied to the {@link org.igsq.igsqbot.entities.command.Command command}.
+	 * @param event   The {@link org.igsq.igsqbot.entities.command.CommandEvent event} for this {@link org.igsq.igsqbot.entities.command.Command command}
 	 * @param failure The {@link java.util.function.Consumer callback} to use in the case of execution failure.
 	 */
 	public abstract void run(@Nonnull List<String> args, @Nonnull CommandEvent event, @Nonnull Consumer<CommandException> failure);
 
 	/**
-	 * Sets the cooldown for this {@link org.igsq.igsqbot.entities.command.Command command}.
-	 * @param millis The cooldown.
-	 * @see #getCooldown()    
-	 */
-	public void setCooldown(@Nonnull Long millis)
-	{
-		this.cooldown = millis;
-	}
-
-	/**
 	 * @return The cooldown for this {@link org.igsq.igsqbot.entities.command.Command command}.
 	 * <p>
 	 * Will return 0 if none is set.
-	 * @see #setCooldown(Long) 
+	 * @see #setCooldown(Long)
 	 */
 	@Nonnull
 	public Long getCooldown()
@@ -199,8 +197,19 @@ public abstract class Command
 	}
 
 	/**
+	 * Sets the cooldown for this {@link org.igsq.igsqbot.entities.command.Command command}.
+	 *
+	 * @param millis The new cooldown.
+	 * @see #getCooldown()
+	 */
+	public void setCooldown(@Nonnull Long millis)
+	{
+		this.cooldown = millis;
+	}
+
+	/**
 	 * @return Whether this {@link org.igsq.igsqbot.entities.command.Command command} is disabled.
-	 * @see #setDisabled(Boolean) 
+	 * @see #setDisabled(Boolean)
 	 */
 	public boolean isDisabled()
 	{
@@ -209,6 +218,7 @@ public abstract class Command
 
 	/**
 	 * Sets the disabled state of this {@link org.igsq.igsqbot.entities.command.Command command}.
+	 *
 	 * @param state The new state.
 	 */
 	public void setDisabled(@Nonnull Boolean state)
@@ -243,7 +253,7 @@ public abstract class Command
 	{
 		return description;
 	}
-	
+
 	/**
 	 * @return The syntax of this {@link org.igsq.igsqbot.entities.command.Command command}.
 	 */
@@ -276,6 +286,7 @@ public abstract class Command
 
 	/**
 	 * Adds children to this {@link org.igsq.igsqbot.entities.command.Command command}.
+	 *
 	 * @param children The children to add.
 	 * @see #getChildren()
 	 * @see #hasChildren()
@@ -287,6 +298,7 @@ public abstract class Command
 
 	/**
 	 * Adds aliases to this {@link org.igsq.igsqbot.entities.command.Command command}.
+	 *
 	 * @param aliases The aliases to add.
 	 * @see #getAliases()
 	 */
@@ -296,7 +308,8 @@ public abstract class Command
 	}
 
 	/**
-	 * Gets the {@link net.dv8tion.jda.api.Permission permissions} required by the {@link org.igsq.igsqbot.entities.command.Command command} initiator to execute.
+	 * Gets the {@link net.dv8tion.jda.api.Permission permissions} required by the {@link org.igsq.igsqbot.entities.command.Command command} {@link net.dv8tion.jda.api.entities.Member author} to execute.
+	 *
 	 * @return The permissions.
 	 * @see #addMemberPermissions(net.dv8tion.jda.api.Permission...)
 	 */
@@ -307,7 +320,8 @@ public abstract class Command
 	}
 
 	/**
-	 * Adds {@link net.dv8tion.jda.api.Permission permissions} required by the {@link org.igsq.igsqbot.entities.command.Command command} initiator to execute.
+	 * Adds {@link net.dv8tion.jda.api.Permission permissions} required by the {@link org.igsq.igsqbot.entities.command.Command command} {@link net.dv8tion.jda.api.entities.Member author} to execute.
+	 *
 	 * @param permissions The permissions to add.
 	 * @see #getMemberRequiredPermissions()
 	 */
@@ -318,6 +332,7 @@ public abstract class Command
 
 	/**
 	 * Adds {@link net.dv8tion.jda.api.Permission permissions} required by the {@link net.dv8tion.jda.api.entities.Member self user} to execute the {@link org.igsq.igsqbot.entities.command.Command command}.
+	 *
 	 * @param permissions The permissions to add.
 	 * @see #getSelfRequiredPermissions()
 	 */
@@ -328,6 +343,7 @@ public abstract class Command
 
 	/**
 	 * Gets the {@link net.dv8tion.jda.api.Permission permissions} required by the {@link net.dv8tion.jda.api.entities.Member self user} to execute the {@link org.igsq.igsqbot.entities.command.Command command}.
+	 *
 	 * @see #getSelfRequiredPermissions()
 	 */
 	@Nonnull
@@ -349,6 +365,7 @@ public abstract class Command
 
 	/**
 	 * Adds {@link org.igsq.igsqbot.entities.command.CommandFlag flags} to this {@link org.igsq.igsqbot.entities.command.Command command}.
+	 *
 	 * @param flags The flags to add.
 	 * @see #getFlags()
 	 * @see #hasFlag(CommandFlag)

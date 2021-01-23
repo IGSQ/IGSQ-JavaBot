@@ -5,8 +5,6 @@ import net.dv8tion.jda.api.entities.User;
 
 /**
  * Represents an author for a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} in the {@link org.igsq.igsqbot.entities.cache.MessageCache}.
- * @see #isBot
- * @see #getAsMention()
  */
 public class CachedAuthor
 {
