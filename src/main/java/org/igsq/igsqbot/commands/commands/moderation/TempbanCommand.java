@@ -38,6 +38,11 @@ public class TempbanCommand extends Command
 
 		new Parser(args.get(0), event).parseAsUser(user ->
 		{
+			if(user.isBot())
+			{
+				failure.accept(new CommandInputException("Bots cannot be tempbanned."));
+				return;
+			}
 			LocalDateTime muteTime = new Parser(args.get(1), event).parseAsDuration();
 			User author = event.getAuthor();
 			User selfUser = event.getIGSQBot().getSelfUser();

@@ -117,6 +117,7 @@ public class MessageCache
 	 * Gets a {@link org.igsq.igsqbot.entities.cache.CachedMessage message} from the {@link #cachedMessages cache}.
 	 * @param messageId The messageId to get.
 	 * @return The {@link org.igsq.igsqbot.entities.cache.CachedMessage message} or <code>null</code> if a message is not found.
+	 * @see #isInCache(Long) 
 	 */
 	@Nullable
 	public CachedMessage get(@Nonnull Long messageId)

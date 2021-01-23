@@ -23,7 +23,7 @@ public class AvatarCommand extends Command
 	@Override
 	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsSizeExceeds(event, 3, failure)) return;
+		if(CommandChecks.argsSizeExceeds(event, 3, failure)) return; //TODO: change this to user parsing
 
 		Message message = event.getMessage();
 		User author = message.getAuthor();

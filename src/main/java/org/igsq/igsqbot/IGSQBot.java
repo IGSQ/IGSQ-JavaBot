@@ -19,9 +19,9 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.bot.ConfigOption;
 import org.igsq.igsqbot.entities.bot.Configuration;
+import org.igsq.igsqbot.entities.command.Command;
 import org.igsq.igsqbot.entities.database.Tempban;
 import org.igsq.igsqbot.entities.database.Vote;
 import org.igsq.igsqbot.entities.info.BotInfo;
@@ -48,9 +48,9 @@ public class IGSQBot extends ListenerAdapter
 	private final Configuration configuration;
 	private final TaskHandler taskHandler;
 	private final EventWaiter eventWaiter;
+	private final Logger logger;
 	private ShardManager shardManager;
 	private Minecraft minecraft;
-	private final Logger logger;
 	private JDA jda;
 
 	public IGSQBot()
@@ -125,7 +125,7 @@ public class IGSQBot extends ListenerAdapter
 		getLogger().info("  | | (_ \\__ \\ (_) | _ \\/ _ \\  _| \\__ \\  _/ _` | '_|  _/ -_) _` |");
 		getLogger().info(" |___\\___|___/\\__\\_\\___/\\___/\\__| |___/\\__\\__,_|_|  \\__\\___\\__,_|");
 		getLogger().info("");
-		getLogger().info("Account:         " + event.getJDA().getSelfUser().getAsTag() + " / " + event.getJDA().getSelfUser().getId() );
+		getLogger().info("Account:         " + event.getJDA().getSelfUser().getAsTag() + " / " + event.getJDA().getSelfUser().getId());
 		getLogger().info("Total Shards:    " + BotInfo.getTotalShards(event.getJDA().getShardManager()));
 		getLogger().info("Total Guilds:    " + BotInfo.getTotalServers(event.getJDA().getShardManager()));
 		getLogger().info("JDA Version:     " + JDAInfo.VERSION);
@@ -135,7 +135,7 @@ public class IGSQBot extends ListenerAdapter
 		getTaskHandler().addRepeatingTask(() ->
 		{
 			DatabaseUtils.getExpiredTempbans(this).forEach(tempban -> Tempban.remove(tempban.getUserId(), this));
-			DatabaseUtils.getExpiredVotes(this).forEach(vote -> Vote.closeById(vote.getVoteId(),vote.getGuildId(), this));
+			DatabaseUtils.getExpiredVotes(this).forEach(vote -> Vote.closeById(vote.getVoteId(), vote.getGuildId(), this));
 		}, TimeUnit.SECONDS, 15);
 	}
 

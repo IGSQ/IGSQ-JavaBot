@@ -71,6 +71,7 @@ public class CommandHandler
 			igsqBot.getLogger().error("A command exception occurred", exception);
 			System.exit(1);
 		}
+
 		return Collections.unmodifiableMap(commands);
 	}
 

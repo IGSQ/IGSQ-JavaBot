@@ -83,7 +83,7 @@ public abstract class Command
 	/**
 	 * Processes this {@link org.igsq.igsqbot.entities.command.Command command} for execution.
 	 * <p>
-	 * This will consider the {@link org.igsq.igsqbot.entities.command.CommandFlag flags}, {@link #selfRequiredPermissions} and {@link #memberRequiredPermissions} of this {@link org.igsq.igsqbot.entities.command.Command}
+	 * This will consider the {@link org.igsq.igsqbot.entities.command.CommandFlag flags}, {@link #selfRequiredPermissions} and {@link #memberRequiredPermissions} of this {@link org.igsq.igsqbot.entities.command.Command command}
 	 * <p>
 	 * This will only {@link #run(java.util.List, CommandEvent, java.util.function.Consumer) run} the command if all checks pass.
 	 * @param event The command event to process with.

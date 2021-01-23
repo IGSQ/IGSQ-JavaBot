@@ -23,6 +23,7 @@ public class ChoiceCommand extends Command
 	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
 		if(CommandChecks.argsSizeSubceeds(event, 2, failure)) return;
+
 		Random random = new Random();
 		String choice;
 		int chance = random.nextInt(2);

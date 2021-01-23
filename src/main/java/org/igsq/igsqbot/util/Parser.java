@@ -24,12 +24,12 @@ public class Parser
 					")");
 
 	private final String arg;
-	private final CommandEvent ctx;
+	private final CommandEvent event;
 
-	public Parser(String arg, CommandEvent ctx)
+	public Parser(String arg, CommandEvent event)
 	{
 		this.arg = arg;
-		this.ctx = ctx;
+		this.event = event;
 	}
 
 	public List<String> parseAsSlashArgs()
@@ -45,7 +45,7 @@ public class Parser
 		}
 		catch(Exception exception)
 		{
-			ctx.replyError("Invalid ID entered.");
+			event.replyError("Invalid ID entered.");
 			return OptionalLong.empty();
 		}
 	}
@@ -58,7 +58,7 @@ public class Parser
 		}
 		catch(Exception exception)
 		{
-			ctx.replyError("Invalid true / false entered.");
+			event.replyError("Invalid true / false entered.");
 			return Optional.empty();
 		}
 	}
@@ -67,9 +67,9 @@ public class Parser
 	{
 		if(arg.equalsIgnoreCase("this") || arg.equalsIgnoreCase("here"))
 		{
-			return Optional.of(ctx.getGuild());
+			return Optional.of(event.getGuild());
 		}
-		return ctx.getIGSQBot().getShardManager().getGuilds().stream().filter(guild -> guild.getId().equals(arg)).findFirst();
+		return event.getIGSQBot().getShardManager().getGuilds().stream().filter(guild -> guild.getId().equals(arg)).findFirst();
 	}
 
 	public LocalDateTime parseAsDuration()
@@ -114,13 +114,13 @@ public class Parser
 			OptionalInt value = OptionalInt.of(Integer.parseUnsignedInt(arg));
 			if(value.getAsInt() == 0)
 			{
-				ctx.replyError("Enter a whole number greater than 0, eg: 1");
+				event.replyError("Enter a whole number greater than 0, eg: 1");
 			}
 			return value;
 		}
 		catch(NumberFormatException exception)
 		{
-			ctx.replyError("Enter a whole number greater than 0, eg: 1");
+			event.replyError("Enter a whole number greater than 0, eg: 1");
 			return OptionalInt.empty();
 		}
 	}
@@ -142,12 +142,12 @@ public class Parser
 
 	private void parseAsMentionable(Consumer<IMentionable> consumer, Message.MentionType type)
 	{
-		Message message = ctx.getMessage();
-		Guild guild = ctx.getGuild();
-		User author = ctx.getAuthor();
+		Message message = event.getMessage();
+		Guild guild = event.getGuild();
+		User author = event.getAuthor();
 		String typeName = type.name().toLowerCase();
 		Matcher idMatcher = ID_REGEX.matcher(arg);
-		JDA jda = ctx.getJDA();
+		JDA jda = event.getJDA();
 		SelfUser selfUser = jda.getSelfUser();
 
 		if(type.getPattern().matcher(arg).matches()) //Direct mention
@@ -172,7 +172,7 @@ public class Parser
 				}
 				else
 				{
-					jda.retrieveUserById(mentionableId).queue(consumer, failure -> ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found."));
+					jda.retrieveUserById(mentionableId).queue(consumer, failure -> event.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found."));
 					return;
 				}
 			}
@@ -185,7 +185,7 @@ public class Parser
 				}
 				else
 				{
-					ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found or i dont have permission to see it.");
+					event.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found or i dont have permission to see it.");
 				}
 				return;
 			}
@@ -198,7 +198,7 @@ public class Parser
 				}
 				else
 				{
-					ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
+					event.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 				}
 				return;
 			}
@@ -208,7 +208,7 @@ public class Parser
 		{
 			if(type == Message.MentionType.USER)
 			{
-				if(arg.equalsIgnoreCase(ctx.getMember().getEffectiveName()))
+				if(arg.equalsIgnoreCase(event.getMember().getEffectiveName()))
 				{
 					consumer.accept(author);
 					return;
@@ -218,7 +218,7 @@ public class Parser
 						{
 							if(members.isEmpty())
 							{
-								ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
+								event.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 								return;
 							}
 
@@ -229,7 +229,7 @@ public class Parser
 			var rolesChannelsList = type == Message.MentionType.CHANNEL ? guild.getTextChannelsByName(arg, true) : guild.getRolesByName(arg, true);
 			if(rolesChannelsList.isEmpty()) //Role / Channel
 			{
-				ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
+				event.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 				return;
 			}
 			else
@@ -239,6 +239,6 @@ public class Parser
 			}
 		}
 
-		ctx.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
+		event.replyError("No " + typeName.toLowerCase() + "s with name " + arg + " found.");
 	}
 }

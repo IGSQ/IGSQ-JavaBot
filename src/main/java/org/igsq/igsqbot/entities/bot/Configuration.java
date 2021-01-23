@@ -32,7 +32,7 @@ public class Configuration
 	{
 		this.igsqBot = igsqBot;
 		initFolder();
-		initFiles();
+		initFile();
 		this.configValues = loadInitialValues();
 	}
 
@@ -54,7 +54,7 @@ public class Configuration
 	/**
 	 * Try to create the 'config/bot.cfg' file, <code>System.exit()</code> on error.
 	 */
-	private void initFiles()
+	private void initFile()
 	{
 		try
 		{
@@ -69,7 +69,7 @@ public class Configuration
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("An exception occurred while creating the config files, abort.", exception);
+			igsqBot.getLogger().error("An exception occurred while creating the config file, abort.", exception);
 			System.exit(1);
 		}
 	}
@@ -149,7 +149,7 @@ public class Configuration
 	}
 
 	/**
-	 * Gets a config option from the loaded list
+	 * Gets a {@link org.igsq.igsqbot.entities.bot.ConfigOption option} from the loaded list
 	 * <p>This IS a Threadsafe operation.
 	 * @param configOption The config option to load.
 	 * @return The retrieved option, or the default.
