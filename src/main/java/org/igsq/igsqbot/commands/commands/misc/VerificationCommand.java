@@ -160,6 +160,7 @@ public class VerificationCommand extends Command
 	{
 		List<Long> result = new ArrayList<>();
 		List<String> content = messages.stream().map(Message::getContentRaw).collect(Collectors.toList());
+		List<String> checked = new ArrayList<>();
 
 		Map<String, Long> mappings = VerificationUtils.getMappedPhrases(guild, igsqBot);
 		JaroWinkler matcher = new JaroWinkler();
@@ -190,8 +191,6 @@ public class VerificationCommand extends Command
 						else
 						{
 							query = words.get(i) + words.get(i + 1);
-							words.remove(i);
-							words.remove(i);
 						}
 					}
 					else
@@ -199,13 +198,17 @@ public class VerificationCommand extends Command
 						query = words.get(i);
 					}
 
-					if(matcher.similarity(phrase, query) > 0.8)
+					if(!checked.contains(query))
 					{
-						if(!result.contains(role))
+						if(matcher.similarity(phrase, query) > 0.8)
 						{
-							result.add(role);
+							if(!result.contains(role))
+							{
+								result.add(role);
+							}
 						}
 					}
+					checked.add(query);
 				}
 			}
 		}
