@@ -10,40 +10,25 @@ public enum CommandFlag
 	 *
 	 * @see org.igsq.igsqbot.entities.command.CommandEvent#isFromGuild() .
 	 */
-	GUILD_ONLY(false),
+	GUILD_ONLY,
 	/**
 	 * If the {@link org.igsq.igsqbot.entities.command.Command command} can only be used by developers.
 	 *
 	 * @see org.igsq.igsqbot.entities.command.CommandEvent#isDeveloper().
 	 */
-	DEVELOPER_ONLY(false),
+	DEVELOPER_ONLY,
 	/**
 	 * If the {@link org.igsq.igsqbot.entities.command.Command command} authors message should be automatically deleted.
 	 */
-	AUTO_DELETE_MESSAGE(false),
+	AUTO_DELETE_MESSAGE,
 	/**
 	 * If the {@link org.igsq.igsqbot.entities.command.Command command's} content bypasses the {@link org.igsq.igsqbot.util.BlacklistUtils#isBlacklistedPhrase(net.dv8tion.jda.api.events.message.MessageReceivedEvent, org.igsq.igsqbot.IGSQBot) blacklist checks}.
 	 */
-	BLACKLIST_BYPASS(false),
+	BLACKLIST_BYPASS,
 	/**
 	 * If the {@link org.igsq.igsqbot.entities.command.Command command} is disabled.
 	 *
 	 * @see org.igsq.igsqbot.entities.command.Command#isDisabled() isDisabled()
 	 */
-	DISABLED(false);
-
-	private final boolean defaultValue;
-
-	CommandFlag(boolean defaultValue)
-	{
-		this.defaultValue = defaultValue;
-	}
-
-	/**
-	 * @return The default value.
-	 */
-	public boolean getDefaultValue()
-	{
-		return defaultValue;
-	}
+	DISABLED;
 }

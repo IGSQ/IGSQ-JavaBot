@@ -379,14 +379,11 @@ public abstract class Command
 	/**
 	 * @param flag The flag to check for.
 	 * @return Whether this {@link org.igsq.igsqbot.entities.command.Command command} has the flag.
-	 * <p>
-	 * If the flag is not found, the default value is returned.
 	 * @see #getFlags()
 	 * @see #addFlags(CommandFlag...)
-	 * @see CommandFlag#getDefaultValue()
 	 */
 	public boolean hasFlag(@Nonnull CommandFlag flag)
 	{
-		return this.flags.contains(flag) || flag.getDefaultValue();
+		return this.flags.contains(flag);
 	}
 }

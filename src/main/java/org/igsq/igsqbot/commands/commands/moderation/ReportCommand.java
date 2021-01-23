@@ -26,7 +26,7 @@ public class ReportCommand extends Command
 {
 	public ReportCommand()
 	{
-		super("Report", "Reports the specified member with the specified reason", "[user] [reason]");
+		super("Report", "Reports a member for a reason", "[user] [reason]");
 		addAliases("report");
 		addFlags(CommandFlag.GUILD_ONLY, CommandFlag.AUTO_DELETE_MESSAGE);
 	}
