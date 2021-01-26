@@ -28,7 +28,7 @@ public class LevelShowCommand extends Command
 	{
 		User levelBot = event.getIGSQBot().getShardManager().getUserById(new GuildConfig(event).getLevelUpBot());
 		if(CommandChecks.userConfigured(levelBot, "Level up bot", failure)) return;
-		List<Levels> levelList = Level.showLevels(event.getGuildIdLong(), event.getIGSQBot());
+		List<Levels> levelList = Level.getLevels(event.getGuildIdLong(), event.getIGSQBot());
 
 		StringBuilder text = new StringBuilder();
 

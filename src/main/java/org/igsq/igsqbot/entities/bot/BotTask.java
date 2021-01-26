@@ -5,13 +5,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 
 /**
- * A class representing a managed task in the {@link org.igsq.igsqbot.IGSQBot bot's} {@link org.igsq.igsqbot.handlers.TaskHandler Task Handler}.
- *
- * @see #getUnit()
- * @see #getTask()
- * @see #getName()
- * @see #getExpiresAt()
- * @see #cancel(boolean)
+ * A class representing a managed task in the {@link org.igsq.igsqbot.IGSQBot bot's} {@link org.igsq.igsqbot.handlers.TaskHandler TaskHandler}.
  */
 public class BotTask
 {

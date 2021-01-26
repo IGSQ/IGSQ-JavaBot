@@ -21,16 +21,16 @@ public class Configuration
 	public static final File CONFIG_FOLDER = new File("config");
 	public static final File CONFIG_FILE = new File(CONFIG_FOLDER, "bot.cfg");
 	private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
-	private final IGSQBot igsqBot;
+	private final IGSQBot igsqbot;
 	private final List<ConfigurationValue> configValues;
 
 	/**
 	 * Constructs a new {@link org.igsq.igsqbot.entities.bot.Configuration configuraton handler}
-	 * @param igsqBot The bot instance.
+	 * @param igsqbot The bot instance.
 	 */
-	public Configuration(@Nonnull IGSQBot igsqBot)
+	public Configuration(@Nonnull IGSQBot igsqbot)
 	{
-		this.igsqBot = igsqBot;
+		this.igsqbot = igsqbot;
 		initFolder();
 		initFile();
 		this.configValues = loadInitialValues();
@@ -52,7 +52,7 @@ public class Configuration
 	}
 
 	/**
-	 * Try to create the 'config/bot.cfg' file, <code>System.exit()</code> on error.
+	 * Try to create the 'config/bot.cfg' file, {@code System.exit()} on error.
 	 */
 	private void initFile()
 	{
@@ -69,7 +69,7 @@ public class Configuration
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("An exception occurred while creating the config file, abort.", exception);
+			igsqbot.getLogger().error("An exception occurred while creating the config file, abort.", exception);
 			System.exit(1);
 		}
 	}
@@ -98,7 +98,7 @@ public class Configuration
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("A config error occurred", exception);
+			igsqbot.getLogger().error("A config error occurred", exception);
 			return Collections.emptyList();
 		}
 	}
@@ -144,7 +144,7 @@ public class Configuration
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("A config error occurred", exception);
+			igsqbot.getLogger().error("A config error occurred", exception);
 		}
 	}
 

@@ -9,8 +9,13 @@ import org.igsq.igsqbot.IGSQBot;
 import org.igsq.igsqbot.entities.jooq.Tables;
 import org.igsq.igsqbot.entities.jooq.tables.pojos.Levels;
 
+import javax.annotation.Nonnull;
+
 import static org.igsq.igsqbot.entities.jooq.tables.Levels.LEVELS;
 
+/**
+ * Controls {@link net.dv8tion.jda.api.entities.Role role} assigning level-ups for {@link net.dv8tion.jda.api.entities.Guild guilds}.
+ */
 public class Level
 {
 	private Level()
@@ -18,11 +23,18 @@ public class Level
 		//Overrides the default, public, constructor
 	}
 
-	public static void addLevel(Role role, int level, long guildId,IGSQBot igsqBot)
+	/**
+	 * Adds a new level and {@link net.dv8tion.jda.api.entities.Role role} pair for the given guildId.
+	 * @param role The {@link net.dv8tion.jda.api.entities.Role role}.
+	 * @param level The level.
+	 * @param guildId The guildId.
+	 * @param igsqbot The {@link org.igsq.igsqbot.IGSQBot igsqbot} instance.
+	 */
+	public static void addLevel(@Nonnull Role role, @Nonnull Integer level, @Nonnull Long guildId, @Nonnull IGSQBot igsqbot)
 	{
-		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		try(Connection connection = igsqbot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var context = igsqbot.getDatabaseHandler().getContext(connection);
 			var query = context
 					.insertInto(Tables.LEVELS)
 					.columns(LEVELS.GUILD_ID, LEVELS.ROLE_ID, LEVELS.AWARDED_AT)
@@ -32,15 +44,24 @@ public class Level
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("An SQL error occurred", exception);
+			igsqbot.getLogger().error("An SQL error occurred", exception);
 		}
 	}
 
-	public static boolean removeLevel(Role role, int level, long guildId, IGSQBot igsqBot)
+	/**
+	 * Removes a new level and {@link net.dv8tion.jda.api.entities.Role role} pair for the given guildId.
+	 * @param role The {@link net.dv8tion.jda.api.entities.Role role}.
+	 * @param level The level.
+	 * @param guildId The guildId.
+	 * @param igsqbot The {@link org.igsq.igsqbot.IGSQBot igsqbot} instance.
+	 * @return {@code true} if successful, {@code false} otherwise.
+	 */
+	@Nonnull
+	public static Boolean removeLevel(@Nonnull Role role, @Nonnull Integer level, @Nonnull Long guildId, @Nonnull IGSQBot igsqbot)
 	{
-		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		try(Connection connection = igsqbot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var context = igsqbot.getDatabaseHandler().getContext(connection);
 			var query = context
 					.deleteFrom(Tables.LEVELS)
 					.where(LEVELS.GUILD_ID.eq(guildId)
@@ -51,18 +72,25 @@ public class Level
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("An SQL error occurred", exception);
+			igsqbot.getLogger().error("An SQL error occurred", exception);
 			return false;
 		}
 
 	}
 
-	public static List<Levels> showLevels(long guildId, IGSQBot igsqBot)
+	/**
+	 * Gets all level and {@link net.dv8tion.jda.api.entities.Role role} pairs for a guildId.
+	 * @param guildId The guildId.
+	 * @param igsqbot The {@link org.igsq.igsqbot.IGSQBot igsqbot} instance.
+	 * @return The levels.
+	 */
+	@Nonnull
+	public static List<Levels> getLevels(@Nonnull Long guildId, @Nonnull IGSQBot igsqbot)
 	{
 		List<Levels> result = new ArrayList<>();
-		try(Connection connection = igsqBot.getDatabaseHandler().getConnection())
+		try(Connection connection = igsqbot.getDatabaseHandler().getConnection())
 		{
-			var context = igsqBot.getDatabaseHandler().getContext(connection);
+			var context = igsqbot.getDatabaseHandler().getContext(connection);
 			var query = context
 					.selectFrom(Tables.LEVELS)
 					.where(LEVELS.GUILD_ID.eq(guildId));
@@ -74,13 +102,19 @@ public class Level
 		}
 		catch(Exception exception)
 		{
-			igsqBot.getLogger().error("An SQL error occurred", exception);
+			igsqbot.getLogger().error("An SQL error occurred", exception);
 		}
 		return result;
 	}
 
-	public void setBot(User bot, long guildId, IGSQBot igsqBot)
+	/**
+	 * Sets the level-up bot for a guildId.
+	 * @param bot The new bot.
+	 * @param guildId The guildId.
+	 * @param igsqbot The {@link org.igsq.igsqbot.IGSQBot igsqbot} instance.
+	 */
+	public void setBot(@Nonnull User bot, @Nonnull Long guildId, @Nonnull IGSQBot igsqbot)
 	{
-		new GuildConfig(guildId, igsqBot).setLevelUpBot(bot.getIdLong());
+		new GuildConfig(guildId, igsqbot).setLevelUpBot(bot.getIdLong());
 	}
 }
