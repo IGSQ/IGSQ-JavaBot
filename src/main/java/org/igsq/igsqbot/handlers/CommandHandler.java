@@ -108,6 +108,11 @@ public class CommandHandler
 		String prefix = Constants.DEFAULT_BOT_PREFIX;
 		boolean containsBlacklist = BlacklistUtils.isBlacklistedPhrase(event, igsqBot);
 
+		if(idTrimmed.isBlank())
+		{
+			return;
+		}
+
 		if(event.isFromGuild())
 		{
 			Guild guild = event.getGuild();
@@ -119,6 +124,10 @@ public class CommandHandler
 			{
 				prefix = new GuildConfig(guild.getIdLong(), igsqBot).getPrefix();
 				content = messageContent.substring(prefix.length()).trim();
+				if(content.startsWith(prefix))
+				{
+					return;
+				}
 			}
 			else if(containsBlacklist)
 			{
@@ -152,6 +161,11 @@ public class CommandHandler
 		}
 
 		commandText = (content.contains(" ") ? content.substring(0, content.indexOf(' ')) : content).toLowerCase();
+
+		if(commandText.isBlank())
+		{
+			return;
+		}
 
 		cmd = commandMap.get(commandText.toLowerCase());
 		if(cmd == null)

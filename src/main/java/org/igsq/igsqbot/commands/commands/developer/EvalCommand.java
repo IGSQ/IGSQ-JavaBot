@@ -30,7 +30,8 @@ public class EvalCommand extends Command
 	@Override
 	public void run(@NotNull List<String> args, @NotNull CommandEvent event, @NotNull Consumer<CommandException> failure)
 	{
-		if(CommandChecks.argsEmpty(event, failure)) return;
+		if(CommandChecks.argsEmpty(event, failure))
+return;
 
 		Object out;
 		String status = "Success";
