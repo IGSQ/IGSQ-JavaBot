@@ -58,7 +58,7 @@ public class DatabaseHandler
 		hikariConfig.setMaximumPoolSize(30);
 		hikariConfig.setMinimumIdle(10);
 		hikariConfig.setConnectionTimeout(10000);
-		hikariConfig.setMaxLifetime(5000);
+		hikariConfig.setMaxLifetime(30000);
 		LOGGER.debug("Minecraft HikariCP setup complete.");
 		try
 		{
